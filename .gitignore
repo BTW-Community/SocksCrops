@@ -131,6 +131,7 @@ src/minecraft/net/minecraft/src/BlockBed.java
 src/minecraft/net/minecraft/src/BlockBookshelf.java
 src/minecraft/net/minecraft/src/BlockBreakable.java
 src/minecraft/net/minecraft/src/BlockBrewingStand.java
+src/minecraft/net/minecraft/src/BlockButton.java
 src/minecraft/net/minecraft/src/BlockButtonStone.java
 src/minecraft/net/minecraft/src/BlockButtonWood.java
 src/minecraft/net/minecraft/src/BlockCactus.java
@@ -144,7 +145,7 @@ src/minecraft/net/minecraft/src/BlockCocoa.java
 src/minecraft/net/minecraft/src/BlockCommandBlock.java
 src/minecraft/net/minecraft/src/BlockComparator.java
 src/minecraft/net/minecraft/src/BlockContainer.java
-src/minecraft/net/minecraft/src/BlockCrops.java
+src/minecraft/net/minecraft/src/FCBlockCookingVessel.java
 src/minecraft/net/minecraft/src/BlockDaylightDetector.java
 src/minecraft/net/minecraft/src/BlockDeadBush.java
 src/minecraft/net/minecraft/src/BlockDetectorRail.java
