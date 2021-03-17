@@ -24,7 +24,10 @@ public class SocksCropsMod extends AddonExt {
 
 	@Override
 	public void Initialize() {
+		FCAddOnHandler.LogMessage(this.getName() + " Version " + this.getVersionString() + " Initializing...");
 		SocksCropsDefs.addDefinitions();
+		SocksCropsRecipes.addRecipes();
+		FCAddOnHandler.LogMessage(this.getName() + " Initialized");
 	}
 	
 	public String GetLanguageFilePrefix()

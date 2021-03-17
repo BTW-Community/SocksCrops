@@ -20,7 +20,6 @@ public class SocksCropsDefs {
 		Item.itemsList[bowl.blockID] = new ItemBlock(bowl.blockID - 256);		
 				
 		knifeStone = new SocksCropsItemKnifeStone(id_knifeStone);
-		Item.itemsList[knifeStone.itemID] = new Item(knifeStone.itemID);
 		
 	}
 } 
