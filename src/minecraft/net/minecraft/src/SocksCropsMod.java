@@ -4,7 +4,7 @@
 package net.minecraft.src;
 
 /**
- * @author Sockthing
+ * @author Sockthing (@socklessthing)
  *
  */
 public class SocksCropsMod extends AddonExt {
@@ -24,6 +24,11 @@ public class SocksCropsMod extends AddonExt {
 
 	@Override
 	public void Initialize() {
-
+		SocksCropsDefs.addDefinitions();
+	}
+	
+	public String GetLanguageFilePrefix()
+	{
+		return "SocksCrops";
 	}
 } 
