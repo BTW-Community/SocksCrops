@@ -6,7 +6,7 @@ I hope to fill the hole of HCSpawning with more things to discover and do. Maybe
 Many things to come. Keep watching this space.
 
 ##Credits
-- The BTW for all their input
+- The BTW Community for all their input
 - Sockthing (@socklessthing)
 - FC for an amazing mod
 - Dawn for helping the community and me
