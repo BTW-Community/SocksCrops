@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-public class SocksCropsModelBlockBowl extends FCModelBlock {
+public class SocksCropsModelCropSticks extends FCModelBlock {
 	private static final float onePX = 0.0625F;
 	private static final float twoPX = 0.125F;
 	private static final float threePX = onePX + twoPX;
@@ -9,15 +9,15 @@ public class SocksCropsModelBlockBowl extends FCModelBlock {
 	private static final float sixPX = 0.375F;
 	private static final float sevenPX = sixPX + onePX;
 	private static final float eightPX = 0.5F;
-	public static final float blockHeight = threePX;
+	public static final float blockHeight = 2 * eightPX - onePX;
 	
 	@Override
 	public void InitModel() {
-		this.AddBox(fivePX, 0, fivePX, fivePX + sixPX, onePX, fivePX + sixPX);
-		this.AddBox(sixPX - onePX, onePX, fourPX, eightPX + threePX, onePX + twoPX, fourPX + onePX);
-		this.AddBox(eightPX + threePX, onePX, fivePX, eightPX + fourPX, threePX, eightPX + threePX);
-		this.AddBox(fourPX, onePX, fivePX, fivePX, threePX, fivePX + sixPX);
-		this.AddBox(fivePX, onePX, eightPX + threePX, fivePX + sixPX, threePX, eightPX + fourPX);
+		this.AddBox(twoPX, 0, twoPX, fourPX, blockHeight, fourPX);
+		this.AddBox(eightPX + fourPX, 0, twoPX, eightPX + sixPX, blockHeight, fourPX);
+		this.AddBox(twoPX, 0, eightPX + fourPX, fourPX, blockHeight, eightPX + sixPX);
+		this.AddBox(eightPX + fourPX, 0, eightPX + fourPX, eightPX + sixPX, blockHeight, eightPX + sixPX);
+
 	}
 }
 
