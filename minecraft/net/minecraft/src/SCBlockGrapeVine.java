@@ -11,7 +11,7 @@ public class SCBlockGrapeVine extends BlockFlower {
 	@Override
     public boolean RenderBlock( RenderBlocks renderBlocks, int i, int j, int k )
     {
-		renderBlocks.renderRotatedCrossedSquares(this, i, j, k);
+		renderBlocks.renderCrossedSquares(this, i, j, k);
 		return true;
     }
 
