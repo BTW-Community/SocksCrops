@@ -6,7 +6,7 @@ public class SCRecipes {
 	private SCRecipes() {}
 	
 	public static void addRecipes() {
-		addChoppingBoardRecipes();
+		//addChoppingBoardRecipes();
 	}
 
 	private static void addChoppingBoardRecipes() {
