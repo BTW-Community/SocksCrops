@@ -394,4 +394,5 @@ public class SCBlockFence extends FCBlockFenceWood {
         this.RenderRopeConnections(renderer, i, j, k);
     	return true;
     }
+
 }

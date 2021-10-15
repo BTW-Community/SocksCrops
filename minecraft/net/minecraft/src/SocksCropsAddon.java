@@ -22,4 +22,9 @@ public class SocksCropsAddon extends FCAddOn {
 		
     	FCAddOnHandler.LogMessage(this.getName() + " Initialized");
     }
+    
+    @Override
+    public String GetLanguageFilePrefix() {
+    	return "SC";
+    }
 }
