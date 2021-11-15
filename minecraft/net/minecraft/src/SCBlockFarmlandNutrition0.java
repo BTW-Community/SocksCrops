@@ -6,7 +6,7 @@ public class SCBlockFarmlandNutrition0 extends SCBlockFarmlandBase {
 
 	protected SCBlockFarmlandNutrition0(int iBlockID) {
 		super(iBlockID);
-		this.setUnlocalizedName("SCBlockFarmlandNutrition_0");
+		this.setUnlocalizedName("SCBlockFarmlandNutrition");
 		this.setCreativeTab(CreativeTabs.tabBlock);
 	}
 	
@@ -23,6 +23,15 @@ public class SCBlockFarmlandNutrition0 extends SCBlockFarmlandBase {
 	@Override
 	protected void setLooseDirt(World world, int i, int j, int k) {
 		world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.dirtLooseNutrition.blockID , 3);
+	}
+	
+	@Override
+	public boolean DropComponentItemsOnBadBreak( World world, int i, int j, int k, int iMetadata, float fChanceOfDrop )
+	{
+		DropItemsIndividualy( world, i, j, k, FCBetterThanWolves.fcItemPileSand.itemID, 3, 0, fChanceOfDrop );
+		DropItemsIndividualy( world, i, j, k, FCBetterThanWolves.fcItemPileGravel.itemID, 3, 0, fChanceOfDrop );
+		
+		return true;
 	}
 
 

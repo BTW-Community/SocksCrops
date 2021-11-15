@@ -6,7 +6,7 @@ public class SCBlockFarmlandNutrition3Dung extends SCBlockFarmlandNutrition3 {
 
 	protected SCBlockFarmlandNutrition3Dung(int iBlockID) {
 		super(iBlockID);
-		setUnlocalizedName("SCBlockFarmlandDung_0");
+		setUnlocalizedName("SCBlockFarmlandDung");
 	}
 
 	

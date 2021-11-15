@@ -12,7 +12,7 @@ public abstract class SCBlockFarmlandBase extends FCBlockFarmland{
 	
 	abstract float getNutritionMultiplier();
 	
-	public void attemptToConvertNutritionBlockAround(World world, int i, int j, int k, Block plantBlock)
+	public static void attemptToConvertNutritionBlockAround(World world, int i, int j, int k, Block plantBlock)
 	{
 		Random random = new Random();
 		
@@ -21,10 +21,12 @@ public abstract class SCBlockFarmlandBase extends FCBlockFarmland{
 		}
 	}
 	
+	
+	
 	@Override
 	public abstract float GetPlantGrowthOnMultiplier( World world, int i, int j, int k, Block plantBlock );
 	
-	protected void convertNutritionBlockAround(World world, int i, int j, int k) {
+	protected static void convertNutritionBlockAround(World world, int i, int j, int k) {
 		//return super.hasNutritionBlockAround(world, i, j, k);
 		//System.out.println("trying to find nutrition block");
 			
@@ -115,7 +117,7 @@ public abstract class SCBlockFarmlandBase extends FCBlockFarmland{
 		}
     }
 	
-	protected boolean hasNutritionBlockAround( World world, int i, int j, int k )
+	protected static boolean hasNutritionBlockAround( World world, int i, int j, int k )
     {
     	int iHorizontalRange = 1;
     	
@@ -138,7 +140,7 @@ public abstract class SCBlockFarmlandBase extends FCBlockFarmland{
         return false;
     }
 	
-	protected boolean hasValidNutrition(World world, int iTempI, int iTempJ, int iTempK) {
+	protected static boolean hasValidNutrition(World world, int iTempI, int iTempJ, int iTempK) {
 		
     	int blockID = world.getBlockId( iTempI, iTempJ, iTempK );    	
     	int blockAboveID = world.getBlockId(iTempI, iTempJ + 1, iTempK);
@@ -163,7 +165,7 @@ public abstract class SCBlockFarmlandBase extends FCBlockFarmland{
 	}
 	
 
-	private boolean hasValidBlockNextToNutritionBlock(World world, int iTempI, int iTempJ, int iTempK) {
+	private static boolean hasValidBlockNextToNutritionBlock(World world, int iTempI, int iTempJ, int iTempK) {
 
 		//boolean blockAbove = world.isBlockNormalCube(iTempI, iTempJ + 1, iTempK); we are already checking if above is farmland
 		boolean blockBelow = world.isBlockNormalCube(iTempI, iTempJ - 1, iTempK);
@@ -191,7 +193,7 @@ public abstract class SCBlockFarmlandBase extends FCBlockFarmland{
 		return blockAdjacent;
 	}
 
-	protected boolean isValidNutritionBlock(World world, int iTempI, int iTempJ, int iTempK) {
+	protected static boolean isValidNutritionBlock(World world, int iTempI, int iTempJ, int iTempK) {
 		boolean dungId = world.getBlockId(iTempI, iTempJ, iTempK) == FCBetterThanWolves.fcBlockAestheticOpaqueEarth.blockID;
 		boolean dungMeta = world.getBlockMetadata(iTempI, iTempJ, iTempK) == FCBlockAestheticOpaqueEarth.m_iSubtypeDung;
 		

@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+import java.util.List;
 import java.util.Random;
 
 public class SCBlockPumpkinFresh extends BlockDirectional {
@@ -8,6 +9,7 @@ public class SCBlockPumpkinFresh extends BlockDirectional {
 		super(iBlockID, Material.pumpkin);
 		setTickRandomly( true ); 
 		setUnlocalizedName("fcBlockPumpkinFresh");
+		setCreativeTab(CreativeTabs.tabDecorations);
 	}
 
 	@Override
@@ -99,6 +101,14 @@ public class SCBlockPumpkinFresh extends BlockDirectional {
 	    }
     }
 	
+	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
+    {
+        par3List.add(new ItemStack(par1, 1, 0));
+        par3List.add(new ItemStack(par1, 1, 4));
+        par3List.add(new ItemStack(par1, 1, 8));
+        par3List.add(new ItemStack(par1, 1, 12));
+    }
+	
 
 	
     private void placeFCPumpkin(World world, int i, int j, int k, Random random) {
@@ -174,13 +184,35 @@ public class SCBlockPumpkinFresh extends BlockDirectional {
         double var19 = (double)par2;
         double var20 = (double)par3;
         double var15 = (double)par4;
-        this.drawConnector(this, blockAccess.getBlockMetadata(par2, par3, par4), var19, var20, var15, 1.0F);
         
+        if (hasVineToSides(r, par2, par3, par4)) 
+        {
+        	this.drawConnector(this, blockAccess.getBlockMetadata(par2, par3, par4), var19, var20, var15, 1.0F);
+        }
+        //don't draw vines when placed elsewhere
 		return true;
 
     }
     
-    /**
+	private boolean hasVineToSides( RenderBlocks r, int i, int j, int k )
+	{
+		for ( int iFacing = 1; iFacing <= 3; iFacing++ )
+		{		
+			FCUtilsBlockPos tempPos = new FCUtilsBlockPos( i, j, k, iFacing );
+		
+			int iTempBlockID = r.blockAccess.getBlockId( tempPos.i, tempPos.j, tempPos.k );
+			Block tempBlock = Block.blocksList[iTempBlockID];
+			
+			if ( tempBlock != null && tempBlock instanceof SCBlockPumpkinVine )
+			{
+				return true;
+			}			
+		}
+		
+		return false;
+	}
+
+	/**
      * Utility function to draw crossed swuares
      */
     public void drawConnector(Block block, int meta, double x, double y, double z, float scale)

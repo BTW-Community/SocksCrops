@@ -8,7 +8,7 @@ public class SCBlockDirtLooseNutrition extends SCBlockDirtLooseBase {
 
 	public SCBlockDirtLooseNutrition(int iBlockID) {
 		super(iBlockID);
-		this.setUnlocalizedName("SCBlocksDirtLooseDry_0");
+		this.setUnlocalizedName("SCBlockDirtLoose");
 		this.setCreativeTab(CreativeTabs.tabBlock);
 	}
 	
@@ -67,27 +67,21 @@ public class SCBlockDirtLooseNutrition extends SCBlockDirtLooseBase {
     	return true;
     }
     
-//    @Override
-//	public boolean DropComponentItemsOnBadBreak( World world, int i, int j, int k, int iMetadata, float fChanceOfDrop )
-//	{
-//    	int nutrientsLevel = getNutritionLevel(world, i, j, k);
-//    	
-//    	if (nutrientsLevel == 3)
-//    	{
-//    		DropItemsIndividualy( world, i, j, k, SCDefs.pileDirtNutrition3.itemID, 6, 0, fChanceOfDrop );
-//    	}
-//    	else if (nutrientsLevel == 2)
-//    	{
-//    		DropItemsIndividualy( world, i, j, k, SCDefs.pileDirtNutrition2.itemID, 6, 0, fChanceOfDrop );
-//    	}
-//    	else if (nutrientsLevel == 1)
-//    	{
-//    		DropItemsIndividualy( world, i, j, k, SCDefs.pileDirtNutrition1.itemID, 6, 0, fChanceOfDrop );
-//    	}
-//    	else DropItemsIndividualy( world, i, j, k, SCDefs.pileDirtNutrition0.itemID, 6, 0, fChanceOfDrop );
-//		
-//		return true;
-//	}
+	@Override
+	public boolean DropComponentItemsOnBadBreak( World world, int i, int j, int k, int iMetadata, float fChanceOfDrop )
+	{
+		if (iMetadata == 0) //nutri 3
+		{
+			DropItemsIndividualy( world, i, j, k, FCBetterThanWolves.fcItemPileDirt.itemID, 6, 0, fChanceOfDrop );
+		}
+		else
+		{
+			DropItemsIndividualy( world, i, j, k, FCBetterThanWolves.fcItemPileSand.itemID, 6, 0, fChanceOfDrop );
+			DropItemsIndividualy( world, i, j, k, FCBetterThanWolves.fcItemPileGravel.itemID, 6, 0, fChanceOfDrop );
+		}		
+		
+		return true;
+	}
     
     @Override
     public boolean SpreadGrassToBlock( World world, int i, int j, int k )

@@ -7,6 +7,8 @@ public class SCBlockBambooRoot extends BlockFlower {
 	protected SCBlockBambooRoot(int par1) {
 		super(par1, Material.plants);
 		setTickRandomly(true);
+		setBlockBounds(6/16F, 0.0F, 6/16F, 
+				10/16F, 1.0F, 10/16F);
 		setUnlocalizedName("SCBlockBambooRoot");
 		this.setHardness(0.5F);
 	}
@@ -18,12 +20,39 @@ public class SCBlockBambooRoot extends BlockFlower {
     	//Bamboo growth
     	if ( world.provider.dimensionId == 0 )
     	{
-            if ( random.nextFloat() <= 0.5 && world.isAirBlock( x, y + 1, z ) )
+            if ( random.nextFloat() <= 0.9 && world.isAirBlock( x, y + 1, z ) && maxGrowHeight > 0  )
             {
             	//System.out.println("Bamboo Root["+x+","+y+","+z+"]: "+"Growing Bamboo Stalk above.");
 				world.setBlockAndMetadataWithNotify( x, y + 1, z, SCDefs.bambooStalk.blockID , maxGrowHeight); 
             }
     	}
+	}
+	
+	@Override
+	public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer player, int iFacing, float fXClick, float fYClick, float fZClick) {
+		
+		ItemStack stack = player.getCurrentEquippedItem();
+    	
+		if (world.getBlockMetadata(i, j, k) > 0 && !world.isRemote)
+		{
+			if ( stack != null )
+	    	{
+	    		Item item = stack.getItem();
+	    		
+	    		if ( item instanceof FCItemShears)
+				{
+	    			world.setBlockMetadataWithNotify(i, j, k, 0);
+	    			
+	    			player.playSound("mob.sheep.shear", 1.0F, 1.0F);
+	    			
+	    			FCUtilsItem.EjectStackFromBlockTowardsFacing(world, i, j, k, new ItemStack(SCDefs.bambooShoot), iFacing);
+	    			
+	    			return true;
+	    		}
+	    	}
+		}
+		    	
+    	return false;
 	}
 		
 		//spreading code from mushroom
@@ -118,19 +147,22 @@ public class SCBlockBambooRoot extends BlockFlower {
 		m_IconTop = register.registerIcon( "SCBlockBambooRoot_top" );
 
     }
-
+	
     
     @Override
-    public Icon getIcon( int iSide, int iMetadata )
+    public Icon getBlockTexture( IBlockAccess blockAccess, int i, int j, int k, int iSide )
     {
-    	if ( iSide == 1 || iSide == 0 )
-    	{
-    		return m_IconTop;
-    	}
-    	
-    	return blockIcon;
+        if ( iSide == 1 )
+        {
+            return m_IconTop;
+        }
+        else if ( iSide == 0 )
+        {
+            return m_IconTop;
+        }
+        
+		return blockIcon;
     }
-	
 	
     
     @Override
@@ -139,7 +171,10 @@ public class SCBlockBambooRoot extends BlockFlower {
     	IBlockAccess blockAccess = renderer.blockAccess;
     	int meta = blockAccess.getBlockMetadata( i, j, k );
     	
-    	SCUtilsRender.RenderCrossedSquaresWithTexture(renderer, this, i, j, k, m_IconRoots);
+    	if (meta != 0)
+    	{
+    		SCUtilsRender.RenderCrossedSquaresWithTexture(renderer, this, i, j, k, m_IconRoots);
+    	}    	
     	
     	int blockAbove = blockAccess.getBlockId(i, j+1, k);
     	
@@ -148,7 +183,7 @@ public class SCBlockBambooRoot extends BlockFlower {
     	}
 
     	renderer.setRenderBounds(getAppleRenderBounds(2)); //4px x 4px
-    	FCClientUtilsRender.RenderStandardBlockWithTexture(renderer, this, i, j, k, this.blockIcon);
+    	renderer.renderStandardBlock(this, i, j, k);
 
     	
     	return true;

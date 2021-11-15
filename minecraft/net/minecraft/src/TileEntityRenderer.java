@@ -65,7 +65,7 @@ public class TileEntityRenderer
         // END FCMOD
         
         // SCADDON
-        specialRendererMap.put( SCTileEntityCuttingBoard.class, new SCTileEntityCuttingBoardRenderer() );
+        //specialRendererMap.put( SCTileEntityCuttingBoard.class, new SCTileEntityCuttingBoardRenderer() );
         // END SCADDON
         
         Iterator var1 = this.specialRendererMap.values().iterator();

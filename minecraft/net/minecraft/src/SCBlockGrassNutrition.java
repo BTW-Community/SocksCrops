@@ -14,11 +14,6 @@ import net.minecraft.client.Minecraft; // client only
 
 public class SCBlockGrassNutrition extends FCBlockGrass
 {
-    // global constants
-	
-    public static final int m_iGrassSpreadFromLightLevel = 11;
-    public static final int m_iGrassSpreadToLightLevel = 11; // 7 previously, 4 vanilla
-    public static final int m_iGrassSurviveMinimumLightLevel = 9; // 4 previously
     
     public SCBlockGrassNutrition( int iBlockID )
     {
@@ -30,7 +25,7 @@ public class SCBlockGrassNutrition extends FCBlockGrass
     	
     	setStepSound(soundGrassFootstep);
     	
-    	setUnlocalizedName("grass_top");    	
+    	setUnlocalizedName("grass");
     }
     
     private int getNutritionLevel( World world, int i, int j, int k) {
@@ -53,25 +48,8 @@ public class SCBlockGrassNutrition extends FCBlockGrass
     @Override
     public void updateTick( World world, int i, int j, int k, Random rand )
     {
-    	//super.updateTick(world, i, j, k, rand);
+    	super.updateTick(world, i, j, k, rand);
     	int thisMeta = world.getBlockMetadata(i, j, k);
-    	
-    	int iBlockAboveID = world.getBlockId( i, j + 1, k );
-    	Block blockAbove = Block.blocksList[iBlockAboveID];
-    	int iBlockAboveMaxNaturalLight = world.GetBlockNaturalLightValueMaximum( i, j + 1, k );
-    	int iBlockAboveCurrentNaturalLight = iBlockAboveMaxNaturalLight - world.skylightSubtracted;
-    	
-        if ( iBlockAboveMaxNaturalLight < m_iGrassSurviveMinimumLightLevel || Block.lightOpacity[iBlockAboveID] > 2 ||
-        	( blockAbove != null && !blockAbove.GetCanGrassGrowUnderBlock( world, i, j + 1, k, false ) ) )
-        {
-        	// convert back to dirt in low light
-        	
-            world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.dirtLooseNutrition.blockID , world.getBlockMetadata(i, j, k));
-        }
-        else if ( iBlockAboveCurrentNaturalLight >= m_iGrassSpreadFromLightLevel)
-        {
-        	CheckForGrassSpreadFromLocation( world, i, j, k );
-        }
 
         if (thisMeta > 0)
         {
@@ -90,11 +68,15 @@ public class SCBlockGrassNutrition extends FCBlockGrass
        	return meta;
     }
     
-	@Override
+    @Override
 	public boolean DropComponentItemsOnBadBreak( World world, int i, int j, int k, int iMetadata, float fChanceOfDrop )
 	{
-		DropItemsIndividualy( world, i, j, k, FCBetterThanWolves.fcItemPileDirt.itemID, 6, 0, fChanceOfDrop );
-		//XXX
+		if (iMetadata != 0) //nutri 3
+		{
+			DropItemsIndividualy( world, i, j, k, FCBetterThanWolves.fcItemPileGravel.itemID, 3, 0, fChanceOfDrop );
+			DropItemsIndividualy( world, i, j, k, FCBetterThanWolves.fcItemPileSand.itemID, 3, 0, fChanceOfDrop );
+		}
+		else DropItemsIndividualy( world, i, j, k, FCBetterThanWolves.fcItemPileDirt.itemID, 3, 0, fChanceOfDrop );
 		
 		return true;
 	}
@@ -351,8 +333,7 @@ public class SCBlockGrassNutrition extends FCBlockGrass
     	{
             return 16777215;
     	}
-    	//ADDON
-    	else if (blockAccess.getBlockMetadata(i, j, k) == 0)
+    	else if (blockAccess.getBlockMetadata(i, j, k) == 0 || blockAccess.getBlockId(i, j, k) == Block.blockClay.blockID)
     	{
     		return color(blockAccess, i, j, k, 0 , 0 , 0);
     	}
@@ -375,6 +356,7 @@ public class SCBlockGrassNutrition extends FCBlockGrass
     @Override
     public Icon getBlockTexture( IBlockAccess blockAccess, int i, int j, int k, int iSide )
     {
+
     	Icon betterGrassIcon = RenderBlocksUtils.getGrassTexture(this, blockAccess, i, j, k, iSide, this.iconGrassTop);
 
         if (betterGrassIcon != null)
@@ -383,7 +365,7 @@ public class SCBlockGrassNutrition extends FCBlockGrass
         }
         else if ( iSide == 1 )
         {
-            return iconGrassTop;
+            return super.getBlockTexture(blockAccess, i, j, k, iSide);
         }
         else if ( iSide == 0 )
         {

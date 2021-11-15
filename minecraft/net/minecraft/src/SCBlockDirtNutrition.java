@@ -15,7 +15,7 @@ public class SCBlockDirtNutrition extends FCBlockDirt {
     	
     	setStepSound( soundGravelFootstep );
     	
-    	setUnlocalizedName( "SCBlockDirtNutrition" );
+    	setUnlocalizedName( "dirt" );
         
         setCreativeTab( CreativeTabs.tabBlock );
     }
@@ -41,7 +41,7 @@ public class SCBlockDirtNutrition extends FCBlockDirt {
     @Override
 	public int idDropped( int iMetadata, Random rand, int iFortuneModifier )
 	{
-		return this.blockID;
+		return SCDefs.dirtLooseNutrition.blockID;
 	}
 	
 	/**
@@ -51,17 +51,19 @@ public class SCBlockDirtNutrition extends FCBlockDirt {
     {
         return meta & 3;
     }
+    
     /**
      * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
      */
-    
-    
-    //FC
-    
 	@Override
 	public boolean DropComponentItemsOnBadBreak( World world, int i, int j, int k, int iMetadata, float fChanceOfDrop )
 	{
-		DropItemsIndividualy( world, i, j, k, FCBetterThanWolves.fcItemPileDirt.itemID, 6, 0, fChanceOfDrop );
+		if (iMetadata != 0) //nutri 3
+		{
+			DropItemsIndividualy( world, i, j, k, FCBetterThanWolves.fcItemPileGravel.itemID, 3, 0, fChanceOfDrop );
+			DropItemsIndividualy( world, i, j, k, FCBetterThanWolves.fcItemPileSand.itemID, 3, 0, fChanceOfDrop );
+		}
+		else DropItemsIndividualy( world, i, j, k, FCBetterThanWolves.fcItemPileDirt.itemID, 6, 0, fChanceOfDrop );
 		
 		return true;
 	}

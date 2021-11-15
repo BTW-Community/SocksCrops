@@ -6,7 +6,7 @@ public class SCBlockFarmlandNutrition2Fertilized extends SCBlockFarmlandNutritio
 
 	protected SCBlockFarmlandNutrition2Fertilized(int iBlockID) {
 		super(iBlockID);
-		setUnlocalizedName("SCBlockFarmlandFertilized_1");
+		setUnlocalizedName("SCBlockFarmlandFertilized");
 	}
 	
 	@Override

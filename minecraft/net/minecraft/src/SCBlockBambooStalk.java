@@ -7,6 +7,9 @@ public class SCBlockBambooStalk extends SCBlockBambooRoot {
 	protected SCBlockBambooStalk(int par1) {
 		super(par1);
 		setUnlocalizedName("SCBlockBambooStalk");
+		
+		setBlockBounds(6/16F, 0.0F, 6/16F, 
+					10/16F, 1.0F, 10/16F);
 		this.setHardness(0.5F);
 	}
 	
@@ -43,6 +46,10 @@ public class SCBlockBambooStalk extends SCBlockBambooRoot {
     	}
 	}
 	
+	@Override
+	public int idDropped(int par1, Random par2Random, int par3) {
+		return SCDefs.bambooItem.itemID;
+	}
 	
 	@Override
 	public boolean canBlockStay(World world, int i, int j, int k) {
@@ -61,7 +68,7 @@ public class SCBlockBambooStalk extends SCBlockBambooRoot {
     protected Icon m_IconRoots;
 	private Icon bigLeaves;
 	private Icon sideLeaves;
-	private Icon leavesIcon;
+
 
     public void registerIcons( IconRegister register )
     {
@@ -69,9 +76,17 @@ public class SCBlockBambooStalk extends SCBlockBambooRoot {
 		bigLeaves = register.registerIcon( "SCBlockBambooLeavesTop" );
 		sideLeaves = register.registerIcon( "SCBlockBambooLeaves" );
 		m_IconTop = register.registerIcon( "SCBlockBambooRoot_top" );
-		leavesIcon = register.registerIcon("SCBlockAppleLeaves");
     }
 	
+    @Override
+    public Icon getBlockTexture( IBlockAccess blockAccess, int i, int j, int k, int iSide )
+    {
+        if ( iSide == 1 )
+        {
+            return m_IconTop;
+        }
+		return blockIcon;
+    }
 	 
     @Override
     public boolean RenderBlock(RenderBlocks renderer, int i, int j, int k) {
@@ -98,12 +113,7 @@ public class SCBlockBambooStalk extends SCBlockBambooRoot {
     	{
     		SCUtilsRender.RenderCrossedSquaresWithTexture(renderer, this, i, j, k, sideLeaves);
     	}
-    	
-    	if (meta == 15) {
-    		SCUtilsRender.RenderStandardBlockWithTexture(renderer, this, i, j, k, leavesIcon);
-    	}
-    	
-    	
+
     	renderer.setRenderBounds(getAppleRenderBounds(2)); //4px x 4px
     	FCClientUtilsRender.RenderStandardBlockWithTexture(renderer, this, i, j, k, this.blockIcon);
 

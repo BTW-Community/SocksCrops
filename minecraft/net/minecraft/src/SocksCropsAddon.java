@@ -8,9 +8,11 @@ package net.minecraft.src;
 public class SocksCropsAddon extends FCAddOn {
     public static SocksCropsAddon instance = new SocksCropsAddon();
     
-
+    public static final String ADDON_NAME = "Sock's Crops";
+    public static final String ADDON_VERSION = "0.1.dev";
+    
     private SocksCropsAddon() {
-        super("Sock's Crops", "0.0.dev", "SC");
+        super(ADDON_NAME, ADDON_VERSION, "SC");
     }
     
     @Override

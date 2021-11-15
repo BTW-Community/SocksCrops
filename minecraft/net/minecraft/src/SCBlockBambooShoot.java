@@ -14,7 +14,6 @@ public class SCBlockBambooShoot extends BlockFlower {
 	
 	@Override
 	public int idDropped(int par1, Random par2Random, int par3) {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 	
@@ -44,7 +43,7 @@ public class SCBlockBambooShoot extends BlockFlower {
         {
            checkFlowerChange(world, x, y, z);
 
-            if (world.getBlockLightValue(x, y + 1, z) >= 9 && random.nextFloat() <= 0.1) //growth chance of carrots
+            if (world.getBlockLightValue(x, y + 1, z) >= 9 && random.nextFloat() <= 0.9) //growth chance of carrots
             {
             	int growthStage = world.getBlockMetadata(x, y, z);
             	
