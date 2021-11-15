@@ -1,0 +1,26 @@
+#Blocks
+
+tile.SCBlockFarmlandNutrition.name=Farmland
+tile.SCBlockFarmlandFertilized.name=Farmland Fertilized
+tile.SCBlockFarmlandDung.name=Farmland Dunged
+tile.SCBlockDirtLooseNutrition.name=Loose Dirt
+tile.SCBlockDirtNutrition.name=Dirt
+tile.SCBlockGrassNutrition.grass=Grass
+
+tile.SCBlockCompost.name=Compost
+tile.SCBlockDamagedLog.name=Damaged Log
+tile.SCBlockMossyLog.name=Mossy Log
+
+tile.SCBlockPumpkinStem.name=Pumpkin Stem
+tile.SCBlockPumpkinVine.name=Pumpkin Vine
+tile.SCBlockPumpkinVineFlowering.name=Flowering Pumpkin Vine
+tile.SCBlockPumpkinFresh.name=Fresh Pumpkin
+
+tile.SCBlockBambooShoot.name=Bamboo Shoot
+tile.SCBlockBambooRoot.name=Bamboo Root
+tile.SCBlockBambooStalk.name=Bamboo Stalk
+
+#Items
+
+item.SCItemPumpkinSeeds.name=Pumpkin Seeds
+item.SCItemBamboo.name=Bamboo
