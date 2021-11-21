@@ -20,6 +20,11 @@ public class SCBlockPumpkinBase extends BlockDirectional {
         this.flowerBlock = flowerBlock;
         
 	}
+	
+	public boolean isPossessed() 
+	{
+		return false;
+	}
 
 	@Override
 	public void updateTick(World world, int i, int j, int k, Random random)
@@ -27,10 +32,132 @@ public class SCBlockPumpkinBase extends BlockDirectional {
         if ( world.provider.dimensionId != 1 && world.getBlockId( i, j, k ) == blockID ) // necessary because checkFlowerChange() may destroy the sapling
         {
         	AttemptToGrow( world, i, j, k, random );
+
+        	if ( hasPortalInRange(world, i, j, k) && !this.isPossessed())
+            {
+        		attemptToBePossessed(world, i, j, k, random);
+            }
         }
 	}
 	
-	
+	private void attemptToBePossessed(World world, int i, int j, int k, Random random)
+	{
+		int id = world.getBlockId(i, j, k);
+		int meta = world.getBlockMetadata(i, j, k);
+		
+		if (random.nextInt(possesionChance()) == 0)
+		{
+			if (id == SCDefs.pumpkinFresh.blockID)
+			{
+				if (meta < 4)
+				{
+					world.setBlockAndMetadata(i, j, k, SCDefs.pumpkinPossessed.blockID, 0 );
+				}
+				else if (meta >= 4 && meta < 8)
+				{
+					world.setBlockAndMetadata(i, j, k, SCDefs.pumpkinPossessed.blockID, 1 );
+				}
+				else if (meta >= 8 && meta < 12)
+				{
+					world.setBlockAndMetadata(i, j, k, SCDefs.pumpkinPossessed.blockID, 2 );
+				}
+				else if (meta >= 12 && meta <= 15)
+				{
+					world.setBlockAndMetadata(i, j, k, SCDefs.pumpkinPossessed.blockID, 3 );
+				}
+			}
+			else if (id == SCDefs.pumpkinGreenFresh.blockID)
+			{
+				if (meta < 4)
+				{
+					world.setBlockAndMetadata(i, j, k, SCDefs.pumpkinPossessed.blockID, 4 );
+				}
+				else if (meta >= 4 && meta < 8)
+				{
+					world.setBlockAndMetadata(i, j, k, SCDefs.pumpkinPossessed.blockID, 5 );
+				}
+				else if (meta >= 8 && meta < 12)
+				{
+					world.setBlockAndMetadata(i, j, k, SCDefs.pumpkinPossessed.blockID, 6 );
+				}
+				else if (meta >= 12 && meta <= 15)
+				{
+					world.setBlockAndMetadata(i, j, k, SCDefs.pumpkinPossessed.blockID, 7 );
+				}
+			}
+			else if (id == SCDefs.pumpkinYellowFresh.blockID)
+			{
+				if (meta < 4)
+				{
+					world.setBlockAndMetadata(i, j, k, SCDefs.pumpkinPossessed.blockID, 8 );
+				}
+				else if (meta >= 4 && meta < 8)
+				{
+					world.setBlockAndMetadata(i, j, k, SCDefs.pumpkinPossessed.blockID, 9 );
+				}
+				else if (meta >= 8 && meta < 12)
+				{
+					world.setBlockAndMetadata(i, j, k, SCDefs.pumpkinPossessed.blockID, 10 );
+				}
+				else if (meta >= 12 && meta <= 15)
+				{
+					world.setBlockAndMetadata(i, j, k, SCDefs.pumpkinPossessed.blockID, 11 );
+				}
+			}
+			else if (id == SCDefs.pumpkinWhiteFresh.blockID)
+			{
+				if (meta < 4)
+				{
+					world.setBlockAndMetadata(i, j, k, SCDefs.pumpkinPossessed.blockID, 12 );
+				}
+				else if (meta >= 4 && meta < 8)
+				{
+					world.setBlockAndMetadata(i, j, k, SCDefs.pumpkinPossessed.blockID, 13 );
+				}
+				else if (meta >= 8 && meta < 12)
+				{
+					world.setBlockAndMetadata(i, j, k, SCDefs.pumpkinPossessed.blockID, 14 );
+				}
+				else if (meta >= 12 && meta <= 15)
+				{
+					world.setBlockAndMetadata(i, j, k, SCDefs.pumpkinPossessed.blockID, 15 );
+				}
+			}
+			
+			//world.playAuxSFX(k, k, i, j, k);
+		}
+		
+	}
+	protected int possesionChance()
+    {
+    	return 10;
+    }
+	protected int GetPortalRange()
+    {
+    	return 16;
+    }
+    
+    protected boolean hasPortalInRange( World world, int i, int j, int k )
+    {
+    	int portalRange = GetPortalRange();
+    	
+        for ( int iTempI = i - portalRange; iTempI <= i + portalRange; iTempI++ )
+        {
+            for ( int iTempJ = j - portalRange; iTempJ <= j + portalRange; iTempJ++ )
+            {
+                for ( int iTempK = k - portalRange; iTempK <= k + portalRange; iTempK++ )
+                {
+                    if ( world.getBlockId( iTempI, iTempJ, iTempK ) == Block.portal.blockID )
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
 	public float GetBaseGrowthChance( World world, int i, int j, int k )
     {
     	return 0.99F;

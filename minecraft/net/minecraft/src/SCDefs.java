@@ -52,7 +52,8 @@ public class SCDefs {
 		id_pumpkinWhiteFresh = 2548,
 		id_pumpkinHarvested = 2549,
 		id_pumpkinCarved = 2550,
-		id_pumpkinJack = 2551;
+		id_pumpkinJack = 2551,
+		id_pumpkinPossessed = 2552;
 	
 	//Melons
 	private static int	
@@ -122,6 +123,7 @@ public class SCDefs {
 	//Pumpkin & Melon
 	public static Block pumpkinFresh,
 						pumpkinGreenFresh, pumpkinYellowFresh, pumpkinWhiteFresh,
+						pumpkinPossessed,
 						pumpkinHarvested,
 						pumpkinCarved,
 						pumpkinJack,
@@ -227,6 +229,8 @@ public class SCDefs {
 		
 		pumpkinWhiteFresh = new SCBlockPumpkinWhiteFresh(id_pumpkinWhiteFresh, id_pumpkinStem, id_pumpkinVine, id_pumpkinVineFlowering);
 		Item.itemsList[pumpkinWhiteFresh.blockID] = new ItemBlock(pumpkinWhiteFresh.blockID - 256);
+		
+		pumpkinPossessed = new SCBlockPumpkinPossessed(id_pumpkinPossessed);
 		
 		pumpkinHarvested = new SCBlockPumpkinHarvested(id_pumpkinHarvested);
 		Item.itemsList[pumpkinHarvested.blockID] = new ItemMultiTextureTile(pumpkinHarvested.blockID - 256, pumpkinHarvested, new String[] {"young", "teen", "adult", "mature"});

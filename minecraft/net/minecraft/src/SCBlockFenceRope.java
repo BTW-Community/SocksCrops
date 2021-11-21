@@ -222,34 +222,54 @@ public class SCBlockFenceRope extends FCBlockStakeString implements SCIRope {
 	//RENDER
 	
     @Override
-    public boolean RenderBlock( RenderBlocks renderBlocks, int i, int j, int k )
+    public boolean RenderBlock( RenderBlocks renderer, int i, int j, int k )
     {
-    	IBlockAccess blockAccess = renderBlocks.blockAccess;
+    	IBlockAccess blockAccess = renderer.blockAccess;
     	
     	for ( int iAxis = 0; iAxis < 3; iAxis++ )
     	{
     		if ( this.GetExtendsAlongAxis( blockAccess, i, j, k, iAxis ) )
     		{
-    			this.SetRenderBoundsForAxis( renderBlocks, iAxis );
+    			this.SetRenderBoundsForAxis( renderer, iAxis );
     			
-    			renderBlocks.renderStandardBlock( this, i, j, k );
+    			if ( iAxis == 0 )
+            	{
+    				renderer.SetUvRotateSouth( 1 );
+    				renderer.SetUvRotateNorth( 1 );
+            		renderer.SetUvRotateEast( 1 );
+            		renderer.SetUvRotateWest( 1 );
+            		
+            		renderer.SetUvRotateTop( 1 );
+            		renderer.SetUvRotateBottom( 1 );
+            	}else if (iAxis == 2 )
+				{
+            		renderer.SetUvRotateSouth( 1 );
+    				renderer.SetUvRotateNorth( 1 );
+            		renderer.SetUvRotateEast( 1 );
+            		renderer.SetUvRotateWest( 1 );
+            		
+				}
+    			
+    			renderer.renderStandardBlock( this, i, j, k );
+    			
+    			renderer.ClearUvRotation();
     		}
     	}
     	
     	if (HasStemBelow(blockAccess, i, j, k)) {
-			renderBlocks.setRenderBounds (this.GetRopeKnotBounds());
-			renderBlocks.renderStandardBlock( this, i, j, k );
+    		renderer.setRenderBounds (this.GetRopeKnotBounds());
+    		renderer.renderStandardBlock( this, i, j, k );
 			
-			renderBlocks.setRenderBounds( this.GetVerticalRopeBounds(1.0D));			
-			renderBlocks.renderStandardBlock( this, i, j, k );
+    		renderer.setRenderBounds( this.GetVerticalRopeBounds(1.0D));			
+    		renderer.renderStandardBlock( this, i, j, k );
 			
 		}else if (HasStemBelow(blockAccess, i, j-1, k)) //twoblocksdown
 		{
-			renderBlocks.setRenderBounds (this.GetVerticalRopeBounds(2.0D));
-			renderBlocks.renderStandardBlock( this, i, j, k );
+			renderer.setRenderBounds (this.GetVerticalRopeBounds(2.0D));
+			renderer.renderStandardBlock( this, i, j, k );
 			
-			renderBlocks.setRenderBounds (this.GetRopeKnotBounds());
-			renderBlocks.renderStandardBlock( this, i, j, k );
+			renderer.setRenderBounds (this.GetRopeKnotBounds());
+			renderer.renderStandardBlock( this, i, j, k );
 
 		}
     	

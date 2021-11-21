@@ -3,6 +3,7 @@ package net.minecraft.src;
 public class SCBlockFence extends FCBlockFenceWood {
 	
 	Icon IconRope;
+	Icon IconRopeTop;
 	
 	public static final double ropeKnotWidth = ( 2D / 16D ) * 1.25;
 	
@@ -300,6 +301,7 @@ public class SCBlockFence extends FCBlockFenceWood {
 		super.registerIcons(register);
 		
 		IconRope = register.registerIcon( "fcBlockRope_side" );
+		IconRopeTop = register.registerIcon("fcBlockRope_top" );
     }
 	
 	private AxisAlignedBB GetBoundsFromPoolForStringToFacing( int iFacing )
@@ -334,39 +336,32 @@ public class SCBlockFence extends FCBlockFenceWood {
     		renderer.SetUvRotateNorth( 3 );
     		renderer.SetUvRotateEast( 3 );
     		renderer.SetUvRotateWest( 3 );
+    		
+    		renderer.SetUvRotateTop( 3 );
+    		renderer.SetUvRotateBottom( 3 );
+    		
     	}
     	else if ( iFacing == 2 )
     	{
-    		renderer.SetUvRotateSouth( 1 );
-    		renderer.SetUvRotateNorth( 2 );
     	}
     	else if ( iFacing == 3 )
     	{
-    		renderer.SetUvRotateSouth( 2 );
-    		renderer.SetUvRotateNorth( 1 );
-    		renderer.SetUvRotateTop( 3 );
-    		renderer.SetUvRotateBottom( 3 );
+
     	}
     	else if ( iFacing == 4 )
     	{    		
-    		renderer.SetUvRotateEast( 1 );
-    		renderer.SetUvRotateWest( 2 );
-    		renderer.SetUvRotateTop( 2 );
-    		renderer.SetUvRotateBottom( 1 );
+
     	}
     	else if (  iFacing == 5 )
     	{
-    		renderer.SetUvRotateEast( 2 );
-    		renderer.SetUvRotateWest( 1 );
-    		renderer.SetUvRotateTop( 1 );
-    		renderer.SetUvRotateBottom( 2 );
+
     	}
     	
         renderer.setRenderBounds( GetBlockBoundsFromPoolBasedOnState( renderer.blockAccess, i, j, k ) );
         
         //renderer.renderStandardBlock( this, i, j, k );
 
-        renderer.ClearUvRotation();
+        //
         
         // render any attached string
         
@@ -378,9 +373,27 @@ public class SCBlockFence extends FCBlockFenceWood {
         	{
         		renderer.setRenderBounds( GetBoundsFromPoolForStringToFacing( 
         			iStringFacing ) );
-    			
+        		
+        		if ( iStringFacing == 4)
+            	{
+            		renderer.SetUvRotateTop( 2 );
+            		
+            		
+            	}else if (iStringFacing == 5) 
+            	{
+            		renderer.SetUvRotateTop( 1 );
+            	}		
+            	
+        		
+            		renderer.SetUvRotateEast( 1 ); //North South are swapped somehow
+            		renderer.SetUvRotateWest( 1 );
+            		renderer.SetUvRotateNorth( 1 );
+            		renderer.SetUvRotateSouth( 1 );
+            	
     			FCClientUtilsRender.RenderStandardBlockWithTexture( renderer, this, i, j, k, stringTexture );
 
+    			renderer.ClearUvRotation();
+    			
     			renderer.setRenderBounds(GetRopeKnotBounds());
     			FCClientUtilsRender.RenderStandardBlockWithTexture( renderer, this, i, j, k, stringTexture );
         	}
