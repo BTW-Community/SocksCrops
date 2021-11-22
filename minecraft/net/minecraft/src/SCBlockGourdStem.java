@@ -4,15 +4,18 @@ import java.util.Random;
 
 public class SCBlockGourdStem extends FCBlockCrops {
 	
-	private static final double m_dWidth = 0.25D;
-	private static final double m_dHalfWidth = ( m_dWidth / 2D );
-	
 	protected int vineBlock;
 	protected int flowerBlock;
 	
+	private static final double m_dWidth = 0.25D;
+	private static final double m_dHalfWidth = ( m_dWidth / 2D );
+	
 	protected SCBlockGourdStem(int iBlockID, int vineBlock , int flowerBlock) {
 		super( iBlockID);
-		
+        
+        this.vineBlock = vineBlock;
+        this.flowerBlock = flowerBlock;
+        
     	setHardness( 0F );
     	
     	SetBuoyant();
@@ -21,51 +24,96 @@ public class SCBlockGourdStem extends FCBlockCrops {
         	0.5F + m_dHalfWidth, 0.25F, 0.5F + m_dHalfWidth );
         
         setStepSound( soundGrassFootstep );
-        
-        setUnlocalizedName( "pumpkinStem" ); 
-        
-        this.vineBlock = vineBlock;
-        this.flowerBlock = flowerBlock;
 	}
 	
-	private void GrowVineAdjacent( World world, int i, int j, int k, Random rand ) {
-		FCUtilsBlockPos targetPos = new FCUtilsBlockPos( i, j, k );
-	    int iTargetFacing = 0;
-	    
-	    if ( HasSpaceToGrow( world, i, j, k ) )
-	    {
-	    	// if the plant doesn't have space around it to grow, 
-	    	// the fruit will crush its own stem
-	    	
-	        iTargetFacing = rand.nextInt( 4 ) +2;
-	    	
-	        targetPos.AddFacingAsOffset( iTargetFacing );
-	    }
-	    
-	    if ( CanGrowVineAt( world, targetPos.i, targetPos.j, targetPos.k ) )
-	    {	
-	    	if (iTargetFacing == 2)
-	    	{
-	    		world.setBlockAndMetadataWithNotify( targetPos.i, targetPos.j, targetPos.k, 
-	    				this.vineBlock, 2 ); //TODO change back to Sleeping
-	    		
-	    	} else if (iTargetFacing == 3)
-	    	{
-	    		world.setBlockAndMetadataWithNotify( targetPos.i, targetPos.j, targetPos.k, 
-	    				this.vineBlock, 0 );//TODO change back to Sleeping
-	    		
-	    	} else if (iTargetFacing == 4)
-	    	{
-	    		world.setBlockAndMetadataWithNotify( targetPos.i, targetPos.j, targetPos.k, 
-	    				this.vineBlock, 1 );//TODO change back to Sleeping
-	    	} else if (iTargetFacing == 5)
-	    	{
-	    		world.setBlockAndMetadataWithNotify( targetPos.i, targetPos.j, targetPos.k, 
-	    				this.vineBlock, 3 );//TODO change back to Sleeping
-	    	}
-	    }
-
+	@Override
+	public float GetBaseGrowthChance(World world, int i, int j, int k) {
+		return 0.5F;
 	}
+
+	public float GetVineGrowthChance( )
+    {
+    	return 0.5F;
+    }
+	
+	@Override
+    public void updateTick( World world, int i, int j, int k, Random rand )
+    {
+        if ( UpdateIfBlockStays( world, i, j, k ) ) //checks if canBlockStay() and sets to air if not
+        {		    
+			if (!IsFullyGrown( world, i, j, k ) && checkTimeOfDay(world)) //daytime
+			{
+				this.AttemptToGrow(world, i, j, k, rand); //growth chance is handles within this method
+				
+				if ( GetGrowthLevel(world, i, j, k) > 2  & rand.nextFloat() <= this.GetVineGrowthChance())
+		    	{
+		    		this.growVineAdjacent(world, i, j, k, rand);
+		    	}
+			}
+        }
+    }
+	
+	protected boolean checkTimeOfDay(World world) {
+		int iTimeOfDay = (int)( world.worldInfo.getWorldTime() % 24000L );
+		return (iTimeOfDay > 24000 || iTimeOfDay > 0 && iTimeOfDay < 14000 );
+	}
+	
+	@Override
+	protected void AttemptToGrow( World world, int i, int j, int k, Random rand ) 
+    {
+		int GrowthLevel = GetGrowthLevel(world, i, j, k);
+		
+    	if ( GetWeedsGrowthLevel( world, i, j, k ) == 0 && world.GetBlockNaturalLightValue( i, j, k ) >= GetLightLevelForGrowth() )
+	    {
+	        Block blockBelow = Block.blocksList[world.getBlockId( i, j - 1, k )];
+	        
+	        if ( blockBelow != null && blockBelow.IsBlockHydratedForPlantGrowthOn( world, i, j - 1, k ) )
+	        {
+	    		float fGrowthChance = GetBaseGrowthChance( world, i, j, k ) *
+	    			blockBelow.GetPlantGrowthOnMultiplier( world, i, j - 1, k, this );
+
+	            if ( rand.nextFloat() <= fGrowthChance ) 
+				{
+	            	IncrementGrowthLevel( world, i, j, k );	            	
+				}
+	        }
+	    }
+    }
+	
+	private void growVineAdjacent( World world, int i, int j, int k, Random random ) {
+		int targetDirection = random.nextInt(4);
+		
+		int directionI = Direction.offsetX[targetDirection];
+		int directionK = Direction.offsetZ[targetDirection];
+
+		int finalI = i + directionI;
+		int finalK = k + directionK;
+		
+		if (CanGrowVineAt( world, finalI, j, finalK ))
+		{
+			world.setBlockAndMetadataWithNotify( finalI, j, finalK, this.vineBlock, targetDirection);
+		}
+	}
+
+	protected boolean CanGrowVineAt( World world, int i, int j, int k )
+    {
+		int blockID = world.getBlockId( i, j, k );		
+		Block block = Block.blocksList[blockID];
+		
+		//if the block at the targetPos is null or isReplaceable()
+        if ( (block == null || FCUtilsWorld.IsReplaceableBlock( world, i, j, k) )
+        		//but not a stem, vine or flowering vine
+        		&& ( blockID != this.blockID || blockID != this.vineBlock || blockID != this.flowerBlock ) )
+        {
+			// CanGrowOnBlock() to allow vine to grow on tilled earth and such
+			if ( world.doesBlockHaveSolidTopSurface( i, j - 1, k ) || CanGrowOnBlock( world, i, j - 1, k ) )
+            {				
+				return true;
+            }
+        }
+        
+        return false;
+    }
 	
 	@Override
     public boolean canBlockStay( World world, int i, int j, int k )
@@ -73,6 +121,13 @@ public class SCBlockGourdStem extends FCBlockCrops {
         return CanGrowOnBlock( world, i, j - 1, k );
     }
 	
+	@Override
+    protected boolean CanGrowOnBlock( World world, int i, int j, int k )
+    {
+    	Block blockOn = Block.blocksList[world.getBlockId( i, j, k )];
+    	
+    	return blockOn != null && blockOn.CanDomesticatedCropsGrowOnBlock( world, i, j, k ) && blockOn.CanWildVegetationGrowOnBlock(world, i, j, k);
+    }	
 
 	@Override
 	protected int GetCropItemID() {
@@ -82,102 +137,7 @@ public class SCBlockGourdStem extends FCBlockCrops {
 	@Override
 	protected int GetSeedItemID() {
 		return 0;
-	}
-	
-	@Override
-	public float GetBaseGrowthChance( World world, int i, int j, int k )
-    {
-    	return 0.5F; // 0.5F = 50% 
-    }
-	
-	public float GetVineGrowthChance( World world, int i, int j, int k )
-    {
-    	return 0.75F;
-    }
-	
-	@Override
-    protected boolean CanGrowOnBlock( World world, int i, int j, int k )
-    {
-    	Block blockOn = Block.blocksList[world.getBlockId( i, j, k )];
-    	
-    	return blockOn != null && blockOn.CanDomesticatedCropsGrowOnBlock( world, i, j, k ) && blockOn.CanWildVegetationGrowOnBlock(world, i, j, k);
-    }
-	
-	@Override
-    public void updateTick( World world, int i, int j, int k, Random rand )
-    {
-        if ( UpdateIfBlockStays( world, i, j, k ) )
-        {
-        	// no plants can grow in the end
-        	System.out.println("stem: update tick");
-        	System.out.println("my meta is:" + world.getBlockMetadata(i, j, k));
-        	System.out.println("my growthstage is:" + this.GetGrowthLevel(world, i, j, k));
-        	
-        	int GrowthLevel = this.GetGrowthLevel(world, i, j, k);
-        	
-	        if ( world.provider.dimensionId != 1 && !IsFullyGrown( world, i, j, k ) )
-	        {
-	        	this.AttemptToGrow( world, i, j, k, rand );
-	        }
-	        
-	       
-	        
-	        if (GrowthLevel > 3 && GrowthLevel < 7  ) {
-	        	
-	        	this.AttemptToGrowVine(world, i, j, k, rand);
-	        }
-	        
-	        
-        }
-    }
-	
-	
-	
-	protected void AttemptToGrowVine( World world, int i, int j, int k, Random rand )
-	{
-		float vineGrowthChance = GetVineGrowthChance(world, i, j, k);
-		
-		if ( rand.nextFloat() <= vineGrowthChance ) 
-		{
-    		GrowVineAdjacent(world, i, j, k, rand);
-        	
-		}
-	}
-	
-	@Override
-	protected void AttemptToGrow( World world, int i, int j, int k, Random rand ) 
-    {
-		int GrowthLevel = GetGrowthLevel(world, i, j, k);
-		
-    	if ( GetWeedsGrowthLevel( world, i, j, k ) == 0 &&  
-    		world.GetBlockNaturalLightValue( i, j + 1, k ) >= GetLightLevelForGrowth() )
-	    {
-	        Block blockBelow = Block.blocksList[world.getBlockId( i, j - 1, k )];
-	        
-	        if ( blockBelow != null && 
-	        	blockBelow.IsBlockHydratedForPlantGrowthOn( world, i, j - 1, k ) )
-	        {
-	    		float fGrowthChance = GetBaseGrowthChance( world, i, j, k ) *
-	    			blockBelow.GetPlantGrowthOnMultiplier( world, i, j - 1, k, this );
-	    		
-	    		
-	    		
-	    		System.out.println("stem: growth chance: " + fGrowthChance);
-
-	            if ( rand.nextFloat() <= fGrowthChance ) 
-				{
-	            	//Grow stem
-	            	System.out.println("stem: growing!");
-	            	
-	            	IncrementGrowthLevel( world, i, j, k );
-	  
-		            System.out.println("stem growth is:" + GrowthLevel);
-		            
-	            	
-				}
-	        }
-	    }
-    }
+	}	
 	
 	protected boolean IsFullyGrown( int iMetadata )
     {
@@ -188,6 +148,8 @@ public class SCBlockGourdStem extends FCBlockCrops {
     {
     	return iMetadata & 7;
     }
+	
+	// --- Render --- //
 	
 	@Override
 	public boolean RenderBlock(RenderBlocks renderer, int i, int j, int k) {
@@ -250,129 +212,6 @@ public class SCBlockGourdStem extends FCBlockCrops {
     	
     	return stemArray[iGrowthLevel];
     }
-
-//	@Override
-//	public void updateTick( World world, int i, int j, int k, Random random )
-//	{
-//	    
-//	    if ( world.provider.dimensionId != 1 && world.getBlockId( i, j, k ) == blockID ) // necessary because checkFlowerChange() may destroy the sapling
-//	    {
-//	        if ( world.getBlockLightValue( i, j + 1, k ) >= 9)
-//	        {
-//	            this.CheckForGrowth( world, i, j, k, random );
-//	            System.out.println("checking growth for vine");  
-//	        }
-//	    }
-//	}
-//	 
-//	private void CheckForGrowth( World world, int i, int j, int k, Random rand )
-//	{
-//        if ( GetWeedsGrowthLevel( world, i, j, k ) == 0 &&
-//        	world.getBlockLightValue( i, j + 1, k ) >= 9 )
-//        {
-//	        Block blockBelow = Block.blocksList[world.getBlockId( i, j - 1, k )];
-//	        
-//	        if ( blockBelow != null && 
-//	        	blockBelow.IsBlockHydratedForPlantGrowthOn( world, i, j - 1, k ) )
-//	        {
-//	    		float fGrowthChance = 0.8F * //was 0.2F
-//	    			blockBelow.GetPlantGrowthOnMultiplier( world, i, j - 1, k, this );
-//	    		//System.out.println("growth chance: " + fGrowthChance);
-//	    		
-//	            if ( rand.nextFloat() <= fGrowthChance )
-//	            {
-//	                int iMetadata = world.getBlockMetadata( i, j, k );
-//	
-//	                if ( iMetadata < 2 ) //was 14
-//	                {
-//	                    ++iMetadata;
-//	                    
-//	                    world.setBlockMetadataWithNotify( i, j, k, iMetadata );    
-//	                    //System.out.println("metadata: " + iMetadata);
-//	                }
-//	                else if ( iMetadata == 2 ) //was 14
-//	                {
-//	                    FCUtilsBlockPos targetPos = new FCUtilsBlockPos( i, j, k );
-//	                    int iTargetFacing = 0;
-//	                    
-//	                    if ( HasSpaceToGrow( world, i, j, k ) )
-//	                    {
-//	                    	// if the plant doesn't have space around it to grow, 
-//	                    	// the fruit will crush its own stem
-//	                    	
-//		                    iTargetFacing = rand.nextInt( 4 ) + 2;
-//		                	
-//		                    targetPos.AddFacingAsOffset( iTargetFacing );
-//	                    }
-//	                    
-//	                    if ( CanGrowVineAt( world, targetPos.i, targetPos.j, targetPos.k ) )
-//	                    {	
-//	                    	blockBelow.NotifyOfFullStagePlantGrowthOn( world, i, j - 1, k, this );
-//	                    		
-//	                    	world.setBlockWithNotify( targetPos.i, targetPos.j, targetPos.k, 
-//	                    		SCDefs.pumpkinVine.blockID );
-//	                    	
-//	                    	//System.out.println("growing vine");
-//	                    	
-//	                    	if ( iTargetFacing != 0 )
-//	                    	{
-//	                    		SCDefs.pumpkinVine.AttachToFacing( world, 
-//	                    			targetPos.i, targetPos.j, targetPos.k, 
-//	                    			Block.GetOppositeFacing( iTargetFacing ) );
-//	                    		
-//	                            world.setBlockMetadataWithNotify( i, j, k, 15 );
-//	                    	}   
-//	                    }
-//	                }
-//	            }
-//	        }
-//        }
-//	}
-//	
-	protected boolean HasSpaceToGrow( World world, int i, int j, int k )
-    {
-        for ( int iTargetFacing = 2; iTargetFacing <= 5; iTargetFacing++ )
-        {
-        	FCUtilsBlockPos targetPos = new FCUtilsBlockPos( i, j, k );
-        	
-            targetPos.AddFacingAsOffset( iTargetFacing );
-            
-            if ( CanGrowVineAt( world, targetPos.i, targetPos.j, targetPos.k ) )
-            {
-            	System.out.println("CanGrowVineAt");
-            	return true;
-            }
-        }
-        
-        System.out.println("Can NOT GrowVineAt");
-        return false;
-    }
-	
-	protected boolean CanGrowVineAt( World world, int i, int j, int k )
-    {
-		int iBlockID = world.getBlockId( i, j, k );		
-		Block block = Block.blocksList[iBlockID];
-		
-        if ( FCUtilsWorld.IsReplaceableBlock( world, i, j, k ) ||
-        	block == null &&
-    		iBlockID != Block.cocoaPlant.blockID && 
-    		iBlockID != this.blockID && 
-    		iBlockID != vineBlock && 
-    		iBlockID != flowerBlock )
-        {
-			// CanGrowOnBlock() to allow fruit to grow on tilled earth and such
-			if ( world.doesBlockHaveSolidTopSurface( i, j - 1, k ) ||
-				CanGrowOnBlock( world, i, j - 1, k ) ) 
-            {				
-				return true;
-            }
-        }
-        
-        return false;
-    }
-
-	
-	
 	
 
 }

@@ -14,10 +14,19 @@ public class SCBlockMelonVineFlowering extends SCBlockGourdVineFloweringBase {
 		this.fruitBlock = fruitBlock;
 		this.vineBlock = vineBlock;
 	}
-	
 
 	@Override
-	protected void AttemptToGrowPumpkin(World world, int i, int j, int k, Random random) {
+	protected float GetBaseGrowthChance() {
+		return 0.5F;
+	}
+
+	@Override
+	protected float GetFruitGrowthChance() {
+		return 0.75F;
+	}
+
+	@Override
+	protected void attemptToGrowFruit(World world, int i, int j, int k, Random random) {
 		Block blockBelow = Block.blocksList[world.getBlockId( i, j - 1, k )];
 		int meta = world.getBlockMetadata(i, j, k);
 		
@@ -27,15 +36,9 @@ public class SCBlockMelonVineFlowering extends SCBlockGourdVineFloweringBase {
         
         if ( random.nextFloat() <= 0.5F) {
         
-	        if ( HasSpaceToGrow( world, i, j, k ) )
-	        {
-	        	// if the plant doesn't have space around it to grow, 
-	        	// the fruit will crush its own stem
-	        	
-	            iTargetFacing = random.nextInt( 4 ) + 2;
-	        	
-	            targetPos.AddFacingAsOffset( iTargetFacing );
-	        }
+        	iTargetFacing = random.nextInt( 4 ) + 2;
+        	
+            targetPos.AddFacingAsOffset( iTargetFacing );
 	        
 	        if ( CanGrowFruitAt( world, targetPos.i, targetPos.j, targetPos.k ) )
 	        {	
@@ -84,5 +87,7 @@ public class SCBlockMelonVineFlowering extends SCBlockGourdVineFloweringBase {
         }
 		
 	}
+
+
 
 }

@@ -7,74 +7,137 @@ public class SCBlockGourdVine extends BlockDirectional {
 	protected int floweringBlock;
 	protected int stemBlock;
 	
+	int convertedBlockID = 0;
+	
+	private static final double m_dWidth = 0.25D;
+	private static final double m_dHalfWidth = ( m_dWidth / 2D );
+	
 	protected SCBlockGourdVine(int iBlockID, int floweringBlock, int stemBlock) {
 		super( iBlockID, Material.plants );
-		this.setTickRandomly(true);
+		
 		this.floweringBlock = floweringBlock;
 		this.stemBlock = stemBlock;
 		
-		setUnlocalizedName("SCBlockPumpkinVine");
+		this.setTickRandomly(true);
+		
+		setHardness( 0F );
+		
+		InitBlockBounds( 0.5F - m_dHalfWidth, 0F, 0.5F - m_dHalfWidth, 
+	        	0.5F + m_dHalfWidth, 0.25F, 0.5F + m_dHalfWidth );
+		
+		setStepSound( soundGrassFootstep );
 	}
 	
-	protected int GetGrowthLevel( World world, int x, int y, int z) {
-		int meta = world.getBlockMetadata(x, y, z);
-		if (meta <= 3) 
-		{
-			return 0;
-		}
-		else if (meta > 3 && meta <= 7) 
-		{
-			return 1;
-		}
-		else if (meta > 7 && meta <= 11) 
-		{
-			return 2;
-		} 
-		else return 3;
-		
+	protected float GetBaseGrowthChance()
+    {
+    	return 0.5F;
+    }
+	
+	protected float GetFlowerChance() {
+		return 0.5F;
 	}
 	
-	protected int GetGrowthLevel( int meta) {
-		
-		if (meta <= 3) 
-		{
-			return 0;
-		}
-		else if (meta > 3 && meta <= 7) 
-		{
-			return 1;
-		}
-		else if (meta > 7 && meta <= 11) 
-		{
-			return 2;
-		} 
-		else return 3;
-		
-	}
-	
-	protected int GetGrowthLevel( IBlockAccess blockAccess, int x, int y, int z) {
-		int meta = blockAccess.getBlockMetadata(x, y, z);
-		if (meta <= 3) 
-		{
-			return 0;
-		}
-		else if (meta > 3 && meta <= 7) 
-		{
-			return 1;
-		}
-		else if (meta > 7 && meta <= 11) 
-		{
-			return 2;
-		} 
-		else return 3;
-		
-	}
+	protected float GetVineGrowthChance()
+    {
+    	return 0.25F;
+    }
 	
 	@Override
-	public void onNeighborBlockChange(World world, int i, int j, int k, int par5) {
-		world.scheduleBlockUpdate(i, j, k, blockID, 10);
+    public void updateTick( World world, int i, int j, int k, Random rand )
+    {	
+		if (!this.canBlockStay(world, i, j, k))
+		{
+			world.setBlock(i, j, k, convertedBlockID);
+		}
+		else
+		{
+			if (!IsFullyGrown( world, i, j, k) && checkTimeOfDay(world)) //daytime
+			{
+				int growthStage = this.GetGrowthLevel(world, i, j, k);
+				if ( growthStage > 0 && rand.nextFloat() <= this.GetVineGrowthChance())
+		    	{
+		    		this.attemptToGrowVine(world, i, j, k, rand);
+		    	}
+				
+				if (rand.nextFloat() <= this.GetBaseGrowthChance())
+		    	{
+		    		this.attemptToGrow(world, i, j, k, rand);
+		    	}
+				
+				if (growthStage == 2 && rand.nextFloat() <= this.GetFlowerChance())
+		    	{
+		    		this.attemptToFlower(world, i, j, k, rand);
+		    	}
+			}
+		}
+    }
+
+
+	protected boolean checkTimeOfDay(World world) {
+		int iTimeOfDay = (int)( world.worldInfo.getWorldTime() % 24000L );
+		return (iTimeOfDay > 24000 || iTimeOfDay > 0 && iTimeOfDay < 14000 );
 	}
 	
+	//Thanks to Hiracho for help with this method
+  	protected void attemptToGrowVine(World world, int i, int j, int k, Random random)
+  	{
+  		int dir = this.getDirection(world.getBlockMetadata(i, j, k));
+
+          int sideA = dir;
+          int sideB = Direction.rotateLeft[sideA];
+          int sideC = Direction.rotateOpposite[sideB];
+
+          int sideFinal;
+          float randomFloat = random.nextFloat();
+          
+          if (randomFloat < 0.50)
+          {
+              sideFinal=sideA;
+          }
+          else if (randomFloat < 0.50 + 0.25)
+          {
+              sideFinal = sideB;
+          }
+          else
+          {
+              sideFinal = sideC;
+          }
+  		
+  		int offsetI = Direction.offsetX[sideFinal];
+  		int offsetK = Direction.offsetZ[sideFinal];
+  		
+  		
+  		int finalI = i + offsetI;
+  		int finalK = k + offsetK;
+  		
+  		if( CanGrowVineAt( world, finalI, j, finalK ) )
+  		{
+  			world.setBlockAndMetadata(finalI, j, finalK, this.blockID, sideFinal);
+  		}
+
+  	}
+
+	protected void attemptToGrow(World world, int i, int j, int k, Random random) {
+		
+		int meta = world.getBlockMetadata(i, j, k);        
+		world.setBlockAndMetadataWithNotify(i, j, k, this.blockID ,meta + 4);
+
+	}
+	
+	protected void attemptToFlower(World world, int i, int j, int k, Random random) {
+		
+		int dir = this.getDirection(world.getBlockMetadata(i, j, k));		
+		world.setBlockAndMetadataWithNotify(i, j, k, this.floweringBlock, dir);
+	}
+
+	@Override
+	public void onNeighborBlockChange(World world, int i, int j, int k, int par5) {
+		if (!this.canBlockStay(world, i, j, k))
+		{
+			world.setBlock(i, j, k, convertedBlockID);
+		}
+	}
+
 	@Override
     public boolean canBlockStay( World world, int i, int j, int k )
     {
@@ -85,29 +148,20 @@ public class SCBlockGourdVine extends BlockDirectional {
     {
     	Block blockOn = Block.blocksList[world.getBlockId( i, j, k )];
     	
-    	return blockOn != null && ( blockOn.CanWildVegetationGrowOnBlock(world, i, j, k) || blockOn.CanReedsGrowOnBlock(world, i, j, k) || blockOn.blockID == Block.mycelium.blockID);
+    	return blockOn != null && (world.doesBlockHaveSolidTopSurface( i, j, k ) || blockOn.CanDomesticatedCropsGrowOnBlock( world, i, j, k ));
     }
-    
-    protected boolean hasStemFacing( World world, int i, int j, int k )
+	
+	protected boolean hasStemFacing( World world, int i, int j, int k )
     {
     	FCUtilsBlockPos targetPos = new FCUtilsBlockPos( i, j, k );
-	    int iTargetFacing = 0;
-	    
+
 	    int dir = this.getDirection(world.getBlockMetadata(i, j, k));
 	    
-	    // Check corresponding Block it grew from
-	    if (dir == 0) {
-	    	iTargetFacing = 2;
-	    }
-	    else if (dir == 1) {
-	    	iTargetFacing = 5;
-	    }
-	    else if (dir == 2) {
-	    	iTargetFacing = 3;
-	    }
-	    else if (dir == 3) {
-	    	iTargetFacing = 4;
-	    }
+	    
+	    int oppositeFacing = Direction.rotateOpposite[dir];
+	    int iTargetFacing = Direction.directionToFacing[oppositeFacing];
+	    
+	    
 	    
 	    targetPos.AddFacingAsOffset( iTargetFacing );
 	    
@@ -116,177 +170,100 @@ public class SCBlockGourdVine extends BlockDirectional {
 	    if ( targetBlockID == this.stemBlock || targetBlockID == this.blockID || targetBlockID == this.floweringBlock)
 	    {	
 	    	return true;
+	    	
 	    }
 	    else return false;
 	}
-    
-	@Override
-    public void updateTick( World world, int i, int j, int k, Random rand )
-    {	
-		if (!this.canBlockStay(world, i, j, k))
-		{
-			world.setBlock(i, j, k, Block.tallGrass.blockID);
-		}
-		else
-		{
-			int iTimeOfDay = (int)( world.worldInfo.getWorldTime() % 24000L );
-			if ( iTimeOfDay > 24000 || iTimeOfDay > 0 && iTimeOfDay < 14000 ) //daytime
-			{
-				// no plants can grow in the end
-		     	System.out.println("VINE: update tick");
-		     	System.out.println("VINE: my meta is " + world.getBlockMetadata(i, j, k));
-		     	
-		     	int GrowthLevel = GetGrowthLevel(world, i, j, k);
-		     	System.out.println("VINE: my GrowthLevel is " + GrowthLevel);
-			    if (GrowthLevel > 0 && GrowthLevel < 3 ) {
-			    	
-			    	this.AttemptToGrowVine(world, i, j, k, rand);
-		
-			    }
-			    if (GrowthLevel < 3) 
-		     	{
-		     		this.AttemptToGrow(world, i, j, k, rand);
-		     		System.out.println("VINE: MAY I GROW?");
-		     	}
-		     	
-			    if (GrowthLevel == 2) //Mature
-				{
-					this.AttemptToFlower(world, i, j, k, rand);
-					System.out.println("VINE: FLOWER?");
-				}
-			}
-			
-			
-		}
-		
-    }
-	
-	protected void AttemptToFlower(World world, int i, int j, int k, Random random) {
-		
-		int dir = this.getDirection(world.getBlockMetadata(i, j, k));
-		
-		if (random.nextInt() <= 0.5F) {
-			world.setBlockAndMetadataWithNotify(i, j, k, this.floweringBlock, dir);
-        	// TODO CHANGE BACK TO THIS: world.setBlockAndMetadataWithNotify(i, j, k, SCDefs.pumpkinVineFloweringSleeping.blockID, dir +12);
-        	System.out.println("VINE: FLOOOOWER");
-        }
-		
-	}
 
-	protected void AttemptToGrow(World world, int i, int j, int k, Random random) {
-		int GrowthLevel = GetGrowthLevel(world, i, j, k);
-		int meta = world.getBlockMetadata(i, j, k);
+	protected boolean CanGrowVineAt( World world, int i, int j, int k )
+    {
+		int blockID = world.getBlockId( i, j, k );		
+		Block block = Block.blocksList[blockID];
+		
+		//if the block at the targetPos is null or isReplaceable()
+        if ( (block == null || FCUtilsWorld.IsReplaceableBlock( world, i, j, k) )
+        		
+        	//but not a stem, vine or flowering vine
+        	&& ( blockID != this.blockID || blockID != this.stemBlock || blockID != this.floweringBlock ) ) {
+                
+        	// CanGrowOnBlock() to allow vine to grow on tilled earth and such
+        	if ( CanGrowOnBlock( world, i, j - 1, k ) )
+	        {				
+        		return true;
+	        }
+        }
         
-        if (GrowthLevel < 3 && random.nextInt() <= 0.99F) {
-        	world.setBlockAndMetadataWithNotify(i, j, k, this.blockID ,meta + 4);
-        	//TODO CHANGE BACK TO THIS world.setBlockAndMetadataWithNotify(i, j, k, SCDefs.pumpkinVineSleeping.blockID ,meta + 4); //increase a growth stage and set sleeping
-        	System.out.println("VINE: YES");
-        }
-		
-	}
-
-	private void GrowVineAdjacent( World world, int i, int j, int k, Random rand ) {
-		FCUtilsBlockPos targetPos = new FCUtilsBlockPos( i, j, k );
-	    int iTargetFacing = 0;
-	    
-	    if ( HasSpaceToGrow( world, i, j, k ) )
-	    {
-	    	// if the plant doesn't have space around it to grow, 
-	    	// the fruit will crush its own stem
-	    	
-	        iTargetFacing = rand.nextInt( 4 ) +2;
-	    	
-	        targetPos.AddFacingAsOffset( iTargetFacing );
-	    }
-	    
-	    if ( CanGrowVineAt( world, targetPos.i, targetPos.j, targetPos.k ) )
-	    {	
-	    	if (iTargetFacing == 2)
-	    	{
-	    		world.setBlockAndMetadataWithNotify( targetPos.i, targetPos.j, targetPos.k, 
-	            		this.blockID, 2 ); //TODO CHANGE BACK TO SLEEPING
-	    		
-	    	} else if (iTargetFacing == 3)
-	    	{
-	    		world.setBlockAndMetadataWithNotify( targetPos.i, targetPos.j, targetPos.k, 
-	    				this.blockID, 0 );//TODO CHANGE BACK TO SLEEPING
-	    		
-	    	} else if (iTargetFacing == 4)
-	    	{
-	    		world.setBlockAndMetadataWithNotify( targetPos.i, targetPos.j, targetPos.k, 
-	    				this.blockID, 1 );//TODO CHANGE BACK TO SLEEPING
-	    	} else if (iTargetFacing == 5)
-	    	{
-	    		world.setBlockAndMetadataWithNotify( targetPos.i, targetPos.j, targetPos.k, 
-	    				this.blockID, 3 );//TODO CHANGE BACK TO SLEEPING
-	    	}
-	    }
-
-	}
-	
-	public float GetBaseGrowthChance( World world, int i, int j, int k )
-    {
-    	return 0.5F; // 0.5F = 50% 
-    }
-	
-	public float GetVineGrowthChance( World world, int i, int j, int k )
-    {
-    	return 0.5F;
-    }
-	
-	protected void AttemptToGrowVine( World world, int i, int j, int k, Random rand )
-	{
-		float vineGrowthChance = GetVineGrowthChance(world, i, j, k);
-		
-		if ( rand.nextFloat() <= vineGrowthChance ) 
-		{
-    		GrowVineAdjacent(world, i, j, k, rand);
-        	
-		}
-	}
-	
-    /** TODO remove this later, it's for testing
-     * Called when the block is placed in the world.
-     */
-    public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLiving par5EntityLiving, ItemStack par6ItemStack)
-    {
-        int playerRotation = ((MathHelper.floor_double((double)(par5EntityLiving.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3) + 2) % 4;
-        par1World.setBlockMetadataWithNotify(par2, par3, par4, playerRotation, 3);
+        return false;
     }
     
-    @Override
-    public boolean isOpaqueCube()
+    protected int GetGrowthLevel( int meta) {
+		
+		if (meta <= 3) 
+		{
+			return 0;
+		}
+		else if (meta > 3 && meta <= 7) 
+		{
+			return 1;
+		}
+		else if (meta > 7 && meta <= 11) 
+		{
+			return 2;
+		} 
+		else return 3;
+		
+	}
+	
+	protected int GetGrowthLevel( IBlockAccess blockAccess, int x, int y, int z)
+	{		
+		return GetGrowthLevel(blockAccess.getBlockMetadata(x, y, z));		
+	}
+	
+	protected int GetGrowthLevel( World world, int x, int y, int z) {
+
+		return GetGrowthLevel(world.getBlockMetadata(x, y, z));		
+	}
+	
+	protected boolean IsFullyGrown( int iMetadata )
     {
+    	return GetGrowthLevel( iMetadata ) >= 3;
+    }	
+	
+	protected boolean IsFullyGrown(World world, int i, int j, int k) {
+		return IsFullyGrown(world.getBlockMetadata(i, j, k));
+	}
+	
+    @Override
+    public boolean isOpaqueCube() {
         return false;
     }
 
 	@Override
-    public boolean renderAsNormalBlock()
-    {
+    public boolean renderAsNormalBlock() {
         return false;
     }
 
 	//RENDER 
 	
-	private Icon[] m_iconArray;
-	private Icon[] connectorIcon;
+	public Icon[] vineIcons;
+	public Icon[] connectorIcons;
 
     @Override
     public void registerIcons( IconRegister register )
     {
-        m_iconArray = new Icon[4];
+    	vineIcons = new Icon[4];
 
-        for ( int iTempIndex = 0; iTempIndex < m_iconArray.length; iTempIndex++ )
+        for ( int iTempIndex = 0; iTempIndex < vineIcons.length; iTempIndex++ )
         {
-            m_iconArray[iTempIndex] = register.registerIcon( "SCBlockPumpkinVine_" + iTempIndex );
+        	vineIcons[iTempIndex] = register.registerIcon( "SCBlockPumpkinVine_" + iTempIndex );
         }
         
-        blockIcon = m_iconArray[0]; // for block hit effects and item render
+        blockIcon = vineIcons[3]; // for block hit effects and item render
         
-        connectorIcon = new Icon[4];
-        for ( int iTempIndex = 0; iTempIndex < connectorIcon.length; iTempIndex++ )
+        connectorIcons = new Icon[4];
+        for ( int iTempIndex = 0; iTempIndex < connectorIcons.length; iTempIndex++ )
         {
-        	connectorIcon[iTempIndex] = register.registerIcon( "SCBlockPumpkinVineConnector_" + iTempIndex );
+        	connectorIcons[iTempIndex] = register.registerIcon( "SCBlockPumpkinVineConnector_" + iTempIndex );
         }
    
     }
@@ -295,7 +272,7 @@ public class SCBlockGourdVine extends BlockDirectional {
     public Icon getBlockTexture( IBlockAccess blockAccess, int i, int j, int k, int iSide )
     {
 		int growthLevel = this.GetGrowthLevel(blockAccess, i, j, k);
-        return m_iconArray[growthLevel];
+        return vineIcons[growthLevel];
     }
 	
     @Override
@@ -303,10 +280,8 @@ public class SCBlockGourdVine extends BlockDirectional {
     	r.renderCrossedSquares(this, i, j, k);
     	
     	int iMetadata = r.blockAccess.getBlockMetadata( i, j, k );
-    	
-    	
-        this.renderVineConnector( r, i, j, k);
-        
+    	    	
+        this.renderVineConnector( r, i, j, k);        
 
     	return true;
     }
@@ -322,21 +297,22 @@ public class SCBlockGourdVine extends BlockDirectional {
         float var8 = (float)(var7 >> 16 & 255) / 255.0F;
         float var9 = (float)(var7 >> 8 & 255) / 255.0F;
         float var10 = (float)(var7 & 255) / 255.0F;
-        this.drawConnector(this, blockAccess.getBlockMetadata(par2, par3, par4), par2, par3, par4, 1.0F);
+        
+        int growthLevel = this.GetGrowthLevel(blockAccess.getBlockMetadata(par2, par3, par4));
+        this.drawConnector(this, blockAccess.getBlockMetadata(par2, par3, par4), par2, par3, par4, 1.0F, connectorIcons[growthLevel]);
         
 		return true;
-
     }
     
     /**
      * Utility function to draw crossed swuares
      */
-    public void drawConnector(Block block, int meta, double x, double y, double z, float scale)
+    public void drawConnector(Block block, int meta, double x, double y, double z, float scale, Icon icon)
     {
         Tessellator tess = Tessellator.instance;
         int growthLevel = this.GetGrowthLevel(meta);
         
-        Icon icon = connectorIcon[growthLevel];
+        //Icon icon = connectorIcons[growthLevel];
         
         int dir = meta & 3;
         
@@ -396,48 +372,7 @@ public class SCBlockGourdVine extends BlockDirectional {
         }
 
     }
-    
-    protected boolean HasSpaceToGrow( World world, int i, int j, int k )
-    {
-        for ( int iTargetFacing = 2; iTargetFacing <= 5; iTargetFacing++ )
-        {
-        	FCUtilsBlockPos targetPos = new FCUtilsBlockPos( i, j, k );
-        	
-            targetPos.AddFacingAsOffset( iTargetFacing );
-            
-            if ( CanGrowVineAt( world, targetPos.i, targetPos.j, targetPos.k ) )
-            {
-            	System.out.println("VINE: CanGrowVineAt");
-            	return true;
-            }
-        }
-        
-        System.out.println("VINE: Can NOT GrowVineAt");
-        return false;
-    }
-	
-	protected boolean CanGrowVineAt( World world, int i, int j, int k )
-    {
-		int iBlockID = world.getBlockId( i, j, k );		
-		Block block = Block.blocksList[iBlockID];
-		
-        if ( FCUtilsWorld.IsReplaceableBlock( world, i, j, k ) ||
-        	block == null &&
-    		iBlockID != Block.cocoaPlant.blockID && 
-    		iBlockID != SCDefs.pumpkinStem.blockID && 
-    		iBlockID != SCDefs.pumpkinVine.blockID && 
-    		iBlockID != SCDefs.pumpkinVineFlowering.blockID )
-        {
-			// CanGrowOnBlock() to allow fruit to grow on tilled earth and such
-			if ( world.doesBlockHaveSolidTopSurface( i, j - 1, k ) ||
-				CanGrowOnBlock( world, i, j - 1, k ) ) 
-            {				
-				return true;
-            }
-        }
-        
-        return false;
-    }
+
 	
 	
 

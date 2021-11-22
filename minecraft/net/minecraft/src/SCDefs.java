@@ -43,9 +43,9 @@ public class SCDefs {
 	private static int	
 		id_pumpkinStem = 2540,
 		id_pumpkinVine = 2541,
-		id_pumpkinVineSleeping = 2542,		
+		//id_pumpkinVineSleeping = 2542,		
 		id_pumpkinVineFlowering = 2543,
-		id_pumpkinVineFloweringSleeping = 2544,		
+		//id_pumpkinVineFloweringSleeping = 2544,		
 		id_pumpkinFresh = 2545,
 		id_pumpkinGreenFresh = 2546,
 		id_pumpkinYellowFresh = 2547,
@@ -253,8 +253,9 @@ public class SCDefs {
 		Item.itemsList[pumpkinStem.blockID] = new ItemBlock(pumpkinStem.blockID - 256);
 		
 		
+		//Melon (Types: Watermelon (Green/Red), Cantaloupe (Green/Orange), Canary melon	(Yellow/White), Honeydew (Light Green)
 		
-		//Melon
+		
 		melonVine = new SCBlockGourdVine(id_melonVine, id_melonVineFlowering, id_melonStem);
 		Item.itemsList[melonVine.blockID] = new ItemBlock(melonVine.blockID - 256);
 		
