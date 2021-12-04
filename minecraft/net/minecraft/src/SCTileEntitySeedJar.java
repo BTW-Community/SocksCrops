@@ -16,6 +16,13 @@ public class SCTileEntitySeedJar extends TileEntity
     public SCTileEntitySeedJar()
     {
     	m_VaseContents = new ItemStack[m_iVaseInventorySize];
+    	
+    }
+    
+    @Override
+    public void updateEntity()
+    {
+    	super.updateEntity();
     	seedType = GetSeedType();
     	hasLabel = HasLabel();
     	
@@ -36,7 +43,7 @@ public class SCTileEntitySeedJar extends TileEntity
     @Override
     public ItemStack getStackInSlot( int iSlot )
     {
-        return m_VaseContents[iSlot];
+        return getM_VaseContents()[iSlot];
     }
 
     @Override
@@ -48,10 +55,10 @@ public class SCTileEntitySeedJar extends TileEntity
     @Override
     public ItemStack getStackInSlotOnClosing(int par1)
     {
-        if (m_VaseContents[par1] != null)
+        if (getM_VaseContents()[par1] != null)
         {
-            ItemStack itemstack = m_VaseContents[par1];
-            m_VaseContents[par1] = null;
+            ItemStack itemstack = getM_VaseContents()[par1];
+            getM_VaseContents()[par1] = null;
             return itemstack;
         }
         else
@@ -63,7 +70,7 @@ public class SCTileEntitySeedJar extends TileEntity
     @Override
     public void setInventorySlotContents( int iSlot, ItemStack itemstack )
     {
-    	m_VaseContents[iSlot] = itemstack;
+    	getM_VaseContents()[iSlot] = itemstack;
     	
         if( itemstack != null && itemstack.stackSize > getInventoryStackLimit() )
         {
@@ -71,6 +78,7 @@ public class SCTileEntitySeedJar extends TileEntity
         }
         
         onInventoryChanged();
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 
     }
 
@@ -104,7 +112,7 @@ public class SCTileEntitySeedJar extends TileEntity
     {
     }
 
-    public int[] validIDs = {
+    public static int[] validIDs = {
     		Item.pumpkinSeeds.itemID,
     		Item.melonSeeds.itemID,
     		Item.netherStalkSeeds.itemID,
@@ -119,7 +127,7 @@ public class SCTileEntitySeedJar extends TileEntity
         super.readFromNBT(nbttagcompound);
         NBTTagList nbttaglist = nbttagcompound.getTagList("Items");
         
-        m_VaseContents = new ItemStack[getSizeInventory()];
+        setM_VaseContents(new ItemStack[getSizeInventory()]);
         
         for ( int i = 0; i < nbttaglist.tagCount(); i++ )
         {
@@ -127,9 +135,9 @@ public class SCTileEntitySeedJar extends TileEntity
             
             int j = nbttagcompound1.getByte( "Slot" ) & 0xff;
             
-            if ( j >= 0 && j < m_VaseContents.length )
+            if ( j >= 0 && j < getM_VaseContents().length )
             {
-            	m_VaseContents[j] = ItemStack.loadItemStackFromNBT( nbttagcompound1 );
+            	getM_VaseContents()[j] = ItemStack.loadItemStackFromNBT( nbttagcompound1 );
             }
         }
         
@@ -151,14 +159,14 @@ public class SCTileEntitySeedJar extends TileEntity
         super.writeToNBT(nbttagcompound);
         NBTTagList nbttaglist = new NBTTagList();
         
-        for ( int i = 0; i < m_VaseContents.length; i++ )
+        for ( int i = 0; i < getM_VaseContents().length; i++ )
         {
-            if ( m_VaseContents[i] != null )
+            if ( getM_VaseContents()[i] != null )
             {
                 NBTTagCompound nbttagcompound1 = new NBTTagCompound();
                 nbttagcompound1.setByte( "Slot", (byte)i );
                 
-                m_VaseContents[i].writeToNBT( nbttagcompound1 );
+                getM_VaseContents()[i].writeToNBT( nbttagcompound1 );
                 
                 nbttaglist.appendTag( nbttagcompound1 );
             }
@@ -180,14 +188,14 @@ public class SCTileEntitySeedJar extends TileEntity
     	NBTTagCompound nbttagcompound1 = new NBTTagCompound();
         NBTTagList nbttaglist = new NBTTagList();
         
-        for ( int i = 0; i < m_VaseContents.length; i++ )
+        for ( int i = 0; i < getM_VaseContents().length; i++ )
         {
-            if ( m_VaseContents[i] != null )
+            if ( getM_VaseContents()[i] != null )
             {
                 
                 nbttagcompound1.setByte( "Slot", (byte)i );
                 
-                m_VaseContents[i].writeToNBT( nbttagcompound1 );
+                getM_VaseContents()[i].writeToNBT( nbttagcompound1 );
                 
                 nbttaglist.appendTag( nbttagcompound1 );
             }
@@ -208,7 +216,7 @@ public class SCTileEntitySeedJar extends TileEntity
     {
         NBTTagList nbttaglist = tag.getTagList("Items");
         
-        m_VaseContents = new ItemStack[getSizeInventory()];
+        setM_VaseContents(new ItemStack[getSizeInventory()]);
         
         for ( int i = 0; i < nbttaglist.tagCount(); i++ )
         {
@@ -216,9 +224,9 @@ public class SCTileEntitySeedJar extends TileEntity
             
             int j = nbttagcompound1.getByte( "Slot" ) & 0xff;
             
-            if ( j >= 0 && j < m_VaseContents.length )
+            if ( j >= 0 && j < getM_VaseContents().length )
             {
-            	m_VaseContents[j] = ItemStack.loadItemStackFromNBT( nbttagcompound1 );
+            	getM_VaseContents()[j] = ItemStack.loadItemStackFromNBT( nbttagcompound1 );
             }
         }
         
@@ -244,7 +252,7 @@ public class SCTileEntitySeedJar extends TileEntity
     
     public ItemStack GetStorageStack()
     {
-    	return this.m_VaseContents[0];
+    	return this.getM_VaseContents()[0];
     }
 
 	public void AttemptToAddToStorageFromStack(ItemStack heldStack) {
@@ -258,7 +266,7 @@ public class SCTileEntitySeedJar extends TileEntity
 //    	}
 
 		    	
-		worldObj.markBlockRangeForRenderUpdate( xCoord, yCoord, zCoord, xCoord, yCoord, zCoord );   
+		this.worldObj.markBlockForUpdate( xCoord, yCoord, zCoord );   
 	}
 	
 	
@@ -287,7 +295,30 @@ public class SCTileEntitySeedJar extends TileEntity
 	public void applyLabel()
 	{
 		SetHasLabel(true);
-		worldObj.markBlockRangeForRenderUpdate( xCoord, yCoord, zCoord, xCoord, yCoord, zCoord );   
+		this.worldObj.markBlockForUpdate( xCoord, yCoord, zCoord );
 	}
 
+	public ItemStack[] getM_VaseContents() {
+		return m_VaseContents;
+	}
+
+	public void setM_VaseContents(ItemStack m_VaseContents[]) {
+		this.m_VaseContents = m_VaseContents;
+	}
+
+	
+
+    public void EjectStorageContents( int iFacing )
+    {
+    	
+    	if (this.m_VaseContents[0] != null )
+    	{
+    		FCUtilsItem.EjectStackFromBlockTowardsFacing( worldObj, xCoord, yCoord, zCoord, getStackInSlot(0), iFacing);
+    		
+    		this.m_VaseContents[0] = null;
+    		
+    	}
+    	
+    	worldObj.markBlockForUpdate( xCoord, yCoord, zCoord );  
+    }
 }

@@ -32,7 +32,6 @@ public class SCBlockSeedJar extends BlockContainer {
 		
 		ItemStack heldStack = player.getCurrentEquippedItem();
 		SCTileEntitySeedJar jar = (SCTileEntitySeedJar)world.getBlockTileEntity( i, j, k );
-		
         if ( world.isRemote )
         {
         	jar.AttemptToAddToStorageFromStack( heldStack );
@@ -65,6 +64,10 @@ public class SCBlockSeedJar extends BlockContainer {
         			jar.applyLabel();
         			return true;
         		}
+        	}
+        	else if (heldStack == null) 
+        	{       		
+        		jar.EjectStorageContents(iFacing);
         	}
         }
         
@@ -124,7 +127,7 @@ public class SCBlockSeedJar extends BlockContainer {
 				
 				if (itemStack.stackTagCompound.hasKey("scSeedType") )
 				{
-					itemStack.stackTagCompound.getInteger("scSeedType");
+					seedType = itemStack.stackTagCompound.getInteger("scSeedType");
 					tileEntity.SetSeedType(seedType);
 					
 				}
@@ -157,6 +160,7 @@ public class SCBlockSeedJar extends BlockContainer {
             	ItemStack oldStack = tileEntity.getStackInSlot(0);
             	
                 NBTTagCompound newTag = new NBTTagCompound();
+                
                 newStack.setTagCompound(newTag);
                 newStack.getTagCompound().setInteger( "id", oldStack.itemID );
                 newStack.getTagCompound().setInteger( "Count", oldStack.stackSize );
