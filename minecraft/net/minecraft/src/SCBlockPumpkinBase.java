@@ -1,17 +1,24 @@
 package net.minecraft.src;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-public class SCBlockPumpkinBase extends BlockDirectional {
+public abstract class SCBlockPumpkinBase extends FCBlockFalling {
 
 	protected int stemBlock;
 	protected int vineBlock;
 	protected int flowerBlock;
 	
+	private static final double m_dArrowSpeedSquaredToExplode = 1.10D;
+	
 	protected SCBlockPumpkinBase(int iBlockID, int stemBlock, int vineBlock, int flowerBlock) {
 		super(iBlockID, Material.pumpkin);
+		
 		setTickRandomly( true ); 
+		SetAxesEffectiveOn( true );
+        SetBuoyant();
 		setUnlocalizedName("fcBlockPumpkinFresh");
 		setCreativeTab(CreativeTabs.tabDecorations);
 		
@@ -28,7 +35,9 @@ public class SCBlockPumpkinBase extends BlockDirectional {
 
 	@Override
 	public void updateTick(World world, int i, int j, int k, Random random)
-	{		
+	{	
+		super.updateTick(world, i, j, k, random);
+		
         if ( world.provider.dimensionId != 1 && world.getBlockId( i, j, k ) == blockID ) // necessary because checkFlowerChange() may destroy the sapling
         {
         	AttemptToGrow( world, i, j, k, random );
@@ -45,9 +54,9 @@ public class SCBlockPumpkinBase extends BlockDirectional {
 		int id = world.getBlockId(i, j, k);
 		int meta = world.getBlockMetadata(i, j, k);
 		
-		if (random.nextInt(possesionChance()) == 0)
+		if (random.nextInt(possesionChance() ) == 0)
 		{
-			if (id == SCDefs.pumpkinFresh.blockID)
+			if (id == SCDefs.pumpkinOrange.blockID)
 			{
 				if (meta < 4)
 				{
@@ -211,15 +220,15 @@ public class SCBlockPumpkinBase extends BlockDirectional {
 	        Block blockBelow = Block.blocksList[world.getBlockId( i, j - 1, k )];
 	        
 	        if ( blockBelow != null && 
-	        	blockBelow.IsBlockHydratedForPlantGrowthOn( world, i, j, k ) ||
-	        	blockBelow.CanWildVegetationGrowOnBlock(world, i, j, k) || blockBelow.CanReedsGrowOnBlock(world, i, j, k) || blockBelow.blockID == Block.mycelium.blockID )
+	        	( blockBelow.IsBlockHydratedForPlantGrowthOn( world, i, j, k ) ||
+	        	blockBelow.CanWildVegetationGrowOnBlock(world, i, j, k) || blockBelow.CanReedsGrowOnBlock(world, i, j, k) || blockBelow.blockID == Block.mycelium.blockID ) )
 	        {
 	    		float fGrowthChance = GetBaseGrowthChance( world, i, j, k ) *
 	    			blockBelow.GetPlantGrowthOnMultiplier( world, i, j - 1, k, this );
 	    		
 	    		
 	    		
-	    		System.out.println("pumpkin: growth chance: " + fGrowthChance);
+	    		//System.out.println("pumpkin: growth chance: " + fGrowthChance);
 
 	            if ( random.nextFloat() <= fGrowthChance ) 
 				{
@@ -237,6 +246,145 @@ public class SCBlockPumpkinBase extends BlockDirectional {
 	    }
     }
 	
+//------------- Class Specific Methods ------------//
+	
+    @Override
+    public int getMobilityFlag()
+    {
+    	// allow gourds to be pushed by pistons
+    	return 0;
+    }
+    
+    @Override
+    public void OnArrowImpact( World world, int i, int j, int k, EntityArrow arrow )
+    {
+    	if ( !world.isRemote )
+    	{
+    		double dArrowSpeedSq = arrow.motionX * arrow.motionX + arrow.motionY * arrow.motionY + arrow.motionZ * arrow.motionZ;
+    		
+    		if ( dArrowSpeedSq >= m_dArrowSpeedSquaredToExplode )
+    		{
+	    		world.setBlockWithNotify( i, j, k, 0 );
+	    		
+	    		Explode( world, (double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D );
+    		}
+    		else
+    		{    		
+    			world.playAuxSFX( FCBetterThanWolves.m_iMelonImpactSoundAuxFXID, i, j, k, 0 );
+    		}
+    	}
+    }
+    
+    @Override
+    public void OnBlockDestroyedWithImproperTool( World world, EntityPlayer player, int i, int j, int k, int iMetadata )
+    {
+    	// there's no improper tool to harvest gourds, but this also happens if the block is deleted after falling due to sitting on an
+    	// improper block
+    	
+        world.playAuxSFX( AuxFXIDOnExplode(), i, j, k, 0 );
+    }
+    
+    @Override
+    public boolean OnFinishedFalling( EntityFallingSand entity, float fFallDistance )
+    {
+    	//entity.metadata = 0; // reset stem connection
+    	
+    	if ( !entity.worldObj.isRemote )
+    	{
+	        int i = MathHelper.floor_double( entity.posX );
+	        int j = MathHelper.floor_double( entity.posY );
+	        int k = MathHelper.floor_double( entity.posZ );
+	        
+	        int iFallDistance = MathHelper.ceiling_float_int( entity.fallDistance - 5.0F );
+	        
+	    	if ( iFallDistance >= 0 )
+	    	{	    		
+	    		DamageCollidingEntitiesOnFall( entity, fFallDistance );
+	    		
+	    		if ( !Material.water.equals( entity.worldObj.getBlockMaterial( i, j, k ) ) )
+	    		{	    			
+		    		if ( entity.rand.nextInt( 10 ) < iFallDistance )
+		    		{
+		    			Explode( entity.worldObj, (double)i + 0.5D, (double)j + 0.5D, (double)k + 0.5D );
+		    			
+		    			return false;
+		    		}
+	    		}
+	    	}
+	    	entity.worldObj.playAuxSFX( FCBetterThanWolves.m_iMelonImpactSoundAuxFXID, i, j, k, 0 );
+	    	
+	    	//turn pumpkin into non growing type
+	    	this.setBlockOnFinishedFalling(entity, i, j, k);
+
+    	}
+        
+    	return true;
+    }   
+
+  	/**
+  	 * The block when finished falling
+	 *  @param metaLanding returns 0, 1, 2, 3 for meta 0-3, 4-7, 8-11, 12-15 respectively
+	 */
+	abstract void setBlockOnFinishedFalling(EntityFallingSand entity, int i, int j, int k);
+
+	abstract protected Item ItemToDropOnExplode();
+  	
+  	abstract protected int ItemCountToDropOnExplode();
+  	
+  	abstract protected int AuxFXIDOnExplode();
+  	
+  	abstract protected DamageSource GetFallDamageSource();	
+  	
+      private void Explode( World world, double posX, double posY, double posZ )
+      {
+      	Item itemToDrop = ItemToDropOnExplode();
+      	
+      	if ( itemToDrop != null )
+      	{
+  	        for (int iTempCount = 0; iTempCount < ItemCountToDropOnExplode(); iTempCount++)
+  	        {
+  	    		ItemStack itemStack = new ItemStack( itemToDrop, 1, 0 );
+  	
+  	            EntityItem entityItem = (EntityItem) EntityList.createEntityOfType(EntityItem.class, world, posX, posY+0.5, posZ, itemStack );
+  	            
+  	            entityItem.motionX = ( world.rand.nextDouble() - 0.5D ) * 0.5D;
+  	            entityItem.motionY = 0.2D + world.rand.nextDouble() * 0.3D;
+  	            entityItem.motionZ = ( world.rand.nextDouble() - 0.5D ) * 0.5D;
+  	            
+  	            entityItem.delayBeforeCanPickup = 10;
+  	            
+  	            world.spawnEntityInWorld( entityItem );
+  	        }
+      	}
+      	
+      	NotifyNearbyAnimalsFinishedFalling( world, MathHelper.floor_double( posX ), MathHelper.floor_double( posY ), MathHelper.floor_double( posZ ) );
+          
+          world.playAuxSFX( AuxFXIDOnExplode(), 
+      		MathHelper.floor_double( posX ), MathHelper.floor_double( posY ), MathHelper.floor_double( posZ ), 
+      		0 );
+      }
+      
+      private void DamageCollidingEntitiesOnFall( EntityFallingSand entity, float fFallDistance )
+      {
+          int var2 = MathHelper.ceiling_float_int( fFallDistance - 1.0F );
+
+          if (var2 > 0)
+          {
+              ArrayList collisionList = new ArrayList( entity.worldObj.getEntitiesWithinAABBExcludingEntity( entity, entity.boundingBox ) );
+              
+              DamageSource source = GetFallDamageSource();
+              
+              Iterator iterator = collisionList.iterator();
+
+              while ( iterator.hasNext() )
+              {
+                  Entity tempEntity = (Entity)iterator.next();
+                  
+                  tempEntity.attackEntityFrom( source, 1 );
+              }
+
+          }
+      }
 
     private AxisAlignedBB GetPumpkinBounds(double size, double height)
 	{
@@ -432,6 +580,14 @@ public class SCBlockPumpkinBase extends BlockDirectional {
 		return ( iMetadata & ( 1 << iAxis ) ) > 0;
 
 	}
+	
+	/**
+     * Returns the orentation value from the specified metadata
+     */
+    public static int getDirection(int meta)
+    {
+        return meta & 3;
+    }
 	
 	static public int ConvertFacingToAxis( int iFacing )
 	{

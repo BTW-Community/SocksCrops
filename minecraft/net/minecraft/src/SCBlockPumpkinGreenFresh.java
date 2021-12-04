@@ -95,5 +95,31 @@ public class SCBlockPumpkinGreenFresh extends SCBlockPumpkinBase {
         	connectorIcon[iTempIndex] = register.registerIcon( "SCBlockPumpkinConnector_" + iTempIndex );
         }
     }
+
+	@Override
+	protected Item ItemToDropOnExplode() {
+		return SCDefs.pumpkinSeeds;
+	}
+
+	@Override
+	protected int ItemCountToDropOnExplode() {
+		return 1;
+	}
+
+	@Override
+	protected int AuxFXIDOnExplode() {
+		return FCBetterThanWolves.m_iPumpkinExplodeAuxFXID;
+	}
+
+	@Override
+	protected DamageSource GetFallDamageSource() {
+		return FCDamageSourceCustom.m_DamageSourcePumpkin;
+	}
+	
+	@Override
+	protected void setBlockOnFinishedFalling(EntityFallingSand entity, int i, int j, int k)	{
+		//shift metaLanding by 12 for pumpkinType
+		entity.worldObj.setBlockAndMetadata(i, j, k, SCDefs.pumpkinHarvested.blockID, 0 + 4);
+	}
     
 }

@@ -11,16 +11,29 @@ public class SCBlockPumpkinVineFlowering extends SCBlockGourdVineFloweringBase {
 	protected int vineBlock;
 	protected int stemBlock;
 
-	protected SCBlockPumpkinVineFlowering(int iBlockID, int vineBlock,int stemBlock, Block fruitBlock, Block greenFruit, Block yellowFruit, Block whiteFruit) {
-		super( iBlockID, vineBlock, stemBlock, fruitBlock, greenFruit);
+	protected SCBlockPumpkinVineFlowering(int iBlockID, int vineBlock,int stemBlock, Block fruitBlock, Block greenFruit, Block yellowFruit, Block whiteFruit, int convertedBlockID) {
+		super( iBlockID, vineBlock, stemBlock, convertedBlockID);
 		
 		this.fruitBlock = fruitBlock;
 		this.greenFruit = greenFruit;
 		this.yellowFruit = yellowFruit;
 		this.whiteFruit = whiteFruit;
 		this.vineBlock = vineBlock;
+		this.convertedBlockID = convertedBlockID;
 		
 		setUnlocalizedName("SCBlockPumpkinVineFlowering");
+	}
+	
+	@Override
+	protected void convert(World world, int i, int j, int k)
+	{
+		int meta = world.getBlockMetadata(i, j, k);
+		int dir = this.getDirection(meta);
+		
+		for (int d = dir; d < 4; d++) {
+			world.setBlockAndMetadataWithNotify(i, j, k, convertedBlockID, d + 12);
+			
+		}
 	}
 	
 	@Override
@@ -147,5 +160,26 @@ public class SCBlockPumpkinVineFlowering extends SCBlockGourdVineFloweringBase {
     	
 		return biomeFruit;
 	}
+	
+	@Override
+    public AxisAlignedBB GetBlockBoundsFromPoolBasedOnState(IBlockAccess blockAccess, int i, int j, int k)
+    {
+    	int growthLevel = this.GetGrowthLevel(blockAccess, i, j, k);
+    	
+    	if (growthLevel == 0)
+		{
+			return GetVineBounds(4, 8, 8);
+		}
+		else if (growthLevel == 1)
+		{
+			return GetVineBounds(6, 8, 8);
+		}
+		else if (growthLevel == 2)
+		{
+			return GetVineBounds(12, 12, 12);
+		}
+		else return GetVineBounds(16, 16, 16);
+    		
+    }
 
 }

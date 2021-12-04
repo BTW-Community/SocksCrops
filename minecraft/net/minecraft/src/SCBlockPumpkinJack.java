@@ -60,7 +60,7 @@ public class SCBlockPumpkinJack extends FCBlockJackOLantern {
 	{
 		int iMetadata = world.getBlockMetadata( i, j, k );
 		
-		world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.pumpkinFresh.blockID, iMetadata & 3 );
+		world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.pumpkinOrange.blockID, iMetadata & 3 );
 		
         world.playAuxSFX( FCBetterThanWolves.m_iFireFizzSoundAuxFXID, i, j, k, 0 );							        
 	}

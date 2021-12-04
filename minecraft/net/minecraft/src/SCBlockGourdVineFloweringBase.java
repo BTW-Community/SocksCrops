@@ -4,17 +4,16 @@ import java.util.Random;
 
 public abstract class SCBlockGourdVineFloweringBase extends SCBlockGourdVine {
 	
-	protected Block fruitBlock;
-	protected Block greenFruit;
+	private static String texConnector;
+	private static String texVine;
 	protected int vineBlock;
 	protected int stemBlock;
 
-	protected SCBlockGourdVineFloweringBase(int iBlockID, int vineBlock,int stemBlock, Block fruitBlock, Block greenFruit) {
-		super( iBlockID, vineBlock, stemBlock);
+	protected SCBlockGourdVineFloweringBase(int iBlockID, int vineBlock, int stemBlock, int convertedBlockID) {
+		super(iBlockID, vineBlock, stemBlock, convertedBlockID, texVine, texConnector);
 
-		this.fruitBlock = fruitBlock;
-		this.greenFruit = greenFruit;
 		this.vineBlock = vineBlock;
+		this.convertedBlockID = convertedBlockID;
 	}
 	
 	protected float GetBaseGrowthChance()
@@ -31,7 +30,7 @@ public abstract class SCBlockGourdVineFloweringBase extends SCBlockGourdVine {
     {
 		if (!this.canBlockStay(world, i, j, k))
 		{
-			world.setBlock(i, j, k, convertedBlockID);
+			world.setBlockAndMetadata(i, j, k, convertedBlockID, world.getBlockMetadata(i, j, k));
 		}
 		else
 		{
@@ -88,6 +87,7 @@ public abstract class SCBlockGourdVineFloweringBase extends SCBlockGourdVine {
 	//RENDER 
 	
 	public Icon[] flowerIcons;
+	
 
     @Override
     public void registerIcons( IconRegister register )

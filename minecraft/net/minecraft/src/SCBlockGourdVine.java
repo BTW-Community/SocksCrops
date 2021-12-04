@@ -7,25 +7,24 @@ public class SCBlockGourdVine extends BlockDirectional {
 	protected int floweringBlock;
 	protected int stemBlock;
 	
-	int convertedBlockID = 0;
-	
-	private static final double m_dWidth = 0.25D;
-	private static final double m_dHalfWidth = ( m_dWidth / 2D );
-	
-	protected SCBlockGourdVine(int iBlockID, int floweringBlock, int stemBlock) {
+	int convertedBlockID;
+
+	protected SCBlockGourdVine(int iBlockID, int floweringBlock, int stemBlock, int convertedBlockID, String texVine, String texConnector) {
 		super( iBlockID, Material.plants );
 		
 		this.floweringBlock = floweringBlock;
 		this.stemBlock = stemBlock;
+		this.convertedBlockID = convertedBlockID;
+		
+		this.texVine = texVine;
+		this.texConnector = texConnector;
 		
 		this.setTickRandomly(true);
 		
 		setHardness( 0F );
-		
-		InitBlockBounds( 0.5F - m_dHalfWidth, 0F, 0.5F - m_dHalfWidth, 
-	        	0.5F + m_dHalfWidth, 0.25F, 0.5F + m_dHalfWidth );
-		
+
 		setStepSound( soundGrassFootstep );
+
 	}
 	
 	protected float GetBaseGrowthChance()
@@ -47,11 +46,15 @@ public class SCBlockGourdVine extends BlockDirectional {
     {	
 		if (!this.canBlockStay(world, i, j, k))
 		{
-			world.setBlock(i, j, k, convertedBlockID);
+			this.convert(world, i, j, k);
 		}
 		else
 		{
-			if (!IsFullyGrown( world, i, j, k) && checkTimeOfDay(world)) //daytime
+			if ( hasPortalInRange(world, i, j, k) && rand.nextFloat() <= 0.1F )
+		    {
+				this.becomePossessed(world, i, j, k, rand);
+		    }
+			else if (!IsFullyGrown( world, i, j, k) && checkTimeOfDay(world)) //daytime
 			{
 				int growthStage = this.GetGrowthLevel(world, i, j, k);
 				if ( growthStage > 0 && rand.nextFloat() <= this.GetVineGrowthChance())
@@ -71,7 +74,72 @@ public class SCBlockGourdVine extends BlockDirectional {
 			}
 		}
     }
+	
+    private void becomePossessed(World world, int i, int j, int k, Random rand)
+    {
+    	int meta = world.getBlockMetadata(i, j, k);
+		int dir = this.getDirection(meta);
+		int growthLevel = this.GetGrowthLevel(meta);
+		
+		if (growthLevel == 0)
+		{
+			world.setBlock(i, j, k, 0);
+			
+		}
+		else {
+			for (int d = 0; d < 4; d++) {
+				world.setBlockAndMetadata(i, j, k, convertedBlockID, dir + 12);
+				
+			}	
+		}
+		
+	}
+    
+	protected int getPossessedMetaForGrowthLevel(int growthLevel) {
+		
+		for (int i = 0; i < 4; i++) {
+			if (growthLevel == i) 
+			{
+				return i; 
+			}
+		}
+		return 0;
+	}
 
+	protected boolean hasPortalInRange( World world, int i, int j, int k )
+    {
+    	int portalRange = 16;
+    	
+        for ( int iTempI = i - portalRange; iTempI <= i + portalRange; iTempI++ )
+        {
+            for ( int iTempJ = j - portalRange; iTempJ <= j + portalRange; iTempJ++ )
+            {
+                for ( int iTempK = k - portalRange; iTempK <= k + portalRange; iTempK++ )
+                {
+                    if ( world.getBlockId( iTempI, iTempJ, iTempK ) == Block.portal.blockID )
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+	
+	protected void convert(World world, int i, int j, int k)
+	{
+		int meta = world.getBlockMetadata(i, j, k);
+		int growthLevel = this.GetGrowthLevel(meta);
+		int blockID = world.getBlockId(i, j, k);
+		
+		if (growthLevel == 0)
+		{
+			world.setBlock(i, j, k, 0);
+			
+		}
+		else world.setBlockAndMetadataWithNotify(i, j, k, convertedBlockID, meta);
+	}
 
 	protected boolean checkTimeOfDay(World world) {
 		int iTimeOfDay = (int)( world.worldInfo.getWorldTime() % 24000L );
@@ -90,11 +158,11 @@ public class SCBlockGourdVine extends BlockDirectional {
           int sideFinal;
           float randomFloat = random.nextFloat();
           
-          if (randomFloat < 0.50)
+          if (randomFloat < 0.80)
           {
               sideFinal=sideA;
           }
-          else if (randomFloat < 0.50 + 0.25)
+          else if (randomFloat < 0.80 + 0.1)
           {
               sideFinal = sideB;
           }
@@ -134,7 +202,15 @@ public class SCBlockGourdVine extends BlockDirectional {
 	public void onNeighborBlockChange(World world, int i, int j, int k, int par5) {
 		if (!this.canBlockStay(world, i, j, k))
 		{
-			world.setBlock(i, j, k, convertedBlockID);
+			int meta = world.getBlockMetadata(i, j, k);
+			int growthLevel = this.GetGrowthLevel(meta);
+			
+			if (growthLevel == 0) 
+			{
+				world.setBlock(i, j, k, 0);
+				
+			}
+			else world.setBlockAndMetadataWithNotify(i, j, k, convertedBlockID, meta);
 		}
 	}
 
@@ -226,7 +302,7 @@ public class SCBlockGourdVine extends BlockDirectional {
 	
 	protected boolean IsFullyGrown( int iMetadata )
     {
-    	return GetGrowthLevel( iMetadata ) >= 3;
+    	return GetGrowthLevel( iMetadata ) == 3;
     }	
 	
 	protected boolean IsFullyGrown(World world, int i, int j, int k) {
@@ -247,6 +323,9 @@ public class SCBlockGourdVine extends BlockDirectional {
 	
 	public Icon[] vineIcons;
 	public Icon[] connectorIcons;
+	
+	public String texVine;
+	public String texConnector;
 
     @Override
     public void registerIcons( IconRegister register )
@@ -255,7 +334,7 @@ public class SCBlockGourdVine extends BlockDirectional {
 
         for ( int iTempIndex = 0; iTempIndex < vineIcons.length; iTempIndex++ )
         {
-        	vineIcons[iTempIndex] = register.registerIcon( "SCBlockPumpkinVine_" + iTempIndex );
+        	vineIcons[iTempIndex] = register.registerIcon( this.texVine + iTempIndex );
         }
         
         blockIcon = vineIcons[3]; // for block hit effects and item render
@@ -263,9 +342,83 @@ public class SCBlockGourdVine extends BlockDirectional {
         connectorIcons = new Icon[4];
         for ( int iTempIndex = 0; iTempIndex < connectorIcons.length; iTempIndex++ )
         {
-        	connectorIcons[iTempIndex] = register.registerIcon( "SCBlockPumpkinVineConnector_" + iTempIndex );
+        	connectorIcons[iTempIndex] = register.registerIcon( this.texConnector + iTempIndex );
         }
    
+    }
+    
+    /**
+     * 
+     * @param x width along xAxis in px
+     * @param y height along yAxis in px
+     * @param z width along zAxis in px
+     * @return AxisAlignedBB of the gourd
+     */
+	protected AxisAlignedBB GetVineBounds(int x, int y, int z)
+	{
+		double xSize = x/16D;
+		double ySize = y/16D;
+		double zSize = z/16D;	
+		
+    	AxisAlignedBB pumpkinBox = AxisAlignedBB.getAABBPool().getAABB( 
+    			8/16D - xSize/2, 0.0D, 8/16D - zSize/2, 
+    			8/16D + xSize/2, ySize, 8/16D + zSize/2);
+    	
+    	return pumpkinBox;
+	}
+	
+	protected AxisAlignedBB GetVineBounds(int x, int y, int z, int centerX, int centerZ)
+	{
+		double xSize = x/16D;
+		double ySize = y/16D;
+		double zSize = z/16D;	
+		
+    	AxisAlignedBB pumpkinBox = AxisAlignedBB.getAABBPool().getAABB( 
+    			centerX/16D - xSize/2, 0.0D, centerZ/16D - zSize/2, 
+    			centerX/16D + xSize/2, ySize, centerZ/16D + zSize/2);
+    	
+    	return pumpkinBox;
+	}
+	
+	@Override
+    public AxisAlignedBB getCollisionBoundingBoxFromPool( World world, int i, int j, int k )
+	{
+		return null;
+	}
+	
+    @Override
+    public AxisAlignedBB GetBlockBoundsFromPoolBasedOnState(IBlockAccess blockAccess, int i, int j, int k)
+    {
+    	int growthLevel = this.GetGrowthLevel(blockAccess, i, j, k);
+    	int dir = this.getDirection(blockAccess.getBlockMetadata(i, j, k));
+    	
+    	if (growthLevel == 0)
+		{
+    		if (dir == 1) 
+    		{
+    			return GetVineBounds(14, 8, 4, 16, 8);
+    		}
+    		else if (dir == 2) 
+    		{
+    			return GetVineBounds(4, 8, 14, 8, 16); //"north"
+    		}
+    		else if (dir == 3) 
+    		{
+    			return GetVineBounds(14, 8, 4, 0, 8);
+    		}
+    		else return GetVineBounds(4, 8, 14, 8, 0); //"south"
+
+		}
+		else if (growthLevel == 1)
+		{
+			return GetVineBounds(6, 6, 6);
+		}
+		else if (growthLevel == 2)
+		{
+			return GetVineBounds(10, 8, 10);
+		}
+		else return GetVineBounds(12, 8, 12);
+    		
     }
 
 	@Override

@@ -8,7 +8,10 @@ public class SCDefs {
 	//Fence & Rope
 	private static int
 		id_fence = 2500,
-		id_fenceRope = 2501;
+		id_fenceRope = 2501,
+		id_cuttingBoard = 2502,
+		id_seedJar = 2503,
+		id_tempBlock = 2499;
 	
 	//Farmland
 	private static int	
@@ -40,30 +43,31 @@ public class SCDefs {
 		id_compostBlock = 2532;
 	
 	//Pumpkins
-	private static int	
+	public static int	
 		id_pumpkinStem = 2540,
 		id_pumpkinVine = 2541,
-		//id_pumpkinVineSleeping = 2542,		
+		id_pumpkinVineDead = 2542,		
 		id_pumpkinVineFlowering = 2543,
-		//id_pumpkinVineFloweringSleeping = 2544,		
-		id_pumpkinFresh = 2545,
+		id_pumpkinOrange = 2545,
 		id_pumpkinGreenFresh = 2546,
 		id_pumpkinYellowFresh = 2547,
 		id_pumpkinWhiteFresh = 2548,
 		id_pumpkinHarvested = 2549,
 		id_pumpkinCarved = 2550,
 		id_pumpkinJack = 2551,
-		id_pumpkinPossessed = 2552;
+		id_pumpkinPossessed = 2552,
+		id_pumpkinStemDead = 2553;
 	
 	//Melons
 	private static int	
 		id_melonStem = 2560,
 		id_melonVine = 2561,
-		id_melonVineSleeping = 2562,		
-		id_melonVineFlowering = 2563,
-		id_melonVineFloweringSleeping = 2564,		
-		id_melonFresh = 2565,
-		id_melonFreshSleeping = 2566;
+		id_melonVineDead = 2562,		
+		id_melonVineFlowering = 2563,	
+		id_melonWater = 2564,
+		id_melonCanary = 2565,
+		id_melonHoneydew = 2466,
+		id_melonCantaloupe = 2467;
 
 	//Bamboo
 	private static int	
@@ -90,7 +94,8 @@ public class SCDefs {
 	//Pumpkin & Melon
 	private static int		
 		id_pumpkinSeeds = 31010,
-		id_melonSeeds = 31011;
+		id_melonSeeds = 31011,
+		id_melonSlice = 31012;
 	
 	//Bamboo
 	private static int
@@ -119,23 +124,29 @@ public class SCDefs {
 	//Fence & Rope
 	public static Block fence;
 	public static Block fenceRope;
+	public static Block tempBlock;
+	public static Block cuttingBoard;
+	public static Block seedJar;
+	
 
 	//Pumpkin & Melon
-	public static Block pumpkinFresh,
+	public static Block pumpkinOrange,
 						pumpkinGreenFresh, pumpkinYellowFresh, pumpkinWhiteFresh,
 						pumpkinPossessed,
 						pumpkinHarvested,
 						pumpkinCarved,
 						pumpkinJack,
 						pumpkinStem,
-						pumpkinVine, pumpkinVineSleeping,
-						pumpkinVineFlowering, pumpkinVineFloweringSleeping;
+						pumpkinVineDead, pumpkinVine, 
+						pumpkinVineFlowering, pumpkinStemDead;
 	
-	public static Block melonFresh, melonFreshSleeping,
+	public static Block melonWater, melonCanary, melonHoneydew, melonCantaloupe,
 						melonHarvested,
 						melonStem,
 						melonVine, melonVineSleeping,
 						melonVineFlowering, melonVineFloweringSleeping;
+	
+	public static Item melonSlice;
 	
 	public static Item pumpkinSeeds;
 	public static Item melonSeeds;
@@ -162,6 +173,8 @@ public class SCDefs {
 	
 
 	public static void addDefinitions() {
+		
+		addTileEntityDefs();
 		
 		addFenceAndRopeDefs();
 		
@@ -218,55 +231,82 @@ public class SCDefs {
 	private static void addPumpkinDefs() {
 		
 		//Pumpkin
-		pumpkinFresh = new SCBlockPumpkinFresh(id_pumpkinFresh, id_pumpkinStem, id_pumpkinVine, id_pumpkinVineFlowering);
-		Item.itemsList[pumpkinFresh.blockID] = new ItemBlock(pumpkinFresh.blockID - 256);
+//		pumpkinFresh = new SCBlockPumpkinFresh(id_pumpkinFresh, id_pumpkinStem, id_pumpkinVine, id_pumpkinVineFlowering);
+//		Item.itemsList[pumpkinFresh.blockID] = new ItemBlock(pumpkinFresh.blockID - 256);
+//		
+//		pumpkinGreenFresh = new SCBlockPumpkinGreenFresh(id_pumpkinGreenFresh, id_pumpkinStem, id_pumpkinVine, id_pumpkinVineFlowering);
+//		Item.itemsList[pumpkinGreenFresh.blockID] = new ItemBlock(pumpkinGreenFresh.blockID - 256);
+//		
+//		pumpkinYellowFresh = new SCBlockPumpkinYellowFresh(id_pumpkinYellowFresh, id_pumpkinStem, id_pumpkinVine, id_pumpkinVineFlowering);
+//		Item.itemsList[pumpkinYellowFresh.blockID] = new ItemBlock(pumpkinYellowFresh.blockID - 256);
+//		
+//		pumpkinWhiteFresh = new SCBlockPumpkinWhiteFresh(id_pumpkinWhiteFresh, id_pumpkinStem, id_pumpkinVine, id_pumpkinVineFlowering);
+//		Item.itemsList[pumpkinWhiteFresh.blockID] = new ItemBlock(pumpkinWhiteFresh.blockID - 256);
+//		
+//		pumpkinPossessed = new SCBlockPumpkinPossessed(id_pumpkinPossessed);
+//		
+//		pumpkinHarvested = new SCBlockPumpkinHarvested(id_pumpkinHarvested);
+//		Item.itemsList[pumpkinHarvested.blockID] = new ItemMultiTextureTile(pumpkinHarvested.blockID - 256, pumpkinHarvested, new String[] {"young", "teen", "adult", "mature"});
+//		
+//		pumpkinCarved = new SCBlockPumpkinCarved(id_pumpkinCarved);
+//		Item.itemsList[pumpkinCarved.blockID] = new ItemMultiTextureTile(pumpkinCarved.blockID - 256, pumpkinCarved, new String[] {"orange", "green", "yellow", "white"});
+//		
+//		pumpkinJack = new SCBlockPumpkinJack(id_pumpkinJack);
+//		Item.itemsList[pumpkinJack.blockID] = new ItemMultiTextureTile(pumpkinJack.blockID - 256, pumpkinJack, new String[] {"orange", "green", "yellow", "white"});
 		
-		pumpkinGreenFresh = new SCBlockPumpkinGreenFresh(id_pumpkinGreenFresh, id_pumpkinStem, id_pumpkinVine, id_pumpkinVineFlowering);
-		Item.itemsList[pumpkinGreenFresh.blockID] = new ItemBlock(pumpkinGreenFresh.blockID - 256);
+		//Pumpkin Growing
+		pumpkinOrange = new SCBlockPumpkinGrowingOrange(id_pumpkinOrange, id_pumpkinStem, id_pumpkinVine, id_pumpkinVineFlowering, id_pumpkinHarvested);
+		Item.itemsList[pumpkinOrange.blockID] = new ItemBlock(pumpkinOrange.blockID - 256);
 		
-		pumpkinYellowFresh = new SCBlockPumpkinYellowFresh(id_pumpkinYellowFresh, id_pumpkinStem, id_pumpkinVine, id_pumpkinVineFlowering);
-		Item.itemsList[pumpkinYellowFresh.blockID] = new ItemBlock(pumpkinYellowFresh.blockID - 256);
-		
-		pumpkinWhiteFresh = new SCBlockPumpkinWhiteFresh(id_pumpkinWhiteFresh, id_pumpkinStem, id_pumpkinVine, id_pumpkinVineFlowering);
-		Item.itemsList[pumpkinWhiteFresh.blockID] = new ItemBlock(pumpkinWhiteFresh.blockID - 256);
-		
-		pumpkinPossessed = new SCBlockPumpkinPossessed(id_pumpkinPossessed);
-		
+		//Pumpkin Harvested
 		pumpkinHarvested = new SCBlockPumpkinHarvested(id_pumpkinHarvested);
 		Item.itemsList[pumpkinHarvested.blockID] = new ItemMultiTextureTile(pumpkinHarvested.blockID - 256, pumpkinHarvested, new String[] {"young", "teen", "adult", "mature"});
 		
-		pumpkinCarved = new SCBlockPumpkinCarved(id_pumpkinCarved);
-		Item.itemsList[pumpkinCarved.blockID] = new ItemMultiTextureTile(pumpkinCarved.blockID - 256, pumpkinCarved, new String[] {"orange", "green", "yellow", "white"});
+		pumpkinPossessed = new SCBlockPumpkinPossessed(id_pumpkinPossessed);
+		Item.itemsList[pumpkinPossessed.blockID] = new ItemMultiTextureTile(pumpkinPossessed.blockID - 256, pumpkinPossessed, new String[] {"young", "teen", "adult", "mature"});
 		
-		pumpkinJack = new SCBlockPumpkinJack(id_pumpkinJack);
-		Item.itemsList[pumpkinJack.blockID] = new ItemMultiTextureTile(pumpkinJack.blockID - 256, pumpkinJack, new String[] {"orange", "green", "yellow", "white"});
 		//Vine
-		pumpkinVine = new SCBlockGourdVine(id_pumpkinVine, id_pumpkinVineFlowering, id_pumpkinStem);
+		pumpkinVine = new SCBlockGourdVine(id_pumpkinVine, id_pumpkinVineFlowering, id_pumpkinStem, id_pumpkinVineDead, "SCBlockPumpkinVine_", "SCBlockPumpkinVineConnector_");
 		Item.itemsList[pumpkinVine.blockID] = new ItemBlock(pumpkinVine.blockID - 256);
 		
+		pumpkinVineDead = new SCBlockGourdVineDead(id_pumpkinVineDead, id_pumpkinVineFlowering, id_pumpkinStem);
+		Item.itemsList[pumpkinVineDead.blockID] = new ItemBlock(pumpkinVineDead.blockID - 256);
+		
 		//Flower
-		pumpkinVineFlowering = new SCBlockPumpkinVineFlowering(id_pumpkinVineFlowering, id_pumpkinVine, id_pumpkinStem, pumpkinFresh, pumpkinGreenFresh, pumpkinYellowFresh, pumpkinWhiteFresh);
+		pumpkinVineFlowering = new SCBlockPumpkinVineFlowering(id_pumpkinVineFlowering, id_pumpkinVine, id_pumpkinStem, pumpkinOrange, pumpkinOrange, pumpkinOrange, pumpkinOrange, id_pumpkinVineDead);
 		Item.itemsList[pumpkinVineFlowering.blockID] = new ItemBlock(pumpkinVineFlowering.blockID - 256);
 		
 		//Stem
-		pumpkinStem = new SCBlockGourdStem(id_pumpkinStem, id_pumpkinVine, id_pumpkinVineFlowering);
+		pumpkinStemDead = new SCBlockGourdStemDead(id_pumpkinStemDead);
+		Item.itemsList[pumpkinStemDead.blockID] = new ItemBlock(pumpkinStemDead.blockID - 256);
+		
+		pumpkinStem = new SCBlockGourdStem(id_pumpkinStem, id_pumpkinVine, id_pumpkinVineFlowering, pumpkinStemDead);
 		Item.itemsList[pumpkinStem.blockID] = new ItemBlock(pumpkinStem.blockID - 256);
 		
 		
-		//Melon (Types: Watermelon (Green/Red), Cantaloupe (Green/Orange), Canary melon	(Yellow/White), Honeydew (Light Green)
 		
 		
-		melonVine = new SCBlockGourdVine(id_melonVine, id_melonVineFlowering, id_melonStem);
+		//Melon (Types: Watermelon (Green/Red),  Canary melon (Yellow/White), Honeydew (Light Green), Cantaloupe (Green/Orange)
+		melonWater = new SCBlockMelonWaterGrowing(id_melonWater, id_melonStem, id_melonVine, id_melonVineFlowering, id_pumpkinHarvested);
+		Item.itemsList[melonWater.blockID] = new ItemBlock(melonWater.blockID - 256);
+		
+		melonCanary = new SCBlockMelonCanaryGrowing(id_melonCanary, id_melonStem, id_melonVine, id_melonVineFlowering, id_pumpkinHarvested);
+		Item.itemsList[melonCanary.blockID] = new ItemBlock(melonCanary.blockID - 256);
+		
+		melonVine = new SCBlockGourdVine(id_melonVine, id_melonVineFlowering, id_melonStem, 0, "SCBlockMelonVine_", "SCBlockMelonVineConnector_");
 		Item.itemsList[melonVine.blockID] = new ItemBlock(melonVine.blockID - 256);
 		
-		melonVineFlowering = new SCBlockMelonVineFlowering(id_melonVineFlowering, id_melonVine, id_melonStem, Block.melon);
+		melonVineFlowering = new SCBlockMelonVineFlowering(id_melonVineFlowering, id_melonVine, id_melonStem, melonWater, melonCanary, melonWater, melonWater, 0);
 		Item.itemsList[melonVineFlowering.blockID] = new ItemBlock(melonVineFlowering.blockID - 256);
 		
-		melonStem = new SCBlockGourdStem(id_melonStem, id_melonVine, id_melonVineFlowering);
+		melonStem = new SCBlockGourdStem(id_melonStem, id_melonVine, id_melonVineFlowering, melonStem);
 		Item.itemsList[melonStem.blockID] = new ItemBlock(melonStem.blockID - 256);
 		
 		pumpkinSeeds = new FCItemSeedFood( id_pumpkinSeeds - 256, 1, 0F, pumpkinStem.blockID).setCreativeTab(CreativeTabs.tabDecorations).setUnlocalizedName( "seeds_pumpkin" );
-		melonSeeds = ( new FCItemSeeds( id_melonSeeds - 256, melonStem.blockID).setCreativeTab(CreativeTabs.tabDecorations).SetAsBasicChickenFood().setUnlocalizedName( "seeds_melon" ) );
+		melonSeeds = ( new FCItemSeeds(id_melonSeeds , melonStem.blockID).setCreativeTab(CreativeTabs.tabDecorations).SetAsBasicChickenFood().setUnlocalizedName( "seeds_melon" ) );
+		
+	    melonSlice = new SCItemMelonSlice( id_melonSlice - 256 );
+
 		
 	}
 
@@ -277,6 +317,15 @@ public class SCDefs {
 		
 		fenceRope = new SCBlockFenceRope(id_fenceRope);
 		Item.itemsList[fenceRope.blockID] = new ItemBlock(fenceRope.blockID - 256);	
+		
+		tempBlock = new SCBlockTemp(id_tempBlock);
+		Item.itemsList[tempBlock.blockID] = new ItemBlock(tempBlock.blockID - 256);	
+		
+		cuttingBoard = new SCBlockCuttingBoard(id_cuttingBoard);
+		Item.itemsList[cuttingBoard.blockID] = new ItemBlock(cuttingBoard.blockID - 256);	
+		
+		seedJar = new SCBlockSeedJar(id_seedJar);
+		Item.itemsList[seedJar.blockID] = new SCItemBlockSeedJar(seedJar.blockID - 256);	
 		
 	}
 
@@ -361,7 +410,9 @@ public class SCDefs {
 
 	public static void addTileEntityDefs() {
 		//Custom entities
-		//TileEntity.addMapping(SCTileEntityCuttingBoard.class, "SCCuttingBoard");
+		
+		TileEntity.addMapping(SCTileEntityCuttingBoard.class, "SCCuttingBoard");
+		TileEntity.addMapping(SCTileEntitySeedJar.class, "SCSeedJar");
 
 	}
 }

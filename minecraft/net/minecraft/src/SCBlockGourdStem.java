@@ -6,15 +6,17 @@ public class SCBlockGourdStem extends FCBlockCrops {
 	
 	protected int vineBlock;
 	protected int flowerBlock;
+	public Block convertedBlock;
 	
 	private static final double m_dWidth = 0.25D;
 	private static final double m_dHalfWidth = ( m_dWidth / 2D );
 	
-	protected SCBlockGourdStem(int iBlockID, int vineBlock , int flowerBlock) {
-		super( iBlockID);
+	protected SCBlockGourdStem(int iBlockID, int vineBlock , int flowerBlock, Block convertedBlock) {
+		super( iBlockID );
         
         this.vineBlock = vineBlock;
         this.flowerBlock = flowerBlock;
+        this.convertedBlock = convertedBlock;
         
     	setHardness( 0F );
     	
@@ -39,9 +41,16 @@ public class SCBlockGourdStem extends FCBlockCrops {
 	@Override
     public void updateTick( World world, int i, int j, int k, Random rand )
     {
+		
+		
         if ( UpdateIfBlockStays( world, i, j, k ) ) //checks if canBlockStay() and sets to air if not
-        {		    
-			if (!IsFullyGrown( world, i, j, k ) && checkTimeOfDay(world)) //daytime
+        {	
+        	if ( hasPortalInRange(world, i, j, k) && rand.nextFloat() <= 0.1F )
+    	    {
+    			this.becomePossessed(world, i, j, k, rand);
+    			
+    	    }        	
+        	else if (!IsFullyGrown( world, i, j, k ) && checkTimeOfDay(world)) //daytime
 			{
 				this.AttemptToGrow(world, i, j, k, rand); //growth chance is handles within this method
 				
@@ -53,6 +62,36 @@ public class SCBlockGourdStem extends FCBlockCrops {
         }
     }
 	
+    private void becomePossessed(World world, int i, int j, int k, Random rand)
+    {
+    	int meta = world.getBlockMetadata(i, j, k);
+    	System.out.println(meta);    	
+    	System.out.println(this.convertedBlock.blockID);
+		world.setBlockAndMetadata(i, j, k, this.convertedBlock.blockID, meta);
+		
+	}
+
+	protected boolean hasPortalInRange( World world, int i, int j, int k )
+    {
+    	int portalRange = 16;
+    	
+        for ( int iTempI = i - portalRange; iTempI <= i + portalRange; iTempI++ )
+        {
+            for ( int iTempJ = j - portalRange; iTempJ <= j + portalRange; iTempJ++ )
+            {
+                for ( int iTempK = k - portalRange; iTempK <= k + portalRange; iTempK++ )
+                {
+                    if ( world.getBlockId( iTempI, iTempJ, iTempK ) == Block.portal.blockID )
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
 	protected boolean checkTimeOfDay(World world) {
 		int iTimeOfDay = (int)( world.worldInfo.getWorldTime() % 24000L );
 		return (iTimeOfDay > 24000 || iTimeOfDay > 0 && iTimeOfDay < 14000 );

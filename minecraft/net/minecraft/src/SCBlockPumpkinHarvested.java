@@ -2,7 +2,7 @@ package net.minecraft.src;
 
 import java.util.List;
 
-public class SCBlockPumpkinHarvested extends SCBlockGourd {
+public class SCBlockPumpkinHarvested extends SCBlockGourdHarvested {
 
 	protected SCBlockPumpkinHarvested(int iBlockID) {
 		super(iBlockID);
@@ -34,7 +34,7 @@ public class SCBlockPumpkinHarvested extends SCBlockGourd {
 	}
 	
 	@Override
-	protected int ItemCountToDropOnExplode()
+	protected int ItemCountToDropOnExplode(World world, int i, int j, int k)
 	{
 		return 1;
 	}
@@ -57,148 +57,94 @@ public class SCBlockPumpkinHarvested extends SCBlockGourd {
 			
 		}
     }
-	
-	//TODO isn't working like i want it to
-    /**
-     * Updates the blocks bounds based on its current state. Args: world, x, y, z
-     */
-    public void setBlockBoundsBasedOnState(IBlockAccess blockAccess, int i, int j, int k)
-    {
-
-		int meta = blockAccess.getBlockMetadata(i, j, k);
 		
+	//----------- Render/Icon Functionality -----------//
+	
+	private Icon[] orangeIcon;
+	private Icon[] orangeIconTop;
+	
+	@Override
+  	public void registerIcons( IconRegister register )
+  	{
 		//Orange
-		if (meta == 0) {
-			this.InitBlockBounds(GetPumpkinBounds(3/16D, 6/16D)); // stage 0 = 6x6x6
-		}else if (meta == 1){
-			this.InitBlockBounds(GetPumpkinBounds(4/16D, 8/16D)); // stage 1 = 8x8x8
-		}else if (meta == 2){
-			this.InitBlockBounds(GetPumpkinBounds(6/16D, 12/16D)); // stage 2 = 12x12x12
-		}else if (meta == 3){
-			this.InitBlockBounds(GetPumpkinBounds(8/16D, 16/16D)); // stage 2 = 14x14x14
+  		orangeIcon = new Icon[4];
+		
+  		for ( int iTempIndex = 0; iTempIndex < orangeIcon.length; iTempIndex++ )
+		{
+  			orangeIcon[iTempIndex] = register.registerIcon( "SCBlockPumpkinSide_" + iTempIndex );
 		}
-		//Green
-		else if (meta == 4){
-			this.InitBlockBounds(GetPumpkinBounds(3/16D, 4/16D)); // stage 1 = 8x8x8
-			
-		}else if (meta == 5){
-			this.InitBlockBounds(GetPumpkinBounds(4/16D, 5/16D)); // stage 2 = 12x12x12
-			
-		}else if (meta == 6){
-			this.InitBlockBounds(GetPumpkinBounds(6/16D, 6/16D)); // stage 2 = 14x14x14
-			
-		}else if (meta == 7){
-			this.InitBlockBounds(GetPumpkinBounds(8/16D, 8/16D)); // stage 2 = 14x14x14
-			
-		}
-		//Yellow
-		else if (meta == 8){
-			this.InitBlockBounds(GetPumpkinBounds(2/16D, 4/16D)); // stage 1 = 8x8x8
-			
-		}else if (meta == 9){
-			this.InitBlockBounds(GetPumpkinBounds(3/16D, 6/16D)); // stage 2 = 12x12x12
-			
-		}else if (meta == 10){
-			this.InitBlockBounds(GetPumpkinBounds(4/16D, 8/16D)); // stage 2 = 14x14x14
-			
-		}else if (meta == 11){
-			this.InitBlockBounds(GetPumpkinBounds(6/16D, 12/16D)); // stage 2 = 14x14x14
-			
-		}
-		//White
-		else if (meta == 12){
-			this.InitBlockBounds(GetPumpkinBounds(2/16D, 3/16D)); // stage 1 = 8x8x8
-			
-		}else if (meta == 13){
-			this.InitBlockBounds(GetPumpkinBounds(3/16D, 4/16D)); // stage 2 = 12x12x12
-			
-		}else if (meta == 14){
-			this.InitBlockBounds(GetPumpkinBounds(4/16D, 5/16D)); // stage 2 = 14x14x14
-			
-		}else if (meta == 15){
-			this.InitBlockBounds(GetPumpkinBounds(5/16D, 6/16D)); // stage 2 = 14x14x14
-		}
-    }
 	
-	//----------- Client Side Functionality -----------//
-		
-	private AxisAlignedBB GetPumpkinBounds(double size, double height)
-	{
-    	AxisAlignedBB pumpkinBox = null;
-    	
-    	pumpkinBox = AxisAlignedBB.getAABBPool().getAABB( 
-    			8/16D - size, 0.0D, 8/16D - size, 
-    			8/16D + size, height, 8/16D + size);
-    	
-    		return pumpkinBox;
-		
+		orangeIconTop = new Icon[4];
+	
+		for ( int iTempIndex = 0; iTempIndex < orangeIconTop.length; iTempIndex++ )
+		{
+		orangeIconTop[iTempIndex] = register.registerIcon( "SCBlockPumpkinTop_" + iTempIndex );
+		}
 	}
 	
 	@Override
-	public boolean RenderBlock(RenderBlocks renderer, int i, int j, int k) {
+	public Icon getIcon( int side, int meta )
+	{
+		int growthLevel = this.GetGrowthLevel(meta);
+		int type = this.getType(meta);
 		
-		IBlockAccess blockAccess = renderer.blockAccess;
+		if (type == 0) 
+		{
+			if ( side == 1 || side == 0 )
+	    	{
+	    		return blockIcon = orangeIconTop[growthLevel];
+	    	}
+	    	
+			else return blockIcon = orangeIcon[growthLevel];
+		}
+		
+		return blockIcon;
+
+	}
+	
+	public AxisAlignedBB GetBlockBoundsFromPoolBasedOnState( IBlockAccess blockAccess, int i, int j, int k )
+	{
 		int meta = blockAccess.getBlockMetadata(i, j, k);
+		return this.GetBlockBoundsFromPoolBasedOnState(meta);
+	}
+	
+	
+	@Override
+	public boolean RenderBlock(RenderBlocks renderer, int i, int j, int k)
+	{
+		IBlockAccess blockAccess = renderer.blockAccess;
 		
-		//Orange
-		if (meta == 0) {
-			renderer.setRenderBounds(GetPumpkinBounds(3/16D, 6/16D)); // stage 0 = 6x6x6
-			renderer.renderStandardBlock( this, i, j, k );
-		}else if (meta == 1){
-			renderer.setRenderBounds(GetPumpkinBounds(4/16D, 8/16D)); // stage 1 = 8x8x8
-			renderer.renderStandardBlock( this, i, j, k );
-		}else if (meta == 2){
-			renderer.setRenderBounds(GetPumpkinBounds(6/16D, 12/16D)); // stage 2 = 12x12x12
-			renderer.renderStandardBlock( this, i, j, k );
-		}else if (meta == 3){
-			renderer.setRenderBounds(GetPumpkinBounds(8/16D, 16/16D)); // stage 2 = 14x14x14
-			renderer.renderStandardBlock( this, i, j, k );
-		}
-		//Green
-		else if (meta == 4){
-			renderer.setRenderBounds(GetPumpkinBounds(3/16D, 4/16D)); // stage 1 = 8x8x8
-			renderer.renderStandardBlock( this, i, j, k );
-		}else if (meta == 5){
-			renderer.setRenderBounds(GetPumpkinBounds(4/16D, 5/16D)); // stage 2 = 12x12x12
-			renderer.renderStandardBlock( this, i, j, k );
-		}else if (meta == 6){
-			renderer.setRenderBounds(GetPumpkinBounds(6/16D, 6/16D)); // stage 2 = 14x14x14
-			renderer.renderStandardBlock( this, i, j, k );
-		}else if (meta == 7){
-			renderer.setRenderBounds(GetPumpkinBounds(8/16D, 8/16D)); // stage 2 = 14x14x14
-			renderer.renderStandardBlock( this, i, j, k );
-		}
-		//Yellow
-		else if (meta == 8){
-			renderer.setRenderBounds(GetPumpkinBounds(2/16D, 4/16D)); // stage 1 = 8x8x8
-			renderer.renderStandardBlock( this, i, j, k );
-		}else if (meta == 9){
-			renderer.setRenderBounds(GetPumpkinBounds(3/16D, 6/16D)); // stage 2 = 12x12x12
-			renderer.renderStandardBlock( this, i, j, k );
-		}else if (meta == 10){
-			renderer.setRenderBounds(GetPumpkinBounds(4/16D, 8/16D)); // stage 2 = 14x14x14
-			renderer.renderStandardBlock( this, i, j, k );
-		}else if (meta == 11){
-			renderer.setRenderBounds(GetPumpkinBounds(6/16D, 12/16D)); // stage 2 = 14x14x14
-			renderer.renderStandardBlock( this, i, j, k );
-		}
-		//White
-		else if (meta == 12){
-			renderer.setRenderBounds(GetPumpkinBounds(2/16D, 3/16D)); // stage 1 = 8x8x8
-			renderer.renderStandardBlock( this, i, j, k );
-		}else if (meta == 13){
-			renderer.setRenderBounds(GetPumpkinBounds(3/16D, 4/16D)); // stage 2 = 12x12x12
-			renderer.renderStandardBlock( this, i, j, k );
-		}else if (meta == 14){
-			renderer.setRenderBounds(GetPumpkinBounds(4/16D, 5/16D)); // stage 2 = 14x14x14
-			renderer.renderStandardBlock( this, i, j, k );
-		}else if (meta == 15){
-			renderer.setRenderBounds(GetPumpkinBounds(5/16D, 6/16D)); // stage 2 = 14x14x14
-			renderer.renderStandardBlock( this, i, j, k );
-		}
+		renderer.setRenderBounds( this.GetBlockBoundsFromPoolBasedOnState(blockAccess, i, j, k) );
+		renderer.renderStandardBlock( this, i, j, k );
 
 		return true;
 	}
+
+	@Override
+	public void RenderFallingBlock(RenderBlocks renderer, int i, int j, int k, int meta)
+	{
+		IBlockAccess blockAccess = renderer.blockAccess;
+		
+		renderer.setRenderBounds( this.GetBlockBoundsFromPoolBasedOnState(meta) );		
+		renderer.RenderStandardFallingBlock( this, i, j, k, meta);
+	}
+	
+	@Override
+	public void RenderBlockAsItem(RenderBlocks renderer, int iItemDamage, float fBrightness)
+	{
+		IBlockAccess blockAccess = renderer.blockAccess;
+		
+		renderer.setRenderBounds( this.GetBlockBoundsFromPoolBasedOnState(iItemDamage) );
+		FCClientUtilsRender.RenderInvBlockWithMetadata( renderer, this, -0.5F, -0.5F, -0.5F, iItemDamage);
+	}
+	
+	
+	@Override
+	protected void setBlockOnFinishedFalling(EntityFallingSand entity, int i, int j, int k) {
+		//empty since we don't want to change it
+	}
+
+	
 	
 
 }
