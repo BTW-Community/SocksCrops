@@ -1,32 +1,30 @@
-package net.minecraft.src;
-
 /**
- * @author Sockthing (@socklessthing)
- *
+ * @author Sockthing (sockthinggaming@gmail.com)
  */
 
+package net.minecraft.src;
+
 public class SocksCropsAddon extends FCAddOn {
+
     public static SocksCropsAddon instance = new SocksCropsAddon();
     
-    public static final String ADDON_NAME = "Sock's Crops";
-    public static final String ADDON_VERSION = "0.1.dev";
-    
-    private SocksCropsAddon() {
-        super(ADDON_NAME, ADDON_VERSION, "SC");
+    private static final String ADDON_NAME = "Sock's Crops";
+    private static final String ADDON_VERSION = "1.0.dev";
+    private static final String LANGUAGE_PREFIX = "SC";
+	
+    private SocksCropsAddon()
+    {
+        super(ADDON_NAME, ADDON_VERSION, LANGUAGE_PREFIX);
     }
     
     @Override
-    public void Initialize() {
+    public void Initialize()
+    {
     	FCAddOnHandler.LogMessage(this.getName() + " Version " + this.getVersionString() + " Initializing...");
 		
     	SCDefs.addDefinitions();
     	SCRecipes.addRecipes();
 		
     	FCAddOnHandler.LogMessage(this.getName() + " Initialized");
-    }
-    
-    @Override
-    public String GetLanguageFilePrefix() {
-    	return "SC";
     }
 }

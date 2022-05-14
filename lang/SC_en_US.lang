@@ -1,26 +1,37 @@
 #Blocks
+tile.SCBlockGrassNutrition.grass0.name=Grass Block
+tile.SCBlockGrassNutrition.grass0_sparse.name=Grass Block
+tile.SCBlockGrassNutrition.grass1.name=Grass Block
+tile.SCBlockGrassNutrition.grass1_sparse.name=Grass Block
+tile.SCBlockGrassNutrition.grass2.name=Grass Block
+tile.SCBlockGrassNutrition.grass2_sparse.name=Grass Block
+tile.SCBlockGrassNutrition.grass3.name=Grass Block
+tile.SCBlockGrassNutrition.grass3_sparse.name=Grass Block
+
+tile.dirt.dirt0.name=Dirt
+tile.dirt.dirt1.name=Dirt
+tile.dirt.dirt2.name=Dirt
+tile.dirt.dirt3.name=Dirt
+
+tile.fcBlockDirtLoose.looseDirt0.name=Loose Dirt
+tile.fcBlockDirtLoose.looseDirt1.name=Loose Dirt
+tile.fcBlockDirtLoose.looseDirt2.name=Loose Dirt
+tile.fcBlockDirtLoose.looseDirt3.name=Loose Dirt
 
 tile.SCBlockFarmlandNutrition.name=Farmland
 tile.SCBlockFarmlandFertilized.name=Farmland Fertilized
 tile.SCBlockFarmlandDung.name=Farmland Dunged
-tile.SCBlockDirtLooseNutrition.name=Loose Dirt
-tile.SCBlockDirtNutrition.name=Dirt
-tile.SCBlockGrassNutrition.grass=Grass
 
 tile.SCBlockCompost.name=Compost
-tile.SCBlockDamagedLog.name=Damaged Log
-tile.SCBlockMossyLog.name=Mossy Log
+tile.SCBlockDamagedLog.tree_side.name=Damaged Oak Log
+tile.SCBlockDamagedLog.tree_spruce.name=Damaged Spruce Log
+tile.SCBlockDamagedLog.tree_birch.name=Damaged Birch Log
+tile.SCBlockDamagedLog.tree_jungle.name=Damaged Jungle Log
 
-tile.SCBlockPumpkinStem.name=Pumpkin Stem
-tile.SCBlockPumpkinVine.name=Pumpkin Vine
-tile.SCBlockPumpkinVineFlowering.name=Flowering Pumpkin Vine
-tile.SCBlockPumpkinFresh.name=Fresh Pumpkin
+tile.SCBlockMossyLog.tree_side.name=Mossy Oak Log
+tile.SCBlockMossyLog.tree_spruce.name=Mossy Spruce Log
+tile.SCBlockMossyLog.tree_birch.name=Mossy Birch Log
+tile.SCBlockMossyLog.tree_jungle.name=Mossy Jungle Log
 
-tile.SCBlockBambooShoot.name=Bamboo Shoot
-tile.SCBlockBambooRoot.name=Bamboo Root
-tile.SCBlockBambooStalk.name=Bamboo Stalk
-
-#Items
-
-item.SCItemPumpkinSeeds.name=Pumpkin Seeds
-item.SCItemBamboo.name=Bamboo
+tile.SCBlockShortPlant.shortGrass.name=Short Grass
+tile.SCBlockShortPlant.tallGrass.name=Medium Grass

@@ -4,16 +4,17 @@ import java.util.List;
 import java.util.Random;
 
 public class SCBlockDirtLooseNutrition extends SCBlockDirtLooseBase {
+	
+	public static final String[] nutritionLevelNames  = new String[] {"looseDirt0", "looseDirt1", "looseDirt2", "looseDirt3"};
 
-
-	public SCBlockDirtLooseNutrition(int iBlockID) {
-		super(iBlockID);
-		this.setUnlocalizedName("SCBlockDirtLoose");
+	public SCBlockDirtLooseNutrition(int blockID) {
+		super(blockID);
+		this.setUnlocalizedName("SCBlockDirtLooseNutrition");
 		this.setCreativeTab(CreativeTabs.tabBlock);
 	}
 	
 	@Override
-	public int idDropped( int iMetadata, Random rand, int iFortuneModifier )
+	public int idDropped( int meta, Random rand, int fortuneModifier )
 	{
 		return this.blockID;
 	
@@ -29,16 +30,16 @@ public class SCBlockDirtLooseNutrition extends SCBlockDirtLooseBase {
     /**
      * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
      */
-    public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
+    public void getSubBlocks(int id, CreativeTabs creativeTabs, List list)
     {
-        par3List.add(new ItemStack(par1, 1, 0));
-        par3List.add(new ItemStack(par1, 1, 1));
-        par3List.add(new ItemStack(par1, 1, 2));
-        par3List.add(new ItemStack(par1, 1, 3));
+        list.add(new ItemStack(id, 1, 0));
+        list.add(new ItemStack(id, 1, 1));
+        list.add(new ItemStack(id, 1, 2));
+        list.add(new ItemStack(id, 1, 3));
     }
 
     @Override
-    public boolean ConvertBlock( ItemStack stack, World world, int i, int j, int k, int iFromSide )
+    public boolean ConvertBlock( ItemStack stack, World world, int i, int j, int k, int fromSide )
     {
     	int nutrientsLevel = getNutritionLevel(world, i, j, k);
     	
@@ -68,16 +69,16 @@ public class SCBlockDirtLooseNutrition extends SCBlockDirtLooseBase {
     }
     
 	@Override
-	public boolean DropComponentItemsOnBadBreak( World world, int i, int j, int k, int iMetadata, float fChanceOfDrop )
+	public boolean DropComponentItemsOnBadBreak( World world, int i, int j, int k, int meta, float chanceOfDrop )
 	{
-		if (iMetadata == 0) //nutri 3
+		if (meta == 0) //nutri 3
 		{
-			DropItemsIndividualy( world, i, j, k, FCBetterThanWolves.fcItemPileDirt.itemID, 6, 0, fChanceOfDrop );
+			DropItemsIndividualy( world, i, j, k, FCBetterThanWolves.fcItemPileDirt.itemID, 6, 0, chanceOfDrop );
 		}
 		else
 		{
-			DropItemsIndividualy( world, i, j, k, FCBetterThanWolves.fcItemPileSand.itemID, 6, 0, fChanceOfDrop );
-			DropItemsIndividualy( world, i, j, k, FCBetterThanWolves.fcItemPileGravel.itemID, 6, 0, fChanceOfDrop );
+			DropItemsIndividualy( world, i, j, k, FCBetterThanWolves.fcItemPileSand.itemID, 6, 0, chanceOfDrop );
+			DropItemsIndividualy( world, i, j, k, FCBetterThanWolves.fcItemPileGravel.itemID, 6, 0, chanceOfDrop );
 		}		
 		
 		return true;
@@ -90,17 +91,17 @@ public class SCBlockDirtLooseNutrition extends SCBlockDirtLooseBase {
     	
     	if (nutrientsLevel == 3)
     	{
-    		world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.grassNutrition.blockID , 0);
+    		world.setBlockAndMetadataWithNotify( i, j, k, Block.grass.blockID , 1);
     	}
     	else if (nutrientsLevel == 2)
     	{
-    		world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.grassNutrition.blockID , 1);
+    		world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.grassNutrition.blockID , 3);
     	}
     	else if (nutrientsLevel == 1)
     	{
-    		world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.grassNutrition.blockID , 2);
+    		world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.grassNutrition.blockID , 5);
     	}
-    	else world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.grassNutrition.blockID , 3);
+    	else world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.grassNutrition.blockID , 7);
     	
     	return true;
     }

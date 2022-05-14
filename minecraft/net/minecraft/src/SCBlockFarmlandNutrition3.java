@@ -20,9 +20,13 @@ public class SCBlockFarmlandNutrition3 extends SCBlockFarmlandBase {
 		return 1.0F;
 	}
 	
+	public float getWeedsGrowthChance() {
+		return 0.05F; //default was 1 in 20 ie 0.05F
+	}
+	
 	@Override
 	protected void setLooseDirt(World world, int i, int j, int k) {
-		world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.dirtLooseNutrition.blockID , 0);
+		world.setBlockAndMetadataWithNotify( i, j, k, FCBetterThanWolves.fcBlockDirtLoose.blockID , 0);
 	}
 	
 	@Override
@@ -33,36 +37,13 @@ public class SCBlockFarmlandNutrition3 extends SCBlockFarmlandBase {
 		return true;
 	}
 	
-	
-	@Override
-	public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer par5EntityPlayer,
-			int par6, float par7, float par8, float par9) {
-		
-		EntityPlayer entityItem = par5EntityPlayer;
-		ItemStack stack = entityItem.getCurrentEquippedItem();
-		
-		// dung dat shit
-		if ( stack != null && stack.itemID == FCBetterThanWolves.fcItemDung.itemID
-				&& !IsFertilized(world, i, j, k)
-				&& !IsDunged(world, i, j, k)) 
-		{
-			stack.stackSize--;
-			
-			SetDung( world, i, j, k );
-        	
-            world.playSoundEffect( i + 0.5D, j + 0.5D, k + 0.5D, "random.pop", 0.25F, 
-        		( ( world.rand.nextFloat() - world.rand.nextFloat() ) * 0.7F + 1F ) * 2F );
-            return true;
-		}
-		else return false;
-	}
+
 	
 	protected void SetDung( World world, int i, int j, int k )
-	    {
+	{
 	    	int iTargetBlockMetadata = world.getBlockMetadata( i, j, k );
 	    	
-	    	world.setBlockAndMetadataWithNotify( i, j, k, 
-	    		SCDefs.farmlandNutrition3Dung.blockID, iTargetBlockMetadata );
+	    	world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.farmlandNutrition3Dung.blockID, iTargetBlockMetadata );
 	}
 
 	@Override
@@ -73,7 +54,7 @@ public class SCBlockFarmlandNutrition3 extends SCBlockFarmlandBase {
         if ( world.getBlockMaterial( i, j + 1, k ).isSolid() || 
         	CanFallIntoBlockAtPos( world, i, j - 1, k ) )
         {
-            world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.dirtLooseNutrition.blockID, 0 );
+        	setLooseDirt(world, i, j, k);
         }
         else if ( GetWeedsGrowthLevel( world, i, j, k ) > 0 && 
         	!CanWeedsShareSpaceWithBlockAt( world, i, j + 1, k ) )
@@ -120,7 +101,7 @@ public class SCBlockFarmlandNutrition3 extends SCBlockFarmlandBase {
 	{
 		if ( !DoesBlockAbovePreventSoilReversion( world, i, j, k ) )
 		{
-			world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.dirtLooseNutrition.blockID, 0);
+			setLooseDirt(world, i, j, k);
 		}
 	}
 
@@ -130,7 +111,7 @@ public class SCBlockFarmlandNutrition3 extends SCBlockFarmlandBase {
 	{
         if ( animal.GetDisruptsEarthOnGraze() )
         {
-        	world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.dirtLooseNutrition.blockID, 0);
+        	setLooseDirt(world, i, j, k);
         	
         	NotifyNeighborsBlockDisrupted( world, i, j, k );
         }
@@ -144,7 +125,7 @@ public class SCBlockFarmlandNutrition3 extends SCBlockFarmlandBase {
 		
         if ( !world.isRemote && world.rand.nextFloat() < fFallDist - 0.75F )
         {
-        	world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.dirtLooseNutrition.blockID, 0);
+        	setLooseDirt(world, i, j, k);
         }
     }
 

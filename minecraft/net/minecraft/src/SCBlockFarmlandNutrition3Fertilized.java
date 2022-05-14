@@ -11,6 +11,11 @@ public class SCBlockFarmlandNutrition3Fertilized extends FCBlockFarmlandFertiliz
 		setUnlocalizedName("SCBlockFarmlandFertilized");
 	}
 	
+	private void setLooseDirt(World world, int i, int j, int k) {
+		world.setBlockAndMetadataWithNotify( i, j, k, FCBetterThanWolves.fcBlockDirtLoose.blockID, 0 );
+
+	}
+	
 	@Override
     public void onNeighborBlockChange( World world, int i, int j, int k, int iNeighborBlockID )
     {
@@ -19,7 +24,7 @@ public class SCBlockFarmlandNutrition3Fertilized extends FCBlockFarmlandFertiliz
         if ( world.getBlockMaterial( i, j + 1, k ).isSolid() || 
         	CanFallIntoBlockAtPos( world, i, j - 1, k ) )
         {
-            world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.dirtLooseNutrition.blockID, 0 );
+            setLooseDirt(world, i, j, k);
         }
         else if ( GetWeedsGrowthLevel( world, i, j, k ) > 0 && 
         	!CanWeedsShareSpaceWithBlockAt( world, i, j + 1, k ) )
@@ -34,7 +39,7 @@ public class SCBlockFarmlandNutrition3Fertilized extends FCBlockFarmlandFertiliz
 	{
 		if ( !DoesBlockAbovePreventSoilReversion( world, i, j, k ) )
 		{
-			world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.dirtLooseNutrition.blockID, 0);
+			setLooseDirt(world, i, j, k);
 		}
 	}
 
@@ -44,7 +49,7 @@ public class SCBlockFarmlandNutrition3Fertilized extends FCBlockFarmlandFertiliz
 	{
         if ( animal.GetDisruptsEarthOnGraze() )
         {
-        	world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.dirtLooseNutrition.blockID, 0);
+        	setLooseDirt(world, i, j, k);
         	
         	NotifyNeighborsBlockDisrupted( world, i, j, k );
         }
@@ -58,7 +63,7 @@ public class SCBlockFarmlandNutrition3Fertilized extends FCBlockFarmlandFertiliz
 		
         if ( !world.isRemote && world.rand.nextFloat() < fFallDist - 0.75F )
         {
-        	world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.dirtLooseNutrition.blockID, 0);
+        	setLooseDirt(world, i, j, k);
         }
     }
 

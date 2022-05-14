@@ -1,371 +1,293 @@
 package net.minecraft.src;
 
+import com.prupe.mcpatcher.mal.block.RenderBlocksUtils;
+
 public class SCDefs {
 	
 	// --- BLOCK ID's --- //
-	// SC FROM 2500 - 2999
+	// SocksCrops: 2600 - 2999
 	
-	//Fence & Rope
+	//Tile Entities
+//	private static int
+//		id_cuttingBoard = 2600,
+//		id_storageJar = 2601,
+//		id_fishTrap = 2602,
+//		id_composter = 2603;
+//		id_cookingPot = 2604,
+//		id_juicer = 2605,
+//		id_barrel = 2506,
+//		id_mixer = 2607;
+	
+	//Logs
 	private static int
-		id_fence = 2500,
-		id_fenceRope = 2501,
-		id_cuttingBoard = 2502,
-		id_seedJar = 2503,
-		id_tempBlock = 2499;
-	
-	//Farmland
-	private static int	
-		id_farmlandNutrition3 = 2510, //ie normal farmland
-		id_farmlandNutrition3Fertilized = 2514, //normal farmland fertilized
-		id_farmlandNutrition3Dung = 2518,
-		
-		id_farmlandNutrition2 = 2511, 
-		id_farmlandNutrition2Fertilized = 2515,
-		id_farmlandNutrition2Dung = 2519,
-	
-		id_farmlandNutrition1 = 2512, 
-		id_farmlandNutrition1Fertilized = 2516,
-		id_farmlandNutrition1Dung = 2520,
-		
-		id_farmlandNutrition0 = 2513, 
-		id_farmlandNutrition0Fertilized = 2517,
-		id_farmlandNutrition0Dung = 2521;
-		
-	//Grass, Dirt and Loose Dirt
-	private static int id_grassNutrition = 2522;
-	private static int id_dirtNutrition = 2523;
-	private static int id_dirtLooseNutrition = 2524;
-	
-	//Decomposing Logs & Compost
-	public static int	
-		id_damagedLog = 2530,
-		id_mossyLog = 2531,
-		id_compostBlock = 2532;
-	
-	//Pumpkins
-	public static int	
-		id_pumpkinStem = 2540,
-		id_pumpkinVine = 2541,
-		id_pumpkinVineDead = 2542,		
-		id_pumpkinVineFlowering = 2543,
-		id_pumpkinOrange = 2545,
-		id_pumpkinGreenFresh = 2546,
-		id_pumpkinYellowFresh = 2547,
-		id_pumpkinWhiteFresh = 2548,
-		id_pumpkinHarvested = 2549,
-		id_pumpkinCarved = 2550,
-		id_pumpkinJack = 2551,
-		id_pumpkinPossessed = 2552,
-		id_pumpkinStemDead = 2553;
-	
-	//Melons
-	private static int	
-		id_melonStem = 2560,
-		id_melonVine = 2561,
-		id_melonVineDead = 2562,		
-		id_melonVineFlowering = 2563,	
-		id_melonWater = 2564,
-		id_melonCanary = 2565,
-		id_melonHoneydew = 2466,
-		id_melonCantaloupe = 2467;
-
-	//Bamboo
-	private static int	
-		id_bambooShoot = 2570,
-		id_bambooRoot = 2571,
-		id_bambooStalk = 2572,
-		id_bambooRootLeaves = 2573;
-	
-	//Grapes
-	private static int
-		id_grapeCrop = 2680,
-		id_grapeStem = 2681,
-		id_grapeLeaves = 2682,
-		id_grapeDropLeaves = 2683,
-		id_grapeVine = 2684,
-		id_grapeBlock = 2685;
-	
-	
-	// SC ENDS AT 2999
-
-	// --- ITEM ID's --- //
-	// SC STARTS AT 31000
-	
-	//Pumpkin & Melon
-	private static int		
-		id_pumpkinSeeds = 31010,
-		id_melonSeeds = 31011,
-		id_melonSlice = 31012;
-	
-	//Bamboo
-	private static int
-		id_bambooItem = 31020;
-
-	// ENDS 32000
-	
-	// --- Block & Item --- //
+		id_damagedLog = 2620,
+		id_mossyLog = 2621;
 	
 	//Dirts
-	public static Block dirtLooseNutrition;
-	public static Block grassNutrition;
-	public static Block dirtNutrition;
+	private static int
+		id_grassNutrition = 2622,
+		id_dirtNutrition = 2623,
+		id_dirtLooseNutrition = 2624;
 	
 	//Farmland
-	public static Block farmlandNutrition3, farmlandNutrition3Fertilized, farmlandNutrition3Dung;
-	public static Block farmlandNutrition2, farmlandNutrition2Fertilized, farmlandNutrition2Dung;
-	public static Block farmlandNutrition1, farmlandNutrition1Fertilized, farmlandNutrition1Dung;
-	public static Block farmlandNutrition0, farmlandNutrition0Fertilized, farmlandNutrition0Dung;
+	private static int
+		id_farmlandNutrition0 = 2625,
+		id_farmlandNutrition1 = 2626,
+		id_farmlandNutrition2 = 2627,
+		id_farmlandNutrition3 = 2628,
+		
+		id_farmlandNutrition0Fertilized = 2629,
+		id_farmlandNutrition1Fertilized = 2630,
+		id_farmlandNutrition2Fertilized = 2631,
+		id_farmlandNutrition3Fertilized = 2632,
+		
+		id_farmlandNutrition0Dung = 2633,
+		id_farmlandNutrition1Dung = 2634,
+		id_farmlandNutrition2Dung = 2635,
+		id_farmlandNutrition3Dung = 2636,
+		
+		id_farmlandNutrition0Straw = 2637,
+		id_farmlandNutrition1Straw = 2638,
+		id_farmlandNutrition2Straw = 2639,
+		id_farmlandNutrition3Straw = 2640;
 	
-	//Decomposing
-	public static Block damagedLog;
-	public static Block mossyLog;
-	public static Block compostBlock;
-	
-	//Fence & Rope
-	public static Block fence;
-	public static Block fenceRope;
-	public static Block tempBlock;
-	public static Block cuttingBoard;
-	public static Block seedJar;
-	
+//		id_farmlandNutrition0Straw = 2641,
+//		id_farmlandNutrition1Straw = 2642,
+//		id_farmlandNutrition2Straw = 2643,
+//		id_farmlandNutrition3Straw = 2644;
 
-	//Pumpkin & Melon
-	public static Block pumpkinOrange,
-						pumpkinGreenFresh, pumpkinYellowFresh, pumpkinWhiteFresh,
-						pumpkinPossessed,
-						pumpkinHarvested,
-						pumpkinCarved,
-						pumpkinJack,
-						pumpkinStem,
-						pumpkinVineDead, pumpkinVine, 
-						pumpkinVineFlowering, pumpkinStemDead;
+	//Decorative plants
+	private static int
+		id_compostBlock = 2645,
+		id_shortPlant = 2646,
+		id_tallPlant = 2647;
+//		id_rocks = 2648,
+//		id_rocksSandstone = 2649,
+//		id_mossCarpet = 2650,
+//		id_clover = 2651,
+//		id_lilyRose = 2652;
 	
-	public static Block melonWater, melonCanary, melonHoneydew, melonCantaloupe,
-						melonHarvested,
-						melonStem,
-						melonVine, melonVineSleeping,
-						melonVineFlowering, melonVineFloweringSleeping;
-	
-	public static Item melonSlice;
-	
-	public static Item pumpkinSeeds;
-	public static Item melonSeeds;
-	
-	//Gourd
-	public static Block gourdStem,
-						gourdVine,
-						gourdVineFlowering;
+	//Pumpkins
+//	private static int
+//		id_pumpkinStem = 2660,
+//		id_pumpkinVine = 2661,
+//		id_gourdVineDead = 2662,		
+//		id_pumpkinVineFlowering = 2663,
+//		id_pumpkinOrange = 2664,
+//		id_pumpkinGreen = 2665,
+//		id_pumpkinYellow = 2666,
+//		id_pumpkinWhite = 2667,
+//		id_pumpkinHarvested = 2668,
+//		id_pumpkinCarved = 2669,
+//		id_pumpkinJack = 2670;
+		
+	//Melons
+//	private static int	
+//		id_melonStem = 2671,
+//		id_melonVine = 2672,
+//		id_melonVineFlowering = 2673,	
+//		id_melonWater = 2674,
+//		id_melonCanary = 2675,
+//		id_melonHoneydew = 2676,
+//		id_melonCantaloupe = 2677,
+//		id_melonHarvested = 2678,
+//		id_melonCanaryHarvested = 2679;
+
 	
 	//Bamboo
-	public static Block bambooShoot, bambooRoot, bambooStalk;
-	public static Item bambooItem;
+//	private static int	
+//		id_bambooShoot = 2680,
+//		id_bambooRoot = 2681,
+//		id_bambooStalk = 2682;
 	
-	//Grape
-	public static Block grapeCrop;
-	public static Block grapeStem;
-	public static Block grapeLeaves;
-	public static Block grapeDropLeaves;
-	public static Block grapeVine;
-	public static Block grapeBlock;
+	//Bushes
+//	private static int
+//		id_sweetberryBush = 2683,
+//		id_blueberryBush = 2684;
 	
-	public static Item grape;
-	public static Item grapeSeeds;
+	private static int maxID = 2999;
+	
+	// --- ITEM ID's --- //
+	// 31000 - 31299
+	
+	//Tools
+//	private static int
+//		id_knifeStone = 31000,
+//		id_knifeIron = 31001;
+	
+	//Pumpkin & Melon
+//	private static int
+//		id_melonCanarySlice = 31010,
+//		id_melonHoneydewSlice = 31011,
+//		id_melonCantaloupeSlice = 31012,
+//		id_pumpkinSliceRaw = 31013,
+//		id_pumpkinSliceRoasted = 31014,
+//		id_pumpkinSliceBoiled = 31015,
+//		id_pumpkinSoup = 31016;
+	
+	//Bamboo
+//	private static int
+//		id_bambooItem = 31020;
+	
+	//Berry Stuff
+//	private static int
+//		id_sweetberry = 31030,
+//		id_sweetberrySapling = 31031,
+//		
+//		id_blueberry = 31032,
+//		id_blueberrySapling = 31033,
+//	
+//		id_sweetberryPieRaw = 31034,
+//		id_sweetberryPieCooked = 31035,
+//		id_sweetberryPieSlice = 31036,
+//		
+//		id_blueberryPieRaw = 31037,
+//		id_blueberryPieCooked = 31038,
+//		id_blueberryPieSlice = 31039;
+	
+	// Other Pies
+//	private static int
+//		id_pumpkinPieSlice = 31040,
+//		id_cakeSlice = 31041;
+	
+//	private static int
+//		id_appleSlice = 31042,
+//		id_applePieRaw = 31043,
+//		id_applePieCooked = 31044,
+//		id_applePieSlice = 31045;
+	
+	// Misc Fruit
+//	private static int
+//		id_fruitSaladBerries = 31050,
+//		id_fruitSaladMelon = 31051;
 	
 
-	public static void addDefinitions() {
-		
-		addTileEntityDefs();
-		
-		addFenceAndRopeDefs();
-		
-		addDirtDefs();
+	
+	// --- Blocks ---
+	
+//	public static Block cuttingBoard;
+//	public static Block storageJar;
+//	public static Block fishTrap;
+//	public static Block composter;
+//	public static Block cookingPot;
+//	public static Block juicer;
+//	public static Block barrel;
+//	public static Block mixer;
+	
+	public static Block grassNutrition;
+	public static Block dirtNutrition;
+	public static Block dirtLooseNutrition;
+	
+	public static Block farmlandNutrition0, farmlandNutrition0Fertilized, farmlandNutrition0Dung; // farmlandNutrition0Straw;
+	public static Block farmlandNutrition1, farmlandNutrition1Fertilized, farmlandNutrition1Dung; // farmlandNutrition1Straw;
+	public static Block farmlandNutrition2, farmlandNutrition2Fertilized, farmlandNutrition2Dung; // farmlandNutrition2Straw;
+	public static Block farmlandNutrition3, farmlandNutrition3Fertilized, farmlandNutrition3Dung; // farmlandNutrition3Straw;
+	
+	public static Block damagedLog;
+	public static Block mossyLog;
+	
+	public static Block compostBlock;
+	public static Block shortPlant;
+	public static Block tallPlant;
+//	public static Block rocks;
+//	public static Block rocksSandstone;
+//	public static Block mossCarpet;
+//	public static Block clover;
+//	public static Block lilyRose;
+//	
+//	public static Block pumpkinStem;
+//	public static Block pumpkinVine, gourdVineDead;
+//	public static Block pumpkinVineFlowering;
+//	public static Block pumpkinOrange, pumpkinGreen, pumpkinYellow, pumpkinWhite;
+//	public static Block pumpkinHarvested;
+//	public static Block pumpkinCarved;
+//	public static Block pumpkinJack;
+//	public static Block pumpkinPossessed;						
+//	public static Block gourdStemDead;
+//	
+//	public static Block melonStem;
+//	public static Block melonVine;
+//	public static Block melonVineFlowering;
+//	public static Block melonWater, melonCanary, melonHoneydew, melonCantaloupe;
+//	public static Block melonHarvested;
+//	public static Block melonCanaryHarvested;
+//	
+//	public static Block bambooShoot, bambooRoot, bambooStalk;
+//	
+//	public static Block sweetberryBush;
+//	public static Block blueberryBush;
+	
+	
+	// --- Items ---
+	
+//	// Tools
+//	public static Item knifeStone, knifeIron;
+//	
+//	// Gourds
+//	public static Item melonCanarySlice, melonHoneydewSlice, melonCantaloupeSlice;
+//	public static Item pumpkinSliceRaw, pumpkinSliceRoasted, pumpkinSliceBoiled;
+//	
+//	public static Item pumpkinSoup;
+//	
+//	// Bamboo	
+//	public static Item bambooItem;
+//	
+//	// Berries
+//	public static Item sweetberry;
+//	public static Item sweetberrySapling;
+//	
+//	public static Item blueberry;
+//	public static Item blueberrySapling;
+//	
+//	public static Item sweetberryPieRaw;
+//	public static Item sweetberryPieCooked;
+//	public static Item sweetberryPieSlice;
+//	
+//	public static Item blueberryPieRaw;
+//	public static Item blueberryPieCooked;
+//	public static Item blueberryPieSlice;
+//	
+//	// Other Pies
+//	public static Item pumpkinPieSlice;
+//	public static Item cakeSlice;
+//	
+//	// Misc Food
+//	public static Item appleSlice;
+//	public static Item fruitBowlBerries;
+
+	
+	public static void addDefinitions()
+	{
 		addDirtReplacements();
+		addGrassDef();
 		addFarmlandDefs();
 		
-		addDecomposingDefs();
+		addDecompostingDefs();
+		addPlantDefs();		
+	}
 
-		addPumpkinDefs();
-		addBambooDefs();
-		addGrapeDefs();
+	private static void addDirtReplacements()
+	{		
+		//New Loose Dirt
+		FCBetterThanWolves.fcBlockDirtLoose = Block.replaceBlock(FCBetterThanWolves.fcBlockDirtLoose.blockID, SCBlockDirtLooseNutrition.class, SocksCropsAddon.instance);
+		Item.itemsList[FCBetterThanWolves.fcBlockDirtLoose.blockID] = new ItemMultiTextureTile(FCBetterThanWolves.fcBlockDirtLoose.blockID - 256, FCBetterThanWolves.fcBlockDirtLoose, SCBlockDirtLooseNutrition.nutritionLevelNames);
 		
+		//New Dirt		
+		Block.dirt = Block.replaceBlock(Block.dirt.blockID, SCBlockDirtNutrition.class, SocksCropsAddon.instance);
+		Item.itemsList[Block.dirt.blockID] = new ItemMultiTextureTile(Block.dirt.blockID - 256, Block.dirt, SCBlockDirtNutrition.nutritionLevelNames);
+		
+		//Replacing FC's weeds with my own to make them grow on my farmland
+		FCBetterThanWolves.fcBlockWeeds = (FCBlockWeeds) Block.replaceBlock(FCBetterThanWolves.fcBlockWeeds.blockID, SCBlockWeeds.class, SocksCropsAddon.instance);
+	}
+
+	private static void addGrassDef()
+	{
+		grassNutrition = new SCBlockGrassNutrition(id_grassNutrition);
+		Item.itemsList[grassNutrition.blockID] = new ItemMultiTextureTile(grassNutrition.blockID - 256, grassNutrition, SCBlockGrassNutrition.nutritionLevelNames);
 	}
 	
-
-
-	private static void addGrapeDefs() {
-		grapeCrop = new SCBlockGrapeCrop(id_grapeCrop);
-		Item.itemsList[grapeCrop.blockID] = new ItemBlock(grapeCrop.blockID - 256);	
-		
-		grapeStem = new SCBlockGrapeStem(id_grapeStem);
-		Item.itemsList[grapeStem.blockID] = new ItemBlock(grapeStem.blockID - 256);
-		
-		grapeLeaves = new SCBlockGrapeLeaves(id_grapeLeaves);
-		Item.itemsList[grapeLeaves.blockID] = new ItemBlock(grapeLeaves.blockID - 256);
-		
-		grapeDropLeaves = new SCBlockGrapeDropLeaves(id_grapeDropLeaves);
-		Item.itemsList[grapeDropLeaves.blockID] = new ItemBlock(grapeDropLeaves.blockID - 256);
-		
-		grapeVine = new SCBlockGrapeVine(id_grapeVine);
-		Item.itemsList[grapeVine.blockID] = new ItemBlock(grapeVine.blockID - 256);
-		
-		grapeBlock = new SCBlockGrape(id_grapeBlock);
-		Item.itemsList[grapeBlock.blockID] = new ItemBlock(grapeVine.blockID - 256);
-		
-	}
-
-	private static void addBambooDefs() {
-		//BAMBOO
-		bambooShoot = new SCBlockBambooShoot(id_bambooShoot);
-		Item.itemsList[bambooShoot.blockID] = new ItemBlock(bambooShoot.blockID - 256);
-		
-		bambooRoot = new SCBlockBambooRoot(id_bambooRoot);
-		Item.itemsList[bambooRoot.blockID] = new ItemBlock(bambooRoot.blockID - 256);
-		
-		bambooStalk = new SCBlockBambooStalk(id_bambooStalk);
-		Item.itemsList[bambooStalk.blockID] = new ItemBlock(bambooStalk.blockID - 256);
-		
-		bambooItem = new SCItemBamboo(id_bambooItem - 256);
-		
-	}
-
-	private static void addPumpkinDefs() {
-		
-		//Pumpkin
-//		pumpkinFresh = new SCBlockPumpkinFresh(id_pumpkinFresh, id_pumpkinStem, id_pumpkinVine, id_pumpkinVineFlowering);
-//		Item.itemsList[pumpkinFresh.blockID] = new ItemBlock(pumpkinFresh.blockID - 256);
-//		
-//		pumpkinGreenFresh = new SCBlockPumpkinGreenFresh(id_pumpkinGreenFresh, id_pumpkinStem, id_pumpkinVine, id_pumpkinVineFlowering);
-//		Item.itemsList[pumpkinGreenFresh.blockID] = new ItemBlock(pumpkinGreenFresh.blockID - 256);
-//		
-//		pumpkinYellowFresh = new SCBlockPumpkinYellowFresh(id_pumpkinYellowFresh, id_pumpkinStem, id_pumpkinVine, id_pumpkinVineFlowering);
-//		Item.itemsList[pumpkinYellowFresh.blockID] = new ItemBlock(pumpkinYellowFresh.blockID - 256);
-//		
-//		pumpkinWhiteFresh = new SCBlockPumpkinWhiteFresh(id_pumpkinWhiteFresh, id_pumpkinStem, id_pumpkinVine, id_pumpkinVineFlowering);
-//		Item.itemsList[pumpkinWhiteFresh.blockID] = new ItemBlock(pumpkinWhiteFresh.blockID - 256);
-//		
-//		pumpkinPossessed = new SCBlockPumpkinPossessed(id_pumpkinPossessed);
-//		
-//		pumpkinHarvested = new SCBlockPumpkinHarvested(id_pumpkinHarvested);
-//		Item.itemsList[pumpkinHarvested.blockID] = new ItemMultiTextureTile(pumpkinHarvested.blockID - 256, pumpkinHarvested, new String[] {"young", "teen", "adult", "mature"});
-//		
-//		pumpkinCarved = new SCBlockPumpkinCarved(id_pumpkinCarved);
-//		Item.itemsList[pumpkinCarved.blockID] = new ItemMultiTextureTile(pumpkinCarved.blockID - 256, pumpkinCarved, new String[] {"orange", "green", "yellow", "white"});
-//		
-//		pumpkinJack = new SCBlockPumpkinJack(id_pumpkinJack);
-//		Item.itemsList[pumpkinJack.blockID] = new ItemMultiTextureTile(pumpkinJack.blockID - 256, pumpkinJack, new String[] {"orange", "green", "yellow", "white"});
-		
-		//Pumpkin Growing
-		pumpkinOrange = new SCBlockPumpkinGrowingOrange(id_pumpkinOrange, id_pumpkinStem, id_pumpkinVine, id_pumpkinVineFlowering, id_pumpkinHarvested);
-		Item.itemsList[pumpkinOrange.blockID] = new ItemBlock(pumpkinOrange.blockID - 256);
-		
-		//Pumpkin Harvested
-		pumpkinHarvested = new SCBlockPumpkinHarvested(id_pumpkinHarvested);
-		Item.itemsList[pumpkinHarvested.blockID] = new ItemMultiTextureTile(pumpkinHarvested.blockID - 256, pumpkinHarvested, new String[] {"young", "teen", "adult", "mature"});
-		
-		pumpkinPossessed = new SCBlockPumpkinPossessed(id_pumpkinPossessed);
-		Item.itemsList[pumpkinPossessed.blockID] = new ItemMultiTextureTile(pumpkinPossessed.blockID - 256, pumpkinPossessed, new String[] {"young", "teen", "adult", "mature"});
-		
-		//Vine
-		pumpkinVine = new SCBlockGourdVine(id_pumpkinVine, id_pumpkinVineFlowering, id_pumpkinStem, id_pumpkinVineDead, "SCBlockPumpkinVine_", "SCBlockPumpkinVineConnector_");
-		Item.itemsList[pumpkinVine.blockID] = new ItemBlock(pumpkinVine.blockID - 256);
-		
-		pumpkinVineDead = new SCBlockGourdVineDead(id_pumpkinVineDead, id_pumpkinVineFlowering, id_pumpkinStem);
-		Item.itemsList[pumpkinVineDead.blockID] = new ItemBlock(pumpkinVineDead.blockID - 256);
-		
-		//Flower
-		pumpkinVineFlowering = new SCBlockPumpkinVineFlowering(id_pumpkinVineFlowering, id_pumpkinVine, id_pumpkinStem, pumpkinOrange, pumpkinOrange, pumpkinOrange, pumpkinOrange, id_pumpkinVineDead);
-		Item.itemsList[pumpkinVineFlowering.blockID] = new ItemBlock(pumpkinVineFlowering.blockID - 256);
-		
-		//Stem
-		pumpkinStemDead = new SCBlockGourdStemDead(id_pumpkinStemDead);
-		Item.itemsList[pumpkinStemDead.blockID] = new ItemBlock(pumpkinStemDead.blockID - 256);
-		
-		pumpkinStem = new SCBlockGourdStem(id_pumpkinStem, id_pumpkinVine, id_pumpkinVineFlowering, pumpkinStemDead);
-		Item.itemsList[pumpkinStem.blockID] = new ItemBlock(pumpkinStem.blockID - 256);
-		
-		
-		
-		
-		//Melon (Types: Watermelon (Green/Red),  Canary melon (Yellow/White), Honeydew (Light Green), Cantaloupe (Green/Orange)
-		melonWater = new SCBlockMelonWaterGrowing(id_melonWater, id_melonStem, id_melonVine, id_melonVineFlowering, id_pumpkinHarvested);
-		Item.itemsList[melonWater.blockID] = new ItemBlock(melonWater.blockID - 256);
-		
-		melonCanary = new SCBlockMelonCanaryGrowing(id_melonCanary, id_melonStem, id_melonVine, id_melonVineFlowering, id_pumpkinHarvested);
-		Item.itemsList[melonCanary.blockID] = new ItemBlock(melonCanary.blockID - 256);
-		
-		melonVine = new SCBlockGourdVine(id_melonVine, id_melonVineFlowering, id_melonStem, 0, "SCBlockMelonVine_", "SCBlockMelonVineConnector_");
-		Item.itemsList[melonVine.blockID] = new ItemBlock(melonVine.blockID - 256);
-		
-		melonVineFlowering = new SCBlockMelonVineFlowering(id_melonVineFlowering, id_melonVine, id_melonStem, melonWater, melonCanary, melonWater, melonWater, 0);
-		Item.itemsList[melonVineFlowering.blockID] = new ItemBlock(melonVineFlowering.blockID - 256);
-		
-		melonStem = new SCBlockGourdStem(id_melonStem, id_melonVine, id_melonVineFlowering, melonStem);
-		Item.itemsList[melonStem.blockID] = new ItemBlock(melonStem.blockID - 256);
-		
-		pumpkinSeeds = new FCItemSeedFood( id_pumpkinSeeds - 256, 1, 0F, pumpkinStem.blockID).setCreativeTab(CreativeTabs.tabDecorations).setUnlocalizedName( "seeds_pumpkin" );
-		melonSeeds = ( new FCItemSeeds(id_melonSeeds , melonStem.blockID).setCreativeTab(CreativeTabs.tabDecorations).SetAsBasicChickenFood().setUnlocalizedName( "seeds_melon" ) );
-		
-	    melonSlice = new SCItemMelonSlice( id_melonSlice - 256 );
-
-		
-	}
-
-	private static void addFenceAndRopeDefs() {
-		
-		fence = new SCBlockFence(id_fence);
-		Item.itemsList[fence.blockID] = new ItemBlock(fence.blockID - 256);	
-		
-		fenceRope = new SCBlockFenceRope(id_fenceRope);
-		Item.itemsList[fenceRope.blockID] = new ItemBlock(fenceRope.blockID - 256);	
-		
-		tempBlock = new SCBlockTemp(id_tempBlock);
-		Item.itemsList[tempBlock.blockID] = new ItemBlock(tempBlock.blockID - 256);	
-		
-		cuttingBoard = new SCBlockCuttingBoard(id_cuttingBoard);
-		Item.itemsList[cuttingBoard.blockID] = new ItemBlock(cuttingBoard.blockID - 256);	
-		
-		seedJar = new SCBlockSeedJar(id_seedJar);
-		Item.itemsList[seedJar.blockID] = new SCItemBlockSeedJar(seedJar.blockID - 256);	
-		
-	}
-
-	private static void addDecomposingDefs() {
-		
-		damagedLog = new SCBlockDamagedLog(id_damagedLog);
-		Item.itemsList[damagedLog.blockID] = new ItemMultiTextureTile(damagedLog.blockID - 256, damagedLog, SCBlockDamagedLog.treeTextureTypes);
-		
-		mossyLog = new SCBlockMossyLog(id_mossyLog);
-		Item.itemsList[mossyLog.blockID] = new ItemMultiTextureTile(mossyLog.blockID - 256, mossyLog, SCBlockMossyLog.treeTextureTypes);
-		
-		compostBlock = new SCBlockCompost(id_compostBlock);
-		Item.itemsList[compostBlock.blockID] = new ItemBlock(compostBlock.blockID - 256);
-		
-	}
-
-	private static void addDirtReplacements() {
-		
-		//New Loose Dirt
-		//FCBetterThanWolves.fcBlockDirtLoose = new SCBlockDirtLooseNutrition(ReplaceBlockID(FCBetterThanWolves.fcBlockDirtLoose)); //replaces FC's loose dirt
-		//New Grass		
-		//Block.grass = new SCBlockGrassNutrition(ReplaceBlockID(Block.grass)); //replaces FC's grass
-		//New Dirt		
-		//Block.dirt = new SCBlockDirtNutrition(ReplaceBlockID(Block.dirt)); //replaces FC's dirt
-	}
-
-	private static void addDirtDefs() {
-		
-		dirtLooseNutrition = new SCBlockDirtLooseNutrition(id_dirtLooseNutrition);
-		Item.itemsList[dirtLooseNutrition.blockID] = new ItemMultiTextureTile(dirtLooseNutrition.blockID - 256, dirtLooseNutrition, SCBlockDirtLooseNutrition.nutritionLevelTextures);
-		
-		grassNutrition = new SCBlockGrassNutrition(id_grassNutrition);
-		Item.itemsList[grassNutrition.blockID] = new ItemMultiTextureTile(grassNutrition.blockID - 256, grassNutrition, SCBlockGrassNutrition.nutritionLevelTextures);
-		
-		dirtNutrition = new SCBlockDirtNutrition(id_dirtNutrition);
-		Item.itemsList[dirtNutrition.blockID] = new ItemMultiTextureTile(dirtNutrition.blockID - 256, dirtNutrition, SCBlockDirtNutrition.nutritionLevelTextures);
-		
-	}
-
-	private static void addFarmlandDefs() {
+	private static void addFarmlandDefs()
+	{
 		//Farmland Nutrition 3
 		farmlandNutrition3 = new SCBlockFarmlandNutrition3(id_farmlandNutrition3);
 		Item.itemsList[farmlandNutrition3.blockID] = new ItemBlock(farmlandNutrition3.blockID - 256);
@@ -405,14 +327,23 @@ public class SCDefs {
 		
 		farmlandNutrition0Dung = new SCBlockFarmlandNutrition0Dung(id_farmlandNutrition0Dung);
 		Item.itemsList[farmlandNutrition0Dung.blockID] = new ItemBlock(farmlandNutrition0Dung.blockID - 256);
-		
 	}
 
-	public static void addTileEntityDefs() {
-		//Custom entities
+	private static void addDecompostingDefs() {
 		
-		TileEntity.addMapping(SCTileEntityCuttingBoard.class, "SCCuttingBoard");
-		TileEntity.addMapping(SCTileEntitySeedJar.class, "SCSeedJar");
-
+		damagedLog = new SCBlockDamagedLog(id_damagedLog);
+		Item.itemsList[damagedLog.blockID] = new ItemMultiTextureTile(id_damagedLog - 256, damagedLog, SCBlockDamagedLog.treeTextures);
+		
+		mossyLog = new SCBlockMossyLog(id_mossyLog);
+		Item.itemsList[mossyLog.blockID] = new ItemMultiTextureTile(id_mossyLog - 256, mossyLog, SCBlockMossyLog.treeTextures);
+		
+		compostBlock = new SCBlockCompost(id_compostBlock);
+		Item.itemsList[compostBlock.blockID] = new ItemBlock(id_compostBlock - 256);		
 	}
+
+	private static void addPlantDefs() {
+		shortPlant = new SCBlockShortPlant (id_shortPlant);
+		Item.itemsList[shortPlant.blockID] = new ItemMultiTextureTile(shortPlant.blockID - 256, shortPlant, new String[] {"shortGrass", "tallGrass"});
+	}
+
 }

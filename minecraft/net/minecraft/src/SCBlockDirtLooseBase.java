@@ -4,8 +4,8 @@ import java.util.Random;
 
 public abstract class SCBlockDirtLooseBase extends FCBlockDirtLoose {
 
-	public SCBlockDirtLooseBase(int iBlockID) {
-		super(iBlockID);
+	public SCBlockDirtLooseBase(int blockID) {
+		super(blockID);
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -33,21 +33,21 @@ public abstract class SCBlockDirtLooseBase extends FCBlockDirtLoose {
 	}
 		
 	//Stump
-    public static final String[] nutritionLevelTextures = new String[] {"SCBlockDirtLooseDry_0", "SCBlockDirtLooseDry_1", "SCBlockDirtLooseDry_2", "SCBlockDirtLooseDry_3"};
+    private static final String[] nutritionLevelTextures = new String[] {"SCBlockDirtLooseDry_0", "SCBlockDirtLooseDry_1", "SCBlockDirtLooseDry_2", "SCBlockDirtLooseDry_3"};
     private Icon[] sideIconArray;
     //private Icon trunkTopIcon;
     //private Icon m_iconEmbers;
 
     @Override
-    public Icon getIcon( int iSide, int iMetadata )
+    public Icon getIcon( int side, int meta )
     {    	
-    	return sideIconArray[iMetadata & 3];
+    	return sideIconArray[meta & 3];
     	
 		//return super.getIcon( iSide, iMetadata );
     }    
     
     @Override
-    public int idDropped(int par1, Random par2Random, int par3) {
+    public int idDropped(int par1, Random rand, int par3) {
     	return this.blockID;
     }
     
@@ -59,7 +59,7 @@ public abstract class SCBlockDirtLooseBase extends FCBlockDirtLoose {
        	return meta;
     }
     @Override
-    public void registerIcons( IconRegister iconRegister )
+    public void registerIcons( IconRegister register )
     {
     	
     	//m_iconEmbers = iconRegister.registerIcon( "SCBlockLogVineOverlay" );
@@ -70,7 +70,7 @@ public abstract class SCBlockDirtLooseBase extends FCBlockDirtLoose {
 
         for (int iTextureID = 0; iTextureID < sideIconArray.length; iTextureID++ )
         {
-        	sideIconArray[iTextureID] = iconRegister.registerIcon(nutritionLevelTextures[iTextureID]);
+        	sideIconArray[iTextureID] = register.registerIcon(nutritionLevelTextures[iTextureID]);
         }
         
         //super.registerIcons( iconRegister );

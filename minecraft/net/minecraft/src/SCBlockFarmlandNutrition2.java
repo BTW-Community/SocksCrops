@@ -20,9 +20,20 @@ public class SCBlockFarmlandNutrition2 extends SCBlockFarmlandBase {
 		return 0.75F;
 	}
 	
+	public float getWeedsGrowthChance() {
+		return 0.10F; //default was 1 in 20 ie 0.05F
+	}
+	
 	@Override
 	protected void setLooseDirt(World world, int i, int j, int k) {
-		world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.dirtLooseNutrition.blockID , 1);
+		world.setBlockAndMetadataWithNotify( i, j, k, FCBetterThanWolves.fcBlockDirtLoose.blockID , 1);
+	}
+	
+	protected void SetDung( World world, int i, int j, int k )
+	{
+	    	int iTargetBlockMetadata = world.getBlockMetadata( i, j, k );
+	    	
+	    	world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.farmlandNutrition2Dung.blockID, iTargetBlockMetadata );
 	}
 
 	@Override
@@ -41,7 +52,7 @@ public class SCBlockFarmlandNutrition2 extends SCBlockFarmlandBase {
         if ( world.getBlockMaterial( i, j + 1, k ).isSolid() || 
         	CanFallIntoBlockAtPos( world, i, j - 1, k ) )
         {
-            world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.dirtLooseNutrition.blockID, 1 );
+            world.setBlockAndMetadataWithNotify( i, j, k, FCBetterThanWolves.fcBlockDirtLoose.blockID, 1 );
         }
         else if ( GetWeedsGrowthLevel( world, i, j, k ) > 0 && 
         	!CanWeedsShareSpaceWithBlockAt( world, i, j + 1, k ) )
@@ -80,7 +91,7 @@ public class SCBlockFarmlandNutrition2 extends SCBlockFarmlandBase {
 	{
 		if ( !DoesBlockAbovePreventSoilReversion( world, i, j, k ) )
 		{
-			world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.dirtLooseNutrition.blockID, 1);
+			setLooseDirt(world, i, j, k);
 		}
 	}
 	
@@ -89,7 +100,7 @@ public class SCBlockFarmlandNutrition2 extends SCBlockFarmlandBase {
 	{
         if ( animal.GetDisruptsEarthOnGraze() )
         {
-        	world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.dirtLooseNutrition.blockID, 1);
+        	setLooseDirt(world, i, j, k);
         	
         	NotifyNeighborsBlockDisrupted( world, i, j, k );
         }
@@ -103,7 +114,7 @@ public class SCBlockFarmlandNutrition2 extends SCBlockFarmlandBase {
 		
         if ( !world.isRemote && world.rand.nextFloat() < fFallDist - 0.75F )
         {
-        	world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.dirtLooseNutrition.blockID, 1);
+        	setLooseDirt(world, i, j, k);
         }
     }
 

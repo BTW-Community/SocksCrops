@@ -4,10 +4,6 @@ import java.util.Random;
 
 public class SCBlockCompost extends FCBlockFalling {
 
-    //private static Material blockMaterial;
-
-	private static Material blockMaterial;
-
 	protected SCBlockCompost(int par1) {
         super(par1, Material.ground);
         
@@ -23,9 +19,5 @@ public class SCBlockCompost extends FCBlockFalling {
         
         this.setCreativeTab(CreativeTabs.tabBlock);
     }
-    
-    public int GetHarvestToolLevel(IBlockAccess var1, int var2, int var3, int var4)
-    {
-        return 2; //Iron+
-    }
+
 }

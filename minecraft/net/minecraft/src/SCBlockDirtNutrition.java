@@ -5,9 +5,11 @@ import java.util.Random;
 
 public class SCBlockDirtNutrition extends FCBlockDirt {
 
-	protected SCBlockDirtNutrition( int iBlockID )
+	public static String[] nutritionLevelNames = new String[] {"dirt0", "dirt1", "dirt2", "dirt3"};
+	
+	protected SCBlockDirtNutrition( int blockID )
     {
-        super( iBlockID);
+        super( blockID);
         
         setHardness( 0.5F );
         SetShovelsEffectiveOn();
@@ -15,7 +17,7 @@ public class SCBlockDirtNutrition extends FCBlockDirt {
     	
     	setStepSound( soundGravelFootstep );
     	
-    	setUnlocalizedName( "dirt" );
+    	setUnlocalizedName( "SCBlockDirtNutrition" );
         
         setCreativeTab( CreativeTabs.tabBlock );
     }
@@ -39,9 +41,9 @@ public class SCBlockDirtNutrition extends FCBlockDirt {
 	}
     
     @Override
-	public int idDropped( int iMetadata, Random rand, int iFortuneModifier )
+	public int idDropped( int metadata, Random rand, int fortuneModifier )
 	{
-		return SCDefs.dirtLooseNutrition.blockID;
+		return FCBetterThanWolves.fcBlockDirtLoose.blockID;
 	}
 	
 	/**
@@ -56,14 +58,14 @@ public class SCBlockDirtNutrition extends FCBlockDirt {
      * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
      */
 	@Override
-	public boolean DropComponentItemsOnBadBreak( World world, int i, int j, int k, int iMetadata, float fChanceOfDrop )
+	public boolean DropComponentItemsOnBadBreak( World world, int i, int j, int k, int meta, float chanceOfDrop )
 	{
-		if (iMetadata != 0) //nutri 3
+		if (meta != 0) //nutri 3
 		{
-			DropItemsIndividualy( world, i, j, k, FCBetterThanWolves.fcItemPileGravel.itemID, 3, 0, fChanceOfDrop );
-			DropItemsIndividualy( world, i, j, k, FCBetterThanWolves.fcItemPileSand.itemID, 3, 0, fChanceOfDrop );
+			DropItemsIndividualy( world, i, j, k, FCBetterThanWolves.fcItemPileGravel.itemID, 3, 0, chanceOfDrop );
+			DropItemsIndividualy( world, i, j, k, FCBetterThanWolves.fcItemPileSand.itemID, 3, 0, chanceOfDrop );
 		}
-		else DropItemsIndividualy( world, i, j, k, FCBetterThanWolves.fcItemPileDirt.itemID, 6, 0, fChanceOfDrop );
+		else DropItemsIndividualy( world, i, j, k, FCBetterThanWolves.fcItemPileDirt.itemID, 6, 0, chanceOfDrop );
 		
 		return true;
 	}
@@ -92,19 +94,19 @@ public class SCBlockDirtNutrition extends FCBlockDirt {
 		
 		if (meta == 0)
 		{
-			world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.dirtLooseNutrition.blockID, 0 );
+			world.setBlockAndMetadataWithNotify( i, j, k, FCBetterThanWolves.fcBlockDirtLoose.blockID, 0 );
 		}
 		else if (meta == 1 )
 		{
-			world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.dirtLooseNutrition.blockID, 1 );
+			world.setBlockAndMetadataWithNotify( i, j, k, FCBetterThanWolves.fcBlockDirtLoose.blockID, 1 );
 		}
 		else if (meta == 2 )
 		{
-			world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.dirtLooseNutrition.blockID, 2 );
+			world.setBlockAndMetadataWithNotify( i, j, k, FCBetterThanWolves.fcBlockDirtLoose.blockID, 2 );
 		}
 		else if (meta == 3 )
 		{
-			world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.dirtLooseNutrition.blockID, 3 );
+			world.setBlockAndMetadataWithNotify( i, j, k, FCBetterThanWolves.fcBlockDirtLoose.blockID, 3 );
 		}
     }
     
@@ -128,19 +130,19 @@ public class SCBlockDirtNutrition extends FCBlockDirt {
 		
 		if (meta == 0)
 		{
-			world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.grassNutrition.blockID, 0 );
+			world.setBlockAndMetadataWithNotify( i, j, k, Block.grass.blockID, 0 );
 		}
 		else if (meta == 1 )
 		{
-			world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.grassNutrition.blockID, 1 );
+			world.setBlockAndMetadataWithNotify( i, j, k, Block.grass.blockID, 1 );
 		}
 		else if (meta == 2 )
 		{
-			world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.grassNutrition.blockID, 2 );
+			world.setBlockAndMetadataWithNotify( i, j, k, Block.grass.blockID, 2 );
 		}
 		else if (meta == 3 )
 		{
-			world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.grassNutrition.blockID, 3 );
+			world.setBlockAndMetadataWithNotify( i, j, k, Block.grass.blockID, 3 );
 		}
         
     	return true;
@@ -175,19 +177,19 @@ public class SCBlockDirtNutrition extends FCBlockDirt {
     		
     		if (meta == 0)
     		{
-    			world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.dirtLooseNutrition.blockID, 0 );
+    			world.setBlockAndMetadataWithNotify( i, j, k, FCBetterThanWolves.fcBlockDirtLoose.blockID, 0 );
     		}
     		else if (meta == 1 )
     		{
-    			world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.dirtLooseNutrition.blockID, 1 );
+    			world.setBlockAndMetadataWithNotify( i, j, k, FCBetterThanWolves.fcBlockDirtLoose.blockID, 1 );
     		}
     		else if (meta == 2 )
     		{
-    			world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.dirtLooseNutrition.blockID, 2 );
+    			world.setBlockAndMetadataWithNotify( i, j, k, FCBetterThanWolves.fcBlockDirtLoose.blockID, 2 );
     		}
     		else if (meta == 3 )
     		{
-    			world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.dirtLooseNutrition.blockID, 3 );
+    			world.setBlockAndMetadataWithNotify( i, j, k, FCBetterThanWolves.fcBlockDirtLoose.blockID, 3 );
     		}
         	
         	NotifyNeighborsBlockDisrupted( world, i, j, k );
@@ -231,19 +233,19 @@ public class SCBlockDirtNutrition extends FCBlockDirt {
 		
 		if (meta == 0)
 		{
-			world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.dirtLooseNutrition.blockID, 0 );
+			world.setBlockAndMetadataWithNotify( i, j, k, FCBetterThanWolves.fcBlockDirtLoose.blockID, 0 );
 		}
 		else if (meta == 1 )
 		{
-			world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.dirtLooseNutrition.blockID, 1 );
+			world.setBlockAndMetadataWithNotify( i, j, k, FCBetterThanWolves.fcBlockDirtLoose.blockID, 1 );
 		}
 		else if (meta == 2 )
 		{
-			world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.dirtLooseNutrition.blockID, 2 );
+			world.setBlockAndMetadataWithNotify( i, j, k, FCBetterThanWolves.fcBlockDirtLoose.blockID, 2 );
 		}
 		else if (meta == 3 )
 		{
-			world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.dirtLooseNutrition.blockID, 3 );
+			world.setBlockAndMetadataWithNotify( i, j, k, FCBetterThanWolves.fcBlockDirtLoose.blockID, 3 );
 		}
 
     	if ( !world.isRemote )
@@ -258,7 +260,7 @@ public class SCBlockDirtNutrition extends FCBlockDirt {
     
     //Render
     
-    public static String[] nutritionLevelTextures = new String[] {"dirt", "SCBlockDirtDry_1", "SCBlockDirtDry_2", "SCBlockDirtDry_3"};
+    private static String[] nutritionLevelTextures = new String[] {"dirt", "SCBlockDirtDry_1", "SCBlockDirtDry_2", "SCBlockDirtDry_3"};
     private Icon[] nutritionIconArray;
     
     public void registerIcons(IconRegister par1IconRegister)
