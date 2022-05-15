@@ -10,3 +10,5 @@
 - Added Flowering Lily Pad
 - Added Decorative Stone & Sandstone Pebbles and Rocks
 - Added Flowering Lily Pad to generate in Swamps
+
+- Split River Biome into seperate Biomes to control decoration better

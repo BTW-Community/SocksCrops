@@ -28,6 +28,7 @@ public class SocksCropsAddon extends FCAddOn {
     	SCRecipes.addRecipes();
 		
     	FCAddOnHandler.LogMessage(this.getName() + " Initialized");
+
     }
     
     @Override
