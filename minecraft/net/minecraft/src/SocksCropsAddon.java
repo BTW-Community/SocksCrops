@@ -4,6 +4,8 @@
 
 package net.minecraft.src;
 
+import java.util.Random;
+
 public class SocksCropsAddon extends FCAddOn {
 
     public static SocksCropsAddon instance = new SocksCropsAddon();
@@ -26,5 +28,11 @@ public class SocksCropsAddon extends FCAddOn {
     	SCRecipes.addRecipes();
 		
     	FCAddOnHandler.LogMessage(this.getName() + " Initialized");
+    }
+    
+    @Override
+    public void decorateWorld(FCIBiomeDecorator decorator, World world, Random random, int x, int z, BiomeGenBase biome)
+    {
+    	SCBiomeDecorator.decorateWorld(decorator, world, random, x, z, biome);
     }
 }
