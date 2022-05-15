@@ -44,12 +44,12 @@ public class SCDefs {
 		id_farmlandNutrition0Dung = 2633,
 		id_farmlandNutrition1Dung = 2634,
 		id_farmlandNutrition2Dung = 2635,
-		id_farmlandNutrition3Dung = 2636,
+		id_farmlandNutrition3Dung = 2636;
 		
-		id_farmlandNutrition0Straw = 2637,
-		id_farmlandNutrition1Straw = 2638,
-		id_farmlandNutrition2Straw = 2639,
-		id_farmlandNutrition3Straw = 2640;
+//		id_farmlandNutrition0Straw = 2637,
+//		id_farmlandNutrition1Straw = 2638,
+//		id_farmlandNutrition2Straw = 2639,
+//		id_farmlandNutrition3Straw = 2640;
 	
 //		id_farmlandNutrition0Straw = 2641,
 //		id_farmlandNutrition1Straw = 2642,
@@ -60,12 +60,13 @@ public class SCDefs {
 	private static int
 		id_compostBlock = 2645,
 		id_shortPlant = 2646,
-		id_tallPlant = 2647;
-//		id_rocks = 2648,
-//		id_rocksSandstone = 2649,
-//		id_mossCarpet = 2650,
-//		id_clover = 2651,
-//		id_lilyRose = 2652;
+		id_tallPlant = 2647,
+		id_clover = 2648,
+		id_mossCarpet = 2649,
+		id_lilyRose = 2650,
+		id_rocks = 2651,
+		id_rocksSandstone = 2652;
+		
 	
 	//Pumpkins
 //	private static int
@@ -189,12 +190,13 @@ public class SCDefs {
 	public static Block compostBlock;
 	public static Block shortPlant;
 	public static Block tallPlant;
-//	public static Block rocks;
-//	public static Block rocksSandstone;
-//	public static Block mossCarpet;
-//	public static Block clover;
-//	public static Block lilyRose;
-//	
+	
+	public static Block clover;	
+	public static Block mossCarpet;
+	public static Block lilyRose;
+	public static Block rocks;
+	public static Block rocksSandstone;
+
 //	public static Block pumpkinStem;
 //	public static Block pumpkinVine, gourdVineDead;
 //	public static Block pumpkinVineFlowering;
@@ -258,12 +260,16 @@ public class SCDefs {
 	
 	public static void addDefinitions()
 	{
+		//Nutrition
 		addDirtReplacements();
 		addGrassDef();
 		addFarmlandDefs();
 		
+		//Decomposting
 		addDecompostingDefs();
-		addPlantDefs();		
+		
+		//Deco Plants
+		addDecorativeDefs();
 	}
 
 	private static void addDirtReplacements()
@@ -283,50 +289,50 @@ public class SCDefs {
 	private static void addGrassDef()
 	{
 		grassNutrition = new SCBlockGrassNutrition(id_grassNutrition);
-		Item.itemsList[grassNutrition.blockID] = new ItemMultiTextureTile(grassNutrition.blockID - 256, grassNutrition, SCBlockGrassNutrition.nutritionLevelNames);
+		Item.itemsList[grassNutrition.blockID] = new ItemMultiTextureTile(id_grassNutrition - 256, grassNutrition, SCBlockGrassNutrition.nutritionLevelNames);
 	}
 	
 	private static void addFarmlandDefs()
 	{
 		//Farmland Nutrition 3
 		farmlandNutrition3 = new SCBlockFarmlandNutrition3(id_farmlandNutrition3);
-		Item.itemsList[farmlandNutrition3.blockID] = new ItemBlock(farmlandNutrition3.blockID - 256);
+		Item.itemsList[farmlandNutrition3.blockID] = new ItemBlock(id_farmlandNutrition3 - 256);
 		
 		farmlandNutrition3Fertilized = new SCBlockFarmlandNutrition3Fertilized(id_farmlandNutrition3Fertilized);
-		Item.itemsList[farmlandNutrition3Fertilized.blockID] = new ItemBlock(farmlandNutrition3Fertilized.blockID - 256);
+		Item.itemsList[farmlandNutrition3Fertilized.blockID] = new ItemBlock(id_farmlandNutrition3Fertilized - 256);
 		
 		farmlandNutrition3Dung = new SCBlockFarmlandNutrition3Dung(id_farmlandNutrition3Dung);
-		Item.itemsList[farmlandNutrition3Dung.blockID] = new ItemBlock(farmlandNutrition3Dung.blockID - 256);
+		Item.itemsList[farmlandNutrition3Dung.blockID] = new ItemBlock(id_farmlandNutrition3Dung - 256);
 		
 		//Farmland Nutrition 2                                                                                                                                                        
 		farmlandNutrition2 = new SCBlockFarmlandNutrition2(id_farmlandNutrition2);
-		Item.itemsList[farmlandNutrition2.blockID] = new ItemBlock(farmlandNutrition2.blockID - 256);
+		Item.itemsList[farmlandNutrition2.blockID] = new ItemBlock(id_farmlandNutrition2 - 256);
 		                                                                                                                                                                              
 		farmlandNutrition2Fertilized = new SCBlockFarmlandNutrition2Fertilized(id_farmlandNutrition2Fertilized);
-		Item.itemsList[farmlandNutrition2Fertilized.blockID] = new ItemBlock(farmlandNutrition2Fertilized.blockID - 256);
+		Item.itemsList[farmlandNutrition2Fertilized.blockID] = new ItemBlock(id_farmlandNutrition2Fertilized - 256);
 		
 		farmlandNutrition2Dung = new SCBlockFarmlandNutrition2Dung(id_farmlandNutrition2Dung);
-		Item.itemsList[farmlandNutrition2Dung.blockID] = new ItemBlock(farmlandNutrition2Dung.blockID - 256);
+		Item.itemsList[farmlandNutrition2Dung.blockID] = new ItemBlock(id_farmlandNutrition2Dung - 256);
 		
 		//Farmland Nutrition 1		                                                                                                                                                  
 		farmlandNutrition1 = new SCBlockFarmlandNutrition1(id_farmlandNutrition1);                                                                                                    
-		Item.itemsList[farmlandNutrition1.blockID] = new ItemBlock(farmlandNutrition1.blockID - 256);                                                                                 
+		Item.itemsList[farmlandNutrition1.blockID] = new ItemBlock(id_farmlandNutrition1 - 256);                                                                                 
 		                                                                                                                                                                              
 		farmlandNutrition1Fertilized = new SCBlockFarmlandNutrition1Fertilized(id_farmlandNutrition1Fertilized);                                                                      
-		Item.itemsList[farmlandNutrition1Fertilized.blockID] = new ItemBlock(farmlandNutrition1Fertilized.blockID - 256);    
+		Item.itemsList[farmlandNutrition1Fertilized.blockID] = new ItemBlock(id_farmlandNutrition1Fertilized - 256);    
 		
 		farmlandNutrition1Dung = new SCBlockFarmlandNutrition1Dung(id_farmlandNutrition1Dung);
-		Item.itemsList[farmlandNutrition1Dung.blockID] = new ItemBlock(farmlandNutrition1Dung.blockID - 256);
+		Item.itemsList[farmlandNutrition1Dung.blockID] = new ItemBlock(id_farmlandNutrition1Dung - 256);
 		                                                                                                                                                                              
 		//Farmland Nutrition 0		                                                                                                                                                  
 		farmlandNutrition0 = new SCBlockFarmlandNutrition0(id_farmlandNutrition0);
-		Item.itemsList[farmlandNutrition0.blockID] = new ItemBlock(farmlandNutrition0.blockID - 256);
+		Item.itemsList[farmlandNutrition0.blockID] = new ItemBlock(id_farmlandNutrition0 - 256);
 		                                                                                                                                                                              
 		farmlandNutrition0Fertilized = new SCBlockFarmlandNutrition0Fertilized(id_farmlandNutrition0Fertilized);                                                                      
-		Item.itemsList[farmlandNutrition0Fertilized.blockID] = new ItemBlock(farmlandNutrition0Fertilized.blockID - 256);
+		Item.itemsList[farmlandNutrition0Fertilized.blockID] = new ItemBlock(id_farmlandNutrition0Fertilized - 256);
 		
 		farmlandNutrition0Dung = new SCBlockFarmlandNutrition0Dung(id_farmlandNutrition0Dung);
-		Item.itemsList[farmlandNutrition0Dung.blockID] = new ItemBlock(farmlandNutrition0Dung.blockID - 256);
+		Item.itemsList[farmlandNutrition0Dung.blockID] = new ItemBlock(id_farmlandNutrition0Dung - 256);
 	}
 
 	private static void addDecompostingDefs() {
@@ -341,9 +347,39 @@ public class SCDefs {
 		Item.itemsList[compostBlock.blockID] = new ItemBlock(id_compostBlock - 256);		
 	}
 
-	private static void addPlantDefs() {
+	private static void addDecorativeDefs()
+	{
 		shortPlant = new SCBlockShortPlant (id_shortPlant);
-		Item.itemsList[shortPlant.blockID] = new ItemMultiTextureTile(shortPlant.blockID - 256, shortPlant, new String[] {"shortGrass", "tallGrass"});
+		Item.itemsList[shortPlant.blockID] = new ItemMultiTextureTile(id_shortPlant - 256, shortPlant, new String[] {"shortGrass", "tallGrass"});
+		
+		clover = new SCBlockClover (id_clover);
+		Item.itemsList[clover.blockID] = new ItemMultiTextureTile(id_clover - 256, clover, new String [] {"clover", "cloverPurple", "cloverWhite", "cloverRed"});
+		
+		mossCarpet = new SCBlockMoss(id_mossCarpet);
+		Item.itemsList[mossCarpet.blockID] = new ItemBlock(id_mossCarpet - 256);
+		
+		lilyRose = new SCBlockLilyRose(id_lilyRose);
+		Item.itemsList[lilyRose.blockID] = new ItemBlock(id_lilyRose - 256);
+		
+		rocks = new SCBlockRocks (id_rocks, "stone", "SCBlockRocksStone");
+		Item.itemsList[rocks.blockID] = new SCItemRocks(id_rocks - 256, rocks, "SCItemRocksStone",
+				new String[]{
+					"smallRock", "largeRock",
+					"","",
+					"","",
+					"","",
+					"smallRockMossy", "largeRockMossy"
+				});
+		
+		rocksSandstone = new SCBlockRocks (id_rocksSandstone, "sandstone_bottom", "SCBlockRocksSandstone");
+		Item.itemsList[rocksSandstone.blockID] = new SCItemRocks(id_rocksSandstone - 256, rocksSandstone, "SCItemRocksSandstone",
+				new String[] {
+					"smallRock", "largeRock",
+					"","",
+					"","",
+					"","",
+					"smallRockMossy", "largeRockMossy"
+				});
 	}
 
 }

@@ -947,8 +947,8 @@ public class SCUtilsRender extends FCClientUtilsRender
         double minV = (double)icon.getMinV();
         double maxU = (double)icon.getMaxU();
         double maxV = (double)icon.getMaxV();
-        double minX = x + 0.5D - 0.125D; 
-        double maxX = x + 0.5D + 0.125D;
+        double minX = x + 0.5D - 0.25D; 
+        double maxX = x + 0.5D + 0.25D;
         double minZ = z + 0.5D - 0.5D;
         double maxZ = z + 0.5D + 0.5D;
         double adjustment = 0.0; //3px
@@ -978,8 +978,8 @@ public class SCUtilsRender extends FCClientUtilsRender
         
         minX = x + 0.5D - 0.5D;
         maxX = x + 0.5D + 0.5D;
-        minZ = z + 0.5D - 0.125D;
-        maxZ = z + 0.5D + 0.125D;
+        minZ = z + 0.5D - 0.25D;
+        maxZ = z + 0.5D + 0.25D;
         
         var9.addVertexWithUV(minX, y + 1.0D, minZ - adjustment, minU, minV);
         var9.addVertexWithUV(minX, y + 0.0D, minZ + adjustment, minU, maxV);

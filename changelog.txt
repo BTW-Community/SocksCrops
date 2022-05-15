@@ -5,3 +5,7 @@
 - Added Compost
 - Added Damaged and Mossy Logs
 - Added Short Grass and a copy of Tall Grass
+- Added Clover and Flowering variants
+- Added Moss Carpet
+- Added Flowering Lily Pad
+- Added Decorative Stone & Sandstone Pebbles and Rocks

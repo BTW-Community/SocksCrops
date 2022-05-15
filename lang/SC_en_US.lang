@@ -35,3 +35,22 @@ tile.SCBlockMossyLog.tree_jungle.name=Mossy Jungle Log
 
 tile.SCBlockShortPlant.shortGrass.name=Short Grass
 tile.SCBlockShortPlant.tallGrass.name=Medium Grass
+
+tile.SCBlockClover.clover.name=Clover
+tile.SCBlockClover.cloverPurple.name=Purple Flowering Clover
+tile.SCBlockClover.cloverWhite.name=White Flowering Clover
+tile.SCBlockClover.cloverRed.name=Red Flowering Clover
+
+tile.SCBlockMoss.name=Moss Carpet 
+
+tile.SCBlockItemLilyFlower.name=Flowering Lily Pad
+
+item.SCItemRocksStone.smallRock.name=Stone Pebbles
+item.SCItemRocksStone.largeRock.name=Stone Rocks
+item.SCItemRocksStone.smallRockMossy.name=Mossy Stone Pebbles
+item.SCItemRocksStone.largeRockMossy.name=Mossy Stone Rocks
+
+item.SCItemRocksSandstone.smallRock.name=Sandstone Pebbles
+item.SCItemRocksSandstone.largeRock.name=Sandstone Rocks
+item.SCItemRocksSandstone.smallRockMossy.name=Mossy Sandstone Pebbles
+item.SCItemRocksSandstone.largeRockMossy.name=Mossy Sandstone Rocks
