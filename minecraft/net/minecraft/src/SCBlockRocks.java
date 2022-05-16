@@ -27,42 +27,21 @@ public class SCBlockRocks extends Block {
 
 	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < 4; i++) {
 			par3List.add(new ItemStack(par1, 1, i));
-			par3List.add(new ItemStack(par1, 1, i + 8));
 		}
     }
 	
 	@Override
 	public int PreBlockPlacedBy(World world, int i, int j, int k, int iMetadata, EntityLiving player)
 	{
-		//get the random number from coordinates
-		int cash = cash( i,j,k );
+		//Thanks to zero318 for help on this
+		int cash = cash(i,j,k) & 3;
+		cash |= player.getHeldItem().getItemDamage() << 2;
 		
-		//get the last Digit and half it
-		int lastDigit = ((cash % 10) / 2);
-		
-		//limit the "lastDigit" to 0 - 3
-		if (lastDigit > 3) lastDigit = 3;
-		
-		//shift the "lastDigit" to get the correct meta for the model
-		int randomSmallRock = lastDigit;
-		int randomLargeRock = lastDigit + 4;
-		int randomSmallRockMossy = lastDigit + 8;
-		int randomLargeRockMossy = lastDigit + 12;
-		
-		int itemDamage = player.getHeldItem().getItemDamage();
-		
-		//set the model depending on the itemDamage
-		if (itemDamage == 0) return randomSmallRock;
-		else if (itemDamage == 1) return randomLargeRock;
-		else if (itemDamage == 8) return randomSmallRockMossy;
-		else if (itemDamage == 9) return randomLargeRockMossy;
-		
-		else return super.PreBlockPlacedBy(world, i, j, k, iMetadata, player);
+		return cash;
 	}
 	
-    
 	// https://stackoverflow.com/a/37221804
 	// cash stands for chaos hash
 	private static int cash(int x, int y, int z)
@@ -71,14 +50,7 @@ public class SCBlockRocks extends Block {
     	h = (h^(h >> 13))*1274126177;
        return h^(h >> 16);
 	}
-	
-	
-	@Override
-	public void onBlockPlacedBy(World world, int i, int j, int k, EntityLiving player, ItemStack stack) {
 
-		
-	}
-	
 	@Override
     public boolean canPlaceBlockAt( World world, int i, int j, int k )
     {
@@ -86,6 +58,13 @@ public class SCBlockRocks extends Block {
 		{
 			return false;
 		}
+        
+        if (world.getBlockId(i, j-1, k) == Block.waterStill.blockID ||
+        		world.getBlockId(i, j-1, k) == Block.leaves.blockID ||
+        		world.getBlockId(i, j-1, k) == Block.ice.blockID)
+        {
+        	return false;
+        }
 		
         return super.canPlaceBlockAt( world, i, j, k );
     }
@@ -238,6 +217,7 @@ public class SCBlockRocks extends Block {
 //	}
 	
 	public boolean hasSnowOnTop; // temporary variable used by rendering
+	public boolean hasMossOnTop; // temporary variable used by rendering
 	public static boolean secondPass;
 	    
 	
@@ -316,6 +296,7 @@ public class SCBlockRocks extends Block {
 	@Override
 	public boolean RenderBlock(RenderBlocks renderer, int i, int j, int k) {
 		hasSnowOnTop = IsSnowCoveringTopSurface(renderer.blockAccess, i, j, k);
+		hasMossOnTop = renderer.blockAccess.getBlockId(i, j+1, k) == SCDefs.mossCarpet.blockID;
 		return renderRocks(renderer,i,j,k);
 	}
 	
@@ -343,7 +324,7 @@ public class SCBlockRocks extends Block {
 					11/16D, 3/16D, 11/16D );
 			renderer.renderStandardBlock(this, i, j, k);
 			
-			if (!hasSnowOnTop)
+			if (!hasSnowOnTop && !hasMossOnTop)
 			{
 				renderer.setRenderBounds(
 						5/16D, 0/16D, 5/16D,
@@ -358,7 +339,7 @@ public class SCBlockRocks extends Block {
 					9/16D, 3/16D, 9/16D );
 			renderer.renderStandardBlock(this, i, j, k);
 			
-			if (!hasSnowOnTop)
+			if (!hasSnowOnTop && !hasMossOnTop)
 			{
 			renderer.setRenderBounds(
 					11/16D, 0/16D, 5/16D,
@@ -378,7 +359,7 @@ public class SCBlockRocks extends Block {
 					9/16D, 3/16D, 10/16D );
 			renderer.renderStandardBlock(this, i, j, k);
 			
-			if (!hasSnowOnTop)
+			if (!hasSnowOnTop && !hasMossOnTop)
 			{
 			renderer.setRenderBounds(
 					4/16D, 0/16D, 4/16D,
@@ -403,7 +384,7 @@ public class SCBlockRocks extends Block {
 					11/16D, 3/16D, 12/16D );
 			renderer.renderStandardBlock(this, i, j, k);
 			
-			if (!hasSnowOnTop)
+			if (!hasSnowOnTop && !hasMossOnTop)
 			{
 			renderer.setRenderBounds(
 					3/16D, 0/16D, 3/16D,
@@ -457,7 +438,7 @@ public class SCBlockRocks extends Block {
 					12/16D, 5/16D, 10/16D );
 			renderer.renderStandardBlock(this, i, j, k);
 			
-			if (!hasSnowOnTop)
+			if (!hasSnowOnTop && !hasMossOnTop)
 			{
 			renderer.setRenderBounds(
 					8/16D, 0/16D, 3/16D,
@@ -492,7 +473,7 @@ public class SCBlockRocks extends Block {
 					14/16D, 5/16D, 14/16D );
 			renderer.renderStandardBlock(this, i, j, k);
 			
-			if (!hasSnowOnTop)
+			if (!hasSnowOnTop && !hasMossOnTop)
 			{
 			renderer.setRenderBounds(
 					12/16D, 0/16D, 1/16D,
@@ -502,6 +483,4 @@ public class SCBlockRocks extends Block {
 		}
 		return true;
 	}
-
-
 }

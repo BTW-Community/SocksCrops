@@ -53,14 +53,14 @@ public class SCItemRocks extends FCItemPlacesAsBlock {
     public Icon getIconFromDamageForRenderPass( int damage, int renderPass )
     {
     	if (renderPass == 1)
-    		if (damage == 8) return mossSmall;
-    		else if (damage == 9) return mossMedium;
+    		if (damage == 2) return mossSmall;
+    		else if (damage == 3) return mossMedium;
     		else if (damage == 1) return stoneMedium;
     		else return stoneSmall;
     	else
     	{
     		if (damage == 1) return stoneMedium;
-    		else if (damage == 9) return stoneMedium;
+    		else if (damage == 3) return stoneMedium;
     		else return stoneSmall;
     	}
     }
@@ -71,19 +71,16 @@ public class SCItemRocks extends FCItemPlacesAsBlock {
     public Icon getIconFromDamage(int damage)
     {
     	if (damage == 0) {
-    		return sandstoneSmall;
-    	}
-    	else if (damage == 1) {
-    		return sandstoneSmall;
+    		return stoneSmall;
     	}
         return stoneMedium;
     }
     
     @Override
     public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List) {
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < 4; i++) {
 			par3List.add(new ItemStack(par1, 1, i));
-			par3List.add(new ItemStack(par1, 1, i + 8));
+
 		}
     }
 

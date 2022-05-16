@@ -14,5 +14,6 @@ public class SCBiomeGenRiverExtremeHills extends SCBiomeGenRiverBase
     {
         super.decorate(world, rand, x, z);
         
+        decorateRocks(world,rand,x,z, SCDefs.rocks);
     }
 }

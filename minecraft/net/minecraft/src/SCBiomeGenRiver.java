@@ -13,7 +13,5 @@ public class SCBiomeGenRiver extends SCBiomeGenRiverBase
 	public void decorate(World world, Random rand, int x, int z)
     {
         super.decorate(world, rand, x, z);
-        
-        decorateRocks(world,rand,x,z, SCDefs.rocks);
     }
 }

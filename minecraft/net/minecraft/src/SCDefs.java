@@ -349,6 +349,9 @@ public class SCDefs {
 
 	private static void addDecorativeDefs()
 	{
+		tallPlant = new SCBlockTallPlant(id_tallPlant);
+		Item.itemsList[tallPlant.blockID] = new ItemMultiTextureTile(tallPlant.blockID - 256, tallPlant, new String[] {"grass","fern"});
+		
 		shortPlant = new SCBlockShortPlant (id_shortPlant);
 		Item.itemsList[shortPlant.blockID] = new ItemMultiTextureTile(id_shortPlant - 256, shortPlant, new String[] {"shortGrass", "tallGrass"});
 		
@@ -365,19 +368,14 @@ public class SCDefs {
 		Item.itemsList[rocks.blockID] = new SCItemRocks(id_rocks - 256, rocks, "SCItemRocksStone",
 				new String[]{
 					"smallRock", "largeRock",
-					"","",
-					"","",
-					"","",
 					"smallRockMossy", "largeRockMossy"
+					
 				});
 		
 		rocksSandstone = new SCBlockRocks (id_rocksSandstone, "sandstone_bottom", "SCBlockRocksSandstone");
 		Item.itemsList[rocksSandstone.blockID] = new SCItemRocks(id_rocksSandstone - 256, rocksSandstone, "SCItemRocksSandstone",
 				new String[] {
 					"smallRock", "largeRock",
-					"","",
-					"","",
-					"","",
 					"smallRockMossy", "largeRockMossy"
 				});
 	}

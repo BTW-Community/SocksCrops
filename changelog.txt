@@ -2,13 +2,24 @@
 
 - Changed Initialise Class from BlockCrops to BlockMycelium
 - Added Nutrition to Dirt, Grass and Farmland
+
 - Added Compost
 - Added Damaged and Mossy Logs
+
 - Added Short Grass and a copy of Tall Grass
 - Added Clover and Flowering variants
 - Added Moss Carpet
 - Added Flowering Lily Pad
 - Added Decorative Stone & Sandstone Pebbles and Rocks
-- Added Flowering Lily Pad to generate in Swamps
 
-- Split River Biome into seperate Biomes to control decoration better
+- Added Flowering Lily Pad to generate in Swamps
+- Split River Biome into seperate River Biomes to control decoration better
+
+- Added Gen Short Grass to all Biomes
+- Added Gen Tall Grass and Tall Fern to Tagia and Forest Biomes
+- Added Gen Clover to Taiga, Forest and Plains Biomes
+- Added Gen Stone Rocks and Pebbles to ExtremeHills, Frozen, Plains and Forest Rivers
+- Added Gen Sandstone Rocks and Pebbles to Desert Rivers
+
+## Known Issues ##
+- Double Tall Grass and Ferns sometimes spawn ontop of each other
