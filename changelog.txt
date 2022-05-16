@@ -21,5 +21,8 @@
 - Added Gen Stone Rocks and Pebbles to ExtremeHills, Frozen, Plains and Forest Rivers
 - Added Gen Sandstone Rocks and Pebbles to Desert Rivers
 
+- Changed Farmland to use overlay for fertilizers
+- Added textures
+
 ## Known Issues ##
-- Double Tall Grass and Ferns sometimes spawn ontop of each other
+- Double Tall Grass and Ferns sometimes spawn ontop of each otherx
