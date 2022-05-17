@@ -24,5 +24,12 @@
 - Changed Farmland to use overlay for fertilizers
 - Added textures
 
+- Added new Pumpkin and Melon Growth
+- Added Pumpkin and Melon Varieties
+- Replaced Pumpkin and Melon Seeds
+
+- Edited GuiIngame and SlotArmor to make new Pumpkins Wearable
+
+
 ## Known Issues ##
 - Double Tall Grass and Ferns sometimes spawn ontop of each otherx

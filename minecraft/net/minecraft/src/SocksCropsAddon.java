@@ -6,6 +6,8 @@ package net.minecraft.src;
 
 import java.util.Random;
 
+import net.minecraft.client.Minecraft;
+
 public class SocksCropsAddon extends FCAddOn {
 
     public static SocksCropsAddon instance = new SocksCropsAddon();
@@ -36,4 +38,12 @@ public class SocksCropsAddon extends FCAddOn {
     {
     	SCBiomeDecorator.decorateWorld(decorator, world, random, x, z, biome);
     }
+    
+    @Override
+    public boolean ClientPlayCustomAuxFX(Minecraft mcInstance, World world, EntityPlayer player, int iFXID, int i, int j, int k, int iFXSpecificData)
+    {
+    	SCCustomAuxFX.playGourdAuxFX(mcInstance, world, player, iFXID, i,j,k, iFXSpecificData);
+    	
+    	return true;
+	}
 }

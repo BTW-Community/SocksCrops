@@ -12,7 +12,7 @@ public class SCBiomeDecorator {
     	int i;
     	int xPos;
     	int yPos;
-    	int zPos;    	
+    	int zPos;
     	
     	// Short Grass
         for (i = 0; i < 1; ++i)

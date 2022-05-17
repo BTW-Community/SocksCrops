@@ -1,3 +1,7 @@
+# Changes marked with SCADDON
+
 BlockMycelium
 BiomeGenBase
 GenLayerRiverMix
+GuiIngame
+SlotArmor
