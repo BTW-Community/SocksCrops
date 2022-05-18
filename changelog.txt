@@ -30,6 +30,11 @@
 
 - Edited GuiIngame and SlotArmor to make new Pumpkins Wearable
 
+- Added Pie Crust 
+- Added Pie and Cake Slices
+- Added Pie Recipes
+- Added Gourd Recipes
+- Changed Pumpkin Pie to require Pie Crust + Pumpkin
 
 ## Known Issues ##
 - Double Tall Grass and Ferns sometimes spawn ontop of each otherx

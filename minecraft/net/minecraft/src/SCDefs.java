@@ -1,7 +1,5 @@
 package net.minecraft.src;
 
-import com.prupe.mcpatcher.mal.block.RenderBlocksUtils;
-
 public class SCDefs {
 	
 	// --- BLOCK ID's --- //
@@ -147,9 +145,10 @@ public class SCDefs {
 //		id_blueberryPieSlice = 31039;
 	
 	// Other Pies
-//	private static int
-//		id_pumpkinPieSlice = 31040,
-//		id_cakeSlice = 31041;
+	private static int
+		id_pieBase = 31040,
+		id_pumpkinPieSlice = 31041,
+		id_cakeSlice = 31042;
 	
 //	private static int
 //		id_appleSlice = 31042,
@@ -249,9 +248,10 @@ public class SCDefs {
 //	public static Item blueberryPieCooked;
 //	public static Item blueberryPieSlice;
 //	
-//	// Other Pies
-//	public static Item pumpkinPieSlice;
-//	public static Item cakeSlice;
+	// Other Pies
+	public static Item pieBase;
+	public static Item pumpkinPieSlice;
+	public static Item cakeSlice;
 //	
 //	// Misc Food
 //	public static Item appleSlice;
@@ -276,6 +276,8 @@ public class SCDefs {
 		addPumpkinItemsDefs();
 		addMelonDefs();
 		addMelonItemsDefs();
+		
+		addPieDefs();
 	}	
 
 	private static void addDirtReplacements()
@@ -497,6 +499,13 @@ public class SCDefs {
 	    melonCanarySlice = new SCItemMelonSlice( id_melonCanarySlice - 256, "SCItemMelonYellowSlice");
 	    melonHoneydewSlice = new SCItemMelonSlice( id_melonHoneydewSlice - 256, "SCItemMelonWhiteSlice");
 	    melonCantaloupeSlice = new SCItemMelonSlice( id_melonCantaloupeSlice - 256, "SCItemMelonGreenSlice");
+	}
+
+	private static void addPieDefs()
+	{
+		pieBase = new Item(id_pieBase - 256).setCreativeTab(CreativeTabs.tabFood).setUnlocalizedName("SCItemPieBaseRaw");
+		pumpkinPieSlice = new FCItemFood ( id_pumpkinPieSlice - 256, 1, 2.5F, false, "SCItemPumpkinPieSlice").setAlwaysEdible();
+		cakeSlice = new FCItemFood ( id_cakeSlice - 256, 1, 2.5F, false, "SCItemCakeSlice").setAlwaysEdible();
 	}
 
 }
