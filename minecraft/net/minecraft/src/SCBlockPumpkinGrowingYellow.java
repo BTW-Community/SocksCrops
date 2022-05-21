@@ -73,18 +73,36 @@ public class SCBlockPumpkinGrowingYellow extends SCBlockPumpkinGrowing {
 	
 	//--- Render ---//
 	
+	private boolean vinePass;
+	
 	@Override
 	public boolean RenderBlock(RenderBlocks renderer, int i, int j, int k)
 	{
 		IBlockAccess blockAccess = renderer.blockAccess;
 		int growthLevel = this.GetGrowthLevel(blockAccess, i, j, k);
 		
-		renderer.setRenderBounds( this.GetBlockBoundsFromPoolBasedOnState(blockAccess, i, j, k) );
-		renderer.renderStandardBlock(this, i, j, k);
+		super.RenderBlock(renderer, i, j, k);
 		
+		vinePass = true;
 		this.renderVineConnector(renderer, i, j, k, connectorIcon[growthLevel]);
-		
+		vinePass = false;
 		return true;
+	}
+	
+	@Override
+	public int colorMultiplier(IBlockAccess blockAccess, int x, int y, int z)
+	{
+		if (vinePass) 
+		{
+			if ( getDirection(blockAccess.getBlockMetadata(x, y, z)) == 0 && blockAccess.getBlockId(x, y, z - 1) == SCDefs.gourdVineDead.blockID ||
+					getDirection(blockAccess.getBlockMetadata(x, y, z)) == 2 && blockAccess.getBlockId(x, y, z + 1) == SCDefs.gourdVineDead.blockID ||
+					getDirection(blockAccess.getBlockMetadata(x, y, z)) == 1 && blockAccess.getBlockId(x + 1, y, z) == SCDefs.gourdVineDead.blockID ||
+					getDirection(blockAccess.getBlockMetadata(x, y, z)) == 3 && blockAccess.getBlockId(x - 1, y, z) == SCDefs.gourdVineDead.blockID)
+			{
+				return 0xfb9a35; //hue to dead color
+			}
+		}
+		return super.colorMultiplier(blockAccess, x, y, z);
 	}
 	
 	@Override

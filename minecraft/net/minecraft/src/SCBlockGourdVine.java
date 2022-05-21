@@ -248,8 +248,9 @@ public class SCBlockGourdVine extends BlockDirectional {
 	    targetPos.AddFacingAsOffset( iTargetFacing );
 	    
 	    int targetBlockID = world.getBlockId(targetPos.i, targetPos.j, targetPos.k);
+	    Block block = Block.blocksList[targetBlockID];
 	    
-	    if ( targetBlockID == this.stemBlock || targetBlockID == this.blockID || targetBlockID == this.floweringBlock)
+	    if ( targetBlockID == this.stemBlock || targetBlockID == this.blockID || targetBlockID == this.floweringBlock || block instanceof SCBlockGourdGrowing)
 	    {	
 	    	return true;
 	    	
@@ -272,6 +273,7 @@ public class SCBlockGourdVine extends BlockDirectional {
 	    targetPos.AddFacingAsOffset( iTargetFacing );
 	    
 	    int targetBlockID = r.blockAccess.getBlockId(targetPos.i, targetPos.j, targetPos.k);
+	    
 	    
 	    if ( targetBlockID == this.stemBlock || targetBlockID == this.blockID || targetBlockID == this.floweringBlock )
 	    {	

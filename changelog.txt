@@ -36,5 +36,7 @@
 - Added Gourd Recipes
 - Changed Pumpkin Pie to require Pie Crust + Pumpkin
 
+- Added new Pumpkins to World Gen
+
 ## Known Issues ##
 - Double Tall Grass and Ferns sometimes spawn ontop of each otherx

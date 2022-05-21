@@ -83,6 +83,8 @@ public class SCBlockPumpkinGrowingOrange extends SCBlockPumpkinGrowing {
 		else return GetGourdBounds(16, 16, 16);
 	}	
 	
+	private boolean vinePass;
+	
 	@Override
 	public boolean RenderBlock(RenderBlocks renderer, int i, int j, int k)
 	{
@@ -91,9 +93,26 @@ public class SCBlockPumpkinGrowingOrange extends SCBlockPumpkinGrowing {
 		
 		super.RenderBlock(renderer, i, j, k);
 		
+		vinePass = true;
 		this.renderVineConnector(renderer, i, j, k, connectorIcon[growthLevel]);
-		
+		vinePass = false;
 		return true;
+	}
+	
+	@Override
+	public int colorMultiplier(IBlockAccess blockAccess, int x, int y, int z)
+	{
+		if (vinePass) 
+		{
+			if ( getDirection(blockAccess.getBlockMetadata(x, y, z)) == 0 && blockAccess.getBlockId(x, y, z - 1) == SCDefs.gourdVineDead.blockID ||
+					getDirection(blockAccess.getBlockMetadata(x, y, z)) == 2 && blockAccess.getBlockId(x, y, z + 1) == SCDefs.gourdVineDead.blockID ||
+					getDirection(blockAccess.getBlockMetadata(x, y, z)) == 1 && blockAccess.getBlockId(x + 1, y, z) == SCDefs.gourdVineDead.blockID ||
+					getDirection(blockAccess.getBlockMetadata(x, y, z)) == 3 && blockAccess.getBlockId(x - 1, y, z) == SCDefs.gourdVineDead.blockID)
+			{
+				return 0xfb9a35; //hue to dead color
+			}
+		}
+		return super.colorMultiplier(blockAccess, x, y, z);
 	}
 	
 	protected Icon[] orangeIcon;
@@ -130,6 +149,8 @@ public class SCBlockPumpkinGrowingOrange extends SCBlockPumpkinGrowing {
 		
 		blockIcon = orangeIcon[3];
 	}
+	
+	
 	
 	@Override
     public Icon getIcon( int iSide, int iMetadata )

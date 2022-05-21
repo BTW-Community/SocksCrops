@@ -5,3 +5,4 @@ BiomeGenBase
 GenLayerRiverMix
 GuiIngame
 SlotArmor
+WorldGenPumpkin

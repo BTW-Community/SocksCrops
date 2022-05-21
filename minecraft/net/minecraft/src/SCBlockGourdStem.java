@@ -131,7 +131,7 @@ public class SCBlockGourdStem extends FCBlockCrops {
 		int directionI = Direction.offsetX[targetDirection];
 		int directionK = Direction.offsetZ[targetDirection];
 
-		int finalI = i + directionI;
+		int finalI = i + directionI;	
 		int finalK = k + directionK;
 		
 		if (CanGrowVineAt( world, finalI, j, finalK ))

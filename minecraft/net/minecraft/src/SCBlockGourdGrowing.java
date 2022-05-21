@@ -136,7 +136,7 @@ public abstract class SCBlockGourdGrowing extends SCBlockGourdFalling {
 		for (int growthLevelIndex = 0; growthLevelIndex < 4; growthLevelIndex++) {
 			if (growthLevel == growthLevelIndex)
 			{
-				world.setBlockAndMetadata(i, j, k, SCDefs.pumpkinPossessed.blockID, getPossessedMetaForGrowthLevel(growthLevel));
+				//world.setBlockAndMetadata(i, j, k, SCDefs.pumpkinPossessed.blockID, getPossessedMetaForGrowthLevel(growthLevel));
 				
 				world.playAuxSFX( FCBetterThanWolves.m_iGhastMoanSoundAuxFXID, 
 			            MathHelper.floor_double( i ), MathHelper.floor_double( j ), MathHelper.floor_double( k ), 0 );
@@ -176,7 +176,7 @@ public abstract class SCBlockGourdGrowing extends SCBlockGourdFalling {
 	    
 	    int targetBlockID = world.getBlockId(targetPos.i, targetPos.j, targetPos.k);
 	    
-	    if ( targetBlockID == this.vineBlock || targetBlockID == this.flowerBlock)
+	    if ( targetBlockID == this.vineBlock || targetBlockID == this.flowerBlock || targetBlockID == SCDefs.gourdVineDead.blockID)
 	    {	
 	    	return true;
 	    	
@@ -208,7 +208,7 @@ public abstract class SCBlockGourdGrowing extends SCBlockGourdFalling {
 	    
 	    int targetBlockID = r.blockAccess.getBlockId(targetPos.i, targetPos.j, targetPos.k);
 	    
-	    if ( targetBlockID == this.vineBlock || targetBlockID == this.flowerBlock)
+	    if ( targetBlockID == this.vineBlock || targetBlockID == this.flowerBlock || targetBlockID == SCDefs.gourdVineDead.blockID)
 	    {	
 	    	return true;
 	    }
@@ -236,7 +236,7 @@ public abstract class SCBlockGourdGrowing extends SCBlockGourdFalling {
         return false;
     }
 
-	private boolean secondPass;
+	protected boolean secondPass;
 	
 	abstract Icon getOverlayIcon();
 	

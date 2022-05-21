@@ -72,6 +72,7 @@ public class SCBlockPumpkinGrowingGreen extends SCBlockPumpkinGrowing {
 	}	
 	
 	//--- Render ---//
+	private boolean vinePass;
 	
 	@Override
 	public boolean RenderBlock(RenderBlocks renderer, int i, int j, int k)
@@ -81,7 +82,9 @@ public class SCBlockPumpkinGrowingGreen extends SCBlockPumpkinGrowing {
 		
 		super.RenderBlock(renderer, i, j, k);
 		
+		vinePass = true;
 		this.renderVineConnector(renderer, i, j, k, connectorIcon[growthLevel]);
+		vinePass = false;
 		
 		return true;
 	}
