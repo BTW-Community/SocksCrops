@@ -129,6 +129,12 @@ tile.SCBlockMelonCanaryHarvested.canary_3.name=Canary Melon
 
 tile.melon.name=Old Melon
 
+# Bamboo
+tile.SCBlockBambooShoot.name=Bamboo Shoot
+tile.SCBlockBambooRoot.nameBamboo Root
+tile.SCBlockBambooStalk.name=Bamboo Stalk
+tile.SCBlockBambooPacked.name=Packed Bamboo
+
 # Melon Items
 item.melon.name=Watermelon Slice
 item.SCItemMelonYellowSlice.name=Canary Slice
@@ -139,3 +145,6 @@ item.SCItemMelonGreenSlice.name=Cantaloupe Slice
 item.SCItemPieBaseRaw.name=Pie Crust
 item.SCItemPumpkinPieSlice.name=Pumpkin Pie Slice
 item.SCItemCakeSlice.name=Cake Slice
+
+# Bamboo Items
+item.SCItemBamboo.name=Bamboo

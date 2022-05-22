@@ -81,6 +81,18 @@ public class SCBiomeDecorator {
             }
 		}
     	
+    	//Bamboo
+    	if ( random.nextInt(8) == 0 )
+		{
+			for (i = 0; i < 32; ++i)
+			{
+				xPos = x + random.nextInt(16) + 8;
+				yPos = random.nextInt(128);
+				zPos = z + random.nextInt(16) + 8;
+				(new SCWorldGenBamboo()).generate(world, random, xPos, yPos, zPos);
+			}
+		}
+    	
 	}
 
 	private static void debugRivers(World world,int x,int z) {

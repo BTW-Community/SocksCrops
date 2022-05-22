@@ -95,12 +95,12 @@ public class SCDefs {
 		id_gourdVineDead = 2680,
 		id_gourdStemDead = 2681;
 
-	
 	//Bamboo
-//	private static int	
-//		id_bambooShoot = 2680,
-//		id_bambooRoot = 2681,
-//		id_bambooStalk = 2682;
+	private static int	
+		id_bambooShoot = 2682,
+		id_bambooRoot = 2683,
+		id_bambooStalk = 2684,
+		id_bambooPacked = 2685;
 	
 	//Bushes
 //	private static int
@@ -128,8 +128,8 @@ public class SCDefs {
 		id_pumpkinSoup = 31016;
 	
 	//Bamboo
-//	private static int
-//		id_bambooItem = 31020;
+	private static int
+		id_bambooItem = 31020;
 	
 	//Berry Stuff
 //	private static int
@@ -220,7 +220,11 @@ public class SCDefs {
 	public static Block gourdVineDead;
 	public static Block gourdStemDead;
 	
-//	public static Block bambooShoot, bambooRoot, bambooStalk;
+	public static Block bambooShoot, bambooRoot, bambooStalk;
+	public static Block bambooPacked;
+	
+	public static Block pastryRaw;
+	public static Block pastryCooked;
 //	
 //	public static Block sweetberryBush;
 //	public static Block blueberryBush;
@@ -236,10 +240,10 @@ public class SCDefs {
 	public static Item pumpkinSliceRaw, pumpkinSliceRoasted, pumpkinSliceBoiled;
 	
 //	public static Item pumpkinSoup;
-//	
-//	// Bamboo	
-//	public static Item bambooItem;
-//	
+	
+	// Bamboo	
+	public static Item bambooItem;
+	
 //	// Berries
 //	public static Item sweetberry;
 //	public static Item sweetberrySapling;
@@ -285,6 +289,8 @@ public class SCDefs {
 		addMelonItemsDefs();
 		
 		addPieDefs();
+		
+		addBambooDefs();
 	}	
 
 	private static void addDirtReplacements()
@@ -523,4 +529,20 @@ public class SCDefs {
 		cakeSlice = new FCItemFood ( id_cakeSlice - 256, 1, 2.5F, false, "SCItemCakeSlice").setAlwaysEdible();
 	}
 
+	private static void addBambooDefs()
+	{
+		bambooShoot = new SCBlockBambooShoot(id_bambooShoot);
+		Item.itemsList[bambooShoot.blockID] = new ItemBlock(id_bambooShoot - 256);
+		
+		bambooRoot = new SCBlockBambooRoot(id_bambooRoot);
+		Item.itemsList[bambooRoot.blockID] = new ItemBlock(id_bambooRoot - 256);
+		
+		bambooStalk = new SCBlockBambooStalk(id_bambooStalk);
+		Item.itemsList[bambooStalk.blockID] = new ItemBlock(id_bambooStalk - 256);
+		
+		bambooPacked = new FCBlockDirectional(id_bambooPacked, Material.wood, new String[] {"SCBlockBambooPacked_top"}, new String[] {"SCBlockBambooPacked_side"}).setUnlocalizedName("SCBlockBambooPacked");
+		Item.itemsList[bambooPacked.blockID] = new ItemBlock(id_bambooPacked - 256);
+		
+		bambooItem = new SCItemBamboo(id_bambooItem - 256);
+	}
 }

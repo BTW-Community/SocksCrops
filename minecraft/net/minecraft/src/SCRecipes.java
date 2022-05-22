@@ -8,8 +8,9 @@ public class SCRecipes {
 	{
 		addPieRecipes();
 		addGourdRecipes();
+		addBambooRecipes();
 	}
-	
+
 	//Saw recipes
     public static void removeSawRecipe(ItemStack[] outputStacks, Block block, int[] metadata) {
     	FCCraftingManagerSaw.instance.removeRecipe(outputStacks, block, metadata);
@@ -100,21 +101,45 @@ public class SCRecipes {
 		// Pumpkin Pie
 		FCRecipes.AddShapelessRecipe( new ItemStack( FCBetterThanWolves.fcItemPastryUncookedPumpkinPie, 1 ), 
 				new Object[] {	    		
-				new ItemStack( FCBetterThanWolves.fcBlockPumpkinFresh ),
-	    		new ItemStack( SCDefs.pieBase ),
-		} );
+					new ItemStack( FCBetterThanWolves.fcBlockPumpkinFresh ),
+					new ItemStack( SCDefs.pieBase ),
+		});
 		
 		for (int i = 0; i < 4; i++)
 		{
 			int mature = (i * 4) + 3; //only meta 3, 7, 11 and 15 which are the mature harvested pumpkins
 			
 			FCRecipes.AddShapelessRecipe( new ItemStack( FCBetterThanWolves.fcItemPastryUncookedPumpkinPie, 1 ), 
-					new Object[] {	    		
+				new Object[] {	    		
 		    		new ItemStack( SCDefs.pumpkinHarvested, 1, mature ),
 		    		new ItemStack( SCDefs.pieBase ),
-			} );			
+			});			
 		}
+		
+		
+		// Pumpkin Pie via Packing
+//		FCRecipes.addPistonPackingRecipe(FCBetterThanWolves.fcUnfiredPottery, FCBlockUnfiredPottery.m_iSubtypeUncookedPumpkinPie,
+//				new ItemStack[] {	    		
+//					new ItemStack( FCBetterThanWolves.fcBlockPumpkinFresh ),
+//					new ItemStack( SCDefs.pieBase )
+//	    });
+//		
+//		for (int i = 0; i < 4; i++)
+//		{
+//			int mature = (i * 4) + 3; //only meta 3, 7, 11 and 15 which are the mature harvested pumpkins
+//			
+//			FCRecipes.addPistonPackingRecipe(FCBetterThanWolves.fcUnfiredPottery, FCBlockUnfiredPottery.m_iSubtypeUncookedPumpkinPie,
+//					new ItemStack[] {	    		
+//						new ItemStack( SCDefs.pumpkinHarvested, 1, mature),
+//						new ItemStack( SCDefs.pieBase )
+//		    });		
+//		}
 	}
-
-
+	
+	private static void addBambooRecipes()
+	{
+		FCRecipes.addPistonPackingRecipe(SCDefs.bambooPacked,
+				new ItemStack(SCDefs.bambooItem, 8));
+		
+	}
 }

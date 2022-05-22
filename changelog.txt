@@ -38,5 +38,9 @@
 
 - Added new Pumpkins to World Gen
 
+- Added Bamboo 
+- Added to Bamboo World Gen
+- Added Bamboo Packing
+
 ## Known Issues ##
 - Double Tall Grass and Ferns sometimes spawn ontop of each otherx
