@@ -102,6 +102,11 @@ public class SCDefs {
 		id_bambooStalk = 2684,
 		id_bambooPacked = 2685;
 	
+	//Pies
+	private static int
+		id_pieRaw = 2690,
+		id_pieCooked = 2691;
+	
 	//Bushes
 //	private static int
 //		id_sweetberryBush = 2683,
@@ -113,9 +118,10 @@ public class SCDefs {
 	// 31000 - 31299
 	
 	//Tools
-//	private static int
-//		id_knifeStone = 31000,
-//		id_knifeIron = 31001;
+	private static int
+		id_knifeStone = 31000,
+		id_knifeIron = 31001,
+		id_knifeDiamond = 31002;
 	
 	//Pumpkin & Melon
 	private static int
@@ -151,7 +157,8 @@ public class SCDefs {
 	private static int
 		id_pieBase = 31040,
 		id_pumpkinPieSlice = 31041,
-		id_cakeSlice = 31042;
+		id_cakeSlice = 31042,
+		id_piePumpkinRaw = 31043;
 	
 //	private static int
 //		id_appleSlice = 31042,
@@ -223,8 +230,8 @@ public class SCDefs {
 	public static Block bambooShoot, bambooRoot, bambooStalk;
 	public static Block bambooPacked;
 	
-	public static Block pastryRaw;
-	public static Block pastryCooked;
+	public static Block pieRaw;
+	public static Block pieCooked;
 //	
 //	public static Block sweetberryBush;
 //	public static Block blueberryBush;
@@ -232,10 +239,10 @@ public class SCDefs {
 	
 	// --- Items ---
 	
-//	// Tools
-//	public static Item knifeStone, knifeIron;
-//	
-//	// Gourds
+	// Tools
+	public static Item knifeStone, knifeIron, knifeDiamond;
+	
+	// Gourds
 	public static Item melonCanarySlice, melonHoneydewSlice, melonCantaloupeSlice;
 	public static Item pumpkinSliceRaw, pumpkinSliceRoasted, pumpkinSliceBoiled;
 	
@@ -263,6 +270,8 @@ public class SCDefs {
 	public static Item pieBase;
 	public static Item pumpkinPieSlice;
 	public static Item cakeSlice;
+	
+	public static Item piePumpkinRaw;
 //	
 //	// Misc Food
 //	public static Item appleSlice;
@@ -271,6 +280,8 @@ public class SCDefs {
 	
 	public static void addDefinitions()
 	{
+		addToolDefs();
+		
 		//Nutrition
 		addDirtReplacements();
 		addGrassDef();
@@ -292,6 +303,13 @@ public class SCDefs {
 		
 		addBambooDefs();
 	}	
+
+	private static void addToolDefs()
+	{
+		knifeStone = new SCItemKnife(id_knifeStone - 256, EnumToolMaterial.STONE, "SCItemKnife_stone");		
+		knifeIron = new SCItemKnife(id_knifeIron - 256, EnumToolMaterial.IRON, "SCItemKnife_iron");			
+		knifeDiamond = new SCItemKnife(id_knifeDiamond - 256, EnumToolMaterial.EMERALD, "SCItemKnife_diamond");			
+	}
 
 	private static void addDirtReplacements()
 	{		
@@ -524,8 +542,16 @@ public class SCDefs {
 
 	private static void addPieDefs()
 	{
+		pieRaw = new SCBlockPieCooked(id_pieRaw);
+		
+		Item.pumpkinPie = Item.replaceItem( Item.pumpkinPie.itemID, SCItemPieRaw.class, SocksCropsAddon.instance, 2, 2.5F, false, "pumpkinPie",
+				id_pieRaw, SCBlockPieCooked.subtypePumpkin);
+
 		pieBase = new Item(id_pieBase - 256).setCreativeTab(CreativeTabs.tabFood).setUnlocalizedName("SCItemPieBaseRaw");
 		pumpkinPieSlice = new FCItemFood ( id_pumpkinPieSlice - 256, 1, 2.5F, false, "SCItemPumpkinPieSlice").setAlwaysEdible();
+		
+		
+		Block.cake = Block.replaceBlock(Block.cake.blockID, SCBlockCake.class, SocksCropsAddon.instance);
 		cakeSlice = new FCItemFood ( id_cakeSlice - 256, 1, 2.5F, false, "SCItemCakeSlice").setAlwaysEdible();
 	}
 

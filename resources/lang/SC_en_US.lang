@@ -135,6 +135,9 @@ tile.SCBlockBambooRoot.nameBamboo Root
 tile.SCBlockBambooStalk.name=Bamboo Stalk
 tile.SCBlockBambooPacked.name=Packed Bamboo
 
+#Pies
+tile.SCBlockPieRaw.pumpkin.name=Oven Ready Pumpkin Pie
+
 # Melon Items
 item.melon.name=Watermelon Slice
 item.SCItemMelonYellowSlice.name=Canary Slice
@@ -148,3 +151,8 @@ item.SCItemCakeSlice.name=Cake Slice
 
 # Bamboo Items
 item.SCItemBamboo.name=Bamboo
+
+# Knives
+item.SCItemKnife_stone.name=Stone Knife
+item.SCItemKnife_iron.name=Iron Knife
+item.SCItemKnife_diamond.name=Diamond Knife

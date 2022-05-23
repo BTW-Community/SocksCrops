@@ -42,5 +42,15 @@
 - Added to Bamboo World Gen
 - Added Bamboo Packing
 
+- Added Pumpkin Pie Packing
+- Added Ability to Place and Eat Pumpkin Pies like Cake
+
+- Added Stone, Iron and Diamond Knives
+- Added Knife Recipes
+- Added Ability to get Pie Slices from Placed Pie
+
+- Replaced Cake
+- Added Ability to get Cake Slices from Placed Cake
+
 ## Known Issues ##
 - Double Tall Grass and Ferns sometimes spawn ontop of each otherx
