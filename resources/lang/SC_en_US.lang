@@ -156,3 +156,11 @@ item.SCItemBamboo.name=Bamboo
 item.SCItemKnife_stone.name=Stone Knife
 item.SCItemKnife_iron.name=Iron Knife
 item.SCItemKnife_diamond.name=Diamond Knife
+
+#Fish
+item.SCItemFishSalmon_raw.name=Raw Salmon
+item.SCItemFishSalmon_cooked.name=Cooked Salmon
+item.SCItemFishCod_raw.name=Raw Cod
+item.SCItemFishCod_cooked.name=Cooked Cod
+item.SCItemFishTropical_raw.name=Raw Tropical Fish
+item.SCItemFishTropical_cooked.name=Cooked Tropical Fish

@@ -52,5 +52,9 @@
 - Replaced Cake
 - Added Ability to get Cake Slices from Placed Cake
 
+- Added Fish Trap
+- Added Salmon, Cod and Tropical Fish
+- Added related Recipes
+
 ## Known Issues ##
 - Double Tall Grass and Ferns sometimes spawn ontop of each otherx

@@ -6,10 +6,10 @@ public class SCDefs {
 	// SocksCrops: 2600 - 2999
 	
 	//Tile Entities
-//	private static int
+	private static int
 //		id_cuttingBoard = 2600,
 //		id_storageJar = 2601,
-//		id_fishTrap = 2602,
+		id_fishTrap = 2602;
 //		id_composter = 2603;
 //		id_cookingPot = 2604,
 //		id_juicer = 2605,
@@ -137,6 +137,14 @@ public class SCDefs {
 	private static int
 		id_bambooItem = 31020;
 	
+	private static int
+		id_salmonRaw = 31030,
+		id_salmonCooked = 31031,
+		id_codRaw = 31032,
+		id_codCooked = 31033,
+		id_tropicalRaw = 31034,
+		id_tropicalCooked = 31035;
+	
 	//Berry Stuff
 //	private static int
 //		id_sweetberry = 31030,
@@ -177,7 +185,7 @@ public class SCDefs {
 	
 //	public static Block cuttingBoard;
 //	public static Block storageJar;
-//	public static Block fishTrap;
+	public static Block fishTrap;
 //	public static Block composter;
 //	public static Block cookingPot;
 //	public static Block juicer;
@@ -251,6 +259,13 @@ public class SCDefs {
 	// Bamboo	
 	public static Item bambooItem;
 	
+	public static Item salmonRaw;
+	public static Item salmonCooked;
+	public static Item codRaw;
+	public static Item codCooked;
+	public static Item tropicalRaw;
+	public static Item tropicalCooked;
+	
 //	// Berries
 //	public static Item sweetberry;
 //	public static Item sweetberrySapling;
@@ -280,6 +295,12 @@ public class SCDefs {
 	
 	public static void addDefinitions()
 	{
+		//TE's
+		addTileEntityDefs();
+		addTileEntityMapping();
+		addTileEntityRenderers();
+		
+		//Tools
 		addToolDefs();
 		
 		//Nutrition
@@ -302,7 +323,25 @@ public class SCDefs {
 		addPieDefs();
 		
 		addBambooDefs();
-	}	
+		
+		addFishDefs();
+	}
+
+	private static void addTileEntityDefs()
+	{
+		TileEntity.addMapping(SCTileEntityFishTrap.class, "SCFishTrap");
+	}
+	
+	private static void addTileEntityMapping()
+	{
+		fishTrap = new SCBlockFishTrap(id_fishTrap);
+		Item.itemsList[fishTrap.blockID] = new ItemBlock(fishTrap.blockID - 256);
+	}
+
+	private static void addTileEntityRenderers()
+	{
+		TileEntityRenderer.instance.addSpecialRendererForClass (SCTileEntityFishTrap.class, new SCTileEntityFishTrapRenderer() );
+	}
 
 	private static void addToolDefs()
 	{
@@ -570,5 +609,18 @@ public class SCDefs {
 		Item.itemsList[bambooPacked.blockID] = new ItemBlock(id_bambooPacked - 256);
 		
 		bambooItem = new SCItemBamboo(id_bambooItem - 256);
+	}
+	
+	private static void addFishDefs()
+	{
+		salmonRaw = new FCItemFood(id_salmonRaw - 256, 3, 0.25F, false, "SCItemFishSalmon_raw");
+		salmonCooked = new FCItemFood(id_salmonCooked - 256, 4, 0.25F, false, "SCItemFishSalmon_cooked");
+		
+		codRaw = new FCItemFood(id_codRaw - 256, 3, 0.25F, false, "SCItemFishCod_raw");
+		codCooked = new FCItemFood(id_codCooked - 256, 4, 0.25F, false, "SCItemFishCod_cooked");
+		
+		tropicalRaw = new FCItemFood(id_tropicalRaw - 256, 3, 0.25F, false, "SCItemFishTropical_raw");
+		tropicalCooked = new FCItemFood(id_tropicalCooked - 256, 4, 0.25F, false, "SCItemFishTropical_cooked");
+		
 	}
 }

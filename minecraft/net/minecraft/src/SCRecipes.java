@@ -10,6 +10,7 @@ public class SCRecipes {
 		addPieRecipes();
 		addGourdRecipes();
 		addBambooRecipes();
+		addFishRecipes();
 	}
 
 	//Saw recipes
@@ -318,8 +319,79 @@ public class SCRecipes {
 	
 	private static void addBambooRecipes()
 	{
+		//Packed Bamboo
 		FCRecipes.addPistonPackingRecipe(SCDefs.bambooPacked,
 				new ItemStack(SCDefs.bambooItem, 8));
 		
+		//FishTrap
+		FCRecipes.AddRecipe( new ItemStack (SCDefs.knifeDiamond),
+				new Object[] {
+						"SBS", 
+						"BFB", 
+						"SBS", 
+						'B', new ItemStack( SCDefs.bambooItem ), 
+						'S', new ItemStack( Item.silk ),
+						'F', new ItemStack( FCBetterThanWolves.fcItemFishHookBone ),
+				});
+	}
+	
+	private static void addFishRecipes()
+	{
+
+		//campfire
+		FCRecipes.AddCampfireRecipe(SCDefs.salmonRaw.itemID, new ItemStack(SCDefs.salmonCooked));
+		FCRecipes.AddCampfireRecipe(SCDefs.codRaw.itemID, new ItemStack(SCDefs.codCooked));
+		FCRecipes.AddCampfireRecipe(SCDefs.tropicalRaw.itemID, new ItemStack(SCDefs.tropicalCooked));
+		
+		//oven
+		FurnaceRecipes.smelting().addSmelting( SCDefs.salmonRaw.itemID, new ItemStack( SCDefs.salmonCooked ), 0 );
+		FurnaceRecipes.smelting().addSmelting( SCDefs.codRaw.itemID, new ItemStack( SCDefs.codCooked ), 0 );
+		FurnaceRecipes.smelting().addSmelting( SCDefs.tropicalRaw.itemID, new ItemStack( SCDefs.tropicalCooked ), 0 );
+		
+		//cauldron
+		for(int i=0;i<3;i++)
+		{
+
+			Item fish;
+			Item fishCooked;
+			
+			switch (i) {
+			case 0:
+				fish = SCDefs.salmonRaw;
+				fishCooked = SCDefs.salmonCooked;
+				break;
+			case 1:
+				fish = SCDefs.codRaw;
+				fishCooked = SCDefs.codCooked;
+				break;
+			case 2:
+				fish = SCDefs.tropicalRaw;
+				fishCooked = SCDefs.tropicalCooked;
+				break;
+
+			default:
+				fish = SCDefs.salmonRaw;
+				fishCooked = SCDefs.salmonCooked;
+				break;
+			}
+			
+			FCRecipes.AddCauldronRecipe(new ItemStack(fishCooked),
+					new ItemStack[] {
+							new ItemStack(fish)
+					});
+			
+			FCRecipes.AddCauldronRecipe( 
+		    		new ItemStack[] { 
+		    			new ItemStack( FCBetterThanWolves.fcItemFishSoup, 2 ),    			
+		    			new ItemStack( Item.bucketEmpty )
+		    		},
+		    		 
+		    		new ItemStack[] {
+						new ItemStack( Item.bucketMilk ), 
+						new ItemStack( fishCooked ),
+						new ItemStack( Item.bowlEmpty, 2 )
+				} );
+		}	
+
 	}
 }
