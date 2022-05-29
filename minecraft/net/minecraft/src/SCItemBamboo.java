@@ -1,5 +1,7 @@
 package net.minecraft.src;
 
+import java.util.List;
+
 public class SCItemBamboo extends Item {
 
 	protected SCItemBamboo(int par1) {
@@ -12,7 +14,6 @@ public class SCItemBamboo extends Item {
     	
     	setCreativeTab(CreativeTabs.tabMaterials);
     	setUnlocalizedName("SCItemBamboo");
-	}
-	
+	}	
 
 }

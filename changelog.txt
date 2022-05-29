@@ -56,5 +56,13 @@
 - Added Salmon, Cod and Tropical Fish
 - Added related Recipes
 
+- Added Berry Bushes
+- Added Berries
+- Added Berry Pies
+- Added Berry Bowl
+
+- Added Sweetberry Bushes to Gen in Taiga
+- Added Blueberry Bushes to Gen in Forest
+
 ## Known Issues ##
 - Double Tall Grass and Ferns sometimes spawn ontop of each otherx

@@ -5,6 +5,8 @@ import java.util.Random;
 public class SCBlockPieCooked extends SCBlockPieBase {
 
 	public static final int subtypePumpkin = 0;
+	public static final int subtypeSweetberry = 4;
+	public static final int subtypeBlueberry = 8;
 	
 	protected SCBlockPieCooked(int blockID) {
 		super(blockID);
@@ -43,22 +45,31 @@ public class SCBlockPieCooked extends SCBlockPieBase {
     {
         int iEatState = GetEatState( world, i, j, k ) + 1; 
 
+    	int sliceID = 0;
+    	int meta =  world.getBlockMetadata(i, j, k);
+    	
+    	if (getType(meta) == subtypePumpkin)
+    		sliceID = SCDefs.pumpkinPieSlice.itemID;
+    	
+    	else if (getType(meta) == subtypeSweetberry)
+    		sliceID = SCDefs.sweetberryPieSlice.itemID;
+    	
+    	else if (getType(meta) == subtypeBlueberry)
+    		sliceID = SCDefs.blueberryPieSlice.itemID;
+    	
+        if(!world.isRemote)
+        {
+        	FCUtilsItem.DropSingleItemAsIfBlockHarvested(world, i, j, k, sliceID, 0);
+        }
+        
         if ( iEatState >= 4 )
         {
             world.setBlockWithNotify( i, j, k, 0 );
         }
         else
         {
-            SetEatState( world, i, j, k, iEatState );                
-        }
-        
-        if(!world.isRemote)
-        {
-        	int sliceID = 0;
-        	 
-        	if (getType(world.getBlockMetadata(i, j, k)) == 0) sliceID = SCDefs.pumpkinPieSlice.itemID;
-        	
-        	FCUtilsItem.DropSingleItemAsIfBlockHarvested(world, i, j, k, sliceID, 0);
+            SetEatState( world, i, j, k, iEatState );
+
         }
 	}
 
@@ -73,15 +84,15 @@ public class SCBlockPieCooked extends SCBlockPieBase {
 //            player.getFoodStats().addStats( 2, 2.5F );
             player.getFoodStats().addStats( 1, 4F );
             
-            int iEatState = GetEatState( world, i, j, k ) + 1; 
+            int newEatState = GetEatState( world, i, j, k ) + 1 ;
 
-            if ( iEatState >= 4 )
+            if ( newEatState >= 4 )
             {
                 world.setBlockWithNotify( i, j, k, 0 );
             }
             else
             {
-                SetEatState( world, i, j, k, iEatState );                
+                SetEatState( world, i, j, k, newEatState );
             }
         }
     	else
@@ -98,9 +109,17 @@ public class SCBlockPieCooked extends SCBlockPieBase {
     
     public int getType( int meta )
     {
-    	if (meta < 4) return 0;
-    	else if (meta < 8) return 1;
-    	else if (meta < 12) return 2;
+    	if (meta < 4) return subtypePumpkin; //Pumpkin
+    	else if (meta >= 4 && meta < 8) return subtypeSweetberry; //Sweetberry
+    	else if (meta >= 8 && meta < 12) return subtypeBlueberry; //Blueberry
+    	else return 12;
+    }
+    
+    public int getTypeForRender( int meta )
+    {
+    	if (meta < 4) return 0; //Pumpkin
+    	else if (meta < 8) return 1; //Sweetberry
+    	else if (meta < 12) return 2; //Blueberry
     	else return 3;
     }
     
@@ -109,11 +128,11 @@ public class SCBlockPieCooked extends SCBlockPieBase {
     	return GetEatState( iBlockAccess.getBlockMetadata( i, j, k ) );
     }
     
-    public void SetEatState( World world, int i, int j, int k, int state )
+    public void SetEatState( World world, int i, int j, int k, int newState )
     {
     	int iMetaData = world.getBlockMetadata( i, j, k );
     	
-		iMetaData = state;
+		iMetaData = iMetaData + 1;
 		
         world.setBlockMetadataWithNotify( i, j, k, iMetaData );
     }
@@ -122,7 +141,9 @@ public class SCBlockPieCooked extends SCBlockPieBase {
 	public int idDropped( int meta, Random random, int fortuneModifier) {
 		
 		if (GetEatState(meta) == 0)
-			if (getType(meta) == 0) return Item.pumpkinPie.itemID;
+			if (getType(meta) == subtypePumpkin) return Item.pumpkinPie.itemID;
+			else if (getType(meta) == subtypeSweetberry) return SCDefs.sweetberryPieCooked.itemID;
+			else if (getType(meta) == subtypeBlueberry) return SCDefs.blueberryPieCooked.itemID;
 			else return 0;
 		else return 0;
 	}
@@ -130,11 +151,8 @@ public class SCBlockPieCooked extends SCBlockPieBase {
 	//----------- Client Side Functionality -----------//
 
     private Icon cookedPie;
-    private Icon cookedPumpkinTop;
-    private Icon cookedPumpkinInside;
-    private Icon cookedPumpkinInside2;
-    private Icon cookedPumpkinInsideHalf;
-    private Icon cookedPumpkinInsideHalfRight;
+    private Icon[] cookedTop = new Icon[4];
+    private Icon[] cookedCrustInside = new Icon[4];
     private Icon[] cookedPieInside = new Icon[4];
    
     protected boolean secondPass;
@@ -143,13 +161,19 @@ public class SCBlockPieCooked extends SCBlockPieBase {
     public void registerIcons( IconRegister register )
     {
 		cookedPie = register.registerIcon( "SCBlockPieCooked" );
-        cookedPumpkinTop = register.registerIcon( "SCBlockPiePumpkinCooked_top" );
-        cookedPumpkinInside = register.registerIcon( "SCBlockPiePumpkinCooked_inside" );
-        cookedPumpkinInside2 = register.registerIcon( "SCBlockPiePumpkinCooked_inside2" );
-        cookedPumpkinInsideHalf = register.registerIcon( "SCBlockPiePumpkinCooked_insideHalf" );
-        cookedPumpkinInsideHalfRight = register.registerIcon( "SCBlockPiePumpkinCooked_insideHalfRight" );
+		
+        cookedTop[0] = register.registerIcon( "SCBlockPieCookedTop_pumpkin" );
+        cookedTop[1] = register.registerIcon( "SCBlockPieCookedTop_sweetberry" );
+        cookedTop[2] = register.registerIcon( "SCBlockPieCookedTop_blueberry" );
+        
+        cookedCrustInside[2] = register.registerIcon( "SCBlockPieCookedOverlay_2" );
+        cookedCrustInside[3] = register.registerIcon( "SCBlockPieCookedOverlay_3" );
+        cookedCrustInside[1] = register.registerIcon( "SCBlockPieCookedOverlay_1" );
+        cookedCrustInside[0] = register.registerIcon( "SCBlockPieCookedOverlay_0" );
        
-        cookedPieInside[0] = register.registerIcon( "SCBlockPiePumpkinCooked_insidePumpkin" );
+        cookedPieInside[0] = register.registerIcon( "SCBlockPieCookedInside_pumpkin" );
+        cookedPieInside[1] = register.registerIcon( "SCBlockPieCookedInside_sweetberry" );
+        cookedPieInside[2] = register.registerIcon( "SCBlockPieCookedInside_blueberry" );
     }
 	
 	
@@ -159,28 +183,28 @@ public class SCBlockPieCooked extends SCBlockPieBase {
 		if (secondPass) {
 			return getIconSecondPass(side, meta);
 		}
-		return cookedPieInside[getType(meta)];
+		return cookedPieInside[getTypeForRender(meta)];
 	}
 
     public Icon getIconSecondPass( int side, int meta )
     {
     	int eatState = GetEatState(meta);
     	
-    	if (side == 1) return cookedPumpkinTop;
+    	if (side == 1) return cookedTop[getTypeForRender(meta)];
     	
     	if (eatState == 1)
     	{
-    		if (side == 3) return cookedPumpkinInsideHalf;
-    		else if (side == 5) return cookedPumpkinInsideHalfRight;
+    		if (side == 3) return cookedCrustInside[1];
+    		else if (side == 5) return cookedCrustInside[0];
     	}
     	else if (eatState == 2)
     	{
-    		if (side == 3) return cookedPumpkinInside;
+    		if (side == 3) return cookedCrustInside[2];
     	}
     	else if (eatState == 3)
     	{
-    		if (side == 3) return cookedPumpkinInside;
-    		else if (side == 5) return cookedPumpkinInside2;
+    		if (side == 3) return cookedCrustInside[2];
+    		else if (side == 5) return cookedCrustInside[3];
     	}
     	else
     	{

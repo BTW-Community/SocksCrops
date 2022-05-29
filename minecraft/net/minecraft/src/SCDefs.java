@@ -108,9 +108,9 @@ public class SCDefs {
 		id_pieCooked = 2691;
 	
 	//Bushes
-//	private static int
-//		id_sweetberryBush = 2683,
-//		id_blueberryBush = 2684;
+	private static int
+		id_sweetberryBush = 2695,
+		id_blueberryBush = 2696;
 	
 	private static int maxID = 2999;
 	
@@ -130,8 +130,7 @@ public class SCDefs {
 		id_melonCantaloupeSlice = 31012,
 		id_pumpkinSliceRaw = 31013,
 		id_pumpkinSliceRoasted = 31014,
-		id_pumpkinSliceBoiled = 31015,
-		id_pumpkinSoup = 31016;
+		id_pumpkinSliceBoiled = 31015;
 	
 	//Bamboo
 	private static int
@@ -145,43 +144,31 @@ public class SCDefs {
 		id_tropicalRaw = 31034,
 		id_tropicalCooked = 31035;
 	
-	//Berry Stuff
-//	private static int
-//		id_sweetberry = 31030,
-//		id_sweetberrySapling = 31031,
-//		
-//		id_blueberry = 31032,
-//		id_blueberrySapling = 31033,
-//	
-//		id_sweetberryPieRaw = 31034,
-//		id_sweetberryPieCooked = 31035,
-//		id_sweetberryPieSlice = 31036,
-//		
-//		id_blueberryPieRaw = 31037,
-//		id_blueberryPieCooked = 31038,
-//		id_blueberryPieSlice = 31039;
-	
 	// Other Pies
 	private static int
-		id_pieBase = 31040,
+		id_pieCrust = 31040,
 		id_pumpkinPieSlice = 31041,
-		id_cakeSlice = 31042,
-		id_piePumpkinRaw = 31043;
+		id_cakeSlice = 31042;
 	
-//	private static int
-//		id_appleSlice = 31042,
-//		id_applePieRaw = 31043,
-//		id_applePieCooked = 31044,
-//		id_applePieSlice = 31045;
+	//Berry Stuff
+	private static int
+		id_sweetberry = 31043,
+		id_sweetberrySapling = 31044,
+		
+		id_sweetberryPieRaw = 31045,
+		id_sweetberryPieCooked = 31046,
+		id_sweetberryPieSlice = 31047,
+		
+		id_blueberry = 31048,
+		id_blueberrySapling = 31049,
+		
+		id_blueberryPieRaw = 31050,
+		id_blueberryPieCooked = 31051,
+		id_blueberryPieSlice = 31052,
+		
+		id_berryBowl = 31053;
 	
-	// Misc Fruit
-//	private static int
-//		id_fruitSaladBerries = 31050,
-//		id_fruitSaladMelon = 31051;
-	
-
-	
-	// --- Blocks ---
+	// --- Blocks --- //
 	
 //	public static Block cuttingBoard;
 //	public static Block storageJar;
@@ -223,8 +210,6 @@ public class SCDefs {
 	public static Block pumpkinCarvedDead;
 	public static Block pumpkinJack;
 					
-	
-	
 	public static Block melonStem;
 	public static Block melonVine;
 	public static Block melonVineFlowering;
@@ -240,10 +225,9 @@ public class SCDefs {
 	
 	public static Block pieRaw;
 	public static Block pieCooked;
-//	
-//	public static Block sweetberryBush;
-//	public static Block blueberryBush;
 	
+	public static Block sweetberryBush;
+	public static Block blueberryBush;
 	
 	// --- Items ---
 	
@@ -253,8 +237,6 @@ public class SCDefs {
 	// Gourds
 	public static Item melonCanarySlice, melonHoneydewSlice, melonCantaloupeSlice;
 	public static Item pumpkinSliceRaw, pumpkinSliceRoasted, pumpkinSliceBoiled;
-	
-//	public static Item pumpkinSoup;
 	
 	// Bamboo	
 	public static Item bambooItem;
@@ -266,40 +248,37 @@ public class SCDefs {
 	public static Item tropicalRaw;
 	public static Item tropicalCooked;
 	
-//	// Berries
-//	public static Item sweetberry;
-//	public static Item sweetberrySapling;
-//	
-//	public static Item blueberry;
-//	public static Item blueberrySapling;
-//	
-//	public static Item sweetberryPieRaw;
-//	public static Item sweetberryPieCooked;
-//	public static Item sweetberryPieSlice;
-//	
-//	public static Item blueberryPieRaw;
-//	public static Item blueberryPieCooked;
-//	public static Item blueberryPieSlice;
-//	
 	// Other Pies
-	public static Item pieBase;
+	public static Item pieCrust;
 	public static Item pumpkinPieSlice;
 	public static Item cakeSlice;
 	
-	public static Item piePumpkinRaw;
-//	
-//	// Misc Food
-//	public static Item appleSlice;
-//	public static Item fruitBowlBerries;
-
+	// Berries
+	public static Item sweetberry;
+	public static Item sweetberrySapling;
 	
-	public static void addDefinitions()
+	public static Item sweetberryPieRaw;
+	public static Item sweetberryPieCooked;
+	public static Item sweetberryPieSlice;
+	
+	public static Item blueberry;
+	public static Item blueberrySapling;	
+
+	public static Item blueberryPieRaw;
+	public static Item blueberryPieCooked;
+	public static Item blueberryPieSlice;
+	
+	public static Item berryBowl;
+	
+	public static void addTileEntityDefinitions()
 	{
-		//TE's
 		addTileEntityDefs();
 		addTileEntityMapping();
 		addTileEntityRenderers();
-		
+	}
+	
+	public static void addDefinitions()
+	{
 		//Tools
 		addToolDefs();
 		
@@ -325,6 +304,8 @@ public class SCDefs {
 		addBambooDefs();
 		
 		addFishDefs();
+		
+		addBerryDefs();
 	}
 
 	private static void addTileEntityDefs()
@@ -581,17 +562,38 @@ public class SCDefs {
 
 	private static void addPieDefs()
 	{
-		pieRaw = new SCBlockPieCooked(id_pieRaw);
-		
-		Item.pumpkinPie = Item.replaceItem( Item.pumpkinPie.itemID, SCItemPieRaw.class, SocksCropsAddon.instance, 2, 2.5F, false, "pumpkinPie",
-				id_pieRaw, SCBlockPieCooked.subtypePumpkin);
-
-		pieBase = new Item(id_pieBase - 256).setCreativeTab(CreativeTabs.tabFood).setUnlocalizedName("SCItemPieBaseRaw");
-		pumpkinPieSlice = new FCItemFood ( id_pumpkinPieSlice - 256, 1, 2.5F, false, "SCItemPumpkinPieSlice").setAlwaysEdible();
-		
-		
+		// Cake		
 		Block.cake = Block.replaceBlock(Block.cake.blockID, SCBlockCake.class, SocksCropsAddon.instance);
 		cakeSlice = new FCItemFood ( id_cakeSlice - 256, 1, 2.5F, false, "SCItemCakeSlice").setAlwaysEdible();
+		
+		//Pie
+		pieRaw = new SCBlockPieRaw(id_pieRaw);
+		pieCooked = new SCBlockPieCooked(id_pieCooked);
+		
+		
+		// Pumpkin
+		pumpkinPieSlice = new FCItemFood ( id_pumpkinPieSlice - 256, 1, 2.5F, false, "SCItemPieSlice_pumpkin").setAlwaysEdible();
+		
+		Item.pumpkinPie = Item.replaceItem( Item.pumpkinPie.itemID, SCItemPie.class, SocksCropsAddon.instance, 2, 2.5F, false, "pumpkinPie",
+				id_pieCooked, SCBlockPieCooked.subtypePumpkin);
+		
+		//Berry Pies
+		sweetberryPieRaw = new FCItemPlacesAsBlock(id_sweetberryPieRaw - 256, id_pieRaw, SCBlockPieRaw.subtypeSweetberry, "SCItemPieRaw_sweetberry").SetBuoyant().setCreativeTab(CreativeTabs.tabFood);
+		blueberryPieRaw = new FCItemPlacesAsBlock(id_blueberryPieRaw - 256, id_pieRaw, SCBlockPieRaw.subtypeBlueberry, "SCItemPieRaw_blueberry").SetBuoyant().setCreativeTab(CreativeTabs.tabFood);
+		
+		sweetberryPieCooked = new SCItemPie(id_sweetberryPieCooked - 256, 2, 2.5F, false, "SCItemPieCooked_sweetberry",
+				id_pieCooked, SCBlockPieCooked.subtypeSweetberry);
+		
+		blueberryPieCooked = new SCItemPie(id_blueberryPieCooked - 256, 2, 2.5F, false, "SCItemPieCooked_blueberry",
+				id_pieCooked, SCBlockPieCooked.subtypeBlueberry);
+		
+		sweetberryPieSlice = new FCItemFood ( id_sweetberryPieSlice - 256, 1, 2.5F, false, "SCItemPieSlice_sweetberry").setAlwaysEdible();
+		blueberryPieSlice = new FCItemFood ( id_blueberryPieSlice - 256, 1, 2.5F, false, "SCItemPieSlice_blueberry").setAlwaysEdible();
+
+		//Crust
+		pieCrust = new Item(id_pieCrust - 256).SetBuoyant().setCreativeTab(CreativeTabs.tabFood).setUnlocalizedName("SCItemPieRaw_crust");
+		
+
 	}
 
 	private static void addBambooDefs()
@@ -613,14 +615,38 @@ public class SCDefs {
 	
 	private static void addFishDefs()
 	{
-		salmonRaw = new FCItemFood(id_salmonRaw - 256, 3, 0.25F, false, "SCItemFishSalmon_raw");
+		salmonRaw = new FCItemFood(id_salmonRaw - 256, 3, 0.25F, false, "SCItemFishSalmon_raw").SetStandardFoodPoisoningEffect();
 		salmonCooked = new FCItemFood(id_salmonCooked - 256, 4, 0.25F, false, "SCItemFishSalmon_cooked");
 		
-		codRaw = new FCItemFood(id_codRaw - 256, 3, 0.25F, false, "SCItemFishCod_raw");
+		codRaw = new FCItemFood(id_codRaw - 256, 3, 0.25F, false, "SCItemFishCod_raw").SetStandardFoodPoisoningEffect();
 		codCooked = new FCItemFood(id_codCooked - 256, 4, 0.25F, false, "SCItemFishCod_cooked");
 		
-		tropicalRaw = new FCItemFood(id_tropicalRaw - 256, 3, 0.25F, false, "SCItemFishTropical_raw");
+		tropicalRaw = new FCItemFood(id_tropicalRaw - 256, 3, 0.25F, false, "SCItemFishTropical_raw").SetStandardFoodPoisoningEffect();
 		tropicalCooked = new FCItemFood(id_tropicalCooked - 256, 4, 0.25F, false, "SCItemFishTropical_cooked");
+	}
+	
+	private static void addBerryDefs()
+	{
+		//Sweetberry
+		sweetberryBush = new SCBlockBerryBush(id_sweetberryBush, id_sweetberry, id_sweetberrySapling, "SCBlockBushSweetberry");
+		Item.itemsList[sweetberryBush.blockID] = new ItemBlock(id_sweetberryBush - 256);
 		
+		sweetberrySapling = new FCItemSeeds(id_sweetberrySapling - 256, id_sweetberryBush)
+				.setCreativeTab(CreativeTabs.tabDecorations)
+				.setUnlocalizedName( "SCItemBushSapling_sweetberry" );
+		
+		sweetberry = new FCItemFood(id_sweetberry - 256, 1, 0.0F, false, "SCItemSweetberry");
+		
+		//Blueberry
+		blueberryBush = new SCBlockBerryBush(id_blueberryBush, id_blueberry, id_blueberrySapling, "SCBlockBushBlueberry");
+		Item.itemsList[blueberryBush.blockID] = new ItemBlock(id_blueberryBush - 256);
+		
+		blueberrySapling = new FCItemSeeds(id_blueberrySapling - 256, id_blueberryBush)
+				.setCreativeTab(CreativeTabs.tabDecorations)
+				.setUnlocalizedName( "SCItemBushSapling_blueberry" );
+		
+		blueberry = new FCItemFood(id_blueberry - 256, 1, 0.0F, false, "SCItemBlueberry");
+		
+		berryBowl = new FCItemSoup(id_berryBowl - 256, 2, 0.25F, false, "SCItemFruitBowl_berries");
 	}
 }

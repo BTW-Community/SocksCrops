@@ -42,5 +42,12 @@ public abstract class SCBlockPieBase extends Block {
     {
         return false;
     }
+	
+	@Override
+	public boolean RenderBlock(RenderBlocks renderer, int i, int j, int k) {
+		renderer.setRenderBounds(GetBlockBoundsFromPoolBasedOnState(renderer.blockAccess, i, j, k));
+		renderer.renderStandardBlock(this, i, j, k);
+		return true;
+	}
 
 }

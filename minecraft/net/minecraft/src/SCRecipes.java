@@ -7,25 +7,14 @@ public class SCRecipes {
 	public static void addRecipes()
 	{
 		addKnifeRecipes();
+		addKnifeCuttingRecipes();
 		addPieRecipes();
 		addGourdRecipes();
 		addBambooRecipes();
 		addFishRecipes();
-	}
+		addBerryRecipes();
+	}	
 
-	//Saw recipes
-    public static void removeSawRecipe(ItemStack[] outputStacks, Block block, int[] metadata) {
-    	FCCraftingManagerSaw.instance.removeRecipe(outputStacks, block, metadata);
-    }
-    
-    public static void removeSawRecipe(ItemStack outputStack, Block block) {
-    	removeSawRecipe(outputStack, block, ignoreMetadata);
-    }
-    
-    public static void removeSawRecipe(ItemStack outputStack, Block block, int metadata) {
-    	removeSawRecipe(new ItemStack[] {outputStack}, block, new int[] {metadata});
-    }
-    
     //Knife Cutting
     public static void addKnifeCuttingRecipe(ItemStack output, ItemStack[] secondaryOutputs, ItemStack input)
     {
@@ -110,6 +99,7 @@ public class SCRecipes {
 						'S', new ItemStack( Item.stick, 1 )
 				});
 		
+		//smelting
 		FCRecipes.AddStokedCrucibleRecipe( new ItemStack( FCBetterThanWolves.fcItemNuggetIron, 6 ), 
 				new ItemStack[] {
 					new ItemStack( SCDefs.knifeIron, 1, ignoreMetadata )
@@ -132,12 +122,15 @@ public class SCRecipes {
 						'S', new ItemStack( Item.stick, 1 )
 				});
 		
+		//smelting
 		FCRecipes.AddStokedCrucibleRecipe( new ItemStack(FCBetterThanWolves.fcItemIngotDiamond, 1), 
 				new ItemStack[] {
 					new ItemStack(SCDefs.knifeDiamond, 1, ignoreMetadata)
 				});
-		
-		
+	}
+	
+	private static void addKnifeCuttingRecipes()
+	{
 		// --- Pumpkin --- //
 		
 		Item pumpkinSlice = SCDefs.pumpkinSliceRaw;
@@ -270,7 +263,7 @@ public class SCRecipes {
 			} );
 		
 		// Pie Base
-		FCRecipes.AddShapelessRecipe( new ItemStack( SCDefs.pieBase, 1 ), 
+		FCRecipes.AddShapelessRecipe( new ItemStack( SCDefs.pieCrust, 1 ), 
 				new Object[] {	    		
 	    		new ItemStack( Item.sugar ),
 	    		new ItemStack( FCBetterThanWolves.fcItemRawEgg ),
@@ -283,7 +276,7 @@ public class SCRecipes {
 		FCRecipes.AddShapelessRecipe( new ItemStack( FCBetterThanWolves.fcItemPastryUncookedPumpkinPie, 1 ), 
 				new Object[] {	    		
 					new ItemStack( FCBetterThanWolves.fcBlockPumpkinFresh ),
-					new ItemStack( SCDefs.pieBase ),
+					new ItemStack( SCDefs.pieCrust ),
 		});
 		
 		for (int i = 0; i < 4; i++)
@@ -293,16 +286,43 @@ public class SCRecipes {
 			FCRecipes.AddShapelessRecipe( new ItemStack( FCBetterThanWolves.fcItemPastryUncookedPumpkinPie, 1 ), 
 				new Object[] {	    		
 		    		new ItemStack( SCDefs.pumpkinHarvested, 1, mature ),
-		    		new ItemStack( SCDefs.pieBase ),
+		    		new ItemStack( SCDefs.pieCrust ),
 			});			
 		}
 		
+		//Berry Pie
+		FCRecipes.AddShapelessRecipe( new ItemStack( SCDefs.sweetberryPieRaw, 1 ), 
+				new Object[] {	    		
+					new ItemStack( SCDefs.sweetberry),
+					new ItemStack( SCDefs.sweetberry),
+					new ItemStack( SCDefs.sweetberry),
+					new ItemStack( SCDefs.sweetberry),
+					new ItemStack( Item.sugar),
+					new ItemStack( SCDefs.pieCrust ),
+		});
+		
+		FCRecipes.AddShapelessRecipe( new ItemStack( SCDefs.blueberryPieRaw, 1 ), 
+				new Object[] {	    		
+					new ItemStack( SCDefs.blueberry),
+					new ItemStack( SCDefs.blueberry),
+					new ItemStack( SCDefs.blueberry),
+					new ItemStack( SCDefs.blueberry),
+					new ItemStack( Item.sugar),
+					new ItemStack( SCDefs.pieCrust ),
+		});
+		
+		//baking
+		FCRecipes.addKilnRecipe(new ItemStack(SCDefs.sweetberryPieCooked), SCDefs.pieRaw, SCBlockPieRaw.subtypeSweetberry);
+		FCRecipes.addKilnRecipe(new ItemStack(SCDefs.blueberryPieCooked), SCDefs.pieRaw, SCBlockPieRaw.subtypeBlueberry);
+		
+		FurnaceRecipes.smelting().addSmelting( SCDefs.sweetberryPieRaw.itemID, new ItemStack( SCDefs.sweetberryPieCooked ), 0 );
+		FurnaceRecipes.smelting().addSmelting( SCDefs.blueberryPieRaw.itemID, new ItemStack( SCDefs.blueberryPieCooked ), 0 );
 		
 		// Pumpkin Pie via Packing
 		FCRecipes.addPistonPackingRecipe(FCBetterThanWolves.fcUnfiredPottery, FCBlockUnfiredPottery.m_iSubtypeUncookedPumpkinPie,
 				new ItemStack[] {	    		
 					new ItemStack( FCBetterThanWolves.fcBlockPumpkinFresh ),
-					new ItemStack( SCDefs.pieBase )
+					new ItemStack( SCDefs.pieCrust )
 	    });
 		
 		for (int i = 0; i < 4; i++)
@@ -312,9 +332,24 @@ public class SCRecipes {
 			FCRecipes.addPistonPackingRecipe(FCBetterThanWolves.fcUnfiredPottery, FCBlockUnfiredPottery.m_iSubtypeUncookedPumpkinPie,
 					new ItemStack[] {	    		
 						new ItemStack( SCDefs.pumpkinHarvested, 1, mature),
-						new ItemStack( SCDefs.pieBase )
+						new ItemStack( SCDefs.pieCrust )
 		    });		
 		}
+		
+		// Berry Pie via Packing
+		FCRecipes.addPistonPackingRecipe(SCDefs.pieRaw, SCBlockPieRaw.subtypeSweetberry,
+				new ItemStack[] {	    		
+					new ItemStack( SCDefs.sweetberry, 4 ),
+					new ItemStack( Item.sugar, 1 ),
+					new ItemStack( SCDefs.pieCrust )
+	    });
+		
+		FCRecipes.addPistonPackingRecipe(SCDefs.pieRaw, SCBlockPieRaw.subtypeBlueberry,
+				new ItemStack[] {	    		
+					new ItemStack( SCDefs.blueberry, 4 ),
+					new ItemStack( Item.sugar, 1 ),
+					new ItemStack( SCDefs.pieCrust )
+	    });
 	}
 	
 	private static void addBambooRecipes()
@@ -349,7 +384,7 @@ public class SCRecipes {
 		FurnaceRecipes.smelting().addSmelting( SCDefs.tropicalRaw.itemID, new ItemStack( SCDefs.tropicalCooked ), 0 );
 		
 		//cauldron
-		for(int i=0;i<3;i++)
+		for(int i=0; i<3; i++)
 		{
 
 			Item fish;
@@ -391,7 +426,17 @@ public class SCRecipes {
 						new ItemStack( fishCooked ),
 						new ItemStack( Item.bowlEmpty, 2 )
 				} );
-		}	
-
+		}
+	}
+	
+	private static void addBerryRecipes()
+	{
+		FCRecipes.AddShapelessRecipe( new ItemStack( SCDefs.berryBowl, 1 ), 
+				new Object[] {	    		
+					new ItemStack( SCDefs.blueberry),
+					new ItemStack( SCDefs.sweetberry),
+					new ItemStack( Item.sugar),
+					new ItemStack( Item.bowlEmpty),
+		});
 	}
 }
