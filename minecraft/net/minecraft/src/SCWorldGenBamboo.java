@@ -36,7 +36,7 @@ public class SCWorldGenBamboo extends WorldGenerator
             int plantY = y;
             int plantZ = z + random.nextInt(4) - random.nextInt(4);
 
-            if (world.isAirBlock(plantX, y, plantZ))
+            if (world.isAirBlock(plantX, y, plantZ) && world.isAirBlock(plantX, y + 1, plantZ))
             {
 
                 int metaHeight =  11 + random.nextInt(5);
