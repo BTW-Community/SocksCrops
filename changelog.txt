@@ -64,5 +64,7 @@
 - Added Sweetberry Bushes to Gen in Taiga
 - Added Blueberry Bushes to Gen in Forest
 
+- Added Chopping Board and Recipes
+
 ## Known Issues ##
 - Double Tall Grass and Ferns sometimes spawn ontop of each otherx

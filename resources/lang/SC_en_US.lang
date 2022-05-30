@@ -1,3 +1,7 @@
+# Tile Entities
+tile.SCBlockFishTrap.name=Fish Trap
+item.SCItemChoppingBoard_spruce.name=Chopping Board
+
 # Grass
 tile.SCBlockGrassNutrition.grass0.name=Grass Block
 tile.SCBlockGrassNutrition.grass0_sparse.name=Grass Block
@@ -145,9 +149,18 @@ item.SCItemMelonWhiteSlice.name=Honeydew Slice
 item.SCItemMelonGreenSlice.name=Cantaloupe Slice
 
 # Pie Items
-item.SCItemPieBaseRaw.name=Pie Crust
-item.SCItemPumpkinPieSlice.name=Pumpkin Pie Slice
 item.SCItemCakeSlice.name=Cake Slice
+item.SCItemPieRaw_crust.name=Pie Crust
+item.SCItemPieSlice_pumpkin.name=Pumpkin Pie Slice
+
+item.SCItemPieRaw_sweetberry.name=Oven Ready Sweetberry Pie
+item.SCItemPieRaw_blueberry.name=Oven Ready Blueberry Pie
+
+item.SCItemPieCooked_sweetberry.name=Sweetberry Pie
+item.SCItemPieCooked_blueberry.name=Blueberry Pie
+
+item.SCItemPieSlice_sweetberry.name=Sweetberry Pie Slice
+item.SCItemPieSlice_blueberry.name=Blueberry Pie Slice
 
 # Bamboo Items
 item.SCItemBamboo.name=Bamboo
@@ -164,3 +177,12 @@ item.SCItemFishCod_raw.name=Raw Cod
 item.SCItemFishCod_cooked.name=Cooked Cod
 item.SCItemFishTropical_raw.name=Raw Tropical Fish
 item.SCItemFishTropical_cooked.name=Cooked Tropical Fish
+
+#Bushes
+item.SCItemBushSapling_sweetberry.name=Sweetberry Bush Roots
+item.SCItemBushSapling_blueberry.name=Blueberry Bush Roots
+
+item.SCItemSweetberry.name=Sweetberry
+item.SCItemBlueberry.name=Blueberry
+
+item.SCItemFruitBowl_berries.name=Berry Fruit Bowl

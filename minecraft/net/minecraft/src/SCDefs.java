@@ -7,7 +7,7 @@ public class SCDefs {
 	
 	//Tile Entities
 	private static int
-//		id_cuttingBoard = 2600,
+		id_choppingBoard = 2600,
 //		id_storageJar = 2601,
 		id_fishTrap = 2602;
 //		id_composter = 2603;
@@ -170,7 +170,7 @@ public class SCDefs {
 	
 	// --- Blocks --- //
 	
-//	public static Block cuttingBoard;
+	public static Block choppingBoard;
 //	public static Block storageJar;
 	public static Block fishTrap;
 //	public static Block composter;
@@ -311,17 +311,28 @@ public class SCDefs {
 	private static void addTileEntityDefs()
 	{
 		TileEntity.addMapping(SCTileEntityFishTrap.class, "SCFishTrap");
+		TileEntity.addMapping(SCTileEntityChoppingBoard.class, "SCChoppingBoard");
 	}
 	
 	private static void addTileEntityMapping()
 	{
 		fishTrap = new SCBlockFishTrap(id_fishTrap);
-		Item.itemsList[fishTrap.blockID] = new ItemBlock(fishTrap.blockID - 256);
+		Item.itemsList[fishTrap.blockID] = new ItemBlock(fishTrap.blockID - 256)
+				.setMaxStackSize( 1 );
+		
+		choppingBoard = new SCBlockChoppingBoard(id_choppingBoard);
+		Item.itemsList[choppingBoard.blockID] =( new ItemReed( id_choppingBoard - 256, choppingBoard ) )
+				.SetBuoyant()
+				.SetIncineratedInCrucible()
+				.setMaxStackSize( 1 )
+				.setUnlocalizedName( "SCItemChoppingBoard_spruce" )
+				.setCreativeTab( CreativeTabs.tabDecorations );
 	}
 
 	private static void addTileEntityRenderers()
 	{
 		TileEntityRenderer.instance.addSpecialRendererForClass (SCTileEntityFishTrap.class, new SCTileEntityFishTrapRenderer() );
+		TileEntityRenderer.instance.addSpecialRendererForClass (SCTileEntityChoppingBoard.class, new SCTileEntityChoppingBoardRenderer() );
 	}
 
 	private static void addToolDefs()
@@ -460,8 +471,9 @@ public class SCDefs {
 				"orange_0", "orange_1", "orange_2", "orange_3", 
 				"green_0", "green_1", "green_2", "green_3",
 				"yellow_0", "yellow_1", "yellow_2", "yellow_3",
-				"white_0", "white_1", "white_2", "white_3"
-		});
+				"white_0", "white_1", "white_2", "white_3" 
+				})
+				.setMaxStackSize( 16 );
 
 		//Carved
 		pumpkinCarved = new SCBlockPumpkinCarved(id_pumpkinCarved);
@@ -529,13 +541,17 @@ public class SCDefs {
 				"water_0", "water_1", "water_2", "water_3", //Water
 				"honeydew_0", "honeydew_1", "honeydew_2", "honeydew_3", //Honeydew
 				"cantaloupe_0", "cantaloupe_1", "cantaloupe_2", "cantaloupe_3" //Cantaloupe
-		});
+				})
+				.setMaxStackSize( 16 );
 		
 		melonCanaryHarvested = new SCBlockMelonCanaryHarvested(id_melonCanaryHarvested);
 		Item.itemsList[melonCanaryHarvested.blockID] = new ItemMultiTextureTile(id_melonCanaryHarvested - 256, melonCanaryHarvested, new String[] {
 				"canary_0", "", "", "",
+				"canary_1", "", "", "",
+				"canary_2", "", "", "",
 				"canary_3", "", "", ""
-		});
+				})
+				.setMaxStackSize( 16 );;
 		
 		//Vine
 		melonVine = new SCBlockGourdVine(id_melonVine, id_melonVineFlowering, id_melonStem, id_gourdVineDead, "SCBlockPumpkinVine_", "SCBlockPumpkinVineConnector_");
@@ -569,8 +585,7 @@ public class SCDefs {
 		//Pie
 		pieRaw = new SCBlockPieRaw(id_pieRaw);
 		pieCooked = new SCBlockPieCooked(id_pieCooked);
-		
-		
+
 		// Pumpkin
 		pumpkinPieSlice = new FCItemFood ( id_pumpkinPieSlice - 256, 1, 2.5F, false, "SCItemPieSlice_pumpkin").setAlwaysEdible();
 		
@@ -592,8 +607,6 @@ public class SCDefs {
 
 		//Crust
 		pieCrust = new Item(id_pieCrust - 256).SetBuoyant().setCreativeTab(CreativeTabs.tabFood).setUnlocalizedName("SCItemPieRaw_crust");
-		
-
 	}
 
 	private static void addBambooDefs()

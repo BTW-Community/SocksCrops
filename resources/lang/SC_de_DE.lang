@@ -1,3 +1,7 @@
+# Tile Entities
+tile.SCBlockFishTrap.name=Fischfalle
+item.SCItemChoppingBoard_spruce.name=Schneidebrett
+
 # Grass
 tile.SCBlockGrassNutrition.grass0.name=Grasblock
 tile.SCBlockGrassNutrition.grass0_sparse.name=Grasblock
@@ -147,7 +151,7 @@ item.SCItemMelonGreenSlice.name=Cantaloup-Melonenstück
 # Pie Items
 item.SCItemCakeSlice.name=Kuchenstück
 item.SCItemPieRaw_crust.name=Kuchenboden
-item.SCItemPieCooked_pumpkin.name=Kürbiskuchenstück
+item.SCItemPieSlice_pumpkin.name=Kürbiskuchenstück
 
 item.SCItemPieRaw_sweetberry.name=Ofenfertiger Süßbeerenkuchen
 item.SCItemPieRaw_blueberry.name=Ofenfertiger Heidelbeerkuchen
