@@ -44,6 +44,7 @@ public class SocksCropsAddon extends FCAddOn {
     public boolean ClientPlayCustomAuxFX(Minecraft mcInstance, World world, EntityPlayer player, int iFXID, int i, int j, int k, int iFXSpecificData)
     {
     	SCCustomAuxFX.playGourdAuxFX(mcInstance, world, player, iFXID, i,j,k, iFXSpecificData);
+    	SCCustomAuxFX.playChoppingBoardAuxFX(mcInstance, world, player, iFXID, i,j,k, iFXSpecificData);
     	
     	return true;
 	}

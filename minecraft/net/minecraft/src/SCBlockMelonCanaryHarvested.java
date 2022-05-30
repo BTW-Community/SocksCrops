@@ -47,7 +47,7 @@ public class SCBlockMelonCanaryHarvested extends SCBlockGourdHarvested {
 	@Override
 	protected int AuxFXIDOnExplode(World world, int i, int j, int k, int meta)
 	{
-		return SCCustomAuxFX.m_iMelonCanaryExplodeAuxFXID;
+		return SCCustomAuxFX.melonCanaryExplodeAuxFXID;
 	}
 		
 	protected DamageSource GetFallDamageSource()

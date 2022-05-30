@@ -55,13 +55,13 @@ public class SCBlockMelonHarvested extends SCBlockGourdHarvested {
 	{
 		if (this.getType(meta) == 1)
 		{
-			 return SCCustomAuxFX.m_iMelonHoneydewExplodeAuxFXID;
+			 return SCCustomAuxFX.melonHoneydewExplodeAuxFXID;
 		}
 		else if (this.getType(meta) == 2)
 		{
-			 return SCCustomAuxFX.m_iMelonCantaloupeExplodeAuxFXID;
+			 return SCCustomAuxFX.melonCantaloupeExplodeAuxFXID;
 		}
-		else return SCCustomAuxFX.m_iMelonExplodeAuxFXID;
+		else return SCCustomAuxFX.melonExplodeAuxFXID;
 	}
 		
 	protected DamageSource GetFallDamageSource()

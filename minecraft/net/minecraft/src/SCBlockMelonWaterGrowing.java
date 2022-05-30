@@ -38,7 +38,7 @@ public class SCBlockMelonWaterGrowing extends SCBlockMelonGrowing {
     @Override
 	protected int AuxFXIDOnExplode(World world, int i, int j, int k, int meta)
     {
-    	return SCCustomAuxFX.m_iMelonExplodeAuxFXID;
+    	return SCCustomAuxFX.melonExplodeAuxFXID;
     }
 	
 	@Override
