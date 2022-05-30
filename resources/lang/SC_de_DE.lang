@@ -1,6 +1,7 @@
 # Tile Entities
 tile.SCBlockFishTrap.name=Fischfalle
 item.SCItemChoppingBoard_spruce.name=Schneidebrett
+tile.SCBlockComposter.name=Komposter
 
 # Grass
 tile.SCBlockGrassNutrition.grass0.name=Grasblock

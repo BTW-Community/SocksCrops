@@ -7,7 +7,7 @@ public class SCRecipes {
 	public static void addRecipes()
 	{
 		addCuttingBoardRecipes();
-		
+		addTileEntityRecipes();
 		addToolDefs();
 		addKnifeCuttingRecipes();
 		addPieRecipes();
@@ -15,6 +15,28 @@ public class SCRecipes {
 		addBambooRecipes();
 		addFishRecipes();
 		addBerryRecipes();
+	}
+	
+	private static void addTileEntityRecipes()
+	{
+		//Composter
+		FCRecipes.AddRecipe( new ItemStack (SCDefs.composter),
+				new Object[] {
+						"S S",  
+						"S S",  
+						"SSS",  
+						'S', new ItemStack( Block.woodSingleSlab, 1, ignoreMetadata ),
+				});
+    	for (int i=0; i<4; i++)
+    	{
+			FCRecipes.AddRecipe( new ItemStack (SCDefs.composter),
+					new Object[] {
+							"S S",  
+							"S S",  
+							"SSS",  
+							'S', new ItemStack( FCBetterThanWolves.fcBlockWoodSidingItemStubID, 1, i ),
+					});
+    	}
 	}
 	
     private static void addCuttingBoardRecipes()
@@ -29,38 +51,6 @@ public class SCRecipes {
 				});
 		
 	}
-
-    //Knife Cutting
-    public static void addKnifeCuttingRecipe(ItemStack output, ItemStack[] secondaryOutputs, ItemStack input)
-    {
-    	CraftingManager.getInstance().getRecipeList().add(new SCCraftingRecipeKnifeCutting(output, secondaryOutputs, input));
-    }
-    
-    public static void addKnifeCuttingRecipe(ItemStack output, ItemStack[] secondaryOutputs, ItemStack outputLowQuality, ItemStack[] secondaryOutputsLowQuality, ItemStack input)
-    {
-    	CraftingManager.getInstance().getRecipeList().add(new SCCraftingRecipeKnifeCutting(output, secondaryOutputs, outputLowQuality, secondaryOutputsLowQuality, input));
-    }
-    
-    public static void addKnifeCuttingRecipe(ItemStack output, ItemStack input)
-    {
-    	CraftingManager.getInstance().getRecipeList().add(new SCCraftingRecipeKnifeCutting(output, input));
-    }
-    
-    public static void addKnifeCuttingRecipe(ItemStack output, ItemStack outputLowQuality, ItemStack input)
-    {
-    	CraftingManager.getInstance().getRecipeList().add(new SCCraftingRecipeKnifeCutting(output,outputLowQuality, input));
-    }
-    
-    /**
-     * Note that choppingBoard recipe inputs are limited to stack sizes of 1 (which is enforced upon adding the recipe)
-     * @param cuttingOutput The cut items
-     * @param input The item to be cut
-     * @param itemOnBoard The tool used for cutting
-     */
-    public static void addChoppingBoardRecipe( ItemStack[] choppingOutput, ItemStack heldStack, ItemStack onBoardStack )
-    {
-    	SCCraftingManagerChoppingBoardFilter.instance.addRecipe(choppingOutput, heldStack, onBoardStack);
-    }
 
 	private static void addKnifeChoppingBoardRecipes()
     {
@@ -633,4 +623,38 @@ public class SCRecipes {
 					new ItemStack( Item.bowlEmpty),
 		});
 	}
+	
+
+    //Knife Cutting
+    public static void addKnifeCuttingRecipe(ItemStack output, ItemStack[] secondaryOutputs, ItemStack input)
+    {
+    	CraftingManager.getInstance().getRecipeList().add(new SCCraftingRecipeKnifeCutting(output, secondaryOutputs, input));
+    }
+    
+    public static void addKnifeCuttingRecipe(ItemStack output, ItemStack[] secondaryOutputs, ItemStack outputLowQuality, ItemStack[] secondaryOutputsLowQuality, ItemStack input)
+    {
+    	CraftingManager.getInstance().getRecipeList().add(new SCCraftingRecipeKnifeCutting(output, secondaryOutputs, outputLowQuality, secondaryOutputsLowQuality, input));
+    }
+    
+    public static void addKnifeCuttingRecipe(ItemStack output, ItemStack input)
+    {
+    	CraftingManager.getInstance().getRecipeList().add(new SCCraftingRecipeKnifeCutting(output, input));
+    }
+    
+    public static void addKnifeCuttingRecipe(ItemStack output, ItemStack outputLowQuality, ItemStack input)
+    {
+    	CraftingManager.getInstance().getRecipeList().add(new SCCraftingRecipeKnifeCutting(output,outputLowQuality, input));
+    }
+    
+    /**
+     * Note that choppingBoard recipe inputs are limited to stack sizes of 1 (which is enforced upon adding the recipe)
+     * @param cuttingOutput The cut items
+     * @param input The item to be cut
+     * @param itemOnBoard The tool used for cutting
+     */
+    public static void addChoppingBoardRecipe( ItemStack[] choppingOutput, ItemStack heldStack, ItemStack onBoardStack )
+    {
+    	SCCraftingManagerChoppingBoardFilter.instance.addRecipe(choppingOutput, heldStack, onBoardStack);
+    }
+
 }

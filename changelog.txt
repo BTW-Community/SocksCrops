@@ -66,5 +66,7 @@
 
 - Added Chopping Board and Recipes
 
+- Added Composter and Recipes
+
 ## Known Issues ##
 - Double Tall Grass and Ferns sometimes spawn ontop of each otherx

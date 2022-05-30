@@ -9,8 +9,8 @@ public class SCDefs {
 	private static int
 		id_choppingBoard = 2600,
 //		id_storageJar = 2601,
-		id_fishTrap = 2602;
-//		id_composter = 2603;
+		id_fishTrap = 2602,
+		id_composter = 2603;
 //		id_cookingPot = 2604,
 //		id_juicer = 2605,
 //		id_barrel = 2506,
@@ -173,7 +173,7 @@ public class SCDefs {
 	public static Block choppingBoard;
 //	public static Block storageJar;
 	public static Block fishTrap;
-//	public static Block composter;
+	public static Block composter;
 //	public static Block cookingPot;
 //	public static Block juicer;
 //	public static Block barrel;
@@ -312,6 +312,7 @@ public class SCDefs {
 	{
 		TileEntity.addMapping(SCTileEntityFishTrap.class, "SCFishTrap");
 		TileEntity.addMapping(SCTileEntityChoppingBoard.class, "SCChoppingBoard");
+		TileEntity.addMapping(SCTileEntityComposter.class, "SCComposter");
 	}
 	
 	private static void addTileEntityMapping()
@@ -327,6 +328,9 @@ public class SCDefs {
 				.setMaxStackSize( 1 )
 				.setUnlocalizedName( "SCItemChoppingBoard_spruce" )
 				.setCreativeTab( CreativeTabs.tabDecorations );
+		
+		composter = new SCBlockComposter(id_composter);
+		Item.itemsList[composter.blockID] = new ItemBlock(composter.blockID - 256);
 	}
 
 	private static void addTileEntityRenderers()
