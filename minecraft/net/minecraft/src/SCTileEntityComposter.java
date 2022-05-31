@@ -15,7 +15,7 @@ public class SCTileEntityComposter extends TileEntity
     
 	private int m_iCookCounter = 0;
 	
-	private boolean m_bIsCooking = false;
+	public boolean m_bIsCooking = false;
 	
 	public SCTileEntityComposter() {
 		
@@ -32,22 +32,7 @@ public class SCTileEntityComposter extends TileEntity
 //    		System.out.println(m_iCookCounter);
 //    		System.out.println("my meta: " + worldObj.getBlockMetadata(xCoord, yCoord, zCoord));
     	}
-    	else 
-    	{    
-    		this.fillLevel = getFillLevel();
-    		
-    		if ( m_bIsCooking )
-    		{
-				if ( worldObj.rand.nextInt( 20 ) == 0 )
-				{
-	                double xPos = xCoord + 0.25F + worldObj.rand.nextFloat() * 0.5F;
-	                double yPos = yCoord + 1.0F + worldObj.rand.nextFloat() * 0.25F;
-	                double zPos = zCoord + 0.25F + worldObj.rand.nextFloat() * 0.5F;
-	                
-	                worldObj.spawnParticle( "fcwhitesmoke", xPos, yPos, zPos, 0.0D, 0.0D, 0.0D );
-	            }
-    		}
-    	}
+
     	    	
     }
     
@@ -132,7 +117,7 @@ public class SCTileEntityComposter extends TileEntity
         	}
     		else {
     			m_bIsCooking = true;
-    			worldObj.markBlockForUpdate( xCoord, yCoord, zCoord );
+    			//worldObj.markBlockForUpdate( xCoord, yCoord, zCoord );
     		}
         	
         	
@@ -152,8 +137,7 @@ public class SCTileEntityComposter extends TileEntity
             		
             		if (newMeta > 0)
             		{
-            			worldObj.setBlockMetadata(xCoord, yCoord, zCoord, newMeta );
-            			worldObj.markBlockForUpdate( xCoord, yCoord, zCoord );
+            			worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, newMeta );
             		}
             		
             		        		
@@ -162,7 +146,7 @@ public class SCTileEntityComposter extends TileEntity
             			m_iCookCounter = 300;
             			this.m_bIsCooking = false;
             			
-            			worldObj.setBlockMetadata(xCoord, yCoord, zCoord, 15 );
+            			worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, 15 );
             			return;
             		}
         		}
@@ -172,7 +156,7 @@ public class SCTileEntityComposter extends TileEntity
             			m_iCookCounter = 300;
             			this.m_bIsCooking = false;
             			
-            			worldObj.setBlockMetadata(xCoord, yCoord, zCoord, 15 );
+            			worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, 15 );
             			return;
             		}
         		}

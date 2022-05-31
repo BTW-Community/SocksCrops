@@ -81,7 +81,7 @@ public class SCWorldGenBerryBush {
                     	{
                     		par1World.setBlock(plantX, plantY, plantZ, this.plantBlock.blockID, newMeta, 2);
                     		
-                    		debug(true, plantX, plantY, plantZ);
+                    		debug(false, plantX, plantY, plantZ);
                     	}
                     }
                     else if ( isTagiaBiome(currentBiome))
@@ -90,7 +90,7 @@ public class SCWorldGenBerryBush {
                     	{
                     		par1World.setBlock(plantX, plantY, plantZ, this.plantBlock.blockID, newMeta, 2);
                     		
-                    		debug(true, plantX, plantY, plantZ);
+                    		debug(false, plantX, plantY, plantZ);
                     	}
                     }
                 }

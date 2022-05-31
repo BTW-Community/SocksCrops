@@ -52,7 +52,11 @@ public class SCBlockComposter extends BlockContainer {
 							
 			world.setBlockMetadata(i, j, k, 0);
 			
-			FCUtilsItem.EjectStackFromBlockTowardsFacing(world, i, j, k, new ItemStack(SCDefs.compostBlock, 1), iFacing);
+			if (!world.isRemote)
+			{
+				FCUtilsItem.EjectStackFromBlockTowardsFacing(world, i, j, k, new ItemStack(SCDefs.compostBlock, 1), iFacing);
+			}
+			
 			
 			return true;
 			
@@ -65,19 +69,31 @@ public class SCBlockComposter extends BlockContainer {
     /**
      * A randomly called display update to be able to add particles or other items for display
      */
-    public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random)
+    public void randomDisplayTick(World par1World, int i, int j, int k, Random par5Random)
     {
-        super.randomDisplayTick(par1World, par2, par3, par4, par5Random);
+        super.randomDisplayTick(par1World, i, j, k, par5Random);
         
-        SCTileEntityComposter composter = (SCTileEntityComposter)par1World.getBlockTileEntity( par2, par3, par4 );
+        SCTileEntityComposter composter = (SCTileEntityComposter)par1World.getBlockTileEntity( i, j, k );
         
         if (composter.getFillLevel() == composter.maxFillLevel)
         {
             if (par5Random.nextInt(5) == 0)
             {
-                par1World.spawnParticle("townaura", (double)((float)par2 + par5Random.nextFloat()), (double)((float)par3 + 1.1F), (double)((float)par4 + par5Random.nextFloat()), 0.0D, 0.0D, 0.0D);
+                par1World.spawnParticle("townaura", (double)((float)i + par5Random.nextFloat()), (double)((float)j + 1.1F), (double)((float)k + par5Random.nextFloat()), 0.0D, 0.0D, 0.0D);
             }
         }
+		
+		if ( composter.m_bIsCooking )
+		{
+			if ( par5Random.nextInt( 5 ) == 0 )
+			{
+                double xPos = i + 0.25F + par5Random.nextFloat() * 0.5F;
+                double yPos = j + 1.0F + par5Random.nextFloat() * 0.25F;
+                double zPos = k + 0.25F + par5Random.nextFloat() * 0.5F;
+                
+                par1World.spawnParticle( "fcwhitesmoke", xPos, yPos, zPos, 0.0D, 0.0D, 0.0D );
+            }
+		}
         
 
     }
