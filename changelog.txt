@@ -68,5 +68,7 @@
 
 - Added Composter and Recipes
 
+- Added Storage Jar
+
 ## Known Issues ##
 - Double Tall Grass and Ferns sometimes spawn ontop of each otherx

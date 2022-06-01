@@ -6,8 +6,10 @@ public class SCRecipes {
 	
 	public static void addRecipes()
 	{
+		addStorageJarRecipes();
 		addCuttingBoardRecipes();
-		addTileEntityRecipes();
+		addComposterRecipes();
+		
 		addToolDefs();
 		addKnifeCuttingRecipes();
 		addPieRecipes();
@@ -17,7 +19,53 @@ public class SCRecipes {
 		addBerryRecipes();
 	}
 	
-	private static void addTileEntityRecipes()
+	private static void addStorageJarRecipes()
+	{
+		FCRecipes.AddRecipe( new ItemStack (SCDefs.storageJar, 1, 0),
+				new Object[] {
+						"C",  
+						"G",  
+						'C', new ItemStack( FCBetterThanWolves.fcBlockWoodCornerItemStubID, 1, 0 ),
+						'G', new ItemStack( Block.glass, 1 ),
+				});
+		
+		FCRecipes.AddRecipe( new ItemStack (SCDefs.storageJar, 1, 0),
+				new Object[] {
+						"C",  
+						"G",  
+						'C', new ItemStack( FCBetterThanWolves.fcBlockWoodCornerItemStubID, 1, 1 ),
+						'G', new ItemStack( Block.glass, 1 ),
+				});
+		
+		FCRecipes.AddRecipe( new ItemStack (SCDefs.storageJar, 1, 0),
+				new Object[] {
+						"C",  
+						"G",  
+						'C', new ItemStack( FCBetterThanWolves.fcBlockWoodCornerItemStubID, 1, 2 ),
+						'G', new ItemStack( Block.glass, 1 ),
+				});
+		
+		FCRecipes.AddRecipe( new ItemStack (SCDefs.storageJar, 1, 0),
+				new Object[] {
+						"C",  
+						"G",  
+						'C', new ItemStack( FCBetterThanWolves.fcBlockWoodCornerItemStubID, 1, 3 ),
+						'G', new ItemStack( Block.glass, 1 ),
+				});
+		
+		FCRecipes.AddShapelessRecipe( new ItemStack(SCDefs.storageJar, 1, 1),
+				new Object[] {
+						new ItemStack(SCDefs.storageJar, 1, 0),
+						new ItemStack(Item.paper, 1)
+    			});
+		
+		FCRecipes.AddStokedCauldronRecipe(new ItemStack(SCDefs.storageJar, 1, 0), 
+				new ItemStack[] {
+						new ItemStack(SCDefs.storageJar, 1, 1),
+				});
+	}
+
+	private static void addComposterRecipes()
 	{
 		//Composter
 		FCRecipes.AddRecipe( new ItemStack (SCDefs.composter),

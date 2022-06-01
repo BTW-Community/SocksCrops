@@ -2,6 +2,10 @@
 tile.SCBlockFishTrap.name=Fish Trap
 item.SCItemChoppingBoard_spruce.name=Chopping Board
 tile.SCBlockComposter.name=Composter
+tile.SCBlockStorageJar.name=Storage Jar
+scItemBlockStorageJar.contains=Contains
+scItemBlockStorageJar.empty=Empty
+scItemBlockStorageJar.hasLabel=Labeled
 
 # Grass
 tile.SCBlockGrassNutrition.grass0.name=Grass Block
