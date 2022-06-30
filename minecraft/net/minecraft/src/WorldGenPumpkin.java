@@ -77,8 +77,12 @@ public class WorldGenPumpkin extends WorldGenerator {
 	        		else world.setBlock(posX, posY, posZ, SCDefs.pumpkinCarvedDead.blockID, iFacing + (r * 4), 2);
 	        		
 	        		iPlacedPumpkinCount++;
-					// grow fist vine
-					growVineAdjacent(world, posX, posY, posZ, rand, Direction.rotateOpposite[iFacing]);
+	        		
+	        		if ( bIsFresh )
+	        		{
+	        			// grow fist vine
+						growVineAdjacent(world, posX, posY, posZ, rand, Direction.rotateOpposite[iFacing]);
+	        		}
 
 					// reset counter so other vines have a length too, not just the first try
 					placedVinesCount = 0;
@@ -137,7 +141,7 @@ public class WorldGenPumpkin extends WorldGenerator {
 		} else {
 
 			if (canPlace(world, finalI, j, finalK)) {
-				//orld.setBlock(finalI, j, finalK, SCDefs.gourdStemDead.blockID, 15, 2);
+				//world.setBlock(finalI, j, finalK, SCDefs.gourdStemDead.blockID, 15, 2);
 			}
 		}
 

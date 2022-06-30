@@ -34,7 +34,7 @@ public class SCWorldGenClover extends WorldGenerator
     public boolean generate(World world, Random random, int x, int y, int z)
     {
 
-        for (int var6 = 0; var6 < 64; ++var6)
+        for (int var6 = 0; var6 < 32; ++var6)
         {        	
             int var7 = x + random.nextInt(8) - random.nextInt(8);
             int var8 = y + random.nextInt(4) - random.nextInt(4);

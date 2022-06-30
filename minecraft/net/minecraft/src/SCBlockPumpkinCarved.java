@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 import java.util.List;
+import java.util.Random;
 
 public class SCBlockPumpkinCarved extends FCBlockPumpkinCarved {
 	
@@ -22,6 +23,54 @@ public class SCBlockPumpkinCarved extends FCBlockPumpkinCarved {
     	setUnlocalizedName( "SCBlockPumpkinCarved" );
     	setCreativeTab(CreativeTabs.tabBlock);
 	}
+	
+    @Override
+    public int idDropped( int iMetadata, Random rand, int iFortuneModifier )
+    {
+        return this.blockID;
+    }
+    
+    /**
+     * Determines the damage on the item the block drops. Used in cloth and wood.
+     */
+    public int damageDropped(int meta)
+    {
+		//Orange
+		if (meta <= 3){
+			return 3;
+		}
+		//Green
+		else if (meta <= 7){
+			return 7;
+		}
+		//Yellow
+		else if (meta <= 11){
+			return 11;
+		}
+		//White
+		else return 15;
+    }
+    
+    public void dropBlockAsItemWithChance(World par1World, int par2, int par3, int par4, int par5, float par6, int par7)
+    {
+        if (!par1World.isRemote)
+        {
+            int var8 = this.quantityDroppedWithBonus(par7, par1World.rand);
+
+            for (int var9 = 0; var9 < var8; ++var9)
+            {
+                if (par1World.rand.nextFloat() <= par6)
+                {
+                    int var10 = this.idDropped(par5, par1World.rand, par7);
+
+                    if (var10 > 0)
+                    {
+                        this.dropBlockAsItem_do(par1World, par2, par3, par4, new ItemStack(var10, 1, this.damageDropped(par5)));
+                    }
+                }
+            }
+        }
+    }
 	
 	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
