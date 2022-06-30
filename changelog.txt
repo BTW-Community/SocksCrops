@@ -70,5 +70,8 @@
 
 - Added Storage Jar
 
+- Added Wild Carrots and Sweet Potatoes
+- Added Wild Carrots and Sweet Potatoes to World Gen
+
 ## Known Issues ##
 - Double Tall Grass and Ferns sometimes spawn ontop of each otherx

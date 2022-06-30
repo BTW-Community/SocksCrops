@@ -191,3 +191,13 @@ item.SCItemSweetberry.name=Süßbeeren
 item.SCItemBlueberry.name=Blaubeeren
 
 item.SCItemFruitBowl_berries.name=Beeren-Obstschale
+
+#Wild Carrot
+item.SCItemWildCarrot.name=Wilde Karotte
+item.SCItemWildCarrotSeeds.name=Wilde Karottensamen
+
+#Wild Potato
+item.SCItemWildPotato.name=Süßkartoffel
+item.SCItemWildPotatoCut.name=Geschnittene Süßkartoffel
+
+item.SCItemWildPotatoSapling.name=Süßkartoffel Setzling

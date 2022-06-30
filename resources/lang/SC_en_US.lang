@@ -191,3 +191,13 @@ item.SCItemSweetberry.name=Sweetberry
 item.SCItemBlueberry.name=Blueberry
 
 item.SCItemFruitBowl_berries.name=Berry Fruit Bowl
+
+#Wild Carrot
+item.SCItemWildCarrot.name=Wild Carrot
+item.SCItemWildCarrotSeeds.name=Wild Carrot Seeds
+
+#Wild Potato
+item.SCItemWildPotato.name=Sweet Potato
+item.SCItemWildPotatoCut.name=Cut Sweet Potato
+
+item.SCItemWildPotatoSapling.name=Sweet Potato Sapling

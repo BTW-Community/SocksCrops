@@ -10,7 +10,8 @@ public class SCDefs {
 		id_choppingBoard = 2600,
 		id_storageJar = 2601,
 		id_fishTrap = 2602,
-		id_composter = 2603;
+		id_composter = 2603,
+		id_waterPot = 2604;
 //		id_cookingPot = 2604,
 //		id_juicer = 2605,
 //		id_barrel = 2506,
@@ -112,6 +113,12 @@ public class SCDefs {
 		id_sweetberryBush = 2695,
 		id_blueberryBush = 2696;
 	
+	private static int
+		id_wildCarrotCrop = 2700,
+		id_wildPotatoCrop = 2701,
+		id_wildPotatoCropHighYield = 2702,
+		id_wildPotatoCropSapling = 2703;
+	
 	private static int maxID = 2999;
 	
 	// --- ITEM ID's --- //
@@ -168,12 +175,19 @@ public class SCDefs {
 		
 		id_berryBowl = 31053;
 	
+	private static int
+		id_wildCarrot = 31060,
+		id_wildCarrotSeed = 31061,
+		id_wildPotato = 31062,
+		id_wildPotatoCut = 31063;
+	
 	// --- Blocks --- //
 	
 	public static Block choppingBoard;
 	public static Block storageJar;
 	public static Block fishTrap;
 	public static Block composter;
+	public static Block waterPot;
 //	public static Block cookingPot;
 //	public static Block juicer;
 //	public static Block barrel;
@@ -229,6 +243,11 @@ public class SCDefs {
 	public static Block sweetberryBush;
 	public static Block blueberryBush;
 	
+	public static Block wildCarrotCrop;
+	public static Block wildPotatoCrop;
+	public static Block wildPotatoCropHighYield;
+	public static Block wildPotatoCropSapling;
+	
 	// --- Items ---
 	
 	// Tools
@@ -270,6 +289,13 @@ public class SCDefs {
 	
 	public static Item berryBowl;
 	
+	public static Item wildCarrot;
+	public static Item wildCarrotSeeds;
+	
+	public static Item wildPotato;	
+	public static Item wildPotatoCut;	
+
+	
 	public static void addTileEntityDefinitions()
 	{
 		addTileEntityDefs();
@@ -306,6 +332,8 @@ public class SCDefs {
 		addFishDefs();
 		
 		addBerryDefs();
+		
+		addWildDefs();
 	}
 
 	private static void addTileEntityDefs()
@@ -669,5 +697,41 @@ public class SCDefs {
 		blueberry = new FCItemFood(id_blueberry - 256, 1, 0.0F, false, "SCItemBlueberry");
 		
 		berryBowl = new FCItemSoup(id_berryBowl - 256, 2, 0.25F, false, "SCItemFruitBowl_berries");
+	}
+	
+
+	private static void addWildDefs()
+	{
+		/* CARROTS */
+		
+		wildCarrot = ( new FCItemFood( id_wildCarrot - 256, 3, 0F, false, "SCItemWildCarrot"))
+				.SetFilterableProperties( Item.m_iFilterable_Small )
+				.SetAsBasicPigFood();
+		
+		wildCarrotSeeds = new FCItemSeeds(id_wildCarrotSeed - 256, id_wildCarrotCrop)
+				.setUnlocalizedName("SCItemWildCarrotSeeds");
+
+		wildCarrotCrop = new SCBlockCropWildCarrot(id_wildCarrotCrop);
+		
+		/* POTATOES */
+		
+		wildPotato = ( new FCItemSeedFood( id_wildPotato - 256, 3, 0F, id_wildPotatoCrop ) )
+				.SetFilterableProperties( Item.m_iFilterable_Small )
+				.SetAsBasicPigFood()
+				.setUnlocalizedName( "SCItemWildPotato" );
+		
+		wildPotatoCut = ( new FCItemSeedFood(id_wildPotatoCut - 256, 1, 0F, id_wildPotatoCrop ) )
+				.SetFilterableProperties( Item.m_iFilterable_Small )
+				.SetAsBasicPigFood()
+				.setUnlocalizedName( "SCItemWildPotatoCut" );
+		
+		wildPotatoCrop = new SCBlockCropWildPotato(id_wildPotatoCrop);
+		wildPotatoCropHighYield = new SCBlockCropWildPotatoHighYield(id_wildPotatoCropHighYield);
+		
+		wildPotatoCropSapling =  new SCBlockCropWildPotatoSapling(id_wildPotatoCropSapling);
+		Item.itemsList[wildPotatoCropSapling.blockID] = new FCItemSeeds(id_wildPotatoCropSapling - 256, id_wildPotatoCropHighYield)
+				.setUnlocalizedName("SCItemWildPotatoSapling")
+				.setCreativeTab(CreativeTabs.tabDecorations);
+	
 	}
 }

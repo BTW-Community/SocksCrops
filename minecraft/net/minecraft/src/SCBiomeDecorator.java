@@ -45,7 +45,7 @@ public class SCBiomeDecorator {
         }
 
         // Clover
-        for (i = 0; i < 4; ++i)
+        for (i = 0; i < 2; ++i)
         {
         	xPos = x + random.nextInt(16) + 8;
         	yPos = random.nextInt(128);
@@ -53,7 +53,7 @@ public class SCBiomeDecorator {
         	(new SCWorldGenClover(SCDefs.clover.blockID, 0)).generate(world, random, xPos, yPos, zPos);
 
         	//Clover Variants
-            if (random.nextInt(4) == 0)
+            if (random.nextInt(8) == 0)
             {
             	int meta = random.nextInt(3) + 1;
             	
@@ -110,6 +110,16 @@ public class SCBiomeDecorator {
 				zPos = z + random.nextInt(16) + 4;
 				(new SCWorldGenBerryBush(SCDefs.blueberryBush)).generate(world, random, xPos, yPos, zPos);
 			}
+		}
+    	
+    	//Wild Crops
+    	if ( random.nextInt(8) == 0 )
+		{
+    		//Sweetberry
+			xPos = x + random.nextInt(16) + 4;
+			yPos = random.nextInt(128);
+			zPos = z + random.nextInt(16) + 4;
+			(new SCWorldGenWildCrops()).generate(world, random, xPos, yPos, zPos);
 		}
     	
 	}

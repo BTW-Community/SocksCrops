@@ -667,7 +667,7 @@ public class SCUtilsRender extends FCClientUtilsRender
         var9.addVertexWithUV(var21, par5 + 1.0D, var25 + adjustment, var15, var13); 
     }
     
-	public static boolean renderConnector(RenderBlocks render, Block block, int par2, int par3, int par4, Icon icon)
+	public static boolean renderConnector(RenderBlocks render, Block block, int par2, int par3, int par4, Icon icon, int dir)
     {
         Tessellator var5 = Tessellator.instance;
         var5.setBrightness(block.getMixedBrightnessForBlock(render.blockAccess, par2, par3, par4));
@@ -696,7 +696,7 @@ public class SCUtilsRender extends FCClientUtilsRender
         double var20 = (double)par3;
         double var15 = (double)par4;
 
-        drawConnector(render, block, render.blockAccess.getBlockMetadata(par2, par3, par4), var19, var20, var15, 1.0F, icon);
+        drawConnector(render, block, render.blockAccess.getBlockMetadata(par2, par3, par4), var19, var20, var15, 1.0F, icon, dir);
 		
 		return true;
     }
@@ -704,18 +704,18 @@ public class SCUtilsRender extends FCClientUtilsRender
     /**
      * Utility function to draw crossed swuares
      */
-    public static void drawConnector(RenderBlocks render, Block block, int meta, double x, double y, double z, float scale, Icon icon)
+    public static void drawConnector(RenderBlocks render, Block block, int meta, double x, double y, double z, float scale, Icon icon, int dir)
     {
         Tessellator tess = Tessellator.instance;
         
 //        Icon icon = render.getBlockIconFromSideAndMetadata(block, 0, meta);
-//
-//        if (render.hasOverrideBlockTexture())
-//        {
-//        	icon = overrideBlockTexture;
-//        }
+
+        if (render.hasOverrideBlockTexture())
+        {
+        	icon = overrideBlockTexture;
+        }
         
-        int dir = meta & 3;
+        //int dir = meta & 3;
         
         double minU = (double)icon.getMinU();
         double minV = (double)icon.getMinV();

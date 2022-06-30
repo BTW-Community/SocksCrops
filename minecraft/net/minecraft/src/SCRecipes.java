@@ -118,6 +118,15 @@ public class SCRecipes {
 				break;
 			}
     		
+    		// -- WILD POTATO -- //
+    		addChoppingBoardRecipe(
+    				new ItemStack[] {
+    						new ItemStack(SCDefs.wildPotatoCut, 2),
+    				},				
+    				new ItemStack(knife), //hand
+    				new ItemStack(SCDefs.wildPotato, 1)
+    		);
+    		
     		// -- MELON -- //
     		addChoppingBoardRecipe(
     				new ItemStack[] {
@@ -357,6 +366,13 @@ public class SCRecipes {
 	
 	private static void addKnifeCuttingRecipes()
 	{
+		// --- Wild Potato --- //
+		
+		addKnifeCuttingRecipe(new ItemStack(SCDefs.wildPotatoCut, 2),
+
+				new ItemStack(SCDefs.wildPotato, 1)
+		);
+		
 		// --- Pumpkin --- //
 		
 		Item pumpkinSlice = SCDefs.pumpkinSliceRaw;

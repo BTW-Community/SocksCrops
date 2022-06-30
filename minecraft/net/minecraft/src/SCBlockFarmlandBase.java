@@ -391,7 +391,6 @@ public abstract class SCBlockFarmlandBase extends FCBlockFarmland{
 	{
 		return false;
 	}
-    
    
 
 }
