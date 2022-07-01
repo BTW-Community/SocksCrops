@@ -73,5 +73,13 @@
 - Added Wild Carrots and Sweet Potatoes
 - Added Wild Carrots and Sweet Potatoes to World Gen
 
+- Split up flowerpot into empty, dirt and water
+- Added Wild Carrot Seeds and Sweet Potato Sapling that can be grown in the flowerpot with water 
+- Added High Yield Wild Carrot and Sweet Potato Crop 
+
+- Added cut potato
+
+- Added Carrot Seeds to Storage Jar
+
 ## Known Issues ##
 - Double Tall Grass and Ferns sometimes spawn ontop of each otherx

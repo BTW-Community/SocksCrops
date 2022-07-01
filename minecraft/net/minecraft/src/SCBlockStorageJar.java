@@ -608,7 +608,12 @@ public class SCBlockStorageJar extends BlockContainer {
 		labelIcon[27] = register.registerIcon("SCBlockJarLabel_cocoaBeans");
 		labelIcon[28] = register.registerIcon("SCBlockJarLabel_chickenFeed");
 		
+		//SC
+		contentsIcon[29] = register.registerIcon("SCBlockJarContents_wildCarrot");
+		contentsIcon[30] = register.registerIcon("SCBlockJarContents_wildCarrotHighYield");
 		
+		labelIcon[29] = register.registerIcon("SCBlockJarLabel_wildCarrot");
+		labelIcon[30] = register.registerIcon("SCBlockJarLabel_wildCarrotHighYield");
 		
 		
 		//Dyes

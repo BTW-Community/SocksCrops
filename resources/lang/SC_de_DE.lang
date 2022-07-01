@@ -193,11 +193,26 @@ item.SCItemBlueberry.name=Blaubeeren
 item.SCItemFruitBowl_berries.name=Beeren-Obstschale
 
 #Wild Carrot
-item.SCItemWildCarrot.name=Wilde Karotte
-item.SCItemWildCarrotSeeds.name=Wilde Karottensamen
+item.SCItemWildCarrot.name=Wilde Karrote
+item.SCItemWildCarrotSeeds.name=Wilde Karrotensamen
+item.SCItemWildCarrotRoot.name=Wilde Karrotenwurzel
+item.SCItemWildCarrotCut.name=Wildes Karrotengrün
+item.SCItemWildCarrotSapling.name=Wilde Karrotensamen mit hohen Ertrag
+
+#Carrot
+item.SCItemCarrotRoot.name=Karrotzenwurzel
+item.SCItemCarrotCut.name=Karrotengrün
 
 #Wild Potato
 item.SCItemWildPotato.name=Süßkartoffel
 item.SCItemWildPotatoCut.name=Geschnittene Süßkartoffel
-
 item.SCItemWildPotatoSapling.name=Süßkartoffel Setzling
+
+#Potato
+item.SCItemPotatoCut.name=Geschnittene Kartoffel
+
+#Pots
+item.SCItemPot_flower.name=Blumentopf mit Erde
+item.SCItemPot_water.name=Blumentopf mit Wasser
+item.SCItemPot_empty.name=Leerer Blumentopf
+

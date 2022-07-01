@@ -11,7 +11,8 @@ public class SCDefs {
 		id_storageJar = 2601,
 		id_fishTrap = 2602,
 		id_composter = 2603,
-		id_waterPot = 2604;
+		id_flowerPot = 2604,
+		id_waterPot = 2605;
 //		id_cookingPot = 2604,
 //		id_juicer = 2605,
 //		id_barrel = 2506,
@@ -115,9 +116,11 @@ public class SCDefs {
 	
 	private static int
 		id_wildCarrotCrop = 2700,
-		id_wildPotatoCrop = 2701,
-		id_wildPotatoCropHighYield = 2702,
-		id_wildPotatoCropSapling = 2703;
+		id_wildCarrotCropHighYield = 2701,
+		id_wildCarrotCropSapling = 2702,
+		id_wildPotatoCrop = 2703,
+		id_wildPotatoCropHighYield = 2704,
+		id_wildPotatoCropSapling = 2705;
 	
 	private static int maxID = 2999;
 	
@@ -128,7 +131,9 @@ public class SCDefs {
 	private static int
 		id_knifeStone = 31000,
 		id_knifeIron = 31001,
-		id_knifeDiamond = 31002;
+		id_knifeDiamond = 31002,
+		id_waterPotEmpty = 31003;
+	
 	
 	//Pumpkin & Melon
 	private static int
@@ -178,8 +183,11 @@ public class SCDefs {
 	private static int
 		id_wildCarrot = 31060,
 		id_wildCarrotSeed = 31061,
-		id_wildPotato = 31062,
-		id_wildPotatoCut = 31063;
+		id_wildCarrotRoot = 31062,
+		id_wildCarrotTop = 31063,
+		id_wildPotato = 31064,
+		id_wildPotatoCut = 31065,
+		id_potatoCut=31066;
 	
 	// --- Blocks --- //
 	
@@ -187,6 +195,7 @@ public class SCDefs {
 	public static Block storageJar;
 	public static Block fishTrap;
 	public static Block composter;
+	public static Block flowerPot;
 	public static Block waterPot;
 //	public static Block cookingPot;
 //	public static Block juicer;
@@ -244,11 +253,16 @@ public class SCDefs {
 	public static Block blueberryBush;
 	
 	public static Block wildCarrotCrop;
+	public static Block wildCarrotCropHighYield;
+	public static Block wildCarrotCropSapling;
 	public static Block wildPotatoCrop;
 	public static Block wildPotatoCropHighYield;
 	public static Block wildPotatoCropSapling;
 	
 	// --- Items ---
+	
+	//
+	public static Item waterPotEmpty;
 	
 	// Tools
 	public static Item knifeStone, knifeIron, knifeDiamond;
@@ -292,8 +306,13 @@ public class SCDefs {
 	public static Item wildCarrot;
 	public static Item wildCarrotSeeds;
 	
+	public static Item wildCarrotRoot;
+	public static Item wildCarrotTop;
+	
 	public static Item wildPotato;	
 	public static Item wildPotatoCut;	
+	
+	public static Item potatoCut;	
 
 	
 	public static void addTileEntityDefinitions()
@@ -333,18 +352,22 @@ public class SCDefs {
 		
 		addBerryDefs();
 		
-		addWildDefs();
+		addDomesticDefs();
+		addWildDefs();		
 	}
 
-	private static void addTileEntityDefs()
+	private static void addTileEntityMapping()
 	{
 		TileEntity.addMapping(SCTileEntityFishTrap.class, "SCFishTrap");
 		TileEntity.addMapping(SCTileEntityChoppingBoard.class, "SCChoppingBoard");
 		TileEntity.addMapping(SCTileEntityComposter.class, "SCComposter");
 		TileEntity.addMapping(SCTileEntityStorageJar.class, "SCStorageJar");
+		TileEntity.addMapping(SCTileEntityFlowerPot.class, "SCFlowerPot");
+		TileEntity.addMapping(SCTileEntityWaterPot.class, "SCWaterPot");
+
 	}
 	
-	private static void addTileEntityMapping()
+	private static void addTileEntityDefs()
 	{
 		fishTrap = new SCBlockFishTrap(id_fishTrap);
 		Item.itemsList[fishTrap.blockID] = new ItemBlock(fishTrap.blockID - 256)
@@ -363,6 +386,14 @@ public class SCDefs {
 		
 		storageJar = new SCBlockStorageJar(id_storageJar);
 		Item.itemsList[storageJar.blockID] = new SCItemBlockStorageJar(id_storageJar - 256);	
+		
+		flowerPot = new SCBlockFlowerPot(id_flowerPot);
+		Item.replaceItem(Item.flowerPot.itemID, SCItemFlowerPot.class, SocksCropsAddon.instance);
+		
+		waterPot = new SCBlockWaterPot(id_waterPot);
+		Item.itemsList[waterPot.blockID] = new FCItemPlacesAsBlock (id_waterPot - 256, id_waterPot, SCBlockWaterPot.water).setUnlocalizedName("SCItemPot_water").setCreativeTab(CreativeTabs.tabDecorations);
+		
+		waterPotEmpty = new FCItemPlacesAsBlock (id_waterPotEmpty - 256, id_waterPot, SCBlockWaterPot.empty).setUnlocalizedName("SCItemPot_empty").setCreativeTab(CreativeTabs.tabDecorations);
 	}
 
 	private static void addTileEntityRenderers()
@@ -699,6 +730,14 @@ public class SCDefs {
 		berryBowl = new FCItemSoup(id_berryBowl - 256, 2, 0.25F, false, "SCItemFruitBowl_berries");
 	}
 	
+	private static void addDomesticDefs()
+	{		
+		potatoCut = ( new FCItemSeedFood(id_potatoCut - 256, 1, 0F, Block.potato.blockID ) )
+				.SetFilterableProperties( Item.m_iFilterable_Small )
+				.SetAsBasicPigFood()
+				.setUnlocalizedName( "SCItemPotatoCut" );
+	}
+	
 
 	private static void addWildDefs()
 	{
@@ -708,10 +747,22 @@ public class SCDefs {
 				.SetFilterableProperties( Item.m_iFilterable_Small )
 				.SetAsBasicPigFood();
 		
+		wildCarrotRoot = ( new FCItemFood( id_wildCarrotRoot - 256, 3, 0F, false, "SCItemWildCarrotRoot"))
+				.SetFilterableProperties( Item.m_iFilterable_Small )
+				.SetAsBasicPigFood();
+		
+		wildCarrotTop = new Item(id_wildCarrotTop - 256).setUnlocalizedName("SCItemWildCarrotCut");
+		
 		wildCarrotSeeds = new FCItemSeeds(id_wildCarrotSeed - 256, id_wildCarrotCrop)
 				.setUnlocalizedName("SCItemWildCarrotSeeds");
 
 		wildCarrotCrop = new SCBlockCropWildCarrot(id_wildCarrotCrop);
+		wildCarrotCropHighYield = new SCBlockCropWildCarrotHighYield(id_wildCarrotCropHighYield);
+		
+		wildCarrotCropSapling =  new SCBlockCropWildCarrotSapling(id_wildCarrotCropSapling);
+		Item.itemsList[wildCarrotCropSapling.blockID] = new FCItemSeeds(id_wildCarrotCropSapling - 256, id_wildCarrotCropHighYield)
+				.setUnlocalizedName("SCItemWildCarrotSapling")
+				.setCreativeTab(CreativeTabs.tabDecorations);
 		
 		/* POTATOES */
 		
@@ -732,6 +783,8 @@ public class SCDefs {
 		Item.itemsList[wildPotatoCropSapling.blockID] = new FCItemSeeds(id_wildPotatoCropSapling - 256, id_wildPotatoCropHighYield)
 				.setUnlocalizedName("SCItemWildPotatoSapling")
 				.setCreativeTab(CreativeTabs.tabDecorations);
+		
+
 	
 	}
 }

@@ -17,8 +17,35 @@ public class SCRecipes {
 		addBambooRecipes();
 		addFishRecipes();
 		addBerryRecipes();
+		
+		addFlowerPotRecipes();
 	}
 	
+	private static void addFlowerPotRecipes() {
+		FCRecipes.RemoveVanillaRecipe(new ItemStack(Item.flowerPot, 1), new Object[] {
+				"# #", 
+				" # ", 
+				'#', Item.brick});
+		
+		FCRecipes.AddRecipe(new ItemStack(SCDefs.waterPotEmpty, 1), new Object[] {
+				"# #", 
+				" # ", 
+				'#', Item.brick});
+		
+		FCRecipes.AddShapelessRecipe(new ItemStack(SCDefs.waterPot, 1),
+				new ItemStack[] {
+						new ItemStack(Item.potion, 1, 0),
+						new ItemStack(SCDefs.waterPotEmpty, 1)
+				});
+		
+		FCRecipes.AddShapelessRecipe(new ItemStack(Item.flowerPot, 1),
+				new ItemStack[] {
+						new ItemStack(FCBetterThanWolves.fcItemPileDirt, 1),
+						new ItemStack(SCDefs.waterPotEmpty, 1)
+				});
+		
+	}
+
 	private static void addStorageJarRecipes()
 	{
 		FCRecipes.AddRecipe( new ItemStack (SCDefs.storageJar, 1, 0),
@@ -118,6 +145,16 @@ public class SCRecipes {
 				break;
 			}
     		
+    		// -- WILD CARROT -- //
+    		addChoppingBoardRecipe(
+    				new ItemStack[] {
+    						new ItemStack(SCDefs.wildCarrotRoot, 1),
+    						new ItemStack(SCDefs.wildCarrotTop, 1),
+    				},				
+    				new ItemStack(knife), //hand
+    				new ItemStack(SCDefs.wildCarrot, 1)
+    		);
+    		
     		// -- WILD POTATO -- //
     		addChoppingBoardRecipe(
     				new ItemStack[] {
@@ -125,6 +162,14 @@ public class SCRecipes {
     				},				
     				new ItemStack(knife), //hand
     				new ItemStack(SCDefs.wildPotato, 1)
+    		);
+    		
+    		addChoppingBoardRecipe(
+    				new ItemStack[] {
+    						new ItemStack(SCDefs.potatoCut, 2),
+    				},				
+    				new ItemStack(knife), //hand
+    				new ItemStack(Item.potato, 1)
     		);
     		
     		// -- MELON -- //
@@ -366,11 +411,24 @@ public class SCRecipes {
 	
 	private static void addKnifeCuttingRecipes()
 	{
+		// --- Wild Carrot --- //
+		
+		addKnifeCuttingRecipe(new ItemStack(SCDefs.wildCarrotRoot, 1),
+				new ItemStack[] {new ItemStack(SCDefs.wildCarrotTop, 1)},
+
+				new ItemStack(SCDefs.wildCarrot, 1)
+		);
+		
 		// --- Wild Potato --- //
 		
 		addKnifeCuttingRecipe(new ItemStack(SCDefs.wildPotatoCut, 2),
 
 				new ItemStack(SCDefs.wildPotato, 1)
+		);
+		
+		addKnifeCuttingRecipe(new ItemStack(SCDefs.potatoCut, 2),
+
+				new ItemStack(Item.potato, 1)
 		);
 		
 		// --- Pumpkin --- //

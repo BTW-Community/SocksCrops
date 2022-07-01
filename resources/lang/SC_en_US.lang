@@ -195,9 +195,23 @@ item.SCItemFruitBowl_berries.name=Berry Fruit Bowl
 #Wild Carrot
 item.SCItemWildCarrot.name=Wild Carrot
 item.SCItemWildCarrotSeeds.name=Wild Carrot Seeds
+item.SCItemWildCarrotRoot.name=Wild Carrot Root
+item.SCItemWildCarrotCut.name=Wild Carrot Top
+item.SCItemWildCarrotSapling.name=High Yield Wild Carrot Seeds
+
+#Carrot
+item.SCItemCarrotRoot.name=Carrot Root
+item.SCItemCarrotCut.name=Carrot Top
 
 #Wild Potato
 item.SCItemWildPotato.name=Sweet Potato
 item.SCItemWildPotatoCut.name=Cut Sweet Potato
-
 item.SCItemWildPotatoSapling.name=Sweet Potato Sapling
+
+#Potato
+item.SCItemPotatoCut.name=Cut Potato
+
+#Pots
+item.SCItemPot_flower.name=Flowerpot with Dirt
+item.SCItemPot_water.name=Flowerpot with Water
+item.SCItemPot_empty.name=Empty flowerpot

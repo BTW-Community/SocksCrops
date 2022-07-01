@@ -53,6 +53,10 @@ public class SCTileEntityStorageJar extends TileEntity implements IInventory, FC
     	validItemList.add( FCBetterThanWolves.fcItemFlour.itemID );
     	validItemList.add( FCBetterThanWolves.fcItemCocoaBeans.itemID );
     	validItemList.add( FCBetterThanWolves.fcItemChickenFeed.itemID );
+    	
+    	//SC
+    	validItemList.add( SCDefs.wildCarrotSeeds.itemID);
+    	validItemList.add( SCDefs.wildCarrotCropSapling.blockID);
     } 
     
     public SCTileEntityStorageJar()
