@@ -40,7 +40,7 @@ public class SCBlockWaterPot extends BlockContainer {
 			{
 				if (growthStage < potTile.getGrowthStagesForBlock(storedBlockID) )
 				{
-					System.out.println("Growing "+ meta);
+					//System.out.println("Growing "+ meta);
 					world.setBlockMetadataWithNotify(x, y, z, meta + 1);
 					potTile.setStoredBlockMetadata(potTile.getStoredBlockMetadata() + 4);
 
@@ -48,7 +48,7 @@ public class SCBlockWaterPot extends BlockContainer {
 					
 					if (growthStage == potTile.getGrowthStagesForBlock(storedBlockID) - 1)
 					{
-						System.out.println("clearing water "+ meta);
+						//System.out.println("clearing water "+ meta);
 						world.setBlockMetadataWithNotify(x, y, z, meta - 8);
 						potTile.markBlockForRender();
 					}
@@ -60,7 +60,7 @@ public class SCBlockWaterPot extends BlockContainer {
 			{
 				if (growthStage < potTile.getGrowthStagesForBlock(storedBlockID))
 				{
-					System.out.println("Growing "+ meta);
+					//System.out.println("Growing "+ meta);
 					world.setBlockMetadataWithNotify(x, y, z, meta + 1);
 					potTile.setStoredBlockMetadata(potTile.getStoredBlockMetadata() + 1);
 
@@ -68,7 +68,7 @@ public class SCBlockWaterPot extends BlockContainer {
 					
 					if (growthStage == potTile.getGrowthStagesForBlock(storedBlockID) - 1)
 					{
-						System.out.println("clearing water "+ meta);
+						//System.out.println("clearing water "+ meta);
 						world.setBlockMetadataWithNotify(x, y, z, meta - 8);
 						potTile.markBlockForRender();
 					}

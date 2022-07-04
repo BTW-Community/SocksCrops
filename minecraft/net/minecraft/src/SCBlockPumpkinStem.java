@@ -66,8 +66,8 @@ public class SCBlockPumpkinStem extends FCBlockCrops {
         if ( UpdateIfBlockStays( world, i, j, k ) )
         {
         	// no plants can grow in the end
-        	System.out.println("stem: update tick");
-        	System.out.println("my meta is:" + world.getBlockMetadata(i, j, k));
+        	//System.out.println("stem: update tick");
+        	//System.out.println("my meta is:" + world.getBlockMetadata(i, j, k));
         	
 	        if ( world.provider.dimensionId != 1 && !IsFullyGrown( world, i, j, k ) )
 	        {
@@ -153,16 +153,16 @@ public class SCBlockPumpkinStem extends FCBlockCrops {
 	    		
 	    		
 	    		
-	    		System.out.println("stem: growth chance: " + fGrowthChance);
+	    		//System.out.println("stem: growth chance: " + fGrowthChance);
 
 	            if ( rand.nextFloat() <= fGrowthChance ) 
 				{
 	            	//Grow stem
-	            	System.out.println("stem: growing!");
+	            	//System.out.println("stem: growing!");
 	            	
 	            	IncrementGrowthLevel( world, i, j, k );
 	  
-		            System.out.println("stem growth is:" + GrowthLevel);
+		            //System.out.println("stem growth is:" + GrowthLevel);
 		            
 	            	
 				}
@@ -330,12 +330,12 @@ public class SCBlockPumpkinStem extends FCBlockCrops {
             
             if ( CanGrowVineAt( world, targetPos.i, targetPos.j, targetPos.k ) )
             {
-            	System.out.println("CanGrowVineAt");
+            	//System.out.println("CanGrowVineAt");
             	return true;
             }
         }
         
-        System.out.println("Can NOT GrowVineAt");
+        //System.out.println("Can NOT GrowVineAt");
         return false;
     }
 	

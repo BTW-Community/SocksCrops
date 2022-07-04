@@ -90,15 +90,15 @@ public class SCTileEntityFishTrap extends TileEntity implements FCITileEntityDat
 	public void updateEntity() {
 		if (!worldObj.isRemote) {
 			
-			System.out.println(worldObj.getBiomeGenForCoords(xCoord, zCoord));
-			System.out.println(worldObj.getBiomeGenForCoords(xCoord, zCoord).biomeName);
+			//System.out.println(worldObj.getBiomeGenForCoords(xCoord, zCoord));
+			//System.out.println(worldObj.getBiomeGenForCoords(xCoord, zCoord).biomeName);
 			
 			if (isTouchingWater() && worldObj.getBlockMetadata(xCoord, yCoord, zCoord) == 1) {
 				// System.out.println("I have water");
 				
 				if (isBodyOfWaterLargeEnoughForFishing() && worldObj.rand.nextInt(64) == 0) {
 					if (checkForBite()) {
-						System.out.println("fish");
+						//System.out.println("fish");
 
 						catchFish();
 					}
@@ -290,8 +290,8 @@ public class SCTileEntityFishTrap extends TileEntity implements FCITileEntityDat
         
         if (waterSpots < 62) 
         {
-            System.out.println("I DONT have enough water:");
-            System.out.println( waterSpots );
+            //System.out.println("I DONT have enough water:");
+            //System.out.println( waterSpots );
         	return false;
         }
         else 
@@ -363,7 +363,7 @@ public class SCTileEntityFishTrap extends TileEntity implements FCITileEntityDat
 	            }
 	        }
 	        
-	        System.out.println(iBiteOdds);
+	        //System.out.println(iBiteOdds);
 	
 	        if ( worldObj.rand.nextInt( iBiteOdds ) == 0 )
 	        {
