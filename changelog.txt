@@ -85,5 +85,7 @@
 - Added Beef Patties
 - Added Burger and Egg Burger
 
+- Added Hollow Log
+
 ## Known Issues ##
 - Double Tall Grass and Ferns sometimes spawn ontop of each otherx

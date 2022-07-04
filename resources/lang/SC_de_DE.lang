@@ -46,6 +46,11 @@ tile.SCBlockMossyLog.tree_spruce.name=Bemoostes Kiefernholz
 tile.SCBlockMossyLog.tree_birch.name=Bemoostes Birkenholz
 tile.SCBlockMossyLog.tree_jungle.name=Bemoostes Tropenholz
 
+tile.SCBlockHollowLog.oak.name=Hohles Eichenholz
+tile.SCBlockHollowLog.spruce.name=Hohles Kiefernholz
+tile.SCBlockHollowLog.birch.name=Hohles Birkenholz
+tile.SCBlockHollowLog.jungle.name=Hohles Tropenholz
+
 # Plants
 tile.SCBlockShortPlant.shortGrass.name=Kuzes Gras
 tile.SCBlockShortPlant.tallGrass.name=Langes Gras
@@ -193,26 +198,32 @@ item.SCItemBlueberry.name=Blaubeeren
 item.SCItemFruitBowl_berries.name=Beeren-Obstschale
 
 #Wild Carrot
-item.SCItemWildCarrot.name=Wilde Karrote
-item.SCItemWildCarrotSeeds.name=Wilde Karrotensamen
-item.SCItemWildCarrotRoot.name=Wilde Karrotenwurzel
-item.SCItemWildCarrotCut.name=Wildes Karrotengrün
-item.SCItemWildCarrotSapling.name=Wilde Karrotensamen mit hohen Ertrag
+item.SCItemWildCarrot.name=Wilde Karotte
+item.SCItemWildCarrotSeeds.name=Wilde Karottensamen
+item.SCItemWildCarrotRoot.name=Wilde Karottenwurzel
+item.SCItemWildCarrotCut.name=Wildes Karottengrün
+item.SCItemWildCarrotSapling.name=Wilde Karottensamen mit hoher Ausbeute 
 
 #Carrot
-item.SCItemCarrotRoot.name=Karrotzenwurzel
-item.SCItemCarrotCut.name=Karrotengrün
+item.SCItemCarrotRoot.name=Karottenwurzel
+item.SCItemCarrotCut.name=Karottengrün
 
 #Wild Potato
 item.SCItemWildPotato.name=Süßkartoffel
-item.SCItemWildPotatoCut.name=Geschnittene Süßkartoffel
-item.SCItemWildPotatoSapling.name=Süßkartoffel Setzling
+item.SCItemWildPotatoCut.name=Süßkartoffelstück
+item.SCItemWildPotatoSapling.name=Süßkartoffelsetzling
 
 #Potato
-item.SCItemPotatoCut.name=Geschnittene Kartoffel
+item.SCItemPotatoCut.name=Kartoffelstück
 
 #Pots
 item.SCItemPot_flower.name=Blumentopf mit Erde
 item.SCItemPot_water.name=Blumentopf mit Wasser
 item.SCItemPot_empty.name=Leerer Blumentopf
 
+#Burger
+item.SCItemBreadSlice.name=Brotscheibe
+item.SCItemBeefPatty_raw.name=Rohes Rindfleisch Patty
+item.SCItemBeefPatty_cooked.name=Gebratenes Rindfleisch Patty
+item.SCItemBurger.name=Hamburger
+item.SCItemBurger_egg.name=Hamburger mit Spiegelei

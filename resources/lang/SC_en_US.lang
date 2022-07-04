@@ -46,6 +46,11 @@ tile.SCBlockMossyLog.tree_spruce.name=Mossy Spruce Log
 tile.SCBlockMossyLog.tree_birch.name=Mossy Birch Log
 tile.SCBlockMossyLog.tree_jungle.name=Mossy Jungle Log
 
+tile.SCBlockHollowLog.oak.name=Hollow Oak Log
+tile.SCBlockHollowLog.spruce.name=Hollow Spruce Log
+tile.SCBlockHollowLog.birch.name=Hollow Birch Log
+tile.SCBlockHollowLog.jungle.name=Hollow Jungle Log
+
 # Plants
 tile.SCBlockShortPlant.shortGrass.name=Short Grass
 tile.SCBlockShortPlant.tallGrass.name=Medium Grass
@@ -215,3 +220,10 @@ item.SCItemPotatoCut.name=Cut Potato
 item.SCItemPot_flower.name=Flowerpot with Dirt
 item.SCItemPot_water.name=Flowerpot with Water
 item.SCItemPot_empty.name=Empty flowerpot
+
+#Burger
+item.SCItemBreadSlice.name=Bread Slice
+item.SCItemBeefPatty_raw.name=Raw Beef Patty
+item.SCItemBeefPatty_cooked.name=Cooked Beef Patty
+item.SCItemBurger.name=Hamburger
+item.SCItemBurger_egg.name=Hamburger with Fried Egg
