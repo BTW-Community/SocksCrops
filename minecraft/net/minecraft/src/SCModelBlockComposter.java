@@ -73,6 +73,8 @@ public class SCModelBlockComposter extends FCModelBlock
 				center + 8/16D, 16/16D, center + 6/16D );
 		
 		
+		
+		
 
 		
     }
