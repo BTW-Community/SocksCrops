@@ -18,6 +18,10 @@ public class SCDefs {
 //		id_barrel = 2506,
 //		id_mixer = 2607;
 	
+	//Hollow
+	private static int
+		id_hollowLog = 2619;
+	
 	//Logs
 	private static int
 		id_damagedLog = 2620,
@@ -218,6 +222,8 @@ public class SCDefs {
 	public static Block farmlandNutrition2, farmlandNutrition2Fertilized, farmlandNutrition2Dung; // farmlandNutrition2Straw;
 	public static Block farmlandNutrition3, farmlandNutrition3Fertilized, farmlandNutrition3Dung; // farmlandNutrition3Straw;
 	
+	public static Block hollowLog;
+
 	public static Block damagedLog;
 	public static Block mossyLog;
 	
@@ -491,6 +497,9 @@ public class SCDefs {
 
 	private static void addDecompostingDefs()
 	{
+		hollowLog = new SCBlockHollowLog(id_hollowLog);
+		Item.itemsList[hollowLog.blockID] = new ItemMultiTextureTile(id_hollowLog - 256, hollowLog, SCBlockHollowLog.treeNames);
+		
 		damagedLog = new SCBlockDamagedLog(id_damagedLog);
 		Item.itemsList[damagedLog.blockID] = new ItemMultiTextureTile(id_damagedLog - 256, damagedLog, SCBlockDamagedLog.treeTextures);
 		
