@@ -189,6 +189,13 @@ public class SCDefs {
 		id_wildPotatoCut = 31065,
 		id_potatoCut=31066;
 	
+	private static int
+		id_beefPattyRaw =  31070,
+		id_beefPattyCooked = 31071,     
+		id_breadSlice = 31072,
+		id_burger = 31073,
+		id_burgerEgg = 31074;
+	
 	// --- Blocks --- //
 	
 	public static Block choppingBoard;
@@ -312,7 +319,15 @@ public class SCDefs {
 	public static Item wildPotato;	
 	public static Item wildPotatoCut;	
 	
-	public static Item potatoCut;	
+	public static Item potatoCut;
+	
+	public static Item beefPattyRaw;
+	public static Item beefPattyCooked;
+                
+	public static Item breadSlice;
+       
+	public static Item burger;
+	public static Item burgerEgg;
 
 	
 	public static void addTileEntityDefinitions()
@@ -351,6 +366,8 @@ public class SCDefs {
 		addFishDefs();
 		
 		addBerryDefs();
+		
+		addBurgerDefs();
 		
 		addDomesticDefs();
 		addWildDefs();		
@@ -783,8 +800,17 @@ public class SCDefs {
 		Item.itemsList[wildPotatoCropSapling.blockID] = new FCItemSeeds(id_wildPotatoCropSapling - 256, id_wildPotatoCropHighYield)
 				.setUnlocalizedName("SCItemWildPotatoSapling")
 				.setCreativeTab(CreativeTabs.tabDecorations);
-		
 
-	
+	}
+
+	private static void addBurgerDefs()
+	{
+		beefPattyRaw = new FCItemFood(id_beefPattyRaw - 256, 2, 0.25F, true, "SCItemBeefPatty_raw").SetStandardFoodPoisoningEffect();
+		beefPattyCooked = new FCItemFood(id_beefPattyCooked - 256, 3, 0.0F, true, "SCItemBeefPatty_cooked");
+		
+		breadSlice = new FCItemFood(id_breadSlice - 256, 1, 0.0F, false, "SCItemBreadSlice");
+		
+		burger = new FCItemFoodHighRes(id_burger - 256, 5, 0.5F, false, "SCItemBurger");
+		burgerEgg = new FCItemFoodHighRes(id_burgerEgg - 256, 5, 0.5F, false, "SCItemBurger_egg");
 	}
 }

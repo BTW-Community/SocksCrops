@@ -81,5 +81,9 @@
 
 - Added Carrot Seeds to Storage Jar
 
+- Added Bread Slice
+- Added Beef Patties
+- Added Burger and Egg Burger
+
 ## Known Issues ##
 - Double Tall Grass and Ferns sometimes spawn ontop of each otherx

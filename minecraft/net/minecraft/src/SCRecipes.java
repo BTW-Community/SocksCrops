@@ -17,8 +17,37 @@ public class SCRecipes {
 		addBambooRecipes();
 		addFishRecipes();
 		addBerryRecipes();
+		addBurgerRecipes();
 		
 		addFlowerPotRecipes();
+	
+	}
+	
+	private static void addBurgerRecipes()
+	{
+		FurnaceRecipes.smelting().addSmelting( SCDefs.beefPattyRaw.itemID, 
+				new ItemStack( SCDefs.beefPattyCooked ), 0 );
+		
+    	FCRecipes.AddCauldronRecipe( 
+        		new ItemStack( SCDefs.beefPattyCooked ), 
+        		new ItemStack[] {
+        				new ItemStack( SCDefs.beefPattyRaw )
+        		} );
+		
+		FCRecipes.AddShapelessRecipe(new ItemStack(SCDefs.burger, 1),
+				new ItemStack[] {
+						new ItemStack(SCDefs.breadSlice, 1),
+						new ItemStack(SCDefs.breadSlice, 1),
+						new ItemStack(SCDefs.beefPattyCooked, 1)
+				});
+		
+		FCRecipes.AddShapelessRecipe(new ItemStack(SCDefs.burgerEgg, 1),
+				new ItemStack[] {
+						new ItemStack(SCDefs.breadSlice, 1),
+						new ItemStack(SCDefs.breadSlice, 1),
+						new ItemStack(SCDefs.beefPattyCooked, 1),
+						new ItemStack(FCBetterThanWolves.fcItemFriedEgg, 1)
+				});
 	}
 	
 	private static void addFlowerPotRecipes() {
@@ -144,6 +173,23 @@ public class SCRecipes {
 				knife = SCDefs.knifeDiamond;
 				break;
 			}
+    		
+    		// -- Burger -- //
+    		addChoppingBoardRecipe(
+    				new ItemStack[] {
+    						new ItemStack(SCDefs.breadSlice, 2),
+    				},				
+    				new ItemStack(knife), //hand
+    				new ItemStack(Item.bread, 1)
+    		);
+    		
+    		addChoppingBoardRecipe(
+    				new ItemStack[] {
+    						new ItemStack(SCDefs.beefPattyRaw, 2),
+    				},				
+    				new ItemStack(knife), //hand
+    				new ItemStack(Item.beefRaw, 1)
+    		);
     		
     		// -- WILD CARROT -- //
     		addChoppingBoardRecipe(
@@ -411,6 +457,18 @@ public class SCRecipes {
 	
 	private static void addKnifeCuttingRecipes()
 	{
+		// --- Burger --- //
+		
+		addKnifeCuttingRecipe(new ItemStack(SCDefs.beefPattyRaw, 2),
+
+				new ItemStack(Item.beefRaw, 1)
+		);
+		
+		addKnifeCuttingRecipe(new ItemStack(SCDefs.breadSlice, 2),
+
+				new ItemStack(Item.bread, 1)
+		);
+		
 		// --- Wild Carrot --- //
 		
 		addKnifeCuttingRecipe(new ItemStack(SCDefs.wildCarrotRoot, 1),
@@ -744,8 +802,7 @@ public class SCRecipes {
 					new ItemStack( Item.sugar),
 					new ItemStack( Item.bowlEmpty),
 		});
-	}
-	
+	}	
 
     //Knife Cutting
     public static void addKnifeCuttingRecipe(ItemStack output, ItemStack[] secondaryOutputs, ItemStack input)
