@@ -88,7 +88,16 @@ public class SCBlockFlowerPot extends BlockContainer {
         if (blockInPotID != 0)
         {
         	int blockInPotMeta = potTile.getStoredBlockMetadata();
-            FCUtilsItem.EjectSingleItemWithRandomOffset(world, x, y, z, blockInPotID, blockInPotMeta);
+        	
+        	if (blockInPotID == SCDefs.bambooRoot.blockID)
+        	{
+        		FCUtilsItem.EjectSingleItemWithRandomOffset(world, x, y, z, SCDefs.bambooItem.itemID, 0);
+        	}
+        	else
+        	{
+        		FCUtilsItem.EjectSingleItemWithRandomOffset(world, x, y, z, blockInPotID, blockInPotMeta);
+        	}
+            
         }
         
         super.breakBlock(world, x, y, z, var5, var6);

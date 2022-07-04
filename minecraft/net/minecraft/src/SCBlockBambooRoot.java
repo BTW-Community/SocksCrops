@@ -207,21 +207,21 @@ public class SCBlockBambooRoot extends BlockFlower {
 		m_IconTop = register.registerIcon( "SCBlockBambooRoot_top" );
 
     }
-	
     
     @Override
-    public Icon getBlockTexture( IBlockAccess blockAccess, int i, int j, int k, int iSide )
+    public Icon getIcon(int side, int meta)
     {
-        if ( iSide == 1 )
+        if ( side == 1 )
         {
             return m_IconTop;
         }
-        else if ( iSide == 0 )
+        else if ( side == 0 )
         {
             return m_IconTop;
         }
+        else if (side ==  7) return smallLeaves;
         
-		return blockIcon;
+        return blockIcon;
     }
 	
     

@@ -13,7 +13,7 @@ public class SCBlockShortPlant extends BlockFlower {
 	public static final int TALLGRASS = 1;
 	
 	protected SCBlockShortPlant(int par1) {
-		super(par1);
+		super(par1, Material.vine);
 		
     	setHardness( 0F );
     	
@@ -30,6 +30,7 @@ public class SCBlockShortPlant extends BlockFlower {
 		
 		setUnlocalizedName("SCBlockShortPlant");
 	}
+
 	
     @Override
     public int idDropped( int iMetadata, Random rand, int iFortuneModifier )
