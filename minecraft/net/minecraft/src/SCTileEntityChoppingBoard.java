@@ -307,5 +307,16 @@ public class SCTileEntityChoppingBoard extends TileEntity implements FCITileEnti
 		if (slot == 0) return true;
 		else return false;
 	}
+	
+	protected boolean specialRenderer = false;
+
+	public boolean hasItemSpecialRenderer() {
+		return specialRenderer;
+	}
+
+	public void setItemHasSpecialRenderer(boolean boo) {
+		this.specialRenderer = boo;
+	}
+
   
 }

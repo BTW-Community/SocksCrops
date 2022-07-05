@@ -88,5 +88,7 @@
 - Added Hollow Log
 - Added Hollow Log to Worldgen
 
+- Added Functionality to Chopping Board to have custom renderer for chosen items
+
 ## Known Issues ##
 - Double Tall Grass and Ferns sometimes spawn ontop of each otherx

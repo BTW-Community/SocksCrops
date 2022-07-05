@@ -31,7 +31,7 @@ public class SCTileEntityChoppingBoardRenderer extends TileEntitySpecialRenderer
     {
     	SCTileEntityChoppingBoard cuttingBoard = (SCTileEntityChoppingBoard)tileEntity;
     	
-		RenderKnifeStackStack( cuttingBoard, xCoord, yCoord, zCoord );
+    	if (!cuttingBoard.hasItemSpecialRenderer()) RenderKnifeStackStack( cuttingBoard, xCoord, yCoord, zCoord );
     }
     
     private boolean isBlock(Item item )

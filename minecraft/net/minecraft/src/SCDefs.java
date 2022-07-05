@@ -815,11 +815,14 @@ public class SCDefs {
 	private static void addBurgerDefs()
 	{
 		beefPattyRaw = new FCItemFood(id_beefPattyRaw - 256, 2, 0.25F, true, "SCItemBeefPatty_raw").SetStandardFoodPoisoningEffect();
-		beefPattyCooked = new FCItemFood(id_beefPattyCooked - 256, 3, 0.0F, true, "SCItemBeefPatty_cooked");
+		beefPattyCooked = new FCItemFood(id_beefPattyCooked - 256, 3, 0.25F, true, "SCItemBeefPatty_cooked");
+		//beefRaw = ( new FCItemFood( 107, 4, 0.25F, true, "beefRaw", true )
+		//beefCooked = ( new ItemFood( 108, 5,  0.25F, true ) ).setUnlocal
 		
-		breadSlice = new FCItemFood(id_breadSlice - 256, 1, 0.0F, false, "SCItemBreadSlice");
+		breadSlice = new FCItemFoodHighRes(id_breadSlice - 256, 6, 0.25F, false, "SCItemBreadSlice");
+		//bread = ( new ItemFood( 41, 3, 0.25F, false )
 		
-		burger = new FCItemFoodHighRes(id_burger - 256, 5, 0.5F, false, "SCItemBurger");
-		burgerEgg = new FCItemFoodHighRes(id_burgerEgg - 256, 5, 0.5F, false, "SCItemBurger_egg");
+		burger = new FCItemFood(id_burger - 256, 5, 0.25F, false, "SCItemBurger");
+		burgerEgg = new FCItemFood(id_burgerEgg - 256, 5, 0.5F, false, "SCItemBurger_egg");
 	}
 }

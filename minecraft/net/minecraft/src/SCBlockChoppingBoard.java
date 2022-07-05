@@ -1,9 +1,17 @@
 package net.minecraft.src;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SCBlockChoppingBoard extends BlockContainer {
 
+	private static ArrayList<Item> specialRenderItems = new ArrayList();
+	
+	static
+	{
+		//specialRenderItems.add(Item.cake);
+	}
+	
 	protected SCBlockChoppingBoard(int blockID) {
 		super(blockID, Material.wood);
 		
@@ -23,6 +31,11 @@ public class SCBlockChoppingBoard extends BlockContainer {
 		return new SCTileEntityChoppingBoard();
 	}
 	
+	
+    private boolean hasSpecialRenderer(Item item) {
+		return specialRenderItems.contains(item);
+	}
+	
 	@Override
     public boolean onBlockActivated( World world, int i, int j, int k, EntityPlayer player, int iFacing, float fXClick, float fYClick, float fZClick )
     {
@@ -40,7 +53,7 @@ public class SCBlockChoppingBoard extends BlockContainer {
     			if ( knifeStack == null )
     			{
 			        ItemStack stackToStore = heldStack.splitStack(1);
-			        
+
 			        choppingBoard.setInventorySlotContents(0, stackToStore);
 			        
 			    	if (!world.isRemote)
@@ -164,8 +177,9 @@ public class SCBlockChoppingBoard extends BlockContainer {
     	
 		return false;
     }
-	
-    private ItemStack GetFirstArrowStackInHotbar(EntityPlayer player, ItemStack itemOnBoard) {
+
+
+	private ItemStack GetFirstArrowStackInHotbar(EntityPlayer player, ItemStack itemOnBoard) {
     	for ( int i = 0; i < 9; i++ )
     	{
     		ItemStack tempStack = player.inventory.getStackInSlot( i );
@@ -413,6 +427,27 @@ public class SCBlockChoppingBoard extends BlockContainer {
     	FCClientUtilsRender.RenderStandardBlockWithTexture(renderBlocks, this, i, j, k, blockIcon);
     	
     	renderBlocks.ClearUvRotation();
+    	
+    	
+    	SCTileEntityChoppingBoard choppingBoard = (SCTileEntityChoppingBoard)renderBlocks.blockAccess.getBlockTileEntity( i, j, k );    	
+    	ItemStack itemStack = choppingBoard.getKnifeStack();
+    	Item item;
+    	
+    	choppingBoard.setItemHasSpecialRenderer(false);
+    	
+    	if (itemStack != null)
+    	{
+    		item = itemStack.getItem();
+    		
+    		if (hasSpecialRenderer(item) )
+            {
+            	choppingBoard.setItemHasSpecialRenderer(true);
+
+            	//renderBlocks.setRenderBounds(0.25,0,0.25,0.75,0.5,0.75);
+            	//renderBlocks.renderStandardBlock(cake, i, j, k);
+            }
+    	}
+
     	return true;
     }
 

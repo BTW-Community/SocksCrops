@@ -1,9 +1,17 @@
 package net.minecraft.src;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SCBlockChoppingBoard extends BlockContainer {
 
+	private static ArrayList<Item> specialRenderItems = new ArrayList();
+	
+	static
+	{
+		//specialRenderItems.add(Item.cake);
+	}
+	
 	protected SCBlockChoppingBoard(int blockID) {
 		super(blockID, Material.wood);
 		
@@ -23,6 +31,11 @@ public class SCBlockChoppingBoard extends BlockContainer {
 		return new SCTileEntityChoppingBoard();
 	}
 	
+	
+    private boolean hasSpecialRenderer(Item item) {
+		return specialRenderItems.contains(item);
+	}
+	
 	@Override
     public boolean onBlockActivated( World world, int i, int j, int k, EntityPlayer player, int iFacing, float fXClick, float fYClick, float fZClick )
     {
@@ -40,7 +53,7 @@ public class SCBlockChoppingBoard extends BlockContainer {
     			if ( knifeStack == null )
     			{
 			        ItemStack stackToStore = heldStack.splitStack(1);
-			        
+
 			        choppingBoard.setInventorySlotContents(0, stackToStore);
 			        
 			    	if (!world.isRemote)
@@ -122,7 +135,7 @@ public class SCBlockChoppingBoard extends BlockContainer {
         	            
         	            if ( heldStack.getItem() instanceof FCItemTool )
         	            {
-            	            heldStack.func_96631_a(1, world.rand); //attemptDamageItem
+            	            heldStack.func_96631_a(1, world.rand); //
             	            
             	            int maxDamage = heldStack.getMaxDamage();
             	            if (heldStack.getItemDamage() >= maxDamage)
@@ -164,8 +177,9 @@ public class SCBlockChoppingBoard extends BlockContainer {
     	
 		return false;
     }
-	
-    private ItemStack GetFirstArrowStackInHotbar(EntityPlayer player, ItemStack itemOnBoard) {
+
+
+	private ItemStack GetFirstArrowStackInHotbar(EntityPlayer player, ItemStack itemOnBoard) {
     	for ( int i = 0; i < 9; i++ )
     	{
     		ItemStack tempStack = player.inventory.getStackInSlot( i );
@@ -371,7 +385,7 @@ public class SCBlockChoppingBoard extends BlockContainer {
     {
         return false;
     }
-    
+
 	@Override
 	public AxisAlignedBB GetBlockBoundsFromPoolBasedOnState(IBlockAccess blockAccess, int i, int j, int k) {
 		int dir = getDirection(blockAccess.getBlockMetadata(i, j, k));
@@ -392,5 +406,4 @@ public class SCBlockChoppingBoard extends BlockContainer {
 		
 		return box;
 	}
-
 }
