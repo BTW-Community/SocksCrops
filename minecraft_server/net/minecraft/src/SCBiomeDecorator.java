@@ -122,6 +122,19 @@ public class SCBiomeDecorator {
 			(new SCWorldGenWildCrops()).generate(world, random, xPos, yPos, zPos);
 		}
     	
+    	//Hollow Logs
+    	if ( random.nextInt(2) == 0 )
+		{
+			for (i = 0; i < 8; ++i)
+			{
+				//Sweetberry
+				xPos = x + random.nextInt(16) + 4;
+				yPos = random.nextInt(128);
+				zPos = z + random.nextInt(16) + 4;
+				(new SCWorldGenHollowLogs()).generate(world, random, xPos, yPos, zPos);
+			}
+		}
+    	
 	}
 
 	private static void debugRivers(World world,int x,int z) {
