@@ -86,6 +86,7 @@
 - Added Burger and Egg Burger
 
 - Added Hollow Log
+- Added Hollow Log to Worldgen
 
 ## Known Issues ##
 - Double Tall Grass and Ferns sometimes spawn ontop of each otherx
