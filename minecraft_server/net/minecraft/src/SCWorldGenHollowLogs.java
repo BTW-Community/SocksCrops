@@ -128,8 +128,6 @@ public class SCWorldGenHollowLogs {
 			}
 		}
 		
-<<<<<<< HEAD
-<<<<<<< HEAD
 //		String string = "ERROR";
 //		
 //		if (type == oak) string = "oak"; 
@@ -138,21 +136,6 @@ public class SCWorldGenHollowLogs {
 //		if (type == jungle) string = "jungle"; 
 //		
 //		System.out.println(string + " Hollow Logs Placed at: " + plantX + " , " + plantY + " , " + plantZ);
-=======
-=======
->>>>>>> 1.0-dev
-		String string = "ERROR";
-		
-		if (type == oak) string = "oak"; 
-		if (type == birch) string = "birch"; 
-		if (type == spruce) string = "spruce"; 
-		if (type == jungle) string = "jungle"; 
-		
-		System.out.println(string + " Hollow Logs Placed at: " + plantX + " , " + plantY + " , " + plantZ);
-<<<<<<< HEAD
->>>>>>> 1.0-dev
-=======
->>>>>>> 1.0-dev
 		
 	}
 
@@ -191,15 +174,7 @@ public class SCWorldGenHollowLogs {
 		
 		if (blockBelow == Block.grass.blockID)
 		{
-<<<<<<< HEAD
-<<<<<<< HEAD
 			//System.out.println("Enough Space");
-=======
-			System.out.println("Enough Space");
->>>>>>> 1.0-dev
-=======
-			System.out.println("Enough Space");
->>>>>>> 1.0-dev
 			return true;
 		}
 		else return false;
