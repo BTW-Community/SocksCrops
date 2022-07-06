@@ -7,6 +7,8 @@ package net.minecraft.src;
 import java.util.Random;
 
 import net.minecraft.client.Minecraft;
+import uristqwerty.CraftGuide.api.Util;
+import uristqwerty.CraftGuide.recipes.SocksCropsRecipes;
 
 public class SocksCropsAddon extends FCAddOn {
 
@@ -29,9 +31,28 @@ public class SocksCropsAddon extends FCAddOn {
     	SCDefs.addDefinitions();
     	SCDefs.addTileEntityDefinitions();
     	SCRecipes.addRecipes();
-		
+       	
     	FCAddOnHandler.LogMessage(this.getName() + " Initialized");
+    }
 
+    @Override
+    public void serverPlayerConnectionInitialized(NetServerHandler serverHandler, EntityPlayerMP playerMP)
+    {
+    	FCAddOnHandler.LogMessage(this.getName() + " Version " + this.getVersionString() + " CG Initializing...");
+    	
+       	//CraftGuide
+    	if (Util.instance != null)
+    	{
+    		  new SocksCropsRecipes();
+    		  Util.instance.reloadRecipes();
+    		  
+    		  FCAddOnHandler.LogMessage(this.getName() + " CG Initialized");
+    	}
+    	else
+    	{
+    		FCAddOnHandler.LogMessage(this.getName() + " ERROR, Craftguide not initialized yet");
+    	}
+       	
     }
     
     @Override
