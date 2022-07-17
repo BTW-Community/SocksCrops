@@ -35,7 +35,7 @@ public abstract class SCBiomeGenRiverBase extends BiomeGenRiver
             int randomSmallRockMossy = cash + 8;
             int randomLargeRockMossy = cash + 12;
 
-            if (world.isAirBlock(posX, posY, posZ) && block.canPlaceBlockAt(world, posX, posY, posZ))
+            if (posY > 62 && posY < 75 & world.isAirBlock(posX, posY, posZ) && block.canPlaceBlockAt(world, posX, posY, posZ))
             {
             	if (rand.nextInt(3) > 0)
         		{

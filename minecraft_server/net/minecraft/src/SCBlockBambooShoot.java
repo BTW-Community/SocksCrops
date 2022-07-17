@@ -46,9 +46,16 @@ public class SCBlockBambooShoot extends BlockFlower {
             	}
             	
             	if (growthStage == 3 && random.nextFloat() <= getGrowthChance())
-            	{            		
-            		this.growBambooRoot(world,x,y,z,random);         		
-            	}            	
+            	{            		            		
+					Block blockBelow = Block.blocksList[world.getBlockId( x, y - 1, z )];
+			    	
+			    	if ( blockBelow != null )
+			    	{
+			    		blockBelow.NotifyOfFullStagePlantGrowthOn( world, x, y - 1, z, this );
+			    	}
+			    	
+			    	this.growBambooRoot(world,x,y,z,random);
+            	}               	
             }
             
             

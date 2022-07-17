@@ -17,7 +17,9 @@ public class SCBlockChoppingBoard extends BlockContainer {
 		
         setHardness( 0.5F );        
 		
-        setStepSound( soundWoodFootstep );      
+        setStepSound( soundWoodFootstep );   
+        
+        SetFireProperties( FCEnumFlammability.PLANKS );
         
 //        setCreativeTab( CreativeTabs.tabDecorations );
         

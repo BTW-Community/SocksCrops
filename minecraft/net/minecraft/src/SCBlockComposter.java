@@ -20,6 +20,8 @@ public class SCBlockComposter extends BlockContainer {
         
         this.setStepSound( soundWoodFootstep );
         
+        SetFireProperties( FCEnumFlammability.PLANKS );
+        
         this.setUnlocalizedName("SCBlockComposter");
         
         this.setCreativeTab(CreativeTabs.tabBlock);

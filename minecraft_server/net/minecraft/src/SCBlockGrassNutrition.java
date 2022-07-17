@@ -32,15 +32,58 @@ public class SCBlockGrassNutrition extends FCBlockGrass
 	@Override
 	public void updateTick(World world, int x, int y, int z, Random rand)
 	{
-		super.updateTick(world, x, y, z, rand);
-		
 		int nutritionLevel = getNutritionLevel(world, x, y, z);
+		
+		if (!canGrassSurviveAtLocation(world, x, y, z)) {
+			// convert back to dirt in low light
+			if (nutritionLevel == 3) world.setBlockAndMetadataWithNotify(x, y, z, Block.dirt.blockID, 0);
+			if (nutritionLevel == 2) world.setBlockAndMetadataWithNotify(x, y, z, Block.dirt.blockID, 1);
+			if (nutritionLevel == 1) world.setBlockAndMetadataWithNotify(x, y, z, Block.dirt.blockID, 2);
+			if (nutritionLevel == 0) world.setBlockAndMetadataWithNotify(x, y, z, Block.dirt.blockID, 3);
+			
+		}
+		else if (canGrassSpreadFromLocation(world, x, y, z)) {
+			if (rand.nextFloat() <= GROWTH_CHANCE) {
+				checkForGrassSpreadFromLocation(world, x, y, z);
+			}
+
+			if (isSparse(world, x, y, z) && rand.nextInt(SELF_GROWTH_CHANCE) == 0) {
+				this.setFullyGrown(world, x, y, z);
+			}
+		}
 		
 		if (nutritionLevel < 3) //ie not full
 		{
 			attemptToIncreaseNutrition(world, x, y, z, rand);
 		}
 		
+	}
+	
+	@Override
+	public void NotifyOfFullStagePlantGrowthOn( World world, int i, int j, int k, Block plantBlock )
+	{
+		int meta = world.getBlockMetadata(i, j, k);
+		
+		if (meta > 0 && meta < 6)
+		{
+			// revert back to soil
+			world.setBlockAndMetadataWithNotify( i, j, k, this.blockID, meta + 2 );
+		}
+
+	}
+	
+	@Override
+	public float GetPlantGrowthOnMultiplier( World world, int i, int j, int k, Block plantBlock )
+	{
+		return getNutritionMultiplier(world.getBlockMetadata(i, j, k));
+	}
+
+	private float getNutritionMultiplier(int meta) {
+		if (meta <= 1) return 1F;
+		else if (meta <= 3) return 0.75F;
+		else if (meta <= 5) return 0.5F;
+		else return 0.25F;
+
 	}
     
     private void attemptToIncreaseNutrition(World world, int x, int y, int z, Random rand)

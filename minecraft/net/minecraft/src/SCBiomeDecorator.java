@@ -113,7 +113,7 @@ public class SCBiomeDecorator {
 		}
     	
     	//Wild Crops
-    	if ( random.nextInt(8) == 0 )
+    	if ( random.nextInt(6) == 0 )
 		{
     		//Sweetberry
 			xPos = x + random.nextInt(16) + 4;
@@ -122,9 +122,20 @@ public class SCBiomeDecorator {
 			(new SCWorldGenWildCrops()).generate(world, random, xPos, yPos, zPos);
 		}
     	
-    	
+    	boolean isJungle = biome == BiomeGenBase.jungle || biome == BiomeGenBase.jungleHills || biome == BiomeGenBase.riverJungle;
     	//Hollow Logs
-    	if ( random.nextInt(2) == 0 )
+    	if ( isJungle && random.nextInt(1) == 0 )
+		{
+			for (i = 0; i < 8; ++i)
+			{
+				//Sweetberry
+				xPos = x + random.nextInt(16) + 4;
+				yPos = random.nextInt(128);
+				zPos = z + random.nextInt(16) + 4;
+				(new SCWorldGenHollowLogs()).generate(world, random, xPos, yPos, zPos);
+			}
+		}
+    	else if ( !isJungle && random.nextInt(2) == 0 )
 		{
 			for (i = 0; i < 8; ++i)
 			{

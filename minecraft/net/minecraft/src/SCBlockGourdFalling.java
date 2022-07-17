@@ -14,7 +14,7 @@ public abstract class SCBlockGourdFalling extends FCBlockFalling
     {
         super( iBlockID, Material.pumpkin );
         
-        setTickRandomly( true );   
+        setTickRandomly( true );  
         
     }
     

@@ -16,10 +16,14 @@ public class SCWorldGenHollowLogs {
 	static {
 		validBiome.add(BiomeGenBase.forest);
 		validBiome.add(BiomeGenBase.forestHills);
+		validBiome.add(BiomeGenBase.riverForest);
 		validBiome.add(BiomeGenBase.taiga);
 		validBiome.add(BiomeGenBase.taigaHills);
+		validBiome.add(BiomeGenBase.riverTaiga);
 		validBiome.add(BiomeGenBase.jungle);
 		validBiome.add(BiomeGenBase.jungleHills);
+		validBiome.add(BiomeGenBase.riverJungle);
+		
 	}
 	
 	public boolean generate(World world, Random rand, int x, int y, int z)
@@ -49,9 +53,9 @@ public class SCWorldGenHollowLogs {
 
         int type = setType(currentBiome);
 
-        if ( hasEnoughSpaceAround(world, plantX, plantY, plantZ) )
+        if ( hasEnoughSpaceAround(world, plantX, plantY, plantZ) && plantY > 60)
         {                                
-        	if ( currentBiome == BiomeGenBase.forest || currentBiome == BiomeGenBase.forestHills)
+        	if ( currentBiome == BiomeGenBase.forest || currentBiome == BiomeGenBase.forestHills || currentBiome == BiomeGenBase.riverForest)
             {
         		if (oakOrBirch > 0)
         		{
@@ -128,14 +132,14 @@ public class SCWorldGenHollowLogs {
 			}
 		}
 		
-//		String string = "ERROR";
-//		
-//		if (type == oak) string = "oak"; 
-//		if (type == birch) string = "birch"; 
-//		if (type == spruce) string = "spruce"; 
-//		if (type == jungle) string = "jungle"; 
-//		
-//		System.out.println(string + " Hollow Logs Placed at: " + plantX + " , " + plantY + " , " + plantZ);
+		String string = "ERROR";
+		
+		if (type == oak) string = "oak"; 
+		if (type == birch) string = "birch"; 
+		if (type == spruce) string = "spruce"; 
+		if (type == jungle) string = "jungle"; 
+		
+		System.out.println(string + " Hollow Logs Placed at: " + plantX + " , " + plantY + " , " + plantZ);
 		
 	}
 
@@ -145,11 +149,11 @@ public class SCWorldGenHollowLogs {
     int jungle = 3;
 	
 	private int setType(BiomeGenBase currentBiome) {
-		if (currentBiome == BiomeGenBase.taiga || currentBiome == BiomeGenBase.taigaHills)
+		if (currentBiome == BiomeGenBase.taiga || currentBiome == BiomeGenBase.taigaHills || currentBiome == BiomeGenBase.riverTaiga)
 		{
 			return spruce;
 		}
-		else if (currentBiome == BiomeGenBase.jungle || currentBiome == BiomeGenBase.jungleHills)
+		else if (currentBiome == BiomeGenBase.jungle || currentBiome == BiomeGenBase.jungleHills || currentBiome == BiomeGenBase.riverJungle)
 		{
 			return jungle;
 		}
@@ -172,7 +176,7 @@ public class SCWorldGenHollowLogs {
 		
 		int blockBelow = world.getBlockId(x, y-1, z);
 		
-		if (blockBelow == Block.grass.blockID)
+		if (blockBelow == Block.grass.blockID || blockBelow == Block.sand.blockID)
 		{
 			//System.out.println("Enough Space");
 			return true;

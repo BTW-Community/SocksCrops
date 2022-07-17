@@ -13,7 +13,7 @@ public class SocksCropsAddon extends FCAddOn {
     public static SocksCropsAddon instance = new SocksCropsAddon();
     
     private static final String ADDON_NAME = "Sock's Crops";
-    private static final String ADDON_VERSION = "1.0.dev";
+    private static final String ADDON_VERSION = "1.0.0_beta_22w29";
     private static final String LANGUAGE_PREFIX = "SC";
 	
     private SocksCropsAddon()

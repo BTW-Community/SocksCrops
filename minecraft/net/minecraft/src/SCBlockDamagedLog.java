@@ -22,6 +22,22 @@ public class SCBlockDamagedLog extends SCBlockLogBase {
     	}
     }
     
+    @Override
+    public void RenderBlockAsItem(RenderBlocks renderer, int iItemDamage, float fBrightness)
+    {
+    	int meta = iItemDamage;
+    	
+    	renderer.setRenderBounds(
+    			0.001/16F, 0.001/16F, 0.001/16F,  
+    			15.999/16F, 15.999/16F, 15.999/16F);
+    	FCClientUtilsRender.RenderInvBlockWithMetadata(renderer, this, -0.5F, -0.5F, -0.5F, meta);
+    	
+    	renderer.setRenderBounds(
+    			0/16F,0/16F, 0/16F,  
+    			16/16F, 16/16F, 16/16F);
+    	FCClientUtilsRender.RenderInvBlockWithTexture(renderer, this, -0.5F, -0.5F, -0.5F, damagedIconArray[meta & 3]);
+    }
+    
     public static final String[] damagedTextureTypes = new String[] {"SCBlockDamagedLogOak_side", "SCBlockDamagedLogSpruce_side", "SCBlockDamagedLogBirch_side", "SCBlockDamagedLogJungle_side"};
     public static final String[] damagedTopTextures = new String[] {"SCBlockLogOak_top", "SCBlockLogSpruce_top", "SCBlockLogBirch_top", "SCBlockLogJungle_top"};
     public static final String[] treeTextures = new String[] {"tree_side", "tree_spruce", "tree_birch", "tree_jungle"};

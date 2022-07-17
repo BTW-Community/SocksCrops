@@ -20,9 +20,44 @@ public class SCRecipes {
 		addBurgerRecipes();
 		
 		addFlowerPotRecipes();
+		
+		addMossRecipes();
 	
 	}
 	
+	private static void addMossRecipes()
+	{
+
+
+		
+		FCRecipes.AddRecipe(new ItemStack(SCDefs.mossCarpet, 1), new Object[] {
+				"MMM", 
+				'M', SCDefs.mossBall});
+		
+		FCRecipes.AddShapelessRecipe( new ItemStack( SCDefs.mossBall, 3 ), 
+				new Object[] {	    		
+	    		new ItemStack( SCDefs.mossCarpet ),
+		} );
+		
+		FCRecipes.addPistonPackingRecipe(SCDefs.mossBlock,
+				new ItemStack[] {	    		
+					new ItemStack( SCDefs.mossBall ),
+					new ItemStack( SCDefs.mossBall ),
+					new ItemStack( SCDefs.mossBall ),
+					new ItemStack( SCDefs.mossBall ),
+					new ItemStack( SCDefs.mossBall ),
+					new ItemStack( SCDefs.mossBall ),
+					new ItemStack( SCDefs.mossBall ),
+					new ItemStack( SCDefs.mossBall ),
+	    });
+		
+		FCRecipes.AddShapelessRecipe( new ItemStack( SCDefs.mossBall, 8 ), 
+				new Object[] {	    		
+	    		new ItemStack( SCDefs.mossBlock ),
+		} );
+		
+	}
+
 	private static void addBurgerRecipes()
 	{
 		FurnaceRecipes.smelting().addSmelting( SCDefs.beefPattyRaw.itemID, 

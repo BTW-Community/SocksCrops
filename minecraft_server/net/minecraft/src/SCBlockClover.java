@@ -7,6 +7,7 @@ public class SCBlockClover extends BlockFlower {
 	protected SCBlockClover(int par1) {
 		super(par1);
 		setStepSound(soundGrassFootstep);
+		SetFireProperties( FCEnumFlammability.GRASS );
 		setCreativeTab(CreativeTabs.tabDecorations);
 		setUnlocalizedName("SCBlockClover");
 	}

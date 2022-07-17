@@ -10,7 +10,6 @@ public class SCBlockBambooRoot extends BlockFlower {
 		setUnlocalizedName("SCBlockBambooRoot");
 		setHardness(0.75F);
 		setStepSound(soundWoodFootstep);
-		setCreativeTab(CreativeTabs.tabMaterials);
 	}
 	
     private float getGrowthChance()

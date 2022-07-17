@@ -24,11 +24,23 @@ public abstract class SCBlockBushBase extends BlockFlower {
 	@Override
 	public void updateTick(World world, int i, int j, int k, Random rand)
 	{
-		if (!world.isRemote && rand.nextFloat() <= getBaseGrowthChance() && world.getBlockMetadata(i, j, k) < 5)
+		if (!world.isRemote && rand.nextFloat() <= getBaseGrowthChance() )
 		{
-			world.setBlockMetadataWithNotify(i, j, k, world.getBlockMetadata(i, j, k) + 1);
+			if (world.getBlockMetadata(i, j, k) < 5)
+			{
+				world.setBlockMetadataWithNotify(i, j, k, world.getBlockMetadata(i, j, k) + 1);
+				
+				if (world.getBlockMetadata(i, j, k) == 4)
+				{
+					Block blockBelow = Block.blocksList[world.getBlockId( i, j - 1, k )];
+			    	
+			    	if ( blockBelow != null )
+			    	{
+			    		blockBelow.NotifyOfFullStagePlantGrowthOn( world, i, j - 1, k, this );
+			    	}
+				}
+			}
 		}
-
 	}
 
 	

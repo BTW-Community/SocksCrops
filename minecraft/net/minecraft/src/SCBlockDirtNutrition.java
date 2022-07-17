@@ -22,6 +22,33 @@ public class SCBlockDirtNutrition extends FCBlockDirt {
         setCreativeTab( CreativeTabs.tabBlock );
     }
 	
+	@Override
+	public void NotifyOfFullStagePlantGrowthOn( World world, int i, int j, int k, Block plantBlock )
+	{
+		int meta = world.getBlockMetadata(i, j, k);
+		
+		if (meta < 3)
+		{
+			// revert back to soil
+			world.setBlockAndMetadataWithNotify( i, j, k, this.blockID, meta + 1 );
+		}
+
+	}
+	
+	@Override
+	public float GetPlantGrowthOnMultiplier( World world, int i, int j, int k, Block plantBlock )
+	{
+		return getNutritionMultiplier(world.getBlockMetadata(i, j, k));
+	}
+
+	private float getNutritionMultiplier(int meta) {
+		if (meta < 1) return 1F;
+		else if (meta < 2) return 0.75F;
+		else if (meta < 3) return 0.5F;
+		else return 0.25F;
+
+	}
+	
 	//ADDON    
     private int getNutritionLevel( World world, int i, int j, int k) {
     	int meta = world.getBlockMetadata(i, j, k);
@@ -130,19 +157,19 @@ public class SCBlockDirtNutrition extends FCBlockDirt {
 		
 		if (meta == 0)
 		{
-			world.setBlockAndMetadataWithNotify( i, j, k, Block.grass.blockID, 0 );
+			world.setBlockAndMetadataWithNotify( i, j, k, Block.grass.blockID, 1 );
 		}
 		else if (meta == 1 )
 		{
-			world.setBlockAndMetadataWithNotify( i, j, k, Block.grass.blockID, 1 );
+			world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.grassNutrition.blockID, 3 );
 		}
 		else if (meta == 2 )
 		{
-			world.setBlockAndMetadataWithNotify( i, j, k, Block.grass.blockID, 2 );
+			world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.grassNutrition.blockID, 5 );
 		}
 		else if (meta == 3 )
 		{
-			world.setBlockAndMetadataWithNotify( i, j, k, Block.grass.blockID, 3 );
+			world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.grassNutrition.blockID, 7 );
 		}
         
     	return true;

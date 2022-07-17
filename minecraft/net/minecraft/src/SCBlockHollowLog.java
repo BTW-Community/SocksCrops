@@ -151,6 +151,48 @@ public class SCBlockHollowLog extends SCBlockLogBase {
     public void RenderBlockAsItem(RenderBlocks renderer, int iItemDamage, float fBrightness) {
 
     	super.RenderBlockAsItem(renderer, iItemDamage, fBrightness);
+    	
+    	int i = 0;
+    	int j;
+    	int k;
+    	
+    	int meta = iItemDamage;
+    	int type = meta & 3;
+    	int rot = meta & 12;
+    	// INSIDE
+    	
+    	if (rot == 0)
+    	{
+    		renderer.setRenderBounds( 
+    				0.001/16F, 0.001F, 0.001/16F, 
+    				1.999/16F, 0.999F, 15.999/16F );
+    		FCClientUtilsRender.RenderInvBlockWithTexture( renderer, this, -0.5F, -0.5F, -0.5F, tree_inner[type] );
+    		
+    		renderer.setRenderBounds( 
+    				14/16F, 0.001F, 0.001/16F, 
+    				15.999/16F, 0.999F, 15.999/16F );
+    		FCClientUtilsRender.RenderInvBlockWithTexture( renderer, this, -0.5F, -0.5F, -0.5F, tree_inner[type] );
+    		
+    		renderer.setRenderBounds( 
+    				0.001/16F, 0.001F, 0.001/16F, 
+    				15.999/16F, 0.999F, 1.999/16F );
+    		FCClientUtilsRender.RenderInvBlockWithTexture( renderer, this, -0.5F, -0.5F, -0.5F, tree_inner[type] );
+    		
+    		renderer.setRenderBounds( 
+    				0.001/16F, 0.001F, 14/16F, 
+    				15.999/16F, 0.999F, 15.999/16F );
+    		FCClientUtilsRender.RenderInvBlockWithTexture( renderer, this, -0.5F, -0.5F, -0.5F, tree_inner[type] );
+    	}
+    	
+    	
+    	renderer.SetUvRotateTop(0);
+    	renderer.SetUvRotateEast(0);
+    	renderer.SetUvRotateWest(0);
+    	renderer.SetUvRotateBottom(0);
+    	renderer.SetUvRotateSouth(0);
+    	renderer.SetUvRotateNorth(0);
+    	
+    	
 
     }
 

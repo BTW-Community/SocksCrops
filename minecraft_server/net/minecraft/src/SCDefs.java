@@ -17,114 +17,112 @@ public class SCDefs {
 //		id_juicer = 2605,
 //		id_barrel = 2506,
 //		id_mixer = 2607;
-	
-	//Hollow
-	private static int
-		id_hollowLog = 2619;
-	
-	//Logs
-	private static int
-		id_damagedLog = 2620,
-		id_mossyLog = 2621;
-	
+		
 	//Dirts
 	private static int
-		id_grassNutrition = 2622,
-		id_dirtNutrition = 2623,
-		id_dirtLooseNutrition = 2624;
+		id_grassNutrition = 2620,
+		id_dirtNutrition = 2621,
+		id_dirtLooseNutrition = 2622;
 	
 	//Farmland
 	private static int
-		id_farmlandNutrition0 = 2625,
-		id_farmlandNutrition1 = 2626,
-		id_farmlandNutrition2 = 2627,
-		id_farmlandNutrition3 = 2628,
+		id_farmlandNutrition0 = 2623,
+		id_farmlandNutrition1 = 2624,
+		id_farmlandNutrition2 = 2625,
+		id_farmlandNutrition3 = 2626,
 		
-		id_farmlandNutrition0Fertilized = 2629,
-		id_farmlandNutrition1Fertilized = 2630,
-		id_farmlandNutrition2Fertilized = 2631,
-		id_farmlandNutrition3Fertilized = 2632,
+		id_farmlandNutrition0Fertilized = 2627,
+		id_farmlandNutrition1Fertilized = 2628,
+		id_farmlandNutrition2Fertilized = 2629,
+		id_farmlandNutrition3Fertilized = 2630,
 		
-		id_farmlandNutrition0Dung = 2633,
-		id_farmlandNutrition1Dung = 2634,
-		id_farmlandNutrition2Dung = 2635,
-		id_farmlandNutrition3Dung = 2636;
+		id_farmlandNutrition0Dung = 2631,
+		id_farmlandNutrition1Dung = 2632,
+		id_farmlandNutrition2Dung = 2633,
+		id_farmlandNutrition3Dung = 2634;
 		
-//		id_farmlandNutrition0Straw = 2637,
-//		id_farmlandNutrition1Straw = 2638,
-//		id_farmlandNutrition2Straw = 2639,
-//		id_farmlandNutrition3Straw = 2640;
+//		id_farmlandNutrition0Straw = 2635,
+//		id_farmlandNutrition1Straw = 2636,
+//		id_farmlandNutrition2Straw = 2637,
+//		id_farmlandNutrition3Straw = 2638;
 	
-//		id_farmlandNutrition0Straw = 2641,
-//		id_farmlandNutrition1Straw = 2642,
-//		id_farmlandNutrition2Straw = 2643,
-//		id_farmlandNutrition3Straw = 2644;
+//		id_farmlandNutrition0Straw = 2639,
+//		id_farmlandNutrition1Straw = 2640,
+//		id_farmlandNutrition2Straw = 2641,
+//		id_farmlandNutrition3Straw = 2642;
 
+	//Logs
+	private static int
+		id_hollowLog = 2650,
+		id_damagedLog = 2651,
+		id_mossyLog = 2652;
+	
 	//Decorative plants
 	private static int
-		id_compostBlock = 2645,
-		id_shortPlant = 2646,
-		id_tallPlant = 2647,
-		id_clover = 2648,
-		id_mossCarpet = 2649,
-		id_lilyRose = 2650,
-		id_rocks = 2651,
-		id_rocksSandstone = 2652;
+		id_compostBlock = 2655,
+		id_shortPlant = 2656,
+		id_tallPlant = 2657,
+		id_clover = 2658,
+		id_mossBlock = 2659,
+		id_mossCarpet = 2660,
+		id_lilyRose = 2661,
+		id_rocks = 2662,
+		id_rocksSandstone = 2663;
 		
 	
 	//Pumpkins
 	private static int
-		id_pumpkinStem = 2660,
-		id_pumpkinVine = 2661,
-		id_pumpkinVineFlowering = 2662,
-		id_pumpkinOrange = 2663,
-		id_pumpkinGreen = 2664,
-		id_pumpkinYellow = 2665,
-		id_pumpkinWhite = 2666,
-		id_pumpkinHarvested = 2667,
-		id_pumpkinCarved = 2668,
-		id_pumpkinCarvedDead = 2669,
-		id_pumpkinJack = 2670;
+		id_pumpkinStem = 2670,
+		id_pumpkinVine = 2671,
+		id_pumpkinVineFlowering = 2672,
+		id_pumpkinOrange = 2673,
+		id_pumpkinGreen = 2674,
+		id_pumpkinYellow = 2675,
+		id_pumpkinWhite = 2676,
+		id_pumpkinHarvested = 2677,
+		id_pumpkinCarved = 2678,
+		id_pumpkinCarvedDead = 2679,
+		id_pumpkinJack = 2680;
 		
 	//Melons
 	private static int	
-		id_melonStem = 2671,
-		id_melonVine = 2672,
-		id_melonVineFlowering = 2673,	
-		id_melonWater = 2674,
-		id_melonCanary = 2675,
-		id_melonHoneydew = 2676,
-		id_melonCantaloupe = 2677,
-		id_melonHarvested = 2678,
-		id_melonCanaryHarvested = 2679,
+		id_melonStem = 2681,
+		id_melonVine = 2682,
+		id_melonVineFlowering = 2683,	
+		id_melonWater = 2684,
+		id_melonCanary = 2685,
+		id_melonHoneydew = 2686,
+		id_melonCantaloupe = 2687,
+		id_melonHarvested = 2688,
+		id_melonCanaryHarvested = 2689,
 	
-		id_gourdVineDead = 2680,
-		id_gourdStemDead = 2681;
+		id_gourdVineDead = 2690,
+		id_gourdStemDead = 2691;
 
 	//Bamboo
 	private static int	
-		id_bambooShoot = 2682,
-		id_bambooRoot = 2683,
-		id_bambooStalk = 2684,
-		id_bambooPacked = 2685;
+		id_bambooShoot = 2692,
+		id_bambooRoot = 2693,
+		id_bambooStalk = 2694,
+		id_bambooPacked = 2695;
 	
 	//Pies
 	private static int
-		id_pieRaw = 2690,
-		id_pieCooked = 2691;
+		id_pieRaw = 2700,
+		id_pieCooked = 2701;
 	
 	//Bushes
 	private static int
-		id_sweetberryBush = 2695,
-		id_blueberryBush = 2696;
+		id_sweetberryBush = 2705,
+		id_blueberryBush = 2706;
 	
 	private static int
-		id_wildCarrotCrop = 2700,
-		id_wildCarrotCropHighYield = 2701,
-		id_wildCarrotCropSapling = 2702,
-		id_wildPotatoCrop = 2703,
-		id_wildPotatoCropHighYield = 2704,
-		id_wildPotatoCropSapling = 2705;
+		id_wildCarrotCrop = 2710,
+		id_wildCarrotCropHighYield = 2711,
+		id_wildCarrotCropSapling = 2712,
+		id_wildPotatoCrop = 2713,
+		id_wildPotatoCropHighYield = 2714,
+		id_wildPotatoCropSapling = 2715;
 	
 	private static int maxID = 2999;
 	
@@ -137,8 +135,7 @@ public class SCDefs {
 		id_knifeIron = 31001,
 		id_knifeDiamond = 31002,
 		id_waterPotEmpty = 31003;
-	
-	
+		
 	//Pumpkin & Melon
 	private static int
 		id_melonCanarySlice = 31010,
@@ -151,6 +148,10 @@ public class SCDefs {
 	//Bamboo
 	private static int
 		id_bambooItem = 31020;
+	
+	//Moss
+	private static int
+		id_mossBall = 31029;
 	
 	private static int
 		id_salmonRaw = 31030,
@@ -232,6 +233,7 @@ public class SCDefs {
 	public static Block tallPlant;
 	
 	public static Block clover;	
+	public static Block mossBlock;
 	public static Block mossCarpet;
 	public static Block lilyRose;
 	public static Block rocks;
@@ -334,13 +336,14 @@ public class SCDefs {
        
 	public static Item burger;
 	public static Item burgerEgg;
+	
+	public static Item mossBall;
 
 	
 	public static void addTileEntityDefinitions()
 	{
 		addTileEntityDefs();
 		addTileEntityMapping();
-		addTileEntityRenderers();
 	}
 	
 	public static void addDefinitions()
@@ -417,12 +420,6 @@ public class SCDefs {
 		Item.itemsList[waterPot.blockID] = new FCItemPlacesAsBlock (id_waterPot - 256, id_waterPot, SCBlockWaterPot.water).setUnlocalizedName("SCItemPot_water").setCreativeTab(CreativeTabs.tabDecorations);
 		
 		waterPotEmpty = new FCItemPlacesAsBlock (id_waterPotEmpty - 256, id_waterPot, SCBlockWaterPot.empty).setUnlocalizedName("SCItemPot_empty").setCreativeTab(CreativeTabs.tabDecorations);
-	}
-
-	private static void addTileEntityRenderers()
-	{
-		//TileEntityRenderer.instance.addSpecialRendererForClass (SCTileEntityFishTrap.class, new SCTileEntityFishTrapRenderer() );
-		//TileEntityRenderer.instance.addSpecialRendererForClass (SCTileEntityChoppingBoard.class, new SCTileEntityChoppingBoardRenderer() );
 	}
 
 	private static void addToolDefs()
@@ -521,11 +518,19 @@ public class SCDefs {
 		clover = new SCBlockClover (id_clover);
 		Item.itemsList[clover.blockID] = new ItemMultiTextureTile(id_clover - 256, clover, new String [] {"clover", "cloverPurple", "cloverWhite", "cloverRed"});
 		
-		mossCarpet = new SCBlockMoss(id_mossCarpet);
-		Item.itemsList[mossCarpet.blockID] = new ItemBlock(id_mossCarpet - 256);
+		mossBall = new Item(id_mossBall - 256).setUnlocalizedName("SCItemMossBall").setCreativeTab(CreativeTabs.tabMaterials);
+		
+		mossBlock = new SCBlockMoss(id_mossBlock);
+		Item.itemsList[mossBlock.blockID] = new ItemBlock(id_mossBlock - 256);
+				
+		mossCarpet = new SCBlockMossCarpet(id_mossCarpet);
+		Item.itemsList[mossCarpet.blockID] = new FCItemPlacesAsBlock(id_mossCarpet - 256).setUnlocalizedName("SCItemMossCarpet").setCreativeTab(CreativeTabs.tabDecorations);;
 		
 		lilyRose = new SCBlockLilyRose(id_lilyRose);
-		Item.itemsList[lilyRose.blockID] = new ItemBlock(id_lilyRose - 256);
+		Item.itemsList[lilyRose.blockID] = new SCItemBlockLily(id_lilyRose - 256, lilyRose);
+		
+		//copied from deco to make waterlily placeable
+		Item.itemsList[Block.waterlily.blockID] = new SCItemBlockLily(Block.waterlily.blockID - 256, Block.waterlily);
 		
 		rocks = new SCBlockRocks (id_rocks, "stone", "SCBlockRocksStone");
 		Item.itemsList[rocks.blockID] = new SCItemRocks(id_rocks - 256, rocks, "SCItemRocksStone",
@@ -677,16 +682,16 @@ public class SCDefs {
 		
 		//Pie
 		pieRaw = new SCBlockPieRaw(id_pieRaw);
-		Item.itemsList[pieRaw.blockID] = new ItemMultiTextureTile(id_pieRaw - 256, pieRaw, new String[] { 
-				"sweet", "sweet", "sweet", "sweet", 
+		Item.itemsList[pieRaw.blockID] = new ItemMultiTextureTile(id_pieRaw - 256, pieRaw, new String[] {
+				"sweet", "sweet", "sweet", "sweet",
 				"blue", "blue", "blue", "blue",});
 		
 		pieCooked = new SCBlockPieCooked(id_pieCooked);
-		Item.itemsList[pieCooked.blockID] = new ItemMultiTextureTile(id_pieCooked - 256, pieCooked, new String[] { 
-				"pumpkin", "pumpkin", "pumpkin", "pumpkin", 
-				"sweet", "sweet", "sweet", "sweet", 
+		Item.itemsList[pieCooked.blockID] = new ItemMultiTextureTile(id_pieCooked - 256, pieCooked, new String[] {
+				"pumpkin", "pumpkin", "pumpkin", "pumpkin",
+				"sweet", "sweet", "sweet", "sweet",
 				"blue", "blue", "blue", "blue",});
-
+		
 		// Pumpkin
 		pumpkinPieSlice = new FCItemFood ( id_pumpkinPieSlice - 256, 1, 2.5F, false, "SCItemPieSlice_pumpkin").setAlwaysEdible();
 		
@@ -694,8 +699,9 @@ public class SCDefs {
 				id_pieCooked, SCBlockPieCooked.subtypePumpkin);
 		
 		//Berry Pies
-		sweetberryPieRaw = new FCItemPlacesAsBlock(id_sweetberryPieRaw - 256, id_pieRaw, SCBlockPieRaw.subtypeSweetberry, "SCItemPieRaw_sweetberry").SetBuoyant().setCreativeTab(CreativeTabs.tabFood);
-		blueberryPieRaw = new FCItemPlacesAsBlock(id_blueberryPieRaw - 256, id_pieRaw, SCBlockPieRaw.subtypeBlueberry, "SCItemPieRaw_blueberry").SetBuoyant().setCreativeTab(CreativeTabs.tabFood);
+		sweetberryPieRaw = new FCItemPlacesAsBlock(id_sweetberryPieRaw - 256, id_pieRaw, SCBlockPieRaw.subtypeSweetberry, "SCItemPieRaw_sweetberry").SetBuoyant().setCreativeTab(CreativeTabs.tabFood);	
+		
+		blueberryPieRaw = new FCItemPlacesAsBlock(id_blueberryPieRaw - 256, id_pieRaw, SCBlockPieRaw.subtypeBlueberry, "SCItemPieRaw_blueberry").SetBuoyant().setCreativeTab(CreativeTabs.tabFood);	
 		
 		sweetberryPieCooked = new SCItemPie(id_sweetberryPieCooked - 256, 2, 2.5F, false, "SCItemPieCooked_sweetberry",
 				id_pieCooked, SCBlockPieCooked.subtypeSweetberry);
@@ -716,12 +722,14 @@ public class SCDefs {
 		Item.itemsList[bambooShoot.blockID] = new ItemBlock(id_bambooShoot - 256);
 		
 		bambooRoot = new SCBlockBambooRoot(id_bambooRoot);
-		Item.itemsList[bambooRoot.blockID] = new SCItemBlockBambooRoot(id_bambooRoot - 256).setUnlocalizedName("SCItemBambooRoot_display"); 
+		Item.itemsList[bambooRoot.blockID] = new SCItemBlockBambooRoot(id_bambooRoot - 256).setUnlocalizedName("SCItemBambooRoot_display");
 		
 		bambooStalk = new SCBlockBambooStalk(id_bambooStalk);
 		Item.itemsList[bambooStalk.blockID] = new ItemBlock(id_bambooStalk - 256);
 		
-		bambooPacked = new FCBlockDirectional(id_bambooPacked, Material.wood, new String[] {"SCBlockBambooPacked_top"}, new String[] {"SCBlockBambooPacked_side"}).setUnlocalizedName("SCBlockBambooPacked");
+		bambooPacked = new FCBlockDirectional(id_bambooPacked, Material.wood, new String[] {"SCBlockBambooPacked_top"}, new String[] {"SCBlockBambooPacked_side"})
+				.setUnlocalizedName("SCBlockBambooPacked")
+				.setCreativeTab(CreativeTabs.tabBlock);
 		Item.itemsList[bambooPacked.blockID] = new ItemBlock(id_bambooPacked - 256);
 		
 		bambooItem = new SCItemBamboo(id_bambooItem - 256);
@@ -743,8 +751,8 @@ public class SCDefs {
 	{
 		//Sweetberry
 		sweetberryBush = new SCBlockBerryBush(id_sweetberryBush, id_sweetberry, id_sweetberrySapling, "SCBlockBushSweetberry");
-		Item.itemsList[sweetberryBush.blockID] = new ItemMultiTextureTile(id_sweetberryBush - 256, sweetberryBush, new String[] { 
-				"sweet_0", "sweet_0", "sweet_0", "sweet_0",	"sweet_0", "sweet_0" }); 
+		Item.itemsList[sweetberryBush.blockID] = new ItemMultiTextureTile(id_sweetberryBush - 256, sweetberryBush, new String[] {
+				"sweet_0", "sweet_0", "sweet_0", "sweet_0",	"sweet_0", "sweet_0" });
 		
 		sweetberrySapling = new FCItemSeeds(id_sweetberrySapling - 256, id_sweetberryBush)
 				.setCreativeTab(CreativeTabs.tabDecorations)
@@ -754,8 +762,8 @@ public class SCDefs {
 		
 		//Blueberry
 		blueberryBush = new SCBlockBerryBush(id_blueberryBush, id_blueberry, id_blueberrySapling, "SCBlockBushBlueberry");
-		Item.itemsList[blueberryBush.blockID] = new ItemMultiTextureTile(id_blueberryBush - 256, blueberryBush, new String[] { 
-				"blue_0", "blue_0", "blue_0", "blue_0",	"blue_0", "blue_0" }); 
+		Item.itemsList[blueberryBush.blockID] = new ItemMultiTextureTile(id_blueberryBush - 256, blueberryBush, new String[] {
+				"blue_0", "blue_0", "blue_0", "blue_0",	"blue_0", "blue_0" });
 		
 		blueberrySapling = new FCItemSeeds(id_blueberrySapling - 256, id_blueberryBush)
 				.setCreativeTab(CreativeTabs.tabDecorations)

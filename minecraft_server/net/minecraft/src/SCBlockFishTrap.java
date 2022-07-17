@@ -7,6 +7,7 @@ public class SCBlockFishTrap extends BlockContainer {
 
 	protected SCBlockFishTrap(int blockID) {
 		super(blockID, Material.wood);
+		SetFireProperties( FCEnumFlammability.WICKER );
         SetBuoyant();
 		setCreativeTab(CreativeTabs.tabBlock);
 		setUnlocalizedName("SCBlockFishTrap");

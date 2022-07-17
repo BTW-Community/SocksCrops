@@ -15,6 +15,8 @@ public class SCWorldGenWildCrops {
 
 	static {
 		validBiome.add(BiomeGenBase.plains);
+		validBiome.add(BiomeGenBase.extremeHillsEdge);
+		validBiome.add(BiomeGenBase.extremeHills);
 	}
 	
 	public boolean generate(World world, Random rand, int x, int y, int z)
@@ -42,15 +44,18 @@ public class SCWorldGenWildCrops {
                 	continue;
                 }
                 
-                Block wildCrop;
+                Block wildCrop = SCDefs.wildCarrotCrop;
                 
-                if (randCrop == 0) wildCrop = SCDefs.wildCarrotCrop;
-                else wildCrop = SCDefs.wildPotatoCrop;
-                
-                if (wildCrop.canBlockStay(world, plantX, plantY, plantZ))
+                if (wildCrop.canBlockStay(world, plantX, plantY, plantZ) && plantY > 60)
                 {
-                    if ( isValidBiome(currentBiome))
+                    if ( currentBiome == BiomeGenBase.plains)
                     {
+                    	wildCrop = SCDefs.wildCarrotCrop;
+                    	world.setBlock(plantX, plantY, plantZ, wildCrop.blockID, 15, 2);
+                    }
+                    else if ( currentBiome != BiomeGenBase.plains && (plantY < 82) )
+                    {
+                    	wildCrop = SCDefs.wildPotatoCrop;
                     	world.setBlock(plantX, plantY, plantZ, wildCrop.blockID, 15, 2);
                     }
                 }
