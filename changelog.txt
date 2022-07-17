@@ -90,5 +90,7 @@
 
 - Added Functionality to Chopping Board to have custom renderer for chosen items
 
+- Added Moss Block and Moss Ball Item
+
 ## Known Issues ##
 - Double Tall Grass and Ferns sometimes spawn ontop of each otherx

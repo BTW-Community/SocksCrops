@@ -363,7 +363,7 @@ public class SCTileEntityFishTrap extends TileEntity implements FCITileEntityDat
 	            }
 	        }
 	        
-	        System.out.println(iBiteOdds);
+	        // System.out.println(iBiteOdds);
 	
 	        if ( worldObj.rand.nextInt( iBiteOdds ) == 0 )
 	        {
