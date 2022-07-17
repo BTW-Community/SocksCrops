@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+import java.util.List;
 import java.util.Random;
 
 public class SCBlockBerryBush extends SCBlockBushBase {
@@ -14,8 +15,17 @@ public class SCBlockBerryBush extends SCBlockBushBase {
 		this.textureName = name;
 		this.berryID = berryID;
 		this.saplingID = saplingID;
-		
 		setUnlocalizedName(name);
+	}
+	
+	@Override
+	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List) {
+		par3List.add(new ItemStack(par1, 1, 0));
+		par3List.add(new ItemStack(par1, 1, 1));
+		par3List.add(new ItemStack(par1, 1, 2));
+		par3List.add(new ItemStack(par1, 1, 3));
+		par3List.add(new ItemStack(par1, 1, 4));
+		par3List.add(new ItemStack(par1, 1, 5));
 	}
 
 	@Override
@@ -36,7 +46,7 @@ public class SCBlockBerryBush extends SCBlockBushBase {
     public void registerIcons( IconRegister register )
     {
     	for (int i = 0; i < bushIcon.length; i++) {
-    		bushIcon[i] = register.registerIcon( textureName + "_" + i );
+    		blockIcon = bushIcon[i] = register.registerIcon( textureName + "_" + i );
 		}
     }
     
@@ -44,5 +54,9 @@ public class SCBlockBerryBush extends SCBlockBushBase {
     {
     	return bushIcon[meta];
     }
-
+    
+    @Override
+    public boolean DoesItemRenderAsBlock(int iItemDamage) {
+    	return false;
+    }
 }

@@ -54,5 +54,38 @@ public class SCBlockCake extends FCBlockCake {
         }
 		
 	}
+	
+    public int GetEatState( int meta )
+    {
+    	return ( meta & 7 );
+    }
+	
+    public AxisAlignedBB GetBlockBoundsFromPoolBasedOnState( int meta)
+    {
+        int iEatState = GetEatState( meta );
+        
+        float fWidth = (float)( 1 + iEatState * 2 ) / 16.0F;
+        
+        return AxisAlignedBB.getAABBPool().getAABB(         
+        	fWidth, 0.0F, m_fBorderWidth, 
+        	1.0F - m_fBorderWidth, m_fHeight, 1.0F - m_fBorderWidth );
+    }
+    
+	@Override
+	public void RenderBlockAsItem(RenderBlocks renderer, int iItemDamage, float fBrightness) {
+		renderer.setRenderBounds( GetBlockBoundsFromPoolBasedOnState( iItemDamage ) );
+
+		FCClientUtilsRender.RenderInvBlockWithMetadata(renderer, this, -0.5F, -0.5F,-0.5F, iItemDamage);
+	}
+	
+    /**
+     * Sets the block's bounds for rendering it as an item
+     */
+    public void setBlockBoundsForItemRender()
+    {
+        float var1 = 0.0625F;
+        float var2 = 0.5F;
+        this.setBlockBounds(var1, 0.0F, var1, 1.0F - var1, var2, 1.0F - var1);
+    }
 
 }

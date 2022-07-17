@@ -723,7 +723,7 @@ public class SCRecipes {
 				new ItemStack(SCDefs.bambooItem, 8));
 		
 		//FishTrap
-		FCRecipes.AddRecipe( new ItemStack (SCDefs.knifeDiamond),
+		FCRecipes.AddRecipe( new ItemStack (SCDefs.fishTrap),
 				new Object[] {
 						"SBS", 
 						"BFB", 

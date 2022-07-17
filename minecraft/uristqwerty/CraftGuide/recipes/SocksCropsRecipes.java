@@ -22,7 +22,12 @@ public class SocksCropsRecipes {
 		new SocksCropsRecipesKnifeCutting();
 		new SocksCropsRecipesCuttingBoard();
 		
-		//new SocksCropsRecipesInWorld();
+		//inWorldRecipes
+		new SocksCropsRecipesBaitFishTrap();
+		new SocksCropsRecipesCutCakes();
+		new SocksCropsRecipesComposter();
+		new SocksCropsRecipesShears();
+		new SocksCropsRecipesWaterPot();
 
 	}
 	
