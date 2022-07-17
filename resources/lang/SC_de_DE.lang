@@ -63,7 +63,8 @@ tile.SCBlockClover.cloverPurple.name=Lila Blühender Klee
 tile.SCBlockClover.cloverWhite.name=Weißer Blühender Klee
 tile.SCBlockClover.cloverRed.name=Roter Blühender Klee
 
-tile.SCBlockMoss.name=Moosteppich
+tile.SCBlockMoss.name=Moos
+tile.SCBlockMossCarpet.name=Moosteppich
 
 tile.SCBlockItemLilyFlower.name=Blühende Seerose
 
@@ -111,9 +112,21 @@ tile.SCBlockPumpkinJack.green.name=Kürbislaterne
 tile.SCBlockPumpkinJack.yellow.name=Kürbislaterne
 tile.SCBlockPumpkinJack.white.name=Kürbislaterne
 
+#Bushes
+tile.SCBlockBushSweetberry.sweet_0.name=Süßbeerenstrauch
+tile.SCBlockBushBlueberry.blue_0.name=Heidelbeerstrauch
+
+#Overrides
 tile.pumpkin.name=Alter Geschnizter Kürbis
 tile.litpumpkin.name=Alte Kürbislaterne
 tile.fcBlockPumpkinFresh.name=Alter Kürbis
+
+#Pies
+tile.SCBlockPieCooked.pumpkin.name=Ofenfertiger Kürbiskuchen
+tile.SCBlockPieCooked.sweet.name=Ofenfertiger Süßbeerenkuchen
+tile.SCBlockPieCooked.blue.name=Ofenfertiger Heidelbeerkuchen
+tile.SCBlockPieRaw.sweet.name=Roher Süßbeerenkuchen
+tile.SCBlockPieRaw.blue.name=Roher Heidelbeerkuchen
 
 # Pumpkin Items
 item.SCItemPumpkinSlice.name=Rohes Kürbisstück
@@ -145,12 +158,11 @@ tile.melon.name=Alte Melone
 
 # Bamboo
 tile.SCBlockBambooShoot.name=Bambussprossen
-tile.SCBlockBambooRoot.nameBambuswurzeln
+tile.SCBlockBambooRoot.nameBambuswurzel
+tile.SCBlockBambooRoot_display.name=Bambuswurzel
 tile.SCBlockBambooStalk.name=Bambusstiel
 tile.SCBlockBambooPacked.name=Verpackter Bambus
 
-#Pies
-tile.SCBlockPieRaw.pumpkin.name=Ofenfertiger Kürbiskuchen
 
 # Melon Items
 item.melon.name=Wassermelonenstück
@@ -227,3 +239,7 @@ item.SCItemBeefPatty_raw.name=Rohes Rindfleisch Patty
 item.SCItemBeefPatty_cooked.name=Gebratenes Rindfleisch Patty
 item.SCItemBurger.name=Hamburger
 item.SCItemBurger_egg.name=Hamburger mit Spiegelei
+
+#Moss
+item.SCItemMossBall.name=Moosball
+item.SCItemMossCarpet.name=Moosteppich
