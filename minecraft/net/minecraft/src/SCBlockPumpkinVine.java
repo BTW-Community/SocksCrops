@@ -10,7 +10,6 @@ public class SCBlockPumpkinVine extends BlockDirectional {
 		this.setTickRandomly(true);
 		
 		setUnlocalizedName("SCBlockPumpkinVine");
-		// TODO Auto-generated constructor stub
 	}
 	
 	protected int GetGrowthLevel( World world, int x, int y, int z) {

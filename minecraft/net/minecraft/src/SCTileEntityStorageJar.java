@@ -298,7 +298,6 @@ public class SCTileEntityStorageJar extends TileEntity implements IInventory, FC
 
 	@Override
 	public boolean isInvNameLocalized() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

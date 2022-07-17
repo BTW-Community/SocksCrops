@@ -120,8 +120,7 @@ public class SCBlockGrassNutrition extends FCBlockGrass
 	@Override
 	public boolean DropComponentItemsOnBadBreak(World world, int x, int y, int z, int metadata, float chanceOfDrop)
 	{
-		//TODO: change the dropped item. Probably to coarse dirt piles
-		DropItemsIndividualy(world, x, y, z, FCBetterThanWolves.fcItemPileDirt.itemID, 6, 0, chanceOfDrop);
+		DropItemsIndividualy(world, x, y, z, FCBetterThanWolves.fcItemPileSand.itemID, 3, 0, chanceOfDrop);
 
 		return true;
 	}

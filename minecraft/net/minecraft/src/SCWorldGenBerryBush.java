@@ -46,7 +46,7 @@ public class SCWorldGenBerryBush {
           if (this.plantBlock.blockID == SCDefs.sweetberryBush.blockID) s_berryBush = "Sweetberry";
          	else if (this.plantBlock.blockID == SCDefs.blueberryBush.blockID) s_berryBush = "Blueberry";
                 
-         	System.out.println(s_berryBush + " Bush is at: x= " + plantX + ", y=" + plantY + ", z=" + plantZ);
+         	// System.out.println(s_berryBush + " Bush is at: x= " + plantX + ", y=" + plantY + ", z=" + plantZ);
 		}
 	}
 	

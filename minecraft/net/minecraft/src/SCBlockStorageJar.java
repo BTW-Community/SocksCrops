@@ -419,7 +419,6 @@ public class SCBlockStorageJar extends BlockContainer {
     
     @Override
     public int GetFacing(IBlockAccess blockAccess, int i, int j, int k) {
-    	// TODO Auto-generated method stub
     	return getDirection(blockAccess.getBlockMetadata(i, j, k));
     }
     

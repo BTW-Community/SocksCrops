@@ -310,7 +310,6 @@ public class SCBlockRocks extends Block {
 	
 	@Override
 	public void RenderBlockAsItem(RenderBlocks renderBlocks, int iItemDamage, float fBrightness) {
-		// TODO Auto-generated method stub
 		super.RenderBlockAsItem(renderBlocks, iItemDamage, fBrightness);
 	}
 	

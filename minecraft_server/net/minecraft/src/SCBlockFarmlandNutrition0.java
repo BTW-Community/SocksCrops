@@ -40,8 +40,7 @@ public class SCBlockFarmlandNutrition0 extends SCBlockFarmlandBase {
 	public boolean DropComponentItemsOnBadBreak( World world, int i, int j, int k, int iMetadata, float fChanceOfDrop )
 	{
 		DropItemsIndividualy( world, i, j, k, FCBetterThanWolves.fcItemPileSand.itemID, 3, 0, fChanceOfDrop );
-		DropItemsIndividualy( world, i, j, k, FCBetterThanWolves.fcItemPileGravel.itemID, 3, 0, fChanceOfDrop );
-		
+
 		return true;
 	}
 

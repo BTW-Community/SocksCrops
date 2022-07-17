@@ -139,7 +139,7 @@ public class SCWorldGenHollowLogs {
 		if (type == spruce) string = "spruce"; 
 		if (type == jungle) string = "jungle"; 
 		
-		System.out.println(string + " Hollow Logs Placed at: " + plantX + " , " + plantY + " , " + plantZ);
+		// System.out.println(string + " Hollow Logs Placed at: " + plantX + " , " + plantY + " , " + plantZ);
 		
 	}
 

@@ -6,7 +6,6 @@ public abstract class SCBlockDirtLooseBase extends FCBlockDirtLoose {
 
 	public SCBlockDirtLooseBase(int blockID) {
 		super(blockID);
-		// TODO Auto-generated constructor stub
 	}
 	
 	@Override

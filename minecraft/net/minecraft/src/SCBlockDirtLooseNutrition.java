@@ -104,8 +104,7 @@ public class SCBlockDirtLooseNutrition extends SCBlockDirtLooseBase {
 		}
 		else
 		{
-			DropItemsIndividualy( world, i, j, k, FCBetterThanWolves.fcItemPileSand.itemID, 6, 0, chanceOfDrop );
-			DropItemsIndividualy( world, i, j, k, FCBetterThanWolves.fcItemPileGravel.itemID, 6, 0, chanceOfDrop );
+			DropItemsIndividualy( world, i, j, k, FCBetterThanWolves.fcItemPileSand.itemID, 3, 0, chanceOfDrop );
 		}		
 		
 		return true;

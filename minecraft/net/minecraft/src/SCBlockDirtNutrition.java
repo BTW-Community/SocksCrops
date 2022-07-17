@@ -87,12 +87,14 @@ public class SCBlockDirtNutrition extends FCBlockDirt {
 	@Override
 	public boolean DropComponentItemsOnBadBreak( World world, int i, int j, int k, int meta, float chanceOfDrop )
 	{
-		if (meta != 0) //nutri 3
+		if (meta == 0) //nutri 3
 		{
-			DropItemsIndividualy( world, i, j, k, FCBetterThanWolves.fcItemPileGravel.itemID, 3, 0, chanceOfDrop );
-			DropItemsIndividualy( world, i, j, k, FCBetterThanWolves.fcItemPileSand.itemID, 3, 0, chanceOfDrop );
+			DropItemsIndividualy( world, i, j, k, FCBetterThanWolves.fcItemPileDirt.itemID, 6, 0, chanceOfDrop );
 		}
-		else DropItemsIndividualy( world, i, j, k, FCBetterThanWolves.fcItemPileDirt.itemID, 6, 0, chanceOfDrop );
+		else
+		{
+			DropItemsIndividualy( world, i, j, k, FCBetterThanWolves.fcItemPileSand.itemID, 3, 0, chanceOfDrop );
+		}		
 		
 		return true;
 	}
