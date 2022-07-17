@@ -1,6 +1,7 @@
 package net.minecraft.src;
 
 import com.prupe.mcpatcher.mal.block.RenderBlocksUtils;
+
 import java.util.Random;
 
 public class BlockMycelium extends Block

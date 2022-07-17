@@ -267,4 +267,83 @@ public class SCBlockPieCooked extends SCBlockPieBase {
 
 		return true;
 	}
+	
+	@Override
+	public void RenderBlockAsItem(RenderBlocks renderer, int iItemDamage, float fBrightness) {
+		int eatState = GetEatState(iItemDamage);
+	
+		if (eatState == 3)
+		{
+			renderer.setRenderBounds(
+					border, 0 , border,
+					border + width/2, height, border + width/2 );			
+			
+		}
+		else {
+			renderer.setRenderBounds(
+					border, 0 , border,
+					border + width, height, border + width/2 );
+		}
+		FCClientUtilsRender.RenderInvBlockWithMetadata(renderer, this, -0.5F, -0.5F,-0.5F, iItemDamage);
+		
+		if (eatState < 2)
+		{
+			if (eatState == 0)
+			{
+				renderer.setRenderBounds(
+						border, 0 , border + width/2,
+						border + width, height, border + width );
+			}
+			else
+			{
+				renderer.setRenderBounds(
+						border, 0 , border + width/2,
+						border + width/2, height, border + width );
+			}
+
+			
+			FCClientUtilsRender.RenderInvBlockWithMetadata(renderer, this, -0.5F, -0.5F,-0.5F, iItemDamage);
+		}
+		
+    	secondPass = true;
+    	this.RenderBlockAsItem2(renderer, iItemDamage, fBrightness);
+    	secondPass = false;
+	}
+	
+	public void RenderBlockAsItem2(RenderBlocks renderer, int iItemDamage, float fBrightness) {
+		int eatState = GetEatState(iItemDamage);
+	
+		if (eatState == 3)
+		{
+			renderer.setRenderBounds(
+					border, 0 , border,
+					border + width/2, height, border + width/2 );			
+			
+		}
+		else {
+			renderer.setRenderBounds(
+					border, 0 , border,
+					border + width, height, border + width/2 );
+		}
+		FCClientUtilsRender.RenderInvBlockWithMetadata(renderer, this, -0.5F, -0.5F,-0.5F, iItemDamage);
+		
+		if (eatState < 2)
+		{
+			if (eatState == 0)
+			{
+				renderer.setRenderBounds(
+						border, 0 , border + width/2,
+						border + width, height, border + width );
+			}
+			else
+			{
+				renderer.setRenderBounds(
+						border, 0 , border + width/2,
+						border + width/2, height, border + width );
+			}
+
+			
+			FCClientUtilsRender.RenderInvBlockWithMetadata(renderer, this, -0.5F, -0.5F,-0.5F, iItemDamage);
+		}
+	}
 }

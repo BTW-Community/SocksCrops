@@ -677,8 +677,16 @@ public class SCDefs {
 		
 		//Pie
 		pieRaw = new SCBlockPieRaw(id_pieRaw);
+		Item.itemsList[pieRaw.blockID] = new ItemMultiTextureTile(id_pieRaw - 256, pieRaw, new String[] {
+				"sweet", "sweet", "sweet", "sweet",
+				"blue", "blue", "blue", "blue",});
+		
 		pieCooked = new SCBlockPieCooked(id_pieCooked);
-
+		Item.itemsList[pieCooked.blockID] = new ItemMultiTextureTile(id_pieCooked - 256, pieCooked, new String[] {
+				"pumpkin", "pumpkin", "pumpkin", "pumpkin",
+				"sweet", "sweet", "sweet", "sweet",
+				"blue", "blue", "blue", "blue",});
+		
 		// Pumpkin
 		pumpkinPieSlice = new FCItemFood ( id_pumpkinPieSlice - 256, 1, 2.5F, false, "SCItemPieSlice_pumpkin").setAlwaysEdible();
 		
@@ -686,8 +694,9 @@ public class SCDefs {
 				id_pieCooked, SCBlockPieCooked.subtypePumpkin);
 		
 		//Berry Pies
-		sweetberryPieRaw = new FCItemPlacesAsBlock(id_sweetberryPieRaw - 256, id_pieRaw, SCBlockPieRaw.subtypeSweetberry, "SCItemPieRaw_sweetberry").SetBuoyant().setCreativeTab(CreativeTabs.tabFood);
-		blueberryPieRaw = new FCItemPlacesAsBlock(id_blueberryPieRaw - 256, id_pieRaw, SCBlockPieRaw.subtypeBlueberry, "SCItemPieRaw_blueberry").SetBuoyant().setCreativeTab(CreativeTabs.tabFood);
+		sweetberryPieRaw = new FCItemPlacesAsBlock(id_sweetberryPieRaw - 256, id_pieRaw, SCBlockPieRaw.subtypeSweetberry, "SCItemPieRaw_sweetberry").SetBuoyant().setCreativeTab(CreativeTabs.tabFood);	
+		
+		blueberryPieRaw = new FCItemPlacesAsBlock(id_blueberryPieRaw - 256, id_pieRaw, SCBlockPieRaw.subtypeBlueberry, "SCItemPieRaw_blueberry").SetBuoyant().setCreativeTab(CreativeTabs.tabFood);	
 		
 		sweetberryPieCooked = new SCItemPie(id_sweetberryPieCooked - 256, 2, 2.5F, false, "SCItemPieCooked_sweetberry",
 				id_pieCooked, SCBlockPieCooked.subtypeSweetberry);
@@ -708,7 +717,7 @@ public class SCDefs {
 		Item.itemsList[bambooShoot.blockID] = new ItemBlock(id_bambooShoot - 256);
 		
 		bambooRoot = new SCBlockBambooRoot(id_bambooRoot);
-		Item.itemsList[bambooRoot.blockID] = new ItemBlock(id_bambooRoot - 256);
+		Item.itemsList[bambooRoot.blockID] = new SCItemBlockBambooRoot(id_bambooRoot - 256).setUnlocalizedName("SCItemBambooRoot_display");
 		
 		bambooStalk = new SCBlockBambooStalk(id_bambooStalk);
 		Item.itemsList[bambooStalk.blockID] = new ItemBlock(id_bambooStalk - 256);
@@ -735,7 +744,8 @@ public class SCDefs {
 	{
 		//Sweetberry
 		sweetberryBush = new SCBlockBerryBush(id_sweetberryBush, id_sweetberry, id_sweetberrySapling, "SCBlockBushSweetberry");
-		Item.itemsList[sweetberryBush.blockID] = new ItemBlock(id_sweetberryBush - 256);
+		Item.itemsList[sweetberryBush.blockID] = new ItemMultiTextureTile(id_sweetberryBush - 256, sweetberryBush, new String[] {
+				"sweet_0", "sweet_0", "sweet_0", "sweet_0",	"sweet_0", "sweet_0" });
 		
 		sweetberrySapling = new FCItemSeeds(id_sweetberrySapling - 256, id_sweetberryBush)
 				.setCreativeTab(CreativeTabs.tabDecorations)
@@ -745,7 +755,8 @@ public class SCDefs {
 		
 		//Blueberry
 		blueberryBush = new SCBlockBerryBush(id_blueberryBush, id_blueberry, id_blueberrySapling, "SCBlockBushBlueberry");
-		Item.itemsList[blueberryBush.blockID] = new ItemBlock(id_blueberryBush - 256);
+		Item.itemsList[blueberryBush.blockID] = new ItemMultiTextureTile(id_blueberryBush - 256, blueberryBush, new String[] {
+				"blue_0", "blue_0", "blue_0", "blue_0",	"blue_0", "blue_0" });
 		
 		blueberrySapling = new FCItemSeeds(id_blueberrySapling - 256, id_blueberryBush)
 				.setCreativeTab(CreativeTabs.tabDecorations)

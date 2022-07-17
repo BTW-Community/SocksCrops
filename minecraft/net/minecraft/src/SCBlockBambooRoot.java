@@ -192,6 +192,7 @@ public class SCBlockBambooRoot extends BlockFlower {
 	
 //----------- Client Side Functionality -----------//
     
+	protected Icon stalk;
     protected Icon m_IconTop;
     protected Icon m_IconRoots;
     protected Icon smallLeaves;
@@ -201,7 +202,8 @@ public class SCBlockBambooRoot extends BlockFlower {
     @Override
     public void registerIcons( IconRegister register )
     {
-		blockIcon = register.registerIcon( "SCBlockBambooStalk" );
+		stalk = register.registerIcon( "SCBlockBambooStalk" );
+		blockIcon = register.registerIcon( "SCBlockBambooRoot_display" );
 		m_IconRoots = register.registerIcon( "SCBlockBambooRoot" );
 		smallLeaves = register.registerIcon( "SCBlockBambooLeavesSmall" );
 		m_IconTop = register.registerIcon( "SCBlockBambooRoot_top" );
@@ -219,11 +221,19 @@ public class SCBlockBambooRoot extends BlockFlower {
         {
             return m_IconTop;
         }
+        else if (side > 1 && side < 6)
+        {
+        	return stalk;
+        }
         else if (side ==  7) return smallLeaves;
         
         return blockIcon;
     }
-	
+    
+    public int getRenderType()
+    {
+        return 1;
+    }
     
     @Override
     public boolean RenderBlock(RenderBlocks renderer, int i, int j, int k) {
@@ -248,7 +258,35 @@ public class SCBlockBambooRoot extends BlockFlower {
 
     	return true;
     }
-
+    
+//	private AxisAlignedBB getBounds(double i, double minJ, double maxJ, double k)
+//	{
+//   	
+//		AxisAlignedBB box = AxisAlignedBB.getAABBPool().getAABB( 
+//			8/16D - i/16D, minJ/16D, 8/16D - k/16D, 
+//			8/16D + i/16D, maxJ/16D, 8/16D + k/16D);
+//		
+//		return box;
+//	}
+//		
+//    @Override
+//    public void RenderBlockAsItem(RenderBlocks renderer, int iItemDamage, float fBrightness) {
+//    	
+//    	renderer.setOverrideBlockTexture(m_IconRoots);
+//    	renderer.drawCrossedSquares(this, iItemDamage, 0, 0, 0, 1.0F);
+//    	renderer.clearOverrideBlockTexture();
+//    	
+//    	renderer.setOverrideBlockTexture(smallLeaves);
+//    	renderer.drawCrossedSquares(this, iItemDamage, 0, 0, 0, 1.0F);
+//    	renderer.clearOverrideBlockTexture();
+//    	
+//    	
+//    	
+//    	renderer.setRenderBounds( getBounds(2, 0, 16, 2) );
+//    	FCClientUtilsRender.RenderInvBlockWithTexture( renderer, this, -0.5F, -0.5F, -0.5F, blockIcon );
+//
+//    }
+    
     
     public boolean isOpaqueCube()
     {

@@ -8,6 +8,7 @@ public class SCTileEntityComposter extends TileEntity
 	
 	private static HashMap<Integer, Integer> compostingTypes = new HashMap<Integer, Integer>();
 
+
 	private int fillLevel = 0;
 	public int maxFillLevel = 256;
 	
@@ -273,7 +274,7 @@ public class SCTileEntityComposter extends TileEntity
     	
     } 
 
-    public boolean isValidItem(int id)
+    public static boolean isValidItem(int id)
     {
     	return compostingTypes.containsKey(id);
     }

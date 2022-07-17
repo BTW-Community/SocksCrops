@@ -25,6 +25,13 @@ public abstract class SCBlockPieBase extends Block {
         		( 0.5F + pieHalfWidth ), pieHeight, ( 0.5F + pieHalfLength ) );
     }
 	
+    public AxisAlignedBB GetBlockBoundsFromPoolBasedOnState( )
+    {
+		return AxisAlignedBB.getAABBPool().getAABB(         	
+        		( 0.5F - pieHalfWidth ), 0.0F, ( 0.5F - pieHalfLength ), 
+        		( 0.5F + pieHalfWidth ), pieHeight, ( 0.5F + pieHalfLength ) );
+    }
+	
     @Override
     public boolean shouldSideBeRendered( IBlockAccess blockAccess, int iNeighborI, int iNeighborJ, int iNeighborK, int iSide )
     {
@@ -45,9 +52,17 @@ public abstract class SCBlockPieBase extends Block {
 	
 	@Override
 	public boolean RenderBlock(RenderBlocks renderer, int i, int j, int k) {
-		renderer.setRenderBounds(GetBlockBoundsFromPoolBasedOnState(renderer.blockAccess, i, j, k));
+		renderer.setRenderBounds(GetBlockBoundsFromPoolBasedOnState());
 		renderer.renderStandardBlock(this, i, j, k);
 		return true;
 	}
+	
+    
+    @Override
+    public void RenderBlockAsItem(RenderBlocks renderer, int iItemDamage, float fBrightness) {
+    	renderer.setRenderBounds(GetBlockBoundsFromPoolBasedOnState());
+    	FCClientUtilsRender.RenderInvBlockWithMetadata(renderer, this, -0.5F, -0.5F, -0.5F, iItemDamage);
+    }
+
 
 }

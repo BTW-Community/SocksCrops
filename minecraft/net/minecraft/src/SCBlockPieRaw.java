@@ -10,6 +10,7 @@ public class SCBlockPieRaw extends SCBlockPieBase {
 	protected SCBlockPieRaw(int blockID)
 	{
 		super(blockID);
+		setUnlocalizedName("SCBlockPieRaw");
 	}
 	
 	@Override
