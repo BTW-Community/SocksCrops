@@ -18,11 +18,11 @@ public abstract class SCBlockGourdVineFloweringBase extends SCBlockGourdVine {
 	
 	protected float GetBaseGrowthChance()
     {
-    	return 0.5F;
+    	return 0.2F;
     }
 	
 	protected float GetFruitGrowthChance() {
-		return 0.50F;
+		return 0.75F;
 	}
 	
 	@Override
@@ -34,34 +34,44 @@ public abstract class SCBlockGourdVineFloweringBase extends SCBlockGourdVine {
 		}
 		else
 		{
-			if (!IsFullyGrown( world, i, j, k) && checkTimeOfDay(world) ) //daytime
+			if ( checkTimeOfDay(world) ) //daytime
 			{
-				if (rand.nextFloat() <= this.GetBaseGrowthChance())
+				if (!IsFullyGrown( world, i, j, k)) 
 				{
-					this.attemptToGrow(world, i, j, k, rand);
+					if (rand.nextFloat() <= this.GetBaseGrowthChance())
+					{
+						this.attemptToGrow(world, i, j, k, rand);
+					}
 				}
+				else
+				{
+					//set mature
+					int dir = this.getDirection(world.getBlockMetadata(i, j, k));
+					world.setBlockAndMetadata(i, j, k, vineBlock, dir + 12);
+				}
+				
 			}
-			else {
-				int dir = this.getDirection(world.getBlockMetadata(i, j, k));
-				world.setBlockAndMetadata(i, j, k, this.vineBlock, dir + 12);
-			}
+
 		}
     }
 	
 	protected void attemptToGrow(World world, int i, int j, int k, Random rand) {
 		
-		int meta = world.getBlockMetadata(i, j, k);        
-		world.setBlockAndMetadataWithNotify(i, j, k, this.blockID ,meta + 4);
+		int meta = world.getBlockMetadata(i, j, k);
+		world.setBlockAndMetadataWithNotify(i, j, k, this.blockID, meta + 4);
 		
 		if (rand.nextFloat() <= this.GetFruitGrowthChance())
 		{
-			this.attemptToGrowFruit(world, i, j, k, rand);
+			this.growFruit(world, i, j, k, rand);
+			
+			//set mature
+			int dir = this.getDirection(world.getBlockMetadata(i, j, k));
+			world.setBlockAndMetadata(i, j, k, this.blockID, dir + 12);
 		}
 
 	}
 
-	
-	protected abstract void attemptToGrowFruit(World world, int i, int j, int k, Random random);
+	protected abstract void growFruit(World world, int i, int j, int k, Random random);
 	
 	
 	protected boolean CanGrowFruitAt( World world, int i, int j, int k )
@@ -88,18 +98,21 @@ public abstract class SCBlockGourdVineFloweringBase extends SCBlockGourdVine {
 	
 	public Icon[] flowerIcons;
 	
+	protected boolean secondPass;
 
     @Override
     public void registerIcons( IconRegister register )
     {
-        flowerIcons = new Icon[2];
+    	super.registerIcons(register);
+    	
+        flowerIcons = new Icon[1];
 
         for ( int iTempIndex = 0; iTempIndex < flowerIcons.length; iTempIndex++ )
         {
-        	flowerIcons[iTempIndex] = register.registerIcon( "SCBlockPumpkinVineFlowering_" + iTempIndex );
+        	flowerIcons[0] = register.registerIcon( "SCBlockPumpkinVineFlowering");
         }
         
-        blockIcon = flowerIcons[1]; // for block hit effects and item render
+        blockIcon = flowerIcons[0]; // for block hit effects and item render
         
         connectorIcons = new Icon[4];
         for ( int iTempIndex = 0; iTempIndex < connectorIcons.length; iTempIndex++ )
@@ -112,13 +125,37 @@ public abstract class SCBlockGourdVineFloweringBase extends SCBlockGourdVine {
 	@Override
     public Icon getBlockTexture( IBlockAccess blockAccess, int i, int j, int k, int iSide )
     {
-		if (!IsFullyGrown(blockAccess.getBlockMetadata(i, j, k)))
-		{
-			return flowerIcons[1];
+		if (!secondPass) {
+			return flowerIcons[0];
 		}
-		else return flowerIcons[0];
+		else 
+		{
+			if (!IsFullyGrown(blockAccess.getBlockMetadata(i, j, k)))
+			{
+				return getBlockTextureSecondPass(blockAccess, i, j, k, iSide);
+			}
+			
+			return flowerIcons[0];
+		}
         
     }
+	
+	private Icon getBlockTextureSecondPass(IBlockAccess blockAccess, int i, int j, int k, int side) {
+
+		return getOverlayIcon();
+	}
+	
+	protected abstract Icon getOverlayIcon();
+
+	
+	@Override
+	public void RenderBlockSecondPass(RenderBlocks renderer, int i, int j, int k, boolean firstPassResult) {
+		secondPass = true;
+		
+		renderer.renderCrossedSquares(this, i, j, k);
+
+		secondPass = false;
+	}
 	
 	public boolean renderVineConnector(RenderBlocks r, int par2, int par3, int par4)
     {

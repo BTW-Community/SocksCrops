@@ -10,7 +10,6 @@ public class SCBlockPumpkinVine extends BlockDirectional {
 		this.setTickRandomly(true);
 		
 		setUnlocalizedName("SCBlockPumpkinVine");
-		// TODO Auto-generated constructor stub
 	}
 	
 	protected int GetGrowthLevel( World world, int x, int y, int z) {
@@ -109,11 +108,11 @@ public class SCBlockPumpkinVine extends BlockDirectional {
 	        {
 	        	
 	        	// no plants can grow in the end
-	        	System.out.println("VINE: update tick");
-	        	System.out.println("VINE: my meta is " + world.getBlockMetadata(i, j, k));
+	        	//System.out.println("VINE: update tick");
+	        	//System.out.println("VINE: my meta is " + world.getBlockMetadata(i, j, k));
 	        	
 	        	int GrowthLevel = GetGrowthLevel(world, i, j, k);
-	        	System.out.println("VINE: my GrowthLevel is " + GrowthLevel);
+	        	//System.out.println("VINE: my GrowthLevel is " + GrowthLevel);
 		        if (GrowthLevel > 0 && GrowthLevel < 3 ) {
 		        	
 		        	this.AttemptToGrowVine(world, i, j, k, rand);
@@ -122,12 +121,12 @@ public class SCBlockPumpkinVine extends BlockDirectional {
 	        	if (GrowthLevel < 3) 
 	        	{
 	        		this.AttemptToGrow(world, i, j, k, rand);
-	        		System.out.println("VINE: MAY I GROW?");
+	        		//System.out.println("VINE: MAY I GROW?");
 	        	}
 		        if (GrowthLevel == 2) //Mature
 		        {
 		        	this.AttemptToFlower(world, i, j, k, rand);
-		        	System.out.println("VINE: FLOWER?");
+		        	//System.out.println("VINE: FLOWER?");
 		        }
 		        
 		        
@@ -143,7 +142,7 @@ public class SCBlockPumpkinVine extends BlockDirectional {
 		if (random.nextInt() <= 0.5F) {
 			world.setBlockAndMetadataWithNotify(i, j, k, SCDefs.pumpkinVineFlowering.blockID, dir);
         	// TODO CHANGE BACK TO THIS: world.setBlockAndMetadataWithNotify(i, j, k, SCDefs.pumpkinVineFloweringSleeping.blockID, dir +12);
-        	System.out.println("VINE: FLOOOOWER");
+        	//System.out.println("VINE: FLOOOOWER");
         }
 		
 	}
@@ -155,7 +154,7 @@ public class SCBlockPumpkinVine extends BlockDirectional {
         if (GrowthLevel < 3 && random.nextInt() <= 0.99F) {
         	world.setBlockAndMetadataWithNotify(i, j, k, SCDefs.pumpkinVine.blockID ,meta + 4);
         	//TODO CHANGE BACK TO THIS world.setBlockAndMetadataWithNotify(i, j, k, SCDefs.pumpkinVineSleeping.blockID ,meta + 4); //increase a growth stage and set sleeping
-        	System.out.println("VINE: YES");
+        	//System.out.println("VINE: YES");
         }
 		
 	}
@@ -382,12 +381,12 @@ public class SCBlockPumpkinVine extends BlockDirectional {
             
             if ( CanGrowVineAt( world, targetPos.i, targetPos.j, targetPos.k ) )
             {
-            	System.out.println("VINE: CanGrowVineAt");
+            	//System.out.println("VINE: CanGrowVineAt");
             	return true;
             }
         }
         
-        System.out.println("VINE: Can NOT GrowVineAt");
+        //System.out.println("VINE: Can NOT GrowVineAt");
         return false;
     }
 	

@@ -16,18 +16,39 @@ public abstract class SCBlockGourdGrowing extends SCBlockGourdFalling {
 		this.vineBlock = vineBlock;
         this.flowerBlock = flowerBlock;
         this.convertedBlockID = convertedBlockID;
+        
+        SetAxesEffectiveOn( true );
+        
+        SetBuoyant();        
+        
+		setHardness(1.0F);
+        
+        setStepSound(soundWoodFootstep);
+        
 	}
 	
-	protected abstract float GetBaseGrowthChance();
+	protected float GetBaseGrowthChance()
+    {
+    	return 0.1F;
+    }
 	
-
+	protected float getPossesionChance()
+    {
+    	return 1.0F;
+    }
+	
+	protected int GetPortalRange()
+    {
+    	return 16;
+    }
 	
 	@Override
 	public void updateTick(World world, int i, int j, int k, Random random)
 	{	
 		if (!canBlockStay(world, i, j, k))
 		{
-			super.updateTick(world, i, j, k, random); //check falling
+			this.convertBlock(world, i, j, k); //converts the block to the non growing/harvested version
+			//super.updateTick(world, i, j, k, random); //check falling, we don't as the converted block handles the falling
 		}
 		else
 		{
@@ -47,7 +68,7 @@ public abstract class SCBlockGourdGrowing extends SCBlockGourdFalling {
 		return false;
 	}
 
-	private void convertBlock(World world, int i, int j, int k)
+	protected void convertBlock(World world, int i, int j, int k)
 	{	
 		int growthLevel = this.GetGrowthLevel(world, i, j, k);
 		int harvestedMeta = getMetaHarvested(growthLevel);
@@ -55,6 +76,10 @@ public abstract class SCBlockGourdGrowing extends SCBlockGourdFalling {
 		world.setBlockAndMetadata(i, j, k, convertedBlockID , harvestedMeta);
 	}
 
+	/**
+	 * Returns the meta harvested for the given growth Level
+	 * @param growthLevel
+	 */
 	protected abstract int getMetaHarvested(int growthLevel);
 
 	private void grow(World world, int i, int j, int k, Random random)
@@ -84,7 +109,7 @@ public abstract class SCBlockGourdGrowing extends SCBlockGourdFalling {
 		int iTimeOfDay = (int)( world.worldInfo.getWorldTime() % 24000L );
 		return (iTimeOfDay > 24000 || iTimeOfDay > 0 && iTimeOfDay < 14000 );
 	}
-	
+
 	protected int GetGrowthLevel( IBlockAccess blockAccess, int x, int y, int z)
 	{		
 		return GetGrowthLevel(blockAccess.getBlockMetadata(x, y, z));		
@@ -111,12 +136,13 @@ public abstract class SCBlockGourdGrowing extends SCBlockGourdFalling {
 		for (int growthLevelIndex = 0; growthLevelIndex < 4; growthLevelIndex++) {
 			if (growthLevel == growthLevelIndex)
 			{
-				world.setBlockAndMetadata(i, j, k, SCDefs.pumpkinPossessed.blockID, getPossessedMetaForGrowthLevel(growthLevel));
+				//world.setBlockAndMetadata(i, j, k, SCDefs.pumpkinPossessed.blockID, getPossessedMetaForGrowthLevel(growthLevel));
 				
 				world.playAuxSFX( FCBetterThanWolves.m_iGhastMoanSoundAuxFXID, 
 			            MathHelper.floor_double( i ), MathHelper.floor_double( j ), MathHelper.floor_double( k ), 0 );
 			}			
 		}
+
 	}
 
 	protected abstract int getPossessedMetaForGrowthLevel(int growthLevel);
@@ -150,7 +176,7 @@ public abstract class SCBlockGourdGrowing extends SCBlockGourdFalling {
 	    
 	    int targetBlockID = world.getBlockId(targetPos.i, targetPos.j, targetPos.k);
 	    
-	    if ( targetBlockID == this.vineBlock || targetBlockID == this.flowerBlock)
+	    if ( targetBlockID == this.vineBlock || targetBlockID == this.flowerBlock || targetBlockID == SCDefs.gourdVineDead.blockID)
 	    {	
 	    	return true;
 	    	
@@ -182,7 +208,7 @@ public abstract class SCBlockGourdGrowing extends SCBlockGourdFalling {
 	    
 	    int targetBlockID = r.blockAccess.getBlockId(targetPos.i, targetPos.j, targetPos.k);
 	    
-	    if ( targetBlockID == this.vineBlock || targetBlockID == this.flowerBlock)
+	    if ( targetBlockID == this.vineBlock || targetBlockID == this.flowerBlock || targetBlockID == SCDefs.gourdVineDead.blockID)
 	    {	
 	    	return true;
 	    }
@@ -209,16 +235,69 @@ public abstract class SCBlockGourdGrowing extends SCBlockGourdFalling {
 
         return false;
     }
+
+	protected boolean secondPass;
 	
-	protected float getPossesionChance()
+	abstract Icon getOverlayIcon();
+	
+	@Override
+    public void registerIcons( IconRegister register )
     {
-    	return 0.3F;
+		super.registerIcons(register);
+
     }
 	
-	protected int GetPortalRange()
-    {
-    	return 16;
-    }
+	@Override
+	public Icon getBlockTexture(IBlockAccess par1iBlockAccess, int par2, int par3, int par4, int par5) {
+		if (secondPass) {
+			return getBlockTextureSecondPass(par1iBlockAccess, par2, par3, par4, par5);
+		}
+		else return this.getIcon(par5, par1iBlockAccess.getBlockMetadata(par2, par3, par4));
+	}
+	
+	
+	private Icon getBlockTextureSecondPass(IBlockAccess blockAccess, int i, int j, int k, int side) {
+		return getOverlayIcon();
+	}
+	
+	@Override
+	public boolean shouldSideBeRendered(IBlockAccess blockAccess, int i, int j, int k, int side) {
+		if (secondPass)
+		{
+			if (side == 1) return false;
+			return true;
+		}
+		else return super.shouldSideBeRendered(blockAccess, i, j, k, side);
+	}
+	
+	@Override
+	public void RenderBlockSecondPass(RenderBlocks renderer, int i, int j, int k, boolean firstPassResult) {
+		secondPass = true;
+		renderer.setRenderBounds( this.GetBlockBoundsFromPoolBasedOnState(renderer.blockAccess, i, j, k) );
+		renderer.renderStandardBlock(this, i, j, k);
+
+		secondPass = false;
+	}
+    
+	@Override
+	public boolean RenderBlock(RenderBlocks renderer, int i, int j, int k)
+	{
+		IBlockAccess blockAccess = renderer.blockAccess;
+		
+		renderer.setRenderBounds( this.GetBlockBoundsFromPoolBasedOnState(blockAccess, i, j, k) );
+		renderer.renderStandardBlock(this, i, j, k);
+		
+		return true;
+	}
+	
+	@Override
+	public void RenderFallingBlock(RenderBlocks renderer, int i, int j, int k, int meta)
+	{
+		IBlockAccess blockAccess = renderer.blockAccess;
+		
+		renderer.setRenderBounds(this.GetBlockBoundsFromPoolBasedOnState(blockAccess, i, j, k) );		
+		renderer.RenderStandardFallingBlock( this, i, j, k, meta);
+	}
 	
 	public boolean renderVineConnector(RenderBlocks r, int par2, int par3, int par4, Icon icon)
     {

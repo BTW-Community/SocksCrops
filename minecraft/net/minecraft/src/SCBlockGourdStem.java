@@ -18,7 +18,7 @@ public class SCBlockGourdStem extends FCBlockCrops {
         this.flowerBlock = flowerBlock;
         this.convertedBlock = convertedBlock;
         
-    	setHardness( 0F );
+    	setHardness( 0.1F );
     	
     	SetBuoyant();
     	
@@ -29,13 +29,14 @@ public class SCBlockGourdStem extends FCBlockCrops {
 	}
 	
 	@Override
-	public float GetBaseGrowthChance(World world, int i, int j, int k) {
-		return 0.5F;
+	public float GetBaseGrowthChance(World world, int i, int j, int k)
+	{
+		return 0.1F;
 	}
 
 	public float GetVineGrowthChance( )
     {
-    	return 0.5F;
+    	return 0.25F;
     }
 	
 	@Override
@@ -45,7 +46,7 @@ public class SCBlockGourdStem extends FCBlockCrops {
 		
         if ( UpdateIfBlockStays( world, i, j, k ) ) //checks if canBlockStay() and sets to air if not
         {	
-        	if ( hasPortalInRange(world, i, j, k) && rand.nextFloat() <= 0.1F )
+        	if ( canBePossessed() && hasPortalInRange(world, i, j, k) && rand.nextFloat() <= 0.1F )
     	    {
     			this.becomePossessed(world, i, j, k, rand);
     			
@@ -54,7 +55,7 @@ public class SCBlockGourdStem extends FCBlockCrops {
 			{
 				this.AttemptToGrow(world, i, j, k, rand); //growth chance is handles within this method
 				
-				if ( GetGrowthLevel(world, i, j, k) > 2  & rand.nextFloat() <= this.GetVineGrowthChance())
+				if ( GetGrowthLevel(world, i, j, k) > 3  & rand.nextFloat() <= this.GetVineGrowthChance())
 		    	{
 		    		this.growVineAdjacent(world, i, j, k, rand);
 		    	}
@@ -62,11 +63,16 @@ public class SCBlockGourdStem extends FCBlockCrops {
         }
     }
 	
-    private void becomePossessed(World world, int i, int j, int k, Random rand)
+	public boolean canBePossessed()
+	{
+		return false;
+	}
+
+	private void becomePossessed(World world, int i, int j, int k, Random rand)
     {
     	int meta = world.getBlockMetadata(i, j, k);
-    	System.out.println(meta);    	
-    	System.out.println(this.convertedBlock.blockID);
+    	//System.out.println(meta);    	
+    	//System.out.println(this.convertedBlock.blockID);
 		world.setBlockAndMetadata(i, j, k, this.convertedBlock.blockID, meta);
 		
 	}
@@ -125,7 +131,7 @@ public class SCBlockGourdStem extends FCBlockCrops {
 		int directionI = Direction.offsetX[targetDirection];
 		int directionK = Direction.offsetZ[targetDirection];
 
-		int finalI = i + directionI;
+		int finalI = i + directionI;	
 		int finalK = k + directionK;
 		
 		if (CanGrowVineAt( world, finalI, j, finalK ))

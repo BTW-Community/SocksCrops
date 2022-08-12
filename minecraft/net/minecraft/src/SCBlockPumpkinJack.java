@@ -14,7 +14,7 @@ public class SCBlockPumpkinJack extends FCBlockJackOLantern {
         
         setStepSound(soundWoodFootstep);
         setLightValue(1.0F);
-        setUnlocalizedName("litpumpkin");
+        setUnlocalizedName("SCBlockPumpkinJack");
         
         setCreativeTab(CreativeTabs.tabBlock);
 	}
@@ -28,7 +28,17 @@ public class SCBlockPumpkinJack extends FCBlockJackOLantern {
     public void onNeighborBlockChange( World world, int i, int j, int k, int iNeighborBlockID )
     {
 		CheckForExtinguish( world, i, j, k );
-    }	
+    }
+	
+	@Override
+	public int damageDropped(int meta)
+	{
+		if (meta < 4) return 3;
+		if (meta >= 4 && meta < 8) return 7;
+		if (meta >= 8 && meta < 12) return 11;
+		else return 15;
+
+	}
 	
     @Override
     public boolean GetCanBlockLightItemOnFire( IBlockAccess blockAccess, int i, int j, int k )
@@ -37,42 +47,49 @@ public class SCBlockPumpkinJack extends FCBlockJackOLantern {
     }
     
     @Override
-    public boolean CanBeGrazedOn( IBlockAccess blockAccess, int i, int j, int k, 
-    	EntityAnimal animal )
+    public boolean CanBeGrazedOn( IBlockAccess blockAccess, int i, int j, int k, EntityAnimal animal )
     {
 		return animal.CanGrazeOnRoughVegetation();
     }
     
     private void CheckForExtinguish( World world, int i, int j, int k )
-	{
-		int iMetadata = world.getBlockMetadata( i, j, k );
-		
-		if ( ( iMetadata & 8 ) != 0 )
+	{		
+		if ( HasWaterToSidesOrTop( world, i, j, k ) )
 		{
-			if ( HasWaterToSidesOrTop( world, i, j, k ) )
-			{
-				ExtinguishLantern( world, i, j, k );
-			}
+			ExtinguishLantern( world, i, j, k );
 		}
 	}
     
 	private void ExtinguishLantern( World world, int i, int j, int k )
 	{
-		int iMetadata = world.getBlockMetadata( i, j, k );
+		int meta = world.getBlockMetadata( i, j, k );
 		
-		world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.pumpkinOrange.blockID, iMetadata & 3 );
+		world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.pumpkinCarved.blockID, meta);
 		
         world.playAuxSFX( FCBetterThanWolves.m_iFireFizzSoundAuxFXID, i, j, k, 0 );							        
 	}
 	
+	
+
+    public boolean IsNormalCube(IBlockAccess blockAccess, int i, int j, int k) {
+        
+        if (blockAccess.getBlockMetadata(i, j, k) <= 3) //mature pumpkin
+        {
+            return true;
+        }
+        else return false;
+    }
+    
+    
+    
 	//SC
 	
 	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
-		par3List.add(new ItemStack(par1, 1, 0));
-		par3List.add(new ItemStack(par1, 1, 4));
-		par3List.add(new ItemStack(par1, 1, 8));
-		par3List.add(new ItemStack(par1, 1, 12));
+		par3List.add(new ItemStack(par1, 1, 3));
+		par3List.add(new ItemStack(par1, 1, 7));
+		par3List.add(new ItemStack(par1, 1, 11));
+		par3List.add(new ItemStack(par1, 1, 15));
 
     }	
 	
@@ -122,7 +139,37 @@ public class SCBlockPumpkinJack extends FCBlockJackOLantern {
         return false;
     }
 	
+	@Override
+	public boolean shouldSideBeRendered(IBlockAccess blockAccess, int iNeighborI, int iNeighborJ, int iNeighborK, int iSide)
+	{
+		return true;
+	}
 	
+	private AxisAlignedBB GetBlockBoundsFromPoolBasedOnState(int meta) {
+		
+		//Orange
+		if (meta == 0 || meta == 1 || meta == 2 || meta == 3){
+			return GetPumpkinBounds(8/16D, 16/16D);
+		}
+		//Green
+		else if (meta == 4 || meta == 5 || meta == 6 || meta == 7){
+			return GetPumpkinBounds(8/16D, 8/16D);
+		}
+		//Yellow
+		else if (meta == 8 || meta == 9 || meta == 10 || meta == 11){
+			return GetPumpkinBounds(6/16D, 12/16D);
+		}
+		//White
+		else return GetPumpkinBounds(5/16D, 6/16D);
+	}
+	
+	@Override
+	public AxisAlignedBB GetBlockBoundsFromPoolBasedOnState(IBlockAccess blockAccess, int i, int j, int k)
+	{
+		int meta = blockAccess.getBlockMetadata(i, j, k);
+		return this.GetBlockBoundsFromPoolBasedOnState(meta);
+	
+	}
 	
 	@Override
 	public boolean RenderBlock(RenderBlocks renderer, int i, int j, int k) {
@@ -152,6 +199,32 @@ public class SCBlockPumpkinJack extends FCBlockJackOLantern {
 		}
 
 		return true;
+	}
+	
+	@Override
+	public void RenderBlockAsItem(RenderBlocks renderer, int iItemDamage, float fBrightness)
+	{
+		IBlockAccess blockAccess = renderer.blockAccess;
+		
+		//Orange
+		if (iItemDamage < 4){
+			renderer.setRenderBounds(GetPumpkinBounds(8/16D, 16/16D)); 
+		}
+		//Green
+		else if (iItemDamage >= 4 && iItemDamage < 8){
+			renderer.setRenderBounds(GetPumpkinBounds(8/16D, 8/16D)); 
+
+		}
+		//Yellow
+		else if (iItemDamage >= 8 && iItemDamage < 12){
+			renderer.setRenderBounds(GetPumpkinBounds(6/16D, 12/16D));
+		}
+		//White
+		else if (iItemDamage >= 12){
+			renderer.setRenderBounds(GetPumpkinBounds(5/16D, 6/16D));
+		}
+		
+		FCClientUtilsRender.RenderInvBlockWithMetadata( renderer, this, -0.5F, -0.5F, -0.5F, iItemDamage);
 	}
 	
 	@Override
@@ -374,24 +447,24 @@ public class SCBlockPumpkinJack extends FCBlockJackOLantern {
         this.topIcon = register.registerIcon("pumpkin_top");
         this.blockIcon = register.registerIcon("pumpkin_side");
         
-        orangeFace = register.registerIcon("pumpkin_jack");
-        greenFace = register.registerIcon("SCBlockPumpkinGreenJackFront");
-        yellowFace = register.registerIcon("SCBlockPumpkinYellowJackFront");
-        whiteFace = register.registerIcon("SCBlockPumpkinWhiteJackFront");
+        orangeFace = register.registerIcon("SCBlockPumpkinJackOrangeFront");
+        greenFace = register.registerIcon("SCBlockPumpkinJackGreenFront");
+        yellowFace = register.registerIcon("SCBlockPumpkinJackYellowFront");
+        whiteFace = register.registerIcon("SCBlockPumpkinJackWhiteFront");
         
       //Orange
     	orangeIcon = new Icon[4];
 		
 		for ( int iTempIndex = 0; iTempIndex < orangeIcon.length; iTempIndex++ )
 		{
-			orangeIcon[iTempIndex] = register.registerIcon( "SCBlockPumpkinSide_" + iTempIndex );
+			orangeIcon[iTempIndex] = register.registerIcon( "SCBlockPumpkinOrangeSide_" + iTempIndex );
 		}
 		
 		orangeIconTop = new Icon[4];
 		
 		for ( int iTempIndex = 0; iTempIndex < orangeIconTop.length; iTempIndex++ )
 		{
-			orangeIconTop[iTempIndex] = register.registerIcon( "SCBlockPumpkinTop_" + iTempIndex );
+			orangeIconTop[iTempIndex] = register.registerIcon( "SCBlockPumpkinOrangeTop_" + iTempIndex );
 		}
 		
 

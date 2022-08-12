@@ -1,14 +1,18 @@
 package net.minecraft.src;
 
+import java.util.Random;
+
 public class SCBlockMelonWaterGrowing extends SCBlockMelonGrowing {
 
-	protected SCBlockMelonWaterGrowing(int iBlockID, int stemBlock, int vineBlock, int flowerBlock,
-			int convertedBlockID) {
+	protected SCBlockMelonWaterGrowing(int iBlockID, int stemBlock, int vineBlock, int flowerBlock,	int convertedBlockID)
+	{
 		super(iBlockID, stemBlock, vineBlock, flowerBlock, convertedBlockID);
+		
 		setUnlocalizedName("SCBlockMelonWaterGrowing");
 	}
 	
-	protected int getMetaHarvested(int growthLevel) {
+	protected int getMetaHarvested(int growthLevel)
+	{		
 		if (growthLevel == 3 )
 		{
 			return 3; 
@@ -23,19 +27,30 @@ public class SCBlockMelonWaterGrowing extends SCBlockMelonGrowing {
 		}
 		else return 0;
 	}
-
+	
 	@Override
 	protected int getPossessedMetaForGrowthLevel(int growthLevel)
 	{
 		return 0; //Can't be possessed. see canBePossessed() in super
 	}
 
-	@Override
-	protected void setBlockOnFinishedFalling(EntityFallingSand entity, int i, int j, int k)
-	{
-		
-	}
 	
+    @Override
+	protected int AuxFXIDOnExplode(World world, int i, int j, int k, int meta)
+    {
+    	return SCCustomAuxFX.melonExplodeAuxFXID;
+    }
+	
+	@Override
+	public boolean IsNormalCube(IBlockAccess blockAccess, int i, int j, int k)
+	{
+		int meta = blockAccess.getBlockMetadata(i, j, k);
+		int growthLevel = GetGrowthLevel(meta);
+		
+		if (growthLevel == 3) return true;
+		else return false;
+	}
+    
 	//--- Render ---//
 	
 	@Override
@@ -51,7 +66,7 @@ public class SCBlockMelonWaterGrowing extends SCBlockMelonGrowing {
 		//init BB
 		AxisAlignedBB pumpkinBounds;
 		
-		//Orange
+		//Water
 		if (growthLevel == 0)
 		{
 			return GetGourdBounds(6, 6, 6);
@@ -73,49 +88,42 @@ public class SCBlockMelonWaterGrowing extends SCBlockMelonGrowing {
 		IBlockAccess blockAccess = renderer.blockAccess;
 		int growthLevel = this.GetGrowthLevel(blockAccess, i, j, k);
 		
-		renderer.setRenderBounds( this.GetBlockBoundsFromPoolBasedOnState(blockAccess, i, j, k) );
-		renderer.renderStandardBlock(this, i, j, k);
+		super.RenderBlock(renderer, i, j, k);
 		
 		this.renderVineConnector(renderer, i, j, k, connectorIcon[growthLevel]);
 		
 		return true;
 	}
 	
-	@Override
-	public void RenderFallingBlock(RenderBlocks renderer, int i, int j, int k, int meta)
-	{
-		IBlockAccess blockAccess = renderer.blockAccess;
-		
-		renderer.setRenderBounds( this.GetBlockBoundsFromPoolBasedOnState(meta) );		
-		renderer.RenderStandardFallingBlock( this, i, j, k, meta);
-	}
 	
 	protected Icon[] waterMelonIcon;
 	protected Icon[] waterMelonIconTop;
 	protected Icon[] connectorIcon;
+	private Icon overlayIcon;
 	
 	@Override
   	public void registerIcons( IconRegister register )
   	{
+		overlayIcon = register.registerIcon("SCBlockMelonWaterSideOverlay");
 		//Orange
 		waterMelonIcon = new Icon[4];
 		
   		for ( int iTempIndex = 0; iTempIndex < waterMelonIcon.length; iTempIndex++ )
 		{
-  			waterMelonIcon[iTempIndex] = register.registerIcon( "SCBlockMelonSide_" + iTempIndex );
+  			waterMelonIcon[iTempIndex] = register.registerIcon( "SCBlockMelonWaterSide_" + iTempIndex );
 		}
 	
   		waterMelonIconTop = new Icon[4];
 	
 		for ( int iTempIndex = 0; iTempIndex < waterMelonIconTop.length; iTempIndex++ )
 		{
-			waterMelonIconTop[iTempIndex] = register.registerIcon( "SCBlockMelonTop_" + iTempIndex );
+			waterMelonIconTop[iTempIndex] = register.registerIcon( "SCBlockMelonWaterTop_" + iTempIndex );
 		}
 		
         connectorIcon = new Icon[4];
         for ( int iTempIndex = 0; iTempIndex < connectorIcon.length; iTempIndex++ )
         {
-        	connectorIcon[iTempIndex] = register.registerIcon( "SCBlockPumpkinConnector_" + iTempIndex );
+        	connectorIcon[iTempIndex] = register.registerIcon( "SCBlockMelonWaterConnector_" + iTempIndex );
         }
 		
 		blockIcon = waterMelonIcon[3];
@@ -133,6 +141,11 @@ public class SCBlockMelonWaterGrowing extends SCBlockMelonGrowing {
     	
     	return waterMelonIcon[growthLevel];
     }
+
+	@Override
+	Icon getOverlayIcon() {
+		return overlayIcon;
+	}
 	
 
 }

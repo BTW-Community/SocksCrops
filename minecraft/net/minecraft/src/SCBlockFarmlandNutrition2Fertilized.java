@@ -41,13 +41,57 @@ public class SCBlockFarmlandNutrition2Fertilized extends SCBlockFarmlandNutritio
 		return true;
 	}
 	
+	protected Icon fertilizerOverlayDry;
+	protected Icon fertilizerOverlayWet;
+	
+	private boolean secondPass;
+	
 	@Override
     public void registerIcons( IconRegister register )
     {
-		blockIcon = register.registerIcon( "SCBlockDirtLooseDry_1" );
-		blockIconWet = register.registerIcon( "SCBlockDirtLooseWet_1" );
+		super.registerIcons(register);
 		
-        m_iconTopWet = register.registerIcon( "SCBlockFarmlandFertilizedWet_1" );
-        m_iconTopDry = register.registerIcon( "SCBlockFarmlandFertilizedDry_1" );
+		fertilizerOverlayDry = register.registerIcon("SCBlockFarmlandFertilizedOverlay_dry");
+		fertilizerOverlayWet = register.registerIcon("SCBlockFarmlandFertilizedOverlay_wet");
     }
+	
+	@Override
+	public Icon getBlockTexture(IBlockAccess par1iBlockAccess, int par2, int par3, int par4, int par5) {
+		if (secondPass) {
+			return getBlockTextureSecondPass(par1iBlockAccess, par2, par3, par4, par5);
+		}
+		else return super.getBlockTexture(par1iBlockAccess, par2, par3, par4, par5);
+	}
+	
+	
+	private Icon getBlockTextureSecondPass(IBlockAccess blockAccess, int i, int j, int k, int side) {
+		if (side == 1) 
+		{
+			if (IsHydrated(blockAccess.getBlockMetadata(i, j, k)))
+			{
+				return fertilizerOverlayWet;
+			}
+			else return fertilizerOverlayWet;
+		}
+		else return null;
+	}
+	
+	@Override
+	public boolean shouldSideBeRendered(IBlockAccess blockAccess, int i, int j, int k, int side) {
+		if (secondPass)
+		{
+			if (side != 1) return false;
+			else return true;
+		}
+		else return super.shouldSideBeRendered(blockAccess, i, j, k, side);
+	}
+	
+	@Override
+	public void RenderBlockSecondPass(RenderBlocks renderer, int i, int j, int k, boolean firstPassResult) {
+		secondPass = true;
+		
+		renderer.renderStandardBlock(this, i, j, k);
+
+		secondPass = false;
+	}
 }

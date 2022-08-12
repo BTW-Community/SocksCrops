@@ -4,15 +4,11 @@ import java.util.List;
 
 public class SCBlockPumpkinHarvested extends SCBlockGourdHarvested {
 
-	protected SCBlockPumpkinHarvested(int iBlockID) {
+	protected SCBlockPumpkinHarvested(int iBlockID)
+	{
 		super(iBlockID);
-		
-		setHardness(1.0F);
-        
-        setStepSound(soundWoodFootstep);
-        
-        setUnlocalizedName("SCBlockPumpkinHarvested");
-		
+
+        setUnlocalizedName("SCBlockPumpkinHarvested");		
 	}
 	
 	@Override
@@ -28,19 +24,34 @@ public class SCBlockPumpkinHarvested extends SCBlockGourdHarvested {
     }
 	
 	@Override
+	public boolean IsNormalCube(IBlockAccess blockAccess, int i, int j, int k) {
+		
+		if (blockAccess.getBlockMetadata(i, j, k) == 3) //mature pumpkin
+		{
+			return true;
+		}
+		else return super.IsNormalCube(blockAccess, i, j, k);
+	}
+	
+	@Override
 	protected Item ItemToDropOnExplode()
 	{
-		return SCDefs.pumpkinSeeds;
+		return Item.pumpkinSeeds;
 	}
 	
 	@Override
-	protected int ItemCountToDropOnExplode(World world, int i, int j, int k)
+	protected int ItemCountToDropOnExplode(World world, int i, int j, int k, int meta)
 	{
-		return 1;
+		if (this.GetGrowthLevel(meta) == 3)
+		{
+			return 1;
+		}
+		else return 0;
 	}
 	
+	
 	@Override
-	protected int AuxFXIDOnExplode()
+	protected int AuxFXIDOnExplode(World world, int i, int j, int k, int meta)
 	{
 		return FCBetterThanWolves.m_iPumpkinExplodeAuxFXID;
 	}
@@ -62,6 +73,12 @@ public class SCBlockPumpkinHarvested extends SCBlockGourdHarvested {
 	
 	private Icon[] orangeIcon;
 	private Icon[] orangeIconTop;
+	private Icon[] greenIcon;
+	private Icon[] greenIconTop;
+	private Icon[] yellowIcon;
+	private Icon[] yellowIconTop;
+	private Icon[] whiteIcon;
+	private Icon[] whiteIconTop;
 	
 	@Override
   	public void registerIcons( IconRegister register )
@@ -71,14 +88,59 @@ public class SCBlockPumpkinHarvested extends SCBlockGourdHarvested {
 		
   		for ( int iTempIndex = 0; iTempIndex < orangeIcon.length; iTempIndex++ )
 		{
-  			orangeIcon[iTempIndex] = register.registerIcon( "SCBlockPumpkinSide_" + iTempIndex );
+  			orangeIcon[iTempIndex] = register.registerIcon( "SCBlockPumpkinOrangeSide_" + iTempIndex );
 		}
 	
 		orangeIconTop = new Icon[4];
 	
 		for ( int iTempIndex = 0; iTempIndex < orangeIconTop.length; iTempIndex++ )
 		{
-		orangeIconTop[iTempIndex] = register.registerIcon( "SCBlockPumpkinTop_" + iTempIndex );
+		orangeIconTop[iTempIndex] = register.registerIcon( "SCBlockPumpkinOrangeTop_" + iTempIndex );
+		}
+		
+		//Green
+		greenIcon = new Icon[4];
+		
+  		for ( int iTempIndex = 0; iTempIndex < greenIcon.length; iTempIndex++ )
+		{
+  			greenIcon[iTempIndex] = register.registerIcon( "SCBlockPumpkinGreenSide_" + iTempIndex );
+		}
+	
+  		greenIconTop = new Icon[4];
+	
+		for ( int iTempIndex = 0; iTempIndex < greenIconTop.length; iTempIndex++ )
+		{
+			greenIconTop[iTempIndex] = register.registerIcon( "SCBlockPumpkinGreenTop_" + iTempIndex );
+		}
+		
+		//Yellow
+		yellowIcon = new Icon[4];
+		
+  		for ( int iTempIndex = 0; iTempIndex < yellowIcon.length; iTempIndex++ )
+		{
+  			yellowIcon[iTempIndex] = register.registerIcon( "SCBlockPumpkinYellowSide_" + iTempIndex );
+		}
+	
+  		yellowIconTop = new Icon[4];
+	
+		for ( int iTempIndex = 0; iTempIndex < yellowIconTop.length; iTempIndex++ )
+		{
+			yellowIconTop[iTempIndex] = register.registerIcon( "SCBlockPumpkinYellowTop_" + iTempIndex );
+		}
+		
+		//White
+		whiteIcon = new Icon[4];
+		
+  		for ( int iTempIndex = 0; iTempIndex < whiteIcon.length; iTempIndex++ )
+		{
+  			whiteIcon[iTempIndex] = register.registerIcon( "SCBlockPumpkinWhiteSide_" + iTempIndex );
+		}
+	
+  		whiteIconTop = new Icon[4];
+	
+		for ( int iTempIndex = 0; iTempIndex < whiteIconTop.length; iTempIndex++ )
+		{
+			whiteIconTop[iTempIndex] = register.registerIcon( "SCBlockPumpkinWhiteTop_" + iTempIndex );
 		}
 	}
 	
@@ -97,8 +159,35 @@ public class SCBlockPumpkinHarvested extends SCBlockGourdHarvested {
 	    	
 			else return blockIcon = orangeIcon[growthLevel];
 		}
+		else if (type == 1) 
+		{
+			if ( side == 1 || side == 0 )
+	    	{
+	    		return blockIcon = greenIconTop[growthLevel];
+	    	}
+	    	
+			else return blockIcon = greenIcon[growthLevel];
+		}
+		else if (type == 2) 
+		{
+			if ( side == 1 || side == 0 )
+	    	{
+	    		return blockIcon = yellowIconTop[growthLevel];
+	    	}
+	    	
+			else return blockIcon = yellowIcon[growthLevel];
+		}
+		else if (type == 3) 
+		{
+			if ( side == 1 || side == 0 )
+	    	{
+	    		return blockIcon = whiteIconTop[growthLevel];
+	    	}
+	    	
+			else return blockIcon = whiteIcon[growthLevel];
+		}
 		
-		return blockIcon;
+		else return blockIcon;
 
 	}
 	
@@ -137,14 +226,7 @@ public class SCBlockPumpkinHarvested extends SCBlockGourdHarvested {
 		renderer.setRenderBounds( this.GetBlockBoundsFromPoolBasedOnState(iItemDamage) );
 		FCClientUtilsRender.RenderInvBlockWithMetadata( renderer, this, -0.5F, -0.5F, -0.5F, iItemDamage);
 	}
-	
-	
-	@Override
-	protected void setBlockOnFinishedFalling(EntityFallingSand entity, int i, int j, int k) {
-		//empty since we don't want to change it
-	}
 
-	
 	
 
 }

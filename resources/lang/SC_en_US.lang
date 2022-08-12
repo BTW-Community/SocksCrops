@@ -1,0 +1,246 @@
+# Tile Entities
+tile.SCBlockFishTrap.name=Fish Trap
+item.SCItemChoppingBoard_spruce.name=Chopping Board
+tile.SCBlockComposter.name=Composter
+tile.SCBlockStorageJar.name=Storage Jar
+scItemBlockStorageJar.contains=Contains
+scItemBlockStorageJar.empty=Empty
+scItemBlockStorageJar.hasLabel=Labeled
+
+# Grass
+tile.SCBlockGrassNutrition.grass0.name=Grass Block
+tile.SCBlockGrassNutrition.grass0_sparse.name=Grass Block
+tile.SCBlockGrassNutrition.grass1.name=Grass Block
+tile.SCBlockGrassNutrition.grass1_sparse.name=Grass Block
+tile.SCBlockGrassNutrition.grass2.name=Grass Block
+tile.SCBlockGrassNutrition.grass2_sparse.name=Grass Block
+tile.SCBlockGrassNutrition.grass3.name=Grass Block
+tile.SCBlockGrassNutrition.grass3_sparse.name=Grass Block
+
+# Dirt
+tile.dirt.dirt0.name=Dirt
+tile.dirt.dirt1.name=Dirt
+tile.dirt.dirt2.name=Dirt
+tile.dirt.dirt3.name=Dirt
+
+# Loose Dirt
+tile.fcBlockDirtLoose.looseDirt0.name=Loose Dirt
+tile.fcBlockDirtLoose.looseDirt1.name=Loose Dirt
+tile.fcBlockDirtLoose.looseDirt2.name=Loose Dirt
+tile.fcBlockDirtLoose.looseDirt3.name=Loose Dirt
+
+# Farmland
+tile.SCBlockFarmlandNutrition.name=Farmland
+tile.SCBlockFarmlandFertilized.name=Farmland Fertilized
+tile.SCBlockFarmlandDung.name=Farmland Dunged
+
+# Compostables
+tile.SCBlockCompost.name=Compost
+tile.SCBlockDamagedLog.tree_side.name=Damaged Oak Log
+tile.SCBlockDamagedLog.tree_spruce.name=Damaged Spruce Log
+tile.SCBlockDamagedLog.tree_birch.name=Damaged Birch Log
+tile.SCBlockDamagedLog.tree_jungle.name=Damaged Jungle Log
+
+tile.SCBlockMossyLog.tree_side.name=Mossy Oak Log
+tile.SCBlockMossyLog.tree_spruce.name=Mossy Spruce Log
+tile.SCBlockMossyLog.tree_birch.name=Mossy Birch Log
+tile.SCBlockMossyLog.tree_jungle.name=Mossy Jungle Log
+
+tile.SCBlockHollowLog.oak.name=Hollow Oak Log
+tile.SCBlockHollowLog.spruce.name=Hollow Spruce Log
+tile.SCBlockHollowLog.birch.name=Hollow Birch Log
+tile.SCBlockHollowLog.jungle.name=Hollow Jungle Log
+
+# Plants
+tile.SCBlockShortPlant.shortGrass.name=Short Grass
+tile.SCBlockShortPlant.tallGrass.name=Medium Grass
+
+tile.SCBlockTallPlant.grass.name=Tall Grass
+tile.SCBlockTallPlant.fern.name=Tall Fern
+
+tile.SCBlockClover.clover.name=Clover
+tile.SCBlockClover.cloverPurple.name=Purple Flowering Clover
+tile.SCBlockClover.cloverWhite.name=White Flowering Clover
+tile.SCBlockClover.cloverRed.name=Red Flowering Clover
+
+tile.SCBlockMoss.name=Moss 
+tile.SCBlockMossCarpet.name=Moss Carpet
+
+tile.SCBlockItemLilyFlower.name=Flowering Lily Pad
+
+# Rocks
+item.SCItemRocksStone.smallRock.name=Stone Pebbles
+item.SCItemRocksStone.largeRock.name=Stone Rocks
+item.SCItemRocksStone.smallRockMossy.name=Mossy Stone Pebbles
+item.SCItemRocksStone.largeRockMossy.name=Mossy Stone Rocks
+
+item.SCItemRocksSandstone.smallRock.name=Sandstone Pebbles
+item.SCItemRocksSandstone.largeRock.name=Sandstone Rocks
+item.SCItemRocksSandstone.smallRockMossy.name=Mossy Sandstone Pebbles
+item.SCItemRocksSandstone.largeRockMossy.name=Mossy Sandstone Rocks
+
+# Pumpkins
+tile.SCBlockPumpkinHarvested.orange_0.name=Unripe Pumpkin
+tile.SCBlockPumpkinHarvested.orange_1.name=Unripe Pumpkin
+tile.SCBlockPumpkinHarvested.orange_2.name=Unripe Pumpkin
+tile.SCBlockPumpkinHarvested.orange_3.name=Pumpkin
+
+tile.SCBlockPumpkinHarvested.green_0.name=Unripe Pumpkin
+tile.SCBlockPumpkinHarvested.green_1.name=Unripe Pumpkin
+tile.SCBlockPumpkinHarvested.green_2.name=Unripe Pumpkin
+tile.SCBlockPumpkinHarvested.green_3.name=Pumpkin
+
+tile.SCBlockPumpkinHarvested.yellow_0.name=Unripe Pumpkin
+tile.SCBlockPumpkinHarvested.yellow_1.name=Unripe Pumpkin
+tile.SCBlockPumpkinHarvested.yellow_2.name=Unripe Pumpkin
+tile.SCBlockPumpkinHarvested.yellow_3.name=Pumpkin
+
+tile.SCBlockPumpkinHarvested.white_0.name=Unripe Pumpkin
+tile.SCBlockPumpkinHarvested.white_1.name=Unripe Pumpkin
+tile.SCBlockPumpkinHarvested.white_2.name=Unripe Pumpkin
+tile.SCBlockPumpkinHarvested.white_3.name=Pumpkin
+
+
+tile.SCBlockPumpkinCarved.orange.name=Carved Pumpkin
+tile.SCBlockPumpkinCarved.green.name=Carved Pumpkin
+tile.SCBlockPumpkinCarved.yellow.name=Carved Pumpkin
+tile.SCBlockPumpkinCarved.white.name=Carved Pumpkin
+
+
+tile.SCBlockPumpkinJack.orange.name=Jack 'o' Lantern
+tile.SCBlockPumpkinJack.green.name=Jack 'o' Lantern
+tile.SCBlockPumpkinJack.yellow.name=Jack 'o' Lantern
+tile.SCBlockPumpkinJack.white.name=Jack 'o' Lantern
+
+#Bushes
+tile.SCBlockBushSweetberry.sweet_0.name=Sweetberry Bush
+tile.SCBlockBushBlueberry.blue_0.name=Blueberry Bush
+
+#Overrides
+tile.pumpkin.name=Old Carved Pumpkin
+tile.litpumpkin.name=Old Jack 'o' Lantern
+tile.fcBlockPumpkinFresh.name=Old Pumpkin
+
+#Pies
+tile.SCBlockPieCooked.pumpkin.name=Cooked Ready Pumpkin Pie
+tile.SCBlockPieCooked.sweet.name=Cooked Ready Sweetberry Pie
+tile.SCBlockPieCooked.blue.name=Cooked Ready Blueberry Pie
+tile.SCBlockPieRaw.sweet.name=Raw Sweetberry Pie
+tile.SCBlockPieRaw.blue.name=Raw Blueberry Pie
+
+
+# Pumpkin Items
+item.SCItemPumpkinSlice.name=Raw Pumpkin Slice
+item.SCItemPumpkinSlice_roasted.name=Roasted Pumpkin Slice
+item.SCItemPumpkinSlice_boiled.name=Boiled Pumpkin Slice
+
+# Melons
+tile.SCBlockMelonHarvested.water_0.name=Unripe Watermelon
+tile.SCBlockMelonHarvested.water_1.name=Unripe Watermelon
+tile.SCBlockMelonHarvested.water_2.name=Unripe Watermelon
+tile.SCBlockMelonHarvested.water_3.name=Watermelon
+
+tile.SCBlockMelonHarvested.honeydew_0.name=Unripe Honeydew Melon
+tile.SCBlockMelonHarvested.honeydew_1.name=Unripe Honeydew Melon
+tile.SCBlockMelonHarvested.honeydew_2.name=Unripe Honeydew Melon
+tile.SCBlockMelonHarvested.honeydew_3.name=Honeydew Melon
+
+tile.SCBlockMelonHarvested.cantaloupe_0.name=Unripe Cantaloupe Melon
+tile.SCBlockMelonHarvested.cantaloupe_1.name=Unripe Cantaloupe Melon
+tile.SCBlockMelonHarvested.cantaloupe_2.name=Unripe Cantaloupe Melon
+tile.SCBlockMelonHarvested.cantaloupe_3.name=Cantaloupe Melon
+
+tile.SCBlockMelonCanaryHarvested.canary_0.name=Unripe Canary Melon
+tile.SCBlockMelonCanaryHarvested.canary_1.name=Unripe Canary Melon
+tile.SCBlockMelonCanaryHarvested.canary_2.name=Unripe Canary Melon
+tile.SCBlockMelonCanaryHarvested.canary_3.name=Canary Melon
+
+tile.melon.name=Old Melon
+
+# Bamboo
+tile.SCBlockBambooShoot.name=Bamboo Shoot
+tile.SCBlockBambooRoot.name=Bamboo Root
+tile.SCBlockBambooRoot_display.name=Bamboo Root
+tile.SCBlockBambooStalk.name=Bamboo Stalk
+tile.SCBlockBambooPacked.name=Packed Bamboo
+
+# Melon Items
+item.melon.name=Watermelon Slice
+item.SCItemMelonYellowSlice.name=Canary Slice
+item.SCItemMelonWhiteSlice.name=Honeydew Slice
+item.SCItemMelonGreenSlice.name=Cantaloupe Slice
+
+# Pie Items
+item.SCItemCakeSlice.name=Cake Slice
+item.SCItemPieRaw_crust.name=Pie Crust
+item.SCItemPieSlice_pumpkin.name=Pumpkin Pie Slice
+
+item.SCItemPieRaw_sweetberry.name=Oven Ready Sweetberry Pie
+item.SCItemPieRaw_blueberry.name=Oven Ready Blueberry Pie
+
+item.SCItemPieCooked_sweetberry.name=Sweetberry Pie
+item.SCItemPieCooked_blueberry.name=Blueberry Pie
+
+item.SCItemPieSlice_sweetberry.name=Sweetberry Pie Slice
+item.SCItemPieSlice_blueberry.name=Blueberry Pie Slice
+
+# Bamboo Items
+item.SCItemBamboo.name=Bamboo
+
+# Knives
+item.SCItemKnife_stone.name=Stone Knife
+item.SCItemKnife_iron.name=Iron Knife
+item.SCItemKnife_diamond.name=Diamond Knife
+
+#Fish
+item.SCItemFishSalmon_raw.name=Raw Salmon
+item.SCItemFishSalmon_cooked.name=Cooked Salmon
+item.SCItemFishCod_raw.name=Raw Cod
+item.SCItemFishCod_cooked.name=Cooked Cod
+item.SCItemFishTropical_raw.name=Raw Tropical Fish
+item.SCItemFishTropical_cooked.name=Cooked Tropical Fish
+
+#Bushes
+item.SCItemBushSapling_sweetberry.name=Sweetberry Bush Roots
+item.SCItemBushSapling_blueberry.name=Blueberry Bush Roots
+
+item.SCItemSweetberry.name=Sweetberry
+item.SCItemBlueberry.name=Blueberry
+
+item.SCItemFruitBowl_berries.name=Berry Fruit Bowl
+
+#Wild Carrot
+item.SCItemWildCarrot.name=Wild Carrot
+item.SCItemWildCarrotSeeds.name=Wild Carrot Seeds
+item.SCItemWildCarrotRoot.name=Wild Carrot Root
+item.SCItemWildCarrotCut.name=Wild Carrot Top
+item.SCItemWildCarrotSapling.name=High Yield Wild Carrot Seeds
+
+#Carrot
+item.SCItemCarrotRoot.name=Carrot Root
+item.SCItemCarrotCut.name=Carrot Top
+
+#Wild Potato
+item.SCItemWildPotato.name=Sweet Potato
+item.SCItemWildPotatoCut.name=Cut Sweet Potato
+item.SCItemWildPotatoSapling.name=Sweet Potato Sapling
+
+#Potato
+item.SCItemPotatoCut.name=Cut Potato
+
+#Pots
+item.SCItemPot_flower.name=Flowerpot with Dirt
+item.SCItemPot_water.name=Flowerpot with Water
+item.SCItemPot_empty.name=Empty flowerpot
+
+#Burger
+item.SCItemBreadSlice.name=Bread Slice
+item.SCItemBeefPatty_raw.name=Raw Beef Patty
+item.SCItemBeefPatty_cooked.name=Cooked Beef Patty
+item.SCItemBurger.name=Hamburger
+item.SCItemBurger_egg.name=Hamburger with Fried Egg
+
+
+#Moss
+item.SCItemMossBall.name=Moss Ball
+item.SCItemMossCarpet.name=Moss Carpet

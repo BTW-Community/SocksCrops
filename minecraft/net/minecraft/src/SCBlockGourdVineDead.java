@@ -9,6 +9,8 @@ public class SCBlockGourdVineDead extends SCBlockGourdVine {
 
 	protected SCBlockGourdVineDead(int iBlockID, int floweringBlock, int stemBlock) {
 		super(iBlockID, floweringBlock, stemBlock, 0, texVine, texConnector);
+		
+		setHardness( 0F );
 	}
 	
 	@Override
@@ -33,7 +35,7 @@ public class SCBlockGourdVineDead extends SCBlockGourdVine {
 
         for ( int iTempIndex = 0; iTempIndex < vineIcons.length; iTempIndex++ )
         {
-        	vineIcons[iTempIndex] = register.registerIcon( "SCBlockPumpkinVineDead_" + iTempIndex );
+        	vineIcons[iTempIndex] = register.registerIcon( "SCBlockDeadVine_" + iTempIndex );
         }
         
         blockIcon = vineIcons[3]; // for block hit effects and item render
@@ -41,7 +43,7 @@ public class SCBlockGourdVineDead extends SCBlockGourdVine {
         connectorIcons = new Icon[4];
         for ( int iTempIndex = 0; iTempIndex < connectorIcons.length; iTempIndex++ )
         {
-        	connectorIcons[iTempIndex] = register.registerIcon( "SCBlockPumpkinVineConnectorDead_" + iTempIndex );
+        	connectorIcons[iTempIndex] = register.registerIcon( "SCBlockDeadVineConnector_" + iTempIndex );
         }
    
     }

@@ -4,34 +4,24 @@ import java.util.Random;
 
 public class SCBlockPumpkinGrowingOrange extends SCBlockPumpkinGrowing {
 
-	protected SCBlockPumpkinGrowingOrange(int iBlockID, int stemBlock, int vineBlock, int flowerBlock, int convertedBlockID) {
+	protected SCBlockPumpkinGrowingOrange(int iBlockID, int stemBlock, int vineBlock, int flowerBlock, int convertedBlockID)
+	{
 		super(iBlockID, stemBlock, vineBlock, flowerBlock, convertedBlockID);
-		setUnlocalizedName("SCBlockPumpkinOrangeGrowing");
+		
+		setUnlocalizedName("SCBlockPumpkinGrowingOrange");
 	}
 
-	@Override
-	protected int getPossessedMetaForGrowthLevel(int growthLevel) {
-		
-		for (int i = 0; i < 4; i++) {
-			if (growthLevel == i) 
-			{
-				//shift for if different pumpkin type: eg. i + 4 for green Pumpkins
-				return i; 
-			}
-		}
-		return 0;
-	}
-	
-	protected int getMetaHarvested(int growthLevel) {
+	protected int getMetaHarvested(int growthLevel)
+	{
 		if (growthLevel == 3 )
 		{
-			return 3; 
+			return 3;
 		}
-		else if (growthLevel == 2)
+		else if (growthLevel == 2 )
 		{
 			return 2;
 		}
-		else if (growthLevel == 1)
+		else if (growthLevel == 1 )
 		{
 			return 1;
 		}
@@ -39,27 +29,35 @@ public class SCBlockPumpkinGrowingOrange extends SCBlockPumpkinGrowing {
 	}
 	
 	@Override
+	protected int getPossessedMetaForGrowthLevel(int growthLevel) {
+		
+		for (int i = 0; i < 4; i++) {
+			if (growthLevel == i) 
+			{
+				//shift for if different pumpkin type: eg. i + 4 for green Pumpkins
+				return i;
+			}
+		}
+		return 0;
+	}
+	
+	
+	@Override
+	public boolean IsNormalCube(IBlockAccess blockAccess, int i, int j, int k)
+	{
+		int meta = blockAccess.getBlockMetadata(i, j, k);
+		int growthLevel = GetGrowthLevel(meta);
+		
+		if (growthLevel == 3) return true;
+		else return false;
+	}
+	
+	//--- Render ---//
+	
+	@Override
 	public AxisAlignedBB GetBlockBoundsFromPoolBasedOnState( IBlockAccess blockAccess, int i, int j, int k )
 	{
-		int growthLevel = this.GetGrowthLevel(blockAccess, i, j, k);
-
-		//init BB
-		AxisAlignedBB pumpkinBounds;
-		
-		//Orange
-		if (growthLevel == 0)
-		{
-			return GetGourdBounds(6, 6, 6);
-		}
-		else if (growthLevel == 1)
-		{
-			return GetGourdBounds(8, 8, 8);
-		}
-		else if (growthLevel == 2)
-		{
-			return GetGourdBounds(12, 12, 12);
-		}
-		else return GetGourdBounds(16, 16, 16);
+		return this.GetBlockBoundsFromPoolBasedOnState(blockAccess.getBlockMetadata(i, j, k));
 	}
 	
 	private AxisAlignedBB GetBlockBoundsFromPoolBasedOnState(int meta)
@@ -85,7 +83,7 @@ public class SCBlockPumpkinGrowingOrange extends SCBlockPumpkinGrowing {
 		else return GetGourdBounds(16, 16, 16);
 	}	
 	
-	//--- Render ---//
+	private boolean vinePass;
 	
 	@Override
 	public boolean RenderBlock(RenderBlocks renderer, int i, int j, int k)
@@ -93,61 +91,66 @@ public class SCBlockPumpkinGrowingOrange extends SCBlockPumpkinGrowing {
 		IBlockAccess blockAccess = renderer.blockAccess;
 		int growthLevel = this.GetGrowthLevel(blockAccess, i, j, k);
 		
-		renderer.setRenderBounds( this.GetBlockBoundsFromPoolBasedOnState(blockAccess, i, j, k) );
-		renderer.renderStandardBlock(this, i, j, k);
+		super.RenderBlock(renderer, i, j, k);
 		
+		vinePass = true;
 		this.renderVineConnector(renderer, i, j, k, connectorIcon[growthLevel]);
-		
+		vinePass = false;
 		return true;
 	}
 	
 	@Override
-	public void RenderFallingBlock(RenderBlocks renderer, int i, int j, int k, int meta)
+	public int colorMultiplier(IBlockAccess blockAccess, int x, int y, int z)
 	{
-		IBlockAccess blockAccess = renderer.blockAccess;
-		
-		renderer.setRenderBounds( this.GetBlockBoundsFromPoolBasedOnState(meta) );		
-		renderer.RenderStandardFallingBlock( this, i, j, k, meta);
+		if (vinePass) 
+		{
+			if ( getDirection(blockAccess.getBlockMetadata(x, y, z)) == 0 && blockAccess.getBlockId(x, y, z - 1) == SCDefs.gourdVineDead.blockID ||
+					getDirection(blockAccess.getBlockMetadata(x, y, z)) == 2 && blockAccess.getBlockId(x, y, z + 1) == SCDefs.gourdVineDead.blockID ||
+					getDirection(blockAccess.getBlockMetadata(x, y, z)) == 1 && blockAccess.getBlockId(x + 1, y, z) == SCDefs.gourdVineDead.blockID ||
+					getDirection(blockAccess.getBlockMetadata(x, y, z)) == 3 && blockAccess.getBlockId(x - 1, y, z) == SCDefs.gourdVineDead.blockID)
+			{
+				return 0xfb9a35; //hue to dead color
+			}
+		}
+		return super.colorMultiplier(blockAccess, x, y, z);
 	}
 	
-
-	@Override
-	protected void setBlockOnFinishedFalling(EntityFallingSand entity, int i, int j, int k)
-	{
-
-	}
-	
-
 	protected Icon[] orangeIcon;
 	protected Icon[] orangeIconTop;
 	protected Icon[] connectorIcon;
 	
+	private Icon overlayIcon;
+	
 	@Override
   	public void registerIcons( IconRegister register )
   	{
+		overlayIcon = register.registerIcon("SCBlockPumpkinOrangeSideOverlay");
+		
 		//Orange
   		orangeIcon = new Icon[4];
 		
   		for ( int iTempIndex = 0; iTempIndex < orangeIcon.length; iTempIndex++ )
 		{
-  			orangeIcon[iTempIndex] = register.registerIcon( "SCBlockPumpkinSide_" + iTempIndex );
+  			orangeIcon[iTempIndex] = register.registerIcon( "SCBlockPumpkinOrangeSide_" + iTempIndex );
 		}
 	
 		orangeIconTop = new Icon[4];
 	
 		for ( int iTempIndex = 0; iTempIndex < orangeIconTop.length; iTempIndex++ )
 		{
-		orangeIconTop[iTempIndex] = register.registerIcon( "SCBlockPumpkinTop_" + iTempIndex );
+		orangeIconTop[iTempIndex] = register.registerIcon( "SCBlockPumpkinOrangeTop_" + iTempIndex );
 		}
 		
         connectorIcon = new Icon[4];
         for ( int iTempIndex = 0; iTempIndex < connectorIcon.length; iTempIndex++ )
         {
-        	connectorIcon[iTempIndex] = register.registerIcon( "SCBlockPumpkinConnector_" + iTempIndex );
+        	connectorIcon[iTempIndex] = register.registerIcon( "SCBlockPumpkinOrangeConnector_" + iTempIndex );
         }
 		
 		blockIcon = orangeIcon[3];
 	}
+	
+	
 	
 	@Override
     public Icon getIcon( int iSide, int iMetadata )
@@ -161,4 +164,9 @@ public class SCBlockPumpkinGrowingOrange extends SCBlockPumpkinGrowing {
     	
     	return orangeIcon[growthLevel];
     }
+
+	@Override
+	Icon getOverlayIcon() {
+		return overlayIcon;
+	}
 }

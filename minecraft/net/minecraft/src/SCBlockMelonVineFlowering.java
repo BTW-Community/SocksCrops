@@ -11,7 +11,7 @@ public class SCBlockMelonVineFlowering extends SCBlockGourdVineFloweringBase {
 	protected int vineBlock;
 	protected int stemBlock;
 
-	protected SCBlockMelonVineFlowering(int iBlockID, int vineBlock,int stemBlock, Block waterFruit, Block canaryFruit, Block honeydewFruit, Block cantaloupeFruit, int convertedBlockID) {
+	protected SCBlockMelonVineFlowering(int iBlockID, int vineBlock,int stemBlock, Block waterFruit, Block honeydewFruit, Block cantaloupeFruit, Block canaryFruit, int convertedBlockID) {
 		super( iBlockID, vineBlock, stemBlock, convertedBlockID);
 		
 		this.waterFruit = waterFruit;
@@ -37,7 +37,7 @@ public class SCBlockMelonVineFlowering extends SCBlockGourdVineFloweringBase {
 	}
 	
 	@Override
-	protected void attemptToGrowFruit(World world, int i, int j, int k, Random random) {
+	protected void growFruit(World world, int i, int j, int k, Random random) {
 		
 		int targetDirection = random.nextInt(4);
 		
@@ -196,18 +196,21 @@ public class SCBlockMelonVineFlowering extends SCBlockGourdVineFloweringBase {
 	
 	public Icon[] flowerIcons;
 	
+	private Icon flowerIcon;
 
     @Override
     public void registerIcons( IconRegister register )
     {
-        flowerIcons = new Icon[2];
+    	flowerIcon = register.registerIcon("SCBlockMelonVineFlowering_flower");
+    	
+        flowerIcons = new Icon[1];
 
         for ( int iTempIndex = 0; iTempIndex < flowerIcons.length; iTempIndex++ )
         {
-        	flowerIcons[iTempIndex] = register.registerIcon( "SCBlockMelonVineFlowering_" + iTempIndex );
+        	flowerIcons[0] = register.registerIcon( "SCBlockMelonVineFlowering");
         }
         
-        blockIcon = flowerIcons[1]; // for block hit effects and item render
+        blockIcon = flowerIcons[0]; // for block hit effects and item render
         
         connectorIcons = new Icon[4];
         for ( int iTempIndex = 0; iTempIndex < connectorIcons.length; iTempIndex++ )
@@ -220,12 +223,29 @@ public class SCBlockMelonVineFlowering extends SCBlockGourdVineFloweringBase {
 	@Override
     public Icon getBlockTexture( IBlockAccess blockAccess, int i, int j, int k, int iSide )
     {
-		if (!IsFullyGrown(blockAccess.getBlockMetadata(i, j, k)))
-		{
-			return flowerIcons[1];
+		if (!secondPass) {
+			return flowerIcons[0];
 		}
-		else return flowerIcons[0];
+		else 
+		{
+			if (!IsFullyGrown(blockAccess.getBlockMetadata(i, j, k)))
+			{
+				return getBlockTextureSecondPass(blockAccess, i, j, k, iSide);
+			}
+			
+			return flowerIcons[0];
+		}
         
     }
+	
+	private Icon getBlockTextureSecondPass(IBlockAccess blockAccess, int i, int j, int k, int side) {
+
+		return getOverlayIcon();
+	}
+
+	@Override
+	protected Icon getOverlayIcon() {
+		return flowerIcon;
+	}
 
 }

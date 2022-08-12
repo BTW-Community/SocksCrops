@@ -11,6 +11,7 @@ Check out this thread for more infos http://sargunster.com/btwforum/viewtopic.ph
 - Hügelkultur idea: Zhil
 - Stump removal via Hügelkultur: Patchwork
 - Pumpkin & Melon varieties idea: Anbaric
+- FC for some code
 
 - Inspiration from [Vintage Story](https://www.vintagestory.at), [Growthcraft/Rustic](https://github.com/GrowthcraftCE/), [Farmer's Delight](https://github.com/vectorwing/FarmersDelight) and [Create](https://github.com/Creators-of-Create/Create)
 

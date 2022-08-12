@@ -1,38 +1,58 @@
 package net.minecraft.src;
 
+import java.util.Random;
+
 public class SCBlockMelonCanaryGrowing extends SCBlockMelonGrowing {
 
-	protected SCBlockMelonCanaryGrowing(int iBlockID, int stemBlock, int vineBlock, int flowerBlock, int convertedBlockID) {
+	protected SCBlockMelonCanaryGrowing(int iBlockID, int stemBlock, int vineBlock, int flowerBlock, int convertedBlockID)
+	{
 		super(iBlockID, stemBlock, vineBlock, flowerBlock, convertedBlockID);
+		
 		setUnlocalizedName("SCBlockMelonCanaryGrowing");
 	}
 	
-	protected int getMetaHarvested(int growthLevel) {
-		if (growthLevel == 3 )
-		{
-			return 3; 
-		}
-		else if (growthLevel == 2)
-		{
-			return 2;
-		}
-		else if (growthLevel == 1)
-		{
-			return 1;
-		}
-		else return 0;
-	}
-
 	@Override
 	protected int getPossessedMetaForGrowthLevel(int growthLevel)
 	{
 		return 0; //Can't be possessed. see canBePossessed() in super
 	}
+	
+	@Override
+	protected int getMetaHarvested(int growthLevel)
+	{
+		return 0; //unused as we are overriding convertBlock() below
+	}
+	
+	@Override
+	protected void convertBlock(World world, int i, int j, int k)
+	{	
+		int meta = world.getBlockMetadata(i, j, k);
+		
+		world.setBlockAndMetadata(i, j, k, convertedBlockID , meta);
+	}
+	
+	@Override
+	public int idDropped(int par1, Random par2Random, int par3) {
+		
+		return SCDefs.melonCanaryHarvested.blockID;
+	}
 
 	@Override
-	protected void setBlockOnFinishedFalling(EntityFallingSand entity, int i, int j, int k)
+	public int damageDropped(int meta)
 	{
-		
+		if (this.GetGrowthLevel(meta) == 3)
+		{
+			return 12;
+		}
+		else if (this.GetGrowthLevel(meta) == 2)
+		{
+			return 8;
+		}
+		else if (this.GetGrowthLevel(meta) == 1)
+		{
+			return 4;
+		}
+		else return 0;
 	}
 	
 	//--- Render ---//
@@ -144,10 +164,13 @@ public class SCBlockMelonCanaryGrowing extends SCBlockMelonGrowing {
 	protected Icon[] waterCanaryIcon;
 	protected Icon[] waterCanaryIconTop;
 	protected Icon[] connectorIcon;
+	private Icon overlayIcon;
 	
 	@Override
   	public void registerIcons( IconRegister register )
   	{
+		overlayIcon = register.registerIcon("SCBlockMelonYellowSideOverlay");
+		
 		//Orange
 		waterCanaryIcon = new Icon[4];
 		
@@ -166,7 +189,7 @@ public class SCBlockMelonCanaryGrowing extends SCBlockMelonGrowing {
         connectorIcon = new Icon[4];
         for ( int iTempIndex = 0; iTempIndex < connectorIcon.length; iTempIndex++ )
         {
-        	connectorIcon[iTempIndex] = register.registerIcon( "SCBlockPumpkinConnector_" + iTempIndex );
+        	connectorIcon[iTempIndex] = register.registerIcon( "SCBlockMelonYellowConnector_" + iTempIndex );
         }
 		
 		blockIcon = waterCanaryIcon[3];
@@ -197,6 +220,12 @@ public class SCBlockMelonCanaryGrowing extends SCBlockMelonGrowing {
     	}
     	else return waterCanaryIcon[growthLevel];
     }
+
+	@Override
+	Icon getOverlayIcon() {
+		return overlayIcon;
+	}
+
 	
 
 }

@@ -37,7 +37,7 @@ public class SCBlockPumpkinVineFlowering extends SCBlockGourdVineFloweringBase {
 	}
 	
 	@Override
-	protected void attemptToGrowFruit(World world, int i, int j, int k, Random random) {
+	protected void growFruit(World world, int i, int j, int k, Random random) {
 		
 		int targetDirection = random.nextInt(4);
 		
@@ -83,20 +83,23 @@ public class SCBlockPumpkinVineFlowering extends SCBlockGourdVineFloweringBase {
 		Block biomeFruit;
 		
 		BiomeGenBase biome = world.getBiomeGenForCoords(i, k);
-		 
+		
+		//Honeydew
 		BiomeGenBase greenPumpkin[] = { 
 				BiomeGenBase.swampland,
 				BiomeGenBase.river,
 				BiomeGenBase.extremeHills,
 				BiomeGenBase.extremeHillsEdge };
-
+		
+		//Canary
 		BiomeGenBase yellowPumpkin[] = {
 				BiomeGenBase.desert,
 				BiomeGenBase.desertHills,
 		 		BiomeGenBase.jungle,
 		 		BiomeGenBase.jungleHills,
 		 		BiomeGenBase.beach };
-		 
+		
+		//Cantaloupe
 		BiomeGenBase whitePumpkin[] = {
 				BiomeGenBase.icePlains,
 				BiomeGenBase.iceMountains,
@@ -181,5 +184,28 @@ public class SCBlockPumpkinVineFlowering extends SCBlockGourdVineFloweringBase {
 		else return GetVineBounds(16, 16, 16);
     		
     }
+	
+	private Icon flowerIcon;
+	
+	@Override
+	public void registerIcons(IconRegister register) {
+		
+		super.registerIcons(register);
+
+		flowerIcon = register.registerIcon("SCBlockPumpkinVineFlowering_flower");
+		
+        flowerIcons = new Icon[1];
+
+        for ( int iTempIndex = 0; iTempIndex < flowerIcons.length; iTempIndex++ )
+        {
+        	flowerIcons[iTempIndex] = register.registerIcon( "SCBlockPumpkinVineFlowering");
+        }
+		
+	}
+
+	@Override
+	protected Icon getOverlayIcon() {
+		return flowerIcon;
+	}
 
 }

@@ -1,22 +1,38 @@
 package net.minecraft.src;
 
+import java.util.Random;
+
 public abstract class SCBlockMelonGrowing extends SCBlockGourdGrowing {
 
-	protected SCBlockMelonGrowing(int iBlockID, int stemBlock, int vineBlock, int flowerBlock, int convertedBlockID) {
+	protected SCBlockMelonGrowing(int iBlockID, int stemBlock, int vineBlock, int flowerBlock, int convertedBlockID)
+	{
 		super(iBlockID, stemBlock, vineBlock, flowerBlock, convertedBlockID);
 	}
 	
-	
-	
 	@Override
-	protected float GetBaseGrowthChance()
+	protected boolean canBePossessed()
 	{
-		return 0.1F;
+		return false;
 	}
 	
 	@Override
-	protected boolean canBePossessed() {
-		return false;
+	public int idPicked(World world, int par2, int par3, int par4)
+	{
+		return SCDefs.melonHarvested.blockID;
+	}
+	
+	@Override
+	public int idDropped( int iMetadata, Random random, int iFortuneModifier )
+	{		
+		return SCDefs.melonHarvested.blockID;
+	}
+	
+	@Override
+	public int damageDropped(int meta)
+	{
+		int growthLevel = GetGrowthLevel(meta);
+		
+		return getMetaHarvested(growthLevel);
 	}
 	
 	@Override
@@ -26,7 +42,7 @@ public abstract class SCBlockMelonGrowing extends SCBlockGourdGrowing {
 	}
 
 	@Override
-	protected int ItemCountToDropOnExplode(World world, int i, int j, int k )
+	protected int ItemCountToDropOnExplode(World world, int i, int j, int k, int meta)
 	{
 		int growthLevel = this.GetGrowthLevel(world, i, j, k);
 		if (growthLevel == 3)
@@ -37,7 +53,7 @@ public abstract class SCBlockMelonGrowing extends SCBlockGourdGrowing {
 	}
 
     @Override
-	protected int AuxFXIDOnExplode()
+	protected int AuxFXIDOnExplode(World world, int i, int j, int k, int meta)
     {
     	return FCBetterThanWolves.m_iMelonExplodeAuxFXID;
     }

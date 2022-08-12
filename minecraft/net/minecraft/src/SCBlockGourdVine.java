@@ -21,7 +21,7 @@ public class SCBlockGourdVine extends BlockDirectional {
 		
 		this.setTickRandomly(true);
 		
-		setHardness( 0F );
+		setHardness( 0.1F );
 
 		setStepSound( soundGrassFootstep );
 
@@ -29,17 +29,23 @@ public class SCBlockGourdVine extends BlockDirectional {
 	
 	protected float GetBaseGrowthChance()
     {
-    	return 0.5F;
+    	return 0.2F; //0.1f too low
     }
 	
 	protected float GetFlowerChance() {
-		return 0.5F;
+		return 0.25F;
 	}
 	
 	protected float GetVineGrowthChance()
     {
-    	return 0.25F;
+    	return 0.1F; //was 0.2f
     }
+	
+	@Override
+	public int idDropped(int par1, Random par2Random, int par3)
+	{
+		return 0;
+	}
 	
 	@Override
     public void updateTick( World world, int i, int j, int k, Random rand )
@@ -50,30 +56,86 @@ public class SCBlockGourdVine extends BlockDirectional {
 		}
 		else
 		{
-			if ( hasPortalInRange(world, i, j, k) && rand.nextFloat() <= 0.1F )
-		    {
-				this.becomePossessed(world, i, j, k, rand);
-		    }
-			else if (!IsFullyGrown( world, i, j, k) && checkTimeOfDay(world)) //daytime
+			if (!IsFullyGrown( world, i, j, k) && checkTimeOfDay(world)) //daytime
 			{
 				int growthStage = this.GetGrowthLevel(world, i, j, k);
-				if ( growthStage > 0 && rand.nextFloat() <= this.GetVineGrowthChance())
-		    	{
-		    		this.attemptToGrowVine(world, i, j, k, rand);
-		    	}
 				
 				if (rand.nextFloat() <= this.GetBaseGrowthChance())
 		    	{
-		    		this.attemptToGrow(world, i, j, k, rand);
+		    		this.grow(world, i, j, k, rand);
 		    	}
+				
+				if ( growthStage > 0 && rand.nextFloat() <= this.GetVineGrowthChance())
+		    	{
+		    		this.attemptToGrowVine(world, i, j, k, rand);
+		    	}	
 				
 				if (growthStage == 2 && rand.nextFloat() <= this.GetFlowerChance())
 		    	{
 		    		this.attemptToFlower(world, i, j, k, rand);
 		    	}
+				
 			}
+
 		}
     }
+	
+	protected boolean checkTimeOfDay(World world) {
+		int iTimeOfDay = (int)( world.worldInfo.getWorldTime() % 24000L );
+		return (iTimeOfDay > 24000 || iTimeOfDay > 0 && iTimeOfDay < 14000 );
+	}
+	
+	//Thanks to Hiracho for help with this method
+  	protected void attemptToGrowVine(World world, int i, int j, int k, Random random)
+  	{
+  		int dir = this.getDirection(world.getBlockMetadata(i, j, k));
+
+          int sideA = dir;
+          int sideB = Direction.rotateLeft[sideA];
+          int sideC = Direction.rotateOpposite[sideB];
+
+          int sideFinal;
+          float randomFloat = random.nextFloat();
+          
+          if (randomFloat < 0.80)
+          {
+              sideFinal=sideA;
+          }
+          else if (randomFloat < 0.80 + 0.1)
+          {
+              sideFinal = sideB;
+          }
+          else
+          {
+              sideFinal = sideC;
+          }
+  		
+  		int offsetI = Direction.offsetX[sideFinal];
+  		int offsetK = Direction.offsetZ[sideFinal];
+  		
+  		
+  		int finalI = i + offsetI;
+  		int finalK = k + offsetK;
+  		
+  		if( CanGrowVineAt( world, finalI, j, finalK ) )
+  		{
+  			world.setBlockAndMetadata(finalI, j, finalK, this.blockID, sideFinal);
+  		}
+
+  	}
+
+	protected void grow(World world, int i, int j, int k, Random random) {
+		
+		int meta = world.getBlockMetadata(i, j, k);        
+		world.setBlockAndMetadataWithNotify(i, j, k, this.blockID ,meta + 4);
+
+	}
+	
+	protected void attemptToFlower(World world, int i, int j, int k, Random random) {
+		
+		int dir = this.getDirection(world.getBlockMetadata(i, j, k));		
+		world.setBlockAndMetadataWithNotify(i, j, k, this.floweringBlock, dir);
+	}
 	
     private void becomePossessed(World world, int i, int j, int k, Random rand)
     {
@@ -140,63 +202,7 @@ public class SCBlockGourdVine extends BlockDirectional {
 		}
 		else world.setBlockAndMetadataWithNotify(i, j, k, convertedBlockID, meta);
 	}
-
-	protected boolean checkTimeOfDay(World world) {
-		int iTimeOfDay = (int)( world.worldInfo.getWorldTime() % 24000L );
-		return (iTimeOfDay > 24000 || iTimeOfDay > 0 && iTimeOfDay < 14000 );
-	}
 	
-	//Thanks to Hiracho for help with this method
-  	protected void attemptToGrowVine(World world, int i, int j, int k, Random random)
-  	{
-  		int dir = this.getDirection(world.getBlockMetadata(i, j, k));
-
-          int sideA = dir;
-          int sideB = Direction.rotateLeft[sideA];
-          int sideC = Direction.rotateOpposite[sideB];
-
-          int sideFinal;
-          float randomFloat = random.nextFloat();
-          
-          if (randomFloat < 0.80)
-          {
-              sideFinal=sideA;
-          }
-          else if (randomFloat < 0.80 + 0.1)
-          {
-              sideFinal = sideB;
-          }
-          else
-          {
-              sideFinal = sideC;
-          }
-  		
-  		int offsetI = Direction.offsetX[sideFinal];
-  		int offsetK = Direction.offsetZ[sideFinal];
-  		
-  		
-  		int finalI = i + offsetI;
-  		int finalK = k + offsetK;
-  		
-  		if( CanGrowVineAt( world, finalI, j, finalK ) )
-  		{
-  			world.setBlockAndMetadata(finalI, j, finalK, this.blockID, sideFinal);
-  		}
-
-  	}
-
-	protected void attemptToGrow(World world, int i, int j, int k, Random random) {
-		
-		int meta = world.getBlockMetadata(i, j, k);        
-		world.setBlockAndMetadataWithNotify(i, j, k, this.blockID ,meta + 4);
-
-	}
-	
-	protected void attemptToFlower(World world, int i, int j, int k, Random random) {
-		
-		int dir = this.getDirection(world.getBlockMetadata(i, j, k));		
-		world.setBlockAndMetadataWithNotify(i, j, k, this.floweringBlock, dir);
-	}
 
 	@Override
 	public void onNeighborBlockChange(World world, int i, int j, int k, int par5) {
@@ -242,15 +248,42 @@ public class SCBlockGourdVine extends BlockDirectional {
 	    targetPos.AddFacingAsOffset( iTargetFacing );
 	    
 	    int targetBlockID = world.getBlockId(targetPos.i, targetPos.j, targetPos.k);
+	    Block block = Block.blocksList[targetBlockID];
 	    
-	    if ( targetBlockID == this.stemBlock || targetBlockID == this.blockID || targetBlockID == this.floweringBlock)
+	    if ( targetBlockID == this.stemBlock || targetBlockID == this.blockID || targetBlockID == this.floweringBlock || block instanceof SCBlockGourdGrowing)
 	    {	
 	    	return true;
 	    	
 	    }
 	    else return false;
 	}
+	
+	protected boolean hasStemFacing( RenderBlocks r, int i, int j, int k )
+    {
+    	FCUtilsBlockPos targetPos = new FCUtilsBlockPos( i, j, k );
 
+	    int dir = this.getDirection(r.blockAccess.getBlockMetadata(i, j, k));
+	    
+	    
+	    int oppositeFacing = Direction.rotateOpposite[dir];
+	    int iTargetFacing = Direction.directionToFacing[oppositeFacing];
+	    
+	    
+	    
+	    targetPos.AddFacingAsOffset( iTargetFacing );
+	    
+	    int targetBlockID = r.blockAccess.getBlockId(targetPos.i, targetPos.j, targetPos.k);
+	    
+	    
+	    if ( targetBlockID == this.stemBlock || targetBlockID == this.blockID || targetBlockID == this.floweringBlock )
+	    {	
+	    	return true;
+	    	
+	    }
+	    else return false;
+		
+    }
+	
 	protected boolean CanGrowVineAt( World world, int i, int j, int k )
     {
 		int blockID = world.getBlockId( i, j, k );		
@@ -331,18 +364,26 @@ public class SCBlockGourdVine extends BlockDirectional {
     public void registerIcons( IconRegister register )
     {
     	vineIcons = new Icon[4];
+    	
+    	if (this.texVine != null)
+    	{
+            for ( int iTempIndex = 0; iTempIndex < vineIcons.length; iTempIndex++ )
+            {
+            	vineIcons[iTempIndex] = register.registerIcon( this.texVine + iTempIndex );
+            }
+    	}
 
-        for ( int iTempIndex = 0; iTempIndex < vineIcons.length; iTempIndex++ )
-        {
-        	vineIcons[iTempIndex] = register.registerIcon( this.texVine + iTempIndex );
-        }
         
         blockIcon = vineIcons[3]; // for block hit effects and item render
         
         connectorIcons = new Icon[4];
-        for ( int iTempIndex = 0; iTempIndex < connectorIcons.length; iTempIndex++ )
+        
+        if (this.texConnector != null)
         {
-        	connectorIcons[iTempIndex] = register.registerIcon( this.texConnector + iTempIndex );
+            for ( int iTempIndex = 0; iTempIndex < connectorIcons.length; iTempIndex++ )
+            {
+            	connectorIcons[iTempIndex] = register.registerIcon( this.texConnector + iTempIndex );
+            }
         }
    
     }
@@ -433,13 +474,16 @@ public class SCBlockGourdVine extends BlockDirectional {
     	r.renderCrossedSquares(this, i, j, k);
     	
     	int iMetadata = r.blockAccess.getBlockMetadata( i, j, k );
-    	    	
-        this.renderVineConnector( r, i, j, k);        
-
+    	
+    	if (this.hasStemFacing(r, i, j, k))
+    	{
+    		this.renderVineConnector( r, i, j, k);        
+    	}
     	return true;
     }
-    
-    public boolean renderVineConnector(RenderBlocks r, int par2, int par3, int par4)
+
+
+	public boolean renderVineConnector(RenderBlocks r, int par2, int par3, int par4)
     {
     	IBlockAccess blockAccess = r.blockAccess;
     	

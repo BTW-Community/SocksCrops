@@ -4,29 +4,45 @@ import java.util.Random;
 
 public abstract class SCBlockPumpkinGrowing extends SCBlockGourdGrowing {
 
-	protected SCBlockPumpkinGrowing(int iBlockID, int stemBlock, int vineBlock, int flowerBlock, int convertedBlockID) {
+	protected SCBlockPumpkinGrowing(int iBlockID, int stemBlock, int vineBlock, int flowerBlock, int convertedBlockID)
+	{
 		super(iBlockID, stemBlock, vineBlock, flowerBlock, convertedBlockID);
 	}
-	
-	protected float GetBaseGrowthChance()
-    {
-    	return 0.5F;
-    }
-
 
 	@Override
-	protected boolean canBePossessed() {
-		return true;
+	protected boolean canBePossessed()
+	{
+		return false;
+	}
+	
+	@Override
+	public int idPicked(World world, int par2, int par3, int par4)
+	{
+		return SCDefs.pumpkinHarvested.blockID;
+	}
+	
+	@Override
+	public int idDropped( int iMetadata, Random random, int iFortuneModifier )
+	{		
+		return SCDefs.pumpkinHarvested.blockID;
+	}
+	
+	@Override
+	public int damageDropped(int meta)
+	{
+		int growthLevel = GetGrowthLevel(meta);
+		
+		return getMetaHarvested(growthLevel);
 	}
 
 	@Override
 	protected Item ItemToDropOnExplode()
 	{
-		return SCDefs.pumpkinSeeds;
+		return Item.pumpkinSeeds;
 	}
-
+	
 	@Override
-	protected int ItemCountToDropOnExplode(World world, int i, int j, int k )
+	protected int ItemCountToDropOnExplode(World world, int i, int j, int k , int meta)
 	{
 		int growthLevel = this.GetGrowthLevel(world, i, j, k);
 		if (growthLevel == 3)
@@ -37,7 +53,7 @@ public abstract class SCBlockPumpkinGrowing extends SCBlockGourdGrowing {
 	}
 
 	@Override
-	protected int AuxFXIDOnExplode() {
+	protected int AuxFXIDOnExplode(World world, int i, int j, int k, int meta) {
 		return FCBetterThanWolves.m_iPumpkinExplodeAuxFXID;
 	}
 
