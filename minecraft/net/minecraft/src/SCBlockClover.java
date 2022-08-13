@@ -12,6 +12,12 @@ public class SCBlockClover extends BlockFlower {
 		setUnlocalizedName("SCBlockClover");
 	}
 	
+	@Override
+	public int damageDropped(int meta)
+	{
+		return meta;
+	}
+	
     public void getSubBlocks(int id, CreativeTabs creativeTabs, List list)
     {
         list.add(new ItemStack(id, 1, 0));
