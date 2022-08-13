@@ -415,7 +415,7 @@ public class SCDefs {
 		Item.itemsList[storageJar.blockID] = new SCItemBlockStorageJar(id_storageJar - 256);	
 		
 		flowerPot = new SCBlockFlowerPot(id_flowerPot);
-		Item.replaceItem(Item.flowerPot.itemID, SCItemFlowerPot.class, SocksCropsAddon.instance);
+		Item.replaceItem(Item.flowerPot.itemID, SCItemFlowerPot.class, SocksCropsAddon.instance, SCDecoIntegration.DECOADDON);
 		
 		waterPot = new SCBlockWaterPot(id_waterPot);
 		Item.itemsList[waterPot.blockID] = new FCItemPlacesAsBlock (id_waterPot - 256, id_waterPot, SCBlockWaterPot.water).setUnlocalizedName("SCItemPot_water").setCreativeTab(CreativeTabs.tabDecorations);

@@ -71,7 +71,7 @@ public class SCBlockWaterPot extends BlockContainer {
 		
 		if (growthStage < potTile.getGrowthStagesForBlock(storedBlockID) )
 		{
-			System.out.println("growing");
+			//System.out.println("growing");
 			world.setBlockMetadataWithNotify(x, y, z, meta + 1);
 			potTile.setStoredBlockMetadata(potTile.getStoredBlockMetadata() + i);
 

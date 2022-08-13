@@ -3,7 +3,9 @@ package net.minecraft.src;
 public class SCDecoIntegration {
 	private static boolean isDecoInstalled = false;
 	private static FCAddOn decoManager = null;
-
+	
+	public static final String DECOADDON = "Deco Addon";
+	
 	public static Block flower;
 	public static Block flower2;
 	public static Block tulip;
@@ -13,8 +15,8 @@ public class SCDecoIntegration {
 	
 	public static void init() {
 		try {
-			if (FCAddOnHandler.isModInstalled("Deco Addon")) {
-				decoManager = FCAddOnHandler.getModByName("Deco Addon");
+			if (FCAddOnHandler.isModInstalled(DECOADDON)) {
+				decoManager = FCAddOnHandler.getModByName(DECOADDON);
 			}
 			
 			if (decoManager != null) {
