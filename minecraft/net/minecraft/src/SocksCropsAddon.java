@@ -31,10 +31,12 @@ public class SocksCropsAddon extends FCAddOn {
     	SCDefs.addDefinitions();
     	SCDefs.addTileEntityDefinitions();
     	SCRecipes.addRecipes();
+    	
+    	SCDecoIntegration.init();
        	
     	FCAddOnHandler.LogMessage(this.getName() + " Initialized");
     }
-
+    
     @Override
     public void serverPlayerConnectionInitialized(NetServerHandler serverHandler, EntityPlayerMP playerMP)
     {

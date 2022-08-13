@@ -12,7 +12,7 @@ public class SCBlockCropWildCarrot extends FCBlockCarrotBase {
     @Override
     public float GetBaseGrowthChance( World world, int i, int j, int k )
     {
-    	return 0.33F;
+    	return 0.4F;
     }
 
 	@Override

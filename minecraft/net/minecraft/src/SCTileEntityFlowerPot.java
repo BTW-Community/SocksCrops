@@ -10,6 +10,26 @@ public class SCTileEntityFlowerPot extends TileEntity implements FCITileEntityDa
 	private int currentBlockID;
 	private int currentBlockMetadata;
 
+	static {
+		validItemList.add(Block.plantRed.blockID);
+		validItemList.add(Block.plantYellow.blockID);
+		validItemList.add(Block.mushroomBrown.blockID);
+		validItemList.add(Block.mushroomRed.blockID);
+		validItemList.add(Block.cactus.blockID);
+		validItemList.add(Block.sapling.blockID);
+		validItemList.add(Block.tallGrass.blockID);
+		validItemList.add(FCBetterThanWolves.fcAestheticVegetation.blockID);		
+		validItemList.add(Block.deadBush.blockID);
+
+		if (SCDecoIntegration.isDecoInstalled() )
+		{
+			validItemList.add(SCDecoIntegration.flower.blockID);
+			validItemList.add(SCDecoIntegration.flower2.blockID);
+			validItemList.add(SCDecoIntegration.tulip.blockID);
+			validItemList.add(SCDecoIntegration.cherrySapling.blockID);
+		}
+	}
+	
     /**
      * Writes a tile entity to NBT.
      */
@@ -108,20 +128,4 @@ public class SCTileEntityFlowerPot extends TileEntity implements FCITileEntityDa
         	this.worldObj.playAuxSFX(FCBetterThanWolves.m_iItemCollectionPopSoundAuxFXID, this.xCoord, this.yCoord, this.zCoord, 0);
 	}
 
-	static {
-		validItemList.add(Block.plantRed.blockID);
-		validItemList.add(Block.plantYellow.blockID);
-		validItemList.add(Block.mushroomBrown.blockID);
-		validItemList.add(Block.mushroomRed.blockID);
-		validItemList.add(Block.cactus.blockID);
-		validItemList.add(Block.sapling.blockID);
-		validItemList.add(Block.tallGrass.blockID);
-		validItemList.add(FCBetterThanWolves.fcAestheticVegetation.blockID);
-
-		
-//		validItemList.add(DecoDefs.flower.blockID);
-//		validItemList.add(DecoDefs.flower2.blockID);
-//		validItemList.add(DecoDefs.tulip.blockID);
-//		validItemList.add(DecoDefs.cherrySapling.blockID);
-	}
 }

@@ -4,53 +4,88 @@ package net.minecraft.src;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public class SCTileEntityWaterPot extends TileEntity implements FCITileEntityDataPacketHandler {
-	private boolean hasItem = false;
-	//private static Set<Integer> validBlockList = new HashSet<Integer>();
-	private static Set<Integer> validItemList = new HashSet<Integer>();
-	private static HashMap<Integer, Integer> validBlockList = new HashMap<Integer, Integer>();
 	
-	private int currentBlockID;
-	private int currentBlockMetadata;
+	private int storedBlockID;
+	private int storedBlockMetadata;
+	private int insertedID;
+	
+	/**
+	 * Has to be used even if the ItemID is equal to the BlockID
+	 * @param Integer The ItemID to insert
+	 * @param Integer The BlockID that's actually stored
+	 */
+	public static HashMap<Integer, Integer> blockToStore = new HashMap<Integer, Integer>();
+	
+	/**
+	 * @param Integer the stored Block
+	 * @param Integer the number growth stages of that block
+	 */
+	public static HashMap<Integer, Integer> growthStages = new HashMap<Integer, Integer>();
+	
+	/**
+	 * @param Integer the stored Block
+	 * @param Float the baseGrowthChance of that block
+	 */
+	public static HashMap<Integer, Float> growthChance = new HashMap<Integer, Float >();
 
-    /**
-     * Writes a tile entity to NBT.
-     */
+	static {	
+		blockToStore.put(SCDefs.wildPotatoCut.itemID, SCDefs.wildPotatoCropSapling.blockID);
+		blockToStore.put(SCDefs.wildPotato.itemID, SCDefs.wildPotatoCropSapling.blockID);
+		growthStages.put(SCDefs.wildPotatoCropSapling.blockID, 4);
+		growthChance.put(SCDefs.wildPotatoCropSapling.blockID, 0.4F);
+		
+		blockToStore.put(SCDefs.wildCarrotTop.itemID, SCDefs.wildCarrotCropSapling.blockID);
+		blockToStore.put(SCDefs.wildCarrot.itemID, SCDefs.wildCarrotCropSapling.blockID);
+		growthStages.put(SCDefs.wildCarrotCropSapling.blockID, 4);
+		growthChance.put(SCDefs.wildCarrotCropSapling.blockID, 0.4F);
+		
+		blockToStore.put(Block.sapling.blockID, Block.sapling.blockID);
+		growthStages.put(Block.sapling.blockID, 4);
+		growthChance.put(Block.sapling.blockID, 1/32F);
+		
+		if (SCDecoIntegration.isDecoInstalled() )
+		{
+			blockToStore.put(SCDecoIntegration.cherrySapling.blockID, SCDecoIntegration.cherrySapling.blockID);
+			growthStages.put(SCDecoIntegration.cherrySapling.blockID, 4);
+			growthChance.put(SCDecoIntegration.cherrySapling.blockID, 1/32F);
+		}
+	}
+
+	
     public void writeToNBT(NBTTagCompound nbtTagCompound)
     {
         super.writeToNBT(nbtTagCompound);
-        nbtTagCompound.setInteger("StoredID", this.currentBlockID);
-        nbtTagCompound.setInteger("StoredMetadata", this.currentBlockMetadata);
+        nbtTagCompound.setInteger("storedBlockID", this.storedBlockID);
+        nbtTagCompound.setInteger("storedBlockMetadata", this.storedBlockMetadata);
+        nbtTagCompound.setInteger("insertedID", this.insertedID);
     }
 
-    /**
-     * Reads a tile entity from NBT.
-     */
     public void readFromNBT(NBTTagCompound nbtTagCompound)
     {
         super.readFromNBT(nbtTagCompound);
-        this.currentBlockID = nbtTagCompound.getInteger("StoredID");
-        this.currentBlockMetadata = nbtTagCompound.getInteger("StoredMetadata");
+        this.storedBlockID = nbtTagCompound.getInteger("storedBlockID");
+        this.storedBlockMetadata = nbtTagCompound.getInteger("storedBlockMetadata");
+        this.insertedID = nbtTagCompound.getInteger("insertedID");
     }
 
-    /**
-     * Overriden in a sign to provide the text.
-     */
     @Override
     public Packet getDescriptionPacket() {
         NBTTagCompound nbtTagCompound = new NBTTagCompound();
-        nbtTagCompound.setInteger("StoredID", this.currentBlockID);
-        nbtTagCompound.setInteger("StoredMetadata", this.currentBlockMetadata);
+        nbtTagCompound.setInteger("storedBlockID", this.storedBlockID);
+        nbtTagCompound.setInteger("storedBlockMetadata", this.storedBlockMetadata);
+        nbtTagCompound.setInteger("insertedID", this.insertedID);
         return new Packet132TileEntityData(this.xCoord, this.yCoord, this.zCoord, 1, nbtTagCompound);
     }
     
     @Override
     public void readNBTFromPacket(NBTTagCompound nbtTagCompound) {
-        this.currentBlockID = nbtTagCompound.getInteger("StoredID");
-        this.currentBlockMetadata = nbtTagCompound.getInteger("StoredMetadata");
-        if (currentBlockID != 0) hasItem = true;
+        this.storedBlockID = nbtTagCompound.getInteger("storedBlockID");
+        this.storedBlockMetadata = nbtTagCompound.getInteger("storedBlockMetadata");
+        this.insertedID = nbtTagCompound.getInteger("insertedID");
         this.worldObj.markBlockRangeForRenderUpdate(this.xCoord, this.yCoord, this.zCoord, this.xCoord, this.yCoord, this.zCoord);
     }
     
@@ -59,47 +94,68 @@ public class SCTileEntityWaterPot extends TileEntity implements FCITileEntityDat
 	}
     
     public int getStoredBlockID() {
-    	return currentBlockID;
+    	return storedBlockID;
     }
     
     public int getStoredBlockMetadata() {
-    	return currentBlockMetadata;
+    	return storedBlockMetadata;
+    }
+    
+    public int getInsertedID() {
+    	return insertedID;
     }
     
     public void setStoredBlockMetadata(int meta) {
-    	currentBlockMetadata = meta;
+    	storedBlockMetadata = meta;
     }
 
 	public boolean hasItem() {
-		return hasItem;
+		return insertedID != 0;
 	}
+	
+	public boolean isValidToStore(int id, int meta) {
 
-	public boolean isValidBlockForPot(int id, int meta) {
-		//Special case for blood wood sapling
-		if (id == FCBetterThanWolves.fcAestheticVegetation.blockID)
-			return meta == 2;
+		return blockToStore.containsKey(id);
+	}
+	
+	public int getBlockToStore(int blockID)
+	{
+		if (blockToStore.containsKey(blockID))
+		{
+			return blockToStore.get(blockID);
+		}
 		
-		return validBlockList.containsKey(id);
+		return 0;
 	}
 
-	public boolean isValidItemForPot(int id, int meta) {
+	public int getGrowthStagesForBlock(int blockID)
+	{
+		if (growthStages.containsKey(blockID))
+		{
+			return growthStages.get(blockID); 
+		}
+		
+		return 0;
 
-		return validItemList.contains(id);
+	}
+	
+	public float getGrowthChanceForBlock(int blockID)
+	{
+		if (growthChance.containsKey(blockID))
+		{
+			return growthChance.get(blockID); 
+		}
+		
+		return 0F;
+
 	}
 
 	public void placeItemInPot(int itemID, int metadata) {
-		hasItem = true;
 		
-		if (itemID == SCDefs.bambooItem.itemID)
-			currentBlockID = SCDefs.bambooShoot.blockID;
-		else if (itemID == SCDefs.wildPotatoCut.itemID)
-			currentBlockID = SCDefs.wildPotatoCropSapling.blockID;
-		else if (itemID == SCDefs.wildCarrotTop.itemID)
-			currentBlockID = SCDefs.wildCarrotCropSapling.blockID;
-		else
-			currentBlockID = itemID;
-		currentBlockMetadata = metadata;
-		
+		storedBlockID = getBlockToStore(itemID);
+		storedBlockMetadata = metadata;
+		insertedID = itemID;
+				
         this.worldObj.markBlockRangeForRenderUpdate(this.xCoord, this.yCoord, this.zCoord, this.xCoord, this.yCoord, this.zCoord);
         
         this.worldObj.playSound(this.xCoord, this.yCoord, this.zCoord, "step.grass", 1.0F, 1.0F);
@@ -108,33 +164,25 @@ public class SCTileEntityWaterPot extends TileEntity implements FCITileEntityDat
 	//Removes item and gives it to the player
 	public void retrieveItemFromPot(EntityPlayer player) {
 		
-		if (currentBlockID == 0)
+		int returnItemID = storedBlockID;
+		
+		if (storedBlockID == 0)
 			return;
 		
-		if (currentBlockID == SCDefs.bambooShoot.blockID)
+		if(!worldObj.isRemote)
 		{
-			if(!worldObj.isRemote)
-				FCUtilsItem.DropStackAsIfBlockHarvested(worldObj, this.xCoord, this.yCoord, this.zCoord, new ItemStack(SCDefs.bambooItem, 1, 0));
+			
+			if (storedBlockMetadata < getGrowthStagesForBlock(storedBlockID) - 1)
+			{
+				returnItemID = insertedID;
+			}
+			FCUtilsItem.GivePlayerStackOrEjectFavorEmptyHand(player, new ItemStack(Item.itemsList[returnItemID], 1, storedBlockMetadata), this.xCoord, this.yCoord, this.zCoord);
+			
 		}
-		else if (currentBlockID == SCDefs.wildPotatoCropSapling.blockID)
-		{
-			if(!worldObj.isRemote)
-				FCUtilsItem.DropStackAsIfBlockHarvested(worldObj, this.xCoord, this.yCoord, this.zCoord, new ItemStack(SCDefs.wildPotatoCropSapling, 1, 0));
-		}
-		else if (currentBlockID == SCDefs.wildCarrotCropSapling.blockID)
-		{
-			if(!worldObj.isRemote)
-				FCUtilsItem.DropStackAsIfBlockHarvested(worldObj, this.xCoord, this.yCoord, this.zCoord, new ItemStack(SCDefs.wildCarrotCropSapling, 1, 0));
-		}
-		else 
-		{
-			if(!worldObj.isRemote)
-				FCUtilsItem.DropStackAsIfBlockHarvested(worldObj, this.xCoord, this.yCoord, this.zCoord, new ItemStack(Item.itemsList[currentBlockID], 1, currentBlockMetadata));
-		}
-		
-		hasItem = false;
-		currentBlockID = 0;
-		currentBlockMetadata = 0;
+
+		storedBlockID = 0;
+		storedBlockMetadata = 0;
+		insertedID = 0;
 		
         this.worldObj.markBlockRangeForRenderUpdate(this.xCoord, this.yCoord, this.zCoord, this.xCoord, this.yCoord, this.zCoord);
 
@@ -142,24 +190,21 @@ public class SCTileEntityWaterPot extends TileEntity implements FCITileEntityDat
         	this.worldObj.playAuxSFX(FCBetterThanWolves.m_iItemCollectionPopSoundAuxFXID, this.xCoord, this.yCoord, this.zCoord, 0);
 	}
 	
-	public int getGrowthStagesForBlock(int blockID)
-	{
-		if (validBlockList.containsKey(blockID))
+	public void ejectItemFromPot() {
+		
+		int returnItemID = storedBlockID;
+		
+		if (storedBlockID == 0)
+			return;
+		
+		if(!worldObj.isRemote)
 		{
-			return validBlockList.get(blockID); 
+			
+			if (storedBlockMetadata < getGrowthStagesForBlock(storedBlockID) - 1)
+			{
+				returnItemID = insertedID;
+			}
+
 		}
-		
-		return 0;
-
-	}
-
-	static {
-		validItemList.add(SCDefs.bambooItem.itemID);
-		validItemList.add(SCDefs.wildPotatoCut.itemID);
-		validItemList.add(SCDefs.wildCarrotTop.itemID);
-		
-		validBlockList.put(SCDefs.bambooShoot.blockID, 3);
-		validBlockList.put(SCDefs.wildPotatoCropSapling.blockID, 3);
-		validBlockList.put(SCDefs.wildCarrotCropSapling.blockID, 3);
 	}
 }
