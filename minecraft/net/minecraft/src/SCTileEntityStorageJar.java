@@ -57,6 +57,11 @@ public class SCTileEntityStorageJar extends TileEntity implements IInventory, FC
     	//SC
     	validItemList.add( SCDefs.wildCarrotSeeds.itemID);
     	validItemList.add( SCDefs.wildCarrotCropSapling.blockID);
+    	
+    	if(SCDecoIntegration.isDecoInstalled())
+    	{
+    		validItemList.add( SCDecoIntegration.fertilizer.itemID);
+    	}
     } 
     
     public SCTileEntityStorageJar()

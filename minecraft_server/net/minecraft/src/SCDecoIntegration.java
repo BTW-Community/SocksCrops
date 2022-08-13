@@ -2,7 +2,7 @@ package net.minecraft.src;
 
 public class SCDecoIntegration {
 	private static boolean isDecoInstalled = false;
-	private static FCAddOn decoManager = null;
+	public static FCAddOn decoManager = null;
 	
 	public static final String DECOADDON = "Deco Addon";
 	
@@ -11,7 +11,7 @@ public class SCDecoIntegration {
 	public static Block tulip;
 	public static Block cherrySapling;
 	
-//	public static Item pileRedSand;
+	public static Item fertilizer;
 	
 	public static void init() {
 		try {
@@ -28,7 +28,7 @@ public class SCDecoIntegration {
 				cherrySapling = (Block) getDecoField("cherrySapling");
 
 				
-//				pileRedSand = (Item) getDecoField("pileRedSand");
+				fertilizer = (Item) getDecoField("fertilizer");
 			}
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();

@@ -162,43 +162,64 @@ public class SCBlockStorageJar extends BlockContainer {
 	    	}
 		}
 		return false;
-    }
+    }	
 	
-	@Override
-    public void breakBlock( World world, int i, int j, int k, int iBlockID, int iMetadata )
-    {
+	public ItemStack GetStackRetrievedByBlockDispenser( World world, int i, int j, int k )
+	{
 		SCTileEntityStorageJar tileEntity = (SCTileEntityStorageJar)( world.getBlockTileEntity(i, j, k) );
 		ItemStack newStack = new ItemStack(this, 1, this.getDamageValue(world, i, j, k));
 		
     	if ( tileEntity != null )
     	{
-    		dropItemBlock(world, i, j, k, tileEntity, newStack);
+            if ( tileEntity.getStackInSlot(0) != null)
+            {
+            	ItemStack oldStack = tileEntity.getStorageStack();
+            	
+                NBTTagCompound newTag = new NBTTagCompound();
+                
+                newStack.setTagCompound(newTag);
+                newStack.getTagCompound().setInteger( "id", oldStack.itemID );
+                newStack.getTagCompound().setInteger( "Count", oldStack.stackSize );
+                newStack.getTagCompound().setInteger( "Damage",  this.getDamageValue(world, i, j, k) );
+                
+                newStack.getTagCompound().setInteger( "seedType", tileEntity.getSeedType() );
+                newStack.getTagCompound().setBoolean( "hasLabel", tileEntity.hasLabel() );
+                newStack.getTagCompound().setInteger( "seedDamage", oldStack.getItemDamage());
+            	
+            }
     	}
     	
-        super.breakBlock( world, i, j, k, iBlockID, iMetadata );
-    }
+    	return newStack;
+	}
+
 	
-    private void dropItemBlock(World world, int i, int j, int k, SCTileEntityStorageJar tileEntity, ItemStack newStack)
-    {
-        if ( tileEntity.getStackInSlot(0) != null)
-        {
-        	ItemStack oldStack = tileEntity.getStorageStack();
-        	
-            NBTTagCompound newTag = new NBTTagCompound();
-            
-            newStack.setTagCompound(newTag);
-            newStack.getTagCompound().setInteger( "id", oldStack.itemID );
-            newStack.getTagCompound().setInteger( "Count", oldStack.stackSize );
-            newStack.getTagCompound().setInteger( "Damage",  this.getDamageValue(world, i, j, k) );
-            
-            newStack.getTagCompound().setInteger( "seedType", tileEntity.getSeedType() );
-            newStack.getTagCompound().setBoolean( "hasLabel", tileEntity.hasLabel() );
-            newStack.getTagCompound().setInteger( "seedDamage", oldStack.getItemDamage());
-        	
-        }
+	@Override
+	public void onBlockHarvested(World world, int i, int j, int k, int par5, EntityPlayer par6EntityPlayer) {
 		
-        this.dropBlockAsItem_do(world, i, j, k, newStack);  
+		SCTileEntityStorageJar tileEntity = (SCTileEntityStorageJar)( world.getBlockTileEntity(i, j, k) );
+		ItemStack newStack = new ItemStack(this.blockID, 1, this.getDamageValue(world, i, j, k));
 		
+    	if ( tileEntity != null )
+    	{
+            if ( tileEntity.getStackInSlot(0) != null)
+            {
+            	ItemStack oldStack = tileEntity.getStorageStack();
+            	
+                NBTTagCompound newTag = new NBTTagCompound();
+                
+                newStack.setTagCompound(newTag);
+                newStack.getTagCompound().setInteger( "id", oldStack.itemID );
+                newStack.getTagCompound().setInteger( "Count", oldStack.stackSize );
+                newStack.getTagCompound().setInteger( "Damage",  this.getDamageValue(world, i, j, k) );
+                
+                newStack.getTagCompound().setInteger( "seedType", tileEntity.getSeedType() );
+                newStack.getTagCompound().setBoolean( "hasLabel", tileEntity.hasLabel() );
+                newStack.getTagCompound().setInteger( "seedDamage", oldStack.getItemDamage());
+            	
+            }
+    	}
+    	
+        this.dropBlockAsItem_do(world, i, j, k, newStack);
 	}
 
 	public int getDamageValue(World world, int i, int j, int k)
@@ -214,18 +235,25 @@ public class SCBlockStorageJar extends BlockContainer {
     		
     		stackSize = storageStack.stackSize;
     		
-    	    if (stackSize > 7)
+    	    if (stackSize != 0)
     	    {
-    	        contentHeight = ( stackSize/8 ) - 1;
+    	    	if (stackSize == 64)
+    	        {
+    	    		contentHeight =(int) (Math.floor( stackSize/8 )) - 1;
+    	        }
+    	        else if (stackSize < 8)
+    	        {
+    	        	contentHeight =(int) (Math.floor( stackSize/8 )) + 1;
+    	        }
+    	    	else
+    	    		contentHeight =(int) (Math.floor( stackSize/8 ));
     	    }
-    	    else
-    	    	contentHeight = ( stackSize/8 ) + 1;
 
 //			if (stackSize <= 8)
 //			{
-//				contentHeight = Math.ceil( stackSize/8 ) + 1;
+//				contentHeight = (int) (Math.ceil( stackSize/8 ) + 1);
 //			}
-//			else contentHeight = Math.ceil( stackSize/8 );
+//			else contentHeight = (int) Math.ceil( stackSize/8 );
 //        	
 			int seedID = jar.getStackInSlot(0).itemID;
 			int seedTypeForItemRender = jar.getSeedTypeForItemRender(seedID);
@@ -359,7 +387,6 @@ public class SCBlockStorageJar extends BlockContainer {
         	hasAttachableBlockAbove(world, i, j, k);
         }
 
-		
 	}
 	
 	private static ArrayList<Integer> attachableBlocks = new ArrayList<Integer>();
@@ -614,6 +641,10 @@ public class SCBlockStorageJar extends BlockContainer {
 		labelIcon[29] = register.registerIcon("SCBlockJarLabel_wildCarrot");
 		labelIcon[30] = register.registerIcon("SCBlockJarLabel_wildCarrotHighYield");
 		
+		//Deco
+		contentsIcon[31] = register.registerIcon("SCBlockJarContents_decoFertilizer");
+		labelIcon[31] = register.registerIcon("SCBlockJarLabel_decoFertilizer");
+		
 		
 		//Dyes
 		for (int i = 0; i < dyeIcon.length; i++) {
@@ -713,15 +744,19 @@ public class SCBlockStorageJar extends BlockContainer {
 			
 			if (storageSize > 0)
 			{
-	    	    if (storageSize > 7)
-	    	    {
-	    	        contentHeight = ( storageSize/8 ) - 1;
-	    	    }
-	    	    else
-	    	    	contentHeight = ( storageSize/8 ) + 1;
+			    if (storageSize == 64)
+		        {
+			    	contentHeight =(int) (Math.floor( storageSize/8 ));
+		        }
+		        else if (storageSize < 8)
+		        {
+		        	contentHeight =(int) (Math.floor( storageSize/8 )) + 1;
+		        }
+		    	else
+		    		contentHeight =(int) (Math.floor( storageSize/8 ));
 				
 				//Contents
-				renderBlocks.setRenderBounds(getBounds(3, 0 + moveUp,1+ contentHeight + moveUp , 3));
+				renderBlocks.setRenderBounds(getBounds(3, 0 + moveUp,contentHeight + moveUp , 3));
 
 				boolean isGlowing = storageStack.itemID == Item.lightStoneDust.itemID || storageStack.itemID == Item.redstone.itemID;
 				
@@ -807,7 +842,6 @@ public class SCBlockStorageJar extends BlockContainer {
 		else seedID = validItemList.get(type);
 		
 		
-		
 		//Jar
 		renderBlocks.setRenderBounds( getBounds(4, 0, 10, 4) );
 		FCClientUtilsRender.RenderInvBlockWithTexture( renderBlocks, this, -0.5F, -0.5F, -0.5F, glassSide );
@@ -818,9 +852,9 @@ public class SCBlockStorageJar extends BlockContainer {
 		FCClientUtilsRender.RenderInvBlockWithTexture( renderBlocks, this, -0.5F, -0.5F, -0.5F, cork );
 		
 		//Contents
-		if (fill != 0) {
-
-			renderBlocks.setRenderBounds( getBounds(3, 0, fill + 1, 3) );
+		if (fill > 0) {
+						
+			renderBlocks.setRenderBounds( getBounds(3, 0, fill, 3) );
 			FCClientUtilsRender.RenderInvBlockWithTexture( renderBlocks, this, -0.5F, -0.5F, -0.5F,  setContentIcon( seedID, damage ) );
 		}
 		
@@ -844,7 +878,7 @@ public class SCBlockStorageJar extends BlockContainer {
 	 * @param typeID
 	 * @return damage value, combining the input par
 	 */
-    public static int dataToDamage(boolean label, int fill, int damage, int typeID)
+    public static int dataToDamage(boolean label, int fill, int damage , int typeID)
     {
     	int labelVal;
     	
@@ -904,7 +938,7 @@ public class SCBlockStorageJar extends BlockContainer {
     	int shiftfill = jarDamageVal >> 1; 
 
     	// AND check if fill bits are 1 or 0
-    	int newfill = shiftfill & 7; 
+    	int newfill = shiftfill & 7;
 
     	// AND check to see if label bit is 1 or 0
     	int newlabel = jarDamageVal & 1; 
