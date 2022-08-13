@@ -24,7 +24,27 @@ public class SCBlockRocks extends Block {
 		setUnlocalizedName(name);
 		setCreativeTab(CreativeTabs.tabDecorations);
 	}
-
+	
+	@Override
+	public void onBlockHarvested(World par1World, int par2, int par3, int par4, int par5, EntityPlayer par6EntityPlayer) {
+		dropBlockAsItem(par1World, par2, par3, par4, par5, par5);
+	}
+	
+	@Override
+	public int idDropped( int meta, Random rand, int fortuneModifier )
+	{
+		return this.blockID;
+	}
+	
+	@Override
+	public int damageDropped(int meta) {
+		if (meta < 4) return 0;
+		else if (meta < 8) return 1;
+		else if (meta < 12) return 2;
+		else return 3;
+		
+	}
+	
 	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
     {
 		for (int i = 0; i < 4; i++) {
