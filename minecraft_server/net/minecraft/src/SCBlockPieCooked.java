@@ -81,8 +81,7 @@ public class SCBlockPieCooked extends SCBlockPieBase {
         {
         	// food value adjusted for increased hunger meter resolution
         	
-//            player.getFoodStats().addStats( 2, 2.5F );
-            player.getFoodStats().addStats( 1, 4F );
+        	player.getFoodStats().addStats( 3, 1.25F );
             
             int newEatState = GetEatState( world, i, j, k ) + 1 ;
 

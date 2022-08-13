@@ -339,6 +339,7 @@ public class SCDefs {
 	
 	public static Item mossBall;
 
+	private static String[] overrideDeco = new String[] { SCDecoIntegration.DECOADDON };
 	
 	public static void addTileEntityDefinitions()
 	{
@@ -414,7 +415,7 @@ public class SCDefs {
 		Item.itemsList[storageJar.blockID] = new SCItemBlockStorageJar(id_storageJar - 256);	
 		
 		flowerPot = new SCBlockFlowerPot(id_flowerPot);
-		Item.replaceItem(Item.flowerPot.itemID, SCItemFlowerPot.class, new String[] { SCDecoIntegration.DECOADDON },SocksCropsAddon.instance);
+		Item.replaceItem(Item.flowerPot.itemID, SCItemFlowerPot.class, overrideDeco,SocksCropsAddon.instance);
 		
 		waterPot = new SCBlockWaterPot(id_waterPot);
 		Item.itemsList[waterPot.blockID] = new FCItemPlacesAsBlock (id_waterPot - 256, id_waterPot, SCBlockWaterPot.water).setUnlocalizedName("SCItemPot_water").setCreativeTab(CreativeTabs.tabDecorations);
@@ -432,11 +433,11 @@ public class SCDefs {
 	private static void addDirtReplacements()
 	{		
 		//New Loose Dirt
-		FCBetterThanWolves.fcBlockDirtLoose = Block.replaceBlock(FCBetterThanWolves.fcBlockDirtLoose.blockID, SCBlockDirtLooseNutrition.class, SocksCropsAddon.instance);
+		FCBetterThanWolves.fcBlockDirtLoose = Block.replaceBlock(FCBetterThanWolves.fcBlockDirtLoose.blockID, SCBlockDirtLooseNutrition.class, overrideDeco, SocksCropsAddon.instance);
 		Item.itemsList[FCBetterThanWolves.fcBlockDirtLoose.blockID] = new ItemMultiTextureTile(FCBetterThanWolves.fcBlockDirtLoose.blockID - 256, FCBetterThanWolves.fcBlockDirtLoose, SCBlockDirtLooseNutrition.nutritionLevelNames);
 		
 		//New Dirt		
-		Block.dirt = Block.replaceBlock(Block.dirt.blockID, SCBlockDirtNutrition.class, SocksCropsAddon.instance);
+		Block.dirt = Block.replaceBlock(Block.dirt.blockID, SCBlockDirtNutrition.class, overrideDeco, SocksCropsAddon.instance);
 		Item.itemsList[Block.dirt.blockID] = new ItemMultiTextureTile(Block.dirt.blockID - 256, Block.dirt, SCBlockDirtNutrition.nutritionLevelNames);
 		
 		//Replacing FC's weeds with my own to make them grow on my farmland
@@ -678,7 +679,7 @@ public class SCDefs {
 	{
 		// Cake		
 		Block.cake = Block.replaceBlock(Block.cake.blockID, SCBlockCake.class, SocksCropsAddon.instance);
-		cakeSlice = new FCItemFood ( id_cakeSlice - 256, 1, 2.5F, false, "SCItemCakeSlice").setAlwaysEdible();
+		cakeSlice = new FCItemFoodHighRes ( id_cakeSlice - 256, 4, 2.5F, false, "SCItemCakeSlice").setAlwaysEdible();
 		
 		//Pie
 		pieRaw = new SCBlockPieRaw(id_pieRaw);
@@ -693,9 +694,9 @@ public class SCDefs {
 				"blue", "blue", "blue", "blue",});
 		
 		// Pumpkin
-		pumpkinPieSlice = new FCItemFood ( id_pumpkinPieSlice - 256, 1, 2.5F, false, "SCItemPieSlice_pumpkin").setAlwaysEdible();
+		pumpkinPieSlice = new FCItemFoodHighRes ( id_pumpkinPieSlice - 256, 2, 2.5F, false, "SCItemPieSlice_pumpkin").setAlwaysEdible();
 		
-		Item.pumpkinPie = Item.replaceItem( Item.pumpkinPie.itemID, SCItemPie.class, SocksCropsAddon.instance, 2, 2.5F, false, "pumpkinPie",
+		Item.pumpkinPie = Item.replaceItem( Item.pumpkinPie.itemID, SCItemPie.class, SocksCropsAddon.instance, 3, 2.5F, false, "pumpkinPie",
 				id_pieCooked, SCBlockPieCooked.subtypePumpkin);
 		
 		//Berry Pies
@@ -703,14 +704,14 @@ public class SCDefs {
 		
 		blueberryPieRaw = new FCItemPlacesAsBlock(id_blueberryPieRaw - 256, id_pieRaw, SCBlockPieRaw.subtypeBlueberry, "SCItemPieRaw_blueberry").SetBuoyant().setCreativeTab(CreativeTabs.tabFood);	
 		
-		sweetberryPieCooked = new SCItemPie(id_sweetberryPieCooked - 256, 2, 2.5F, false, "SCItemPieCooked_sweetberry",
+		sweetberryPieCooked = new SCItemPie(id_sweetberryPieCooked - 256, 3, 2.5F, false, "SCItemPieCooked_sweetberry",
 				id_pieCooked, SCBlockPieCooked.subtypeSweetberry);
 		
-		blueberryPieCooked = new SCItemPie(id_blueberryPieCooked - 256, 2, 2.5F, false, "SCItemPieCooked_blueberry",
+		blueberryPieCooked = new SCItemPie(id_blueberryPieCooked - 256, 3, 2.5F, false, "SCItemPieCooked_blueberry",
 				id_pieCooked, SCBlockPieCooked.subtypeBlueberry);
 		
-		sweetberryPieSlice = new FCItemFood ( id_sweetberryPieSlice - 256, 1, 2.5F, false, "SCItemPieSlice_sweetberry").setAlwaysEdible();
-		blueberryPieSlice = new FCItemFood ( id_blueberryPieSlice - 256, 1, 2.5F, false, "SCItemPieSlice_blueberry").setAlwaysEdible();
+		sweetberryPieSlice = new FCItemFoodHighRes ( id_sweetberryPieSlice - 256, 2, 2.5F, false, "SCItemPieSlice_sweetberry").setAlwaysEdible();
+		blueberryPieSlice = new FCItemFoodHighRes ( id_blueberryPieSlice - 256, 2, 2.5F, false, "SCItemPieSlice_blueberry").setAlwaysEdible();
 
 		//Crust
 		pieCrust = new Item(id_pieCrust - 256).SetBuoyant().setCreativeTab(CreativeTabs.tabFood).setUnlocalizedName("SCItemPieRaw_crust");

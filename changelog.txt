@@ -1,10 +1,12 @@
 ## Version 1.0.0 Beta 22w32 ##
 
+- Updated to BTW CE 1.3.10b
 - Added Deco Integration
 
 - Fixed an Issue where you couldn't fill up an empty waterpot by shift right-clicking water
 - Fixed an Issue where crops in a waterpot would only grow with a Light Block above
 - Fixed an Issue where BD wouldn't place and pickup the Storage Jar correctly
+- Fixed an Issue where eating a placed pie wouldn't restore hunger
 
 ## Version 1.0.0 Beta 22w29 ##
 
