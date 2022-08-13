@@ -1,2 +1,6 @@
 
 minecraft/net/minecraft/src/FCTileEntityBeacon.java
+
+minecraft/net/minecraft/src/DecoManager.java
+
+minecraft_server/net/minecraft/src/DecoManager.java
