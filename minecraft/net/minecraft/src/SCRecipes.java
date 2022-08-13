@@ -290,6 +290,26 @@ public class SCRecipes {
     				new ItemStack(SCDefs.melonCanaryHarvested, 1, 12)
     		);
     		
+    		
+    		// -- PUMPKIN -- //
+    		
+    		Item pumpkinSlice = SCDefs.pumpkinSliceRaw;
+    		Item pumpkinSeeds = Item.pumpkinSeeds;
+    		
+    		for (int index = 0; index < 4; index++)
+    		{	
+    			int mature = (index * 4) + 3; //only meta 3, 7, 11 and 15 which are the mature harvested pumpkins
+    			
+        		addChoppingBoardRecipe(
+        				new ItemStack[] {
+        						new ItemStack(pumpkinSlice, 4),
+        						new ItemStack(pumpkinSeeds, 1)
+        				},				
+        				new ItemStack(knife), //hand
+        				new ItemStack(SCDefs.pumpkinHarvested, 1, mature)
+        		);
+    		}
+    		
     		// -- CAKES -- //
     		
     		addChoppingBoardRecipe(

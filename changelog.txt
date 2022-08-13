@@ -9,6 +9,7 @@
 - Fixed an Issue where eating a placed pie wouldn't restore hunger
 - Fixed an Issue where Pebbles and Rocks wouldn't drop when broken
 - Fixed an Issue where Flowering Clover would always drop the non flowering type
+- Fixed an Issue where Pumpkins couldn't be cut on the chopping board
 
 ## Version 1.0.0 Beta 22w29 ##
 
