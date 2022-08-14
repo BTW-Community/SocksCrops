@@ -3,9 +3,6 @@
 package net.minecraft.src;
 
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
 
 public class SCTileEntityWaterPot extends TileEntity implements FCITileEntityDataPacketHandler {
 	
@@ -46,6 +43,10 @@ public class SCTileEntityWaterPot extends TileEntity implements FCITileEntityDat
 		blockToStore.put(Block.sapling.blockID, Block.sapling.blockID);
 		growthStages.put(Block.sapling.blockID, 4);
 		growthChance.put(Block.sapling.blockID, 1/32F);
+		
+		blockToStore.put(FCBetterThanWolves.fcItemReedRoots.itemID, SCDefs.reedRoots.blockID);
+		growthStages.put(SCDefs.reedRoots.blockID, 8);
+		growthChance.put(SCDefs.reedRoots.blockID, 1F);
 		
 		if (SCDecoIntegration.isDecoInstalled() )
 		{
@@ -168,16 +169,21 @@ public class SCTileEntityWaterPot extends TileEntity implements FCITileEntityDat
 		
 		if (storedBlockID == 0)
 			return;
-		
+
+		//Special case for reeds as it returns an item and not the block
+		if(storedBlockID == SCDefs.reedRoots.blockID)
+		{
+			returnItemID = SCDefs.reedsRootMature.itemID;
+		}
+
+		if (storedBlockMetadata < getGrowthStagesForBlock(storedBlockID) - 1)
+		{
+			returnItemID = insertedID;
+		}
+
 		if(!worldObj.isRemote)
 		{
-			
-			if (storedBlockMetadata < getGrowthStagesForBlock(storedBlockID) - 1)
-			{
-				returnItemID = insertedID;
-			}
 			FCUtilsItem.GivePlayerStackOrEjectFavorEmptyHand(player, new ItemStack(Item.itemsList[returnItemID], 1, storedBlockMetadata), this.xCoord, this.yCoord, this.zCoord);
-			
 		}
 
 		storedBlockID = 0;
@@ -190,21 +196,27 @@ public class SCTileEntityWaterPot extends TileEntity implements FCITileEntityDat
         	this.worldObj.playAuxSFX(FCBetterThanWolves.m_iItemCollectionPopSoundAuxFXID, this.xCoord, this.yCoord, this.zCoord, 0);
 	}
 	
-	public void ejectItemFromPot() {
+	public void ejectItemFromPot(World world, int x, int y, int z) {
 		
 		int returnItemID = storedBlockID;
 		
 		if (storedBlockID == 0)
 			return;
 		
-		if(!worldObj.isRemote)
+		//Special case for reeds as it returns an item and not the block
+		if( storedBlockID == SCDefs.reedRoots.blockID )
 		{
-			
-			if (storedBlockMetadata < getGrowthStagesForBlock(storedBlockID) - 1)
-			{
-				returnItemID = insertedID;
-			}
-
+			returnItemID = SCDefs.reedsRootMature.itemID;
+		}
+		
+		if (storedBlockMetadata < getGrowthStagesForBlock(storedBlockID) - 1)
+		{
+			returnItemID = insertedID;
+		}
+		
+		if (!world.isRemote)
+		{
+			FCUtilsItem.DropStackAsIfBlockHarvested( world, x, y, z, new ItemStack( returnItemID, 1 , storedBlockMetadata) );
 		}
 	}
 }

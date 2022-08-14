@@ -223,8 +223,9 @@ public class SCBlockFlowerPot extends BlockContainer {
 		//Renders other blocks as crossed squares. Double checks validity
 		else if (potTile.isValidItemForPot(storedBlockID, storedBlockMetadata)) {
 			Block storedBlock = Block.blocksList[storedBlockID];
+			Icon icon = render.getBlockIconFromSideAndMetadata(storedBlock, 0, storedBlockMetadata);
 			
-			SCUtilsRender.drawCrossedSquaresFlowerPot(render, storedBlock, storedBlockMetadata, potTile.xCoord, potTile.yCoord + .25, potTile.zCoord, 1.0F, 1);
+			SCUtilsRender.drawCrossedSquaresFlowerPot(render, storedBlock, storedBlockMetadata, potTile.xCoord, potTile.yCoord + .25, potTile.zCoord, 1.0F, 1, icon);
 		}
 		else {
 			return false;

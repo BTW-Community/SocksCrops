@@ -149,6 +149,10 @@ public class SCDefs {
 	private static int
 		id_bambooItem = 31020;
 	
+	//Reeds
+	private static int
+		id_reedsRootMature = 31028;
+	
 	//Moss
 	private static int
 		id_mossBall = 31029;
@@ -261,6 +265,8 @@ public class SCDefs {
 	public static Block bambooShoot, bambooRoot, bambooStalk;
 	public static Block bambooPacked;
 	
+	public static Block reedRoots;
+	
 	public static Block pieRaw;
 	public static Block pieCooked;
 	
@@ -288,6 +294,8 @@ public class SCDefs {
 	
 	// Bamboo	
 	public static Item bambooItem;
+	
+	public static Item reedsRootMature;
 	
 	public static Item salmonRaw;
 	public static Item salmonCooked;
@@ -381,7 +389,9 @@ public class SCDefs {
 		addBurgerDefs();
 		
 		addDomesticDefs();
-		addWildDefs();		
+		addWildDefs();
+		
+		addReedsReplacements();
 	}
 
 	private static void addTileEntityMapping()
@@ -850,5 +860,20 @@ public class SCDefs {
 		
 		burger = new FCItemFood(id_burger - 256, 5, 0.25F, false, "SCItemBurger");
 		burgerEgg = new FCItemFood(id_burgerEgg - 256, 5, 0.5F, false, "SCItemBurger_egg");
+	}
+
+	private static void addReedsReplacements() {
+		reedRoots = FCBetterThanWolves.fcBlockReedRoots = Block.replaceBlock(FCBetterThanWolves.fcBlockReedRoots.blockID, SCBlockReedRoots.class, SocksCropsAddon.instance);
+		
+		FCBetterThanWolves.fcItemReedRoots = Item.replaceItem(FCBetterThanWolves.fcItemReedRoots.itemID, FCItemPlacesAsBlock.class, SocksCropsAddon.instance,
+				FCBetterThanWolves.fcBlockReedRoots.blockID, 0).
+				SetBuoyant().SetFurnaceBurnTime(FCEnumFurnaceBurnTime.KINDLING).SetIncineratedInCrucible().
+				SetFilterableProperties(Item.m_iFilterable_Narrow).setUnlocalizedName("SCItemReedsRoot").
+				setCreativeTab(CreativeTabs.tabMaterials);
+		
+		reedsRootMature = new FCItemPlacesAsBlock( id_reedsRootMature, FCBetterThanWolves.fcBlockReedRoots.blockID, 15 ).
+				SetBuoyant().SetFurnaceBurnTime(FCEnumFurnaceBurnTime.KINDLING).SetIncineratedInCrucible().
+				SetFilterableProperties(Item.m_iFilterable_Narrow).setUnlocalizedName("fcItemReedRoots").
+				setCreativeTab(CreativeTabs.tabMaterials);
 	}
 }

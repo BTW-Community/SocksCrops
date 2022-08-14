@@ -3,7 +3,7 @@ tile.SCBlockFishTrap.name=Fischfalle
 item.SCItemChoppingBoard_spruce.name=Schneidebrett
 tile.SCBlockComposter.name=Komposter
 tile.SCBlockStorageJar.name=Vorratsglas
-scItemBlockStorageJar.contains=EnthÃ¤lt
+scItemBlockStorageJar.contains=Enthält
 scItemBlockStorageJar.empty=Leer
 scItemBlockStorageJar.hasLabel=Etikettiert
 
@@ -31,15 +31,15 @@ tile.fcBlockDirtLoose.looseDirt3.name=Lockere Erde
 
 # Farmland
 tile.SCBlockFarmlandNutrition.name=Ackerboden
-tile.SCBlockFarmlandFertilized.name=GedÃ¼ngter Ackerboden
-tile.SCBlockFarmlandDung.name=Ackerboden GÃ¼lle
+tile.SCBlockFarmlandFertilized.name=Gedüngter Ackerboden
+tile.SCBlockFarmlandDung.name=Ackerboden Gülle
 
 # Compostables
 tile.SCBlockCompost.name=Kompost
-tile.SCBlockDamagedLog.tree_side.name=BeschÃ¤digtes Eichenholz
-tile.SCBlockDamagedLog.tree_spruce.name=BeschÃ¤digtes Kiefernholz
-tile.SCBlockDamagedLog.tree_birch.name=BeschÃ¤digtes Birkenholz
-tile.SCBlockDamagedLog.tree_jungle.name=BeschÃ¤digtes Tropenholz
+tile.SCBlockDamagedLog.tree_side.name=Beschädigtes Eichenholz
+tile.SCBlockDamagedLog.tree_spruce.name=Beschädigtes Kiefernholz
+tile.SCBlockDamagedLog.tree_birch.name=Beschädigtes Birkenholz
+tile.SCBlockDamagedLog.tree_jungle.name=Beschädigtes Tropenholz
 
 tile.SCBlockMossyLog.tree_side.name=Bemoostes Eichenholz
 tile.SCBlockMossyLog.tree_spruce.name=Bemoostes Kiefernholz
@@ -59,9 +59,9 @@ tile.SCBlockTallPlant.grass.name=Hohes Gras
 tile.SCBlockTallPlant.fern.name=Hohes Farn
 
 tile.SCBlockClover.clover.name=Klee
-tile.SCBlockClover.cloverPurple.name=Lila BlÃ¼hender Klee
-tile.SCBlockClover.cloverWhite.name=WeiÃŸer BlÃ¼hender Klee
-tile.SCBlockClover.cloverRed.name=Roter BlÃ¼hender Klee
+tile.SCBlockClover.cloverPurple.name=Lila Blühender Klee
+tile.SCBlockClover.cloverWhite.name=WeiÃŸer Blühender Klee
+tile.SCBlockClover.cloverRed.name=Roter Blühender Klee
 
 tile.SCBlockMoss.name=Moos
 tile.SCBlockMossCarpet.name=Moosteppich
@@ -80,58 +80,58 @@ item.SCItemRocksSandstone.smallRockMossy.name=Bemooster Sandstein Kisel
 item.SCItemRocksSandstone.largeRockMossy.name=Bemooster Sandstein Felsen
 
 # Pumpkins
-tile.SCBlockPumpkinHarvested.orange_0.name=Roher KÃ¼rbis
-tile.SCBlockPumpkinHarvested.orange_1.name=Roher KÃ¼rbis
-tile.SCBlockPumpkinHarvested.orange_2.name=Roher KÃ¼rbis
-tile.SCBlockPumpkinHarvested.orange_3.name=KÃ¼rbis
+tile.SCBlockPumpkinHarvested.orange_0.name=Roher Kürbis
+tile.SCBlockPumpkinHarvested.orange_1.name=Roher Kürbis
+tile.SCBlockPumpkinHarvested.orange_2.name=Roher Kürbis
+tile.SCBlockPumpkinHarvested.orange_3.name=Kürbis
 
-tile.SCBlockPumpkinHarvested.green_0.name=Roher KÃ¼rbis
-tile.SCBlockPumpkinHarvested.green_1.name=Roher KÃ¼rbis
-tile.SCBlockPumpkinHarvested.green_2.name=Roher KÃ¼rbis
+tile.SCBlockPumpkinHarvested.green_0.name=Roher Kürbis
+tile.SCBlockPumpkinHarvested.green_1.name=Roher Kürbis
+tile.SCBlockPumpkinHarvested.green_2.name=Roher Kürbis
 tile.SCBlockPumpkinHarvested.green_3.name=KÃ¼rbis
 
-tile.SCBlockPumpkinHarvested.yellow_0.name=Roher KÃ¼rbis
-tile.SCBlockPumpkinHarvested.yellow_1.name=Roher KÃ¼rbis
-tile.SCBlockPumpkinHarvested.yellow_2.name=Roher KÃ¼rbis
-tile.SCBlockPumpkinHarvested.yellow_3.name=KÃ¼rbis
+tile.SCBlockPumpkinHarvested.yellow_0.name=Roher Kürbis
+tile.SCBlockPumpkinHarvested.yellow_1.name=Roher Kürbis
+tile.SCBlockPumpkinHarvested.yellow_2.name=Roher Kürbis
+tile.SCBlockPumpkinHarvested.yellow_3.name=Kürbis
 
-tile.SCBlockPumpkinHarvested.white_0.name=Roher KÃ¼rbis
-tile.SCBlockPumpkinHarvested.white_1.name=Roher KÃ¼rbis
-tile.SCBlockPumpkinHarvested.white_2.name=Roher KÃ¼rbis
-tile.SCBlockPumpkinHarvested.white_3.name=KÃ¼rbis
-
-
-tile.SCBlockPumpkinCarved.orange.name=Geschnizter KÃ¼rbis
-tile.SCBlockPumpkinCarved.green.name=Geschnizter KÃ¼rbis
-tile.SCBlockPumpkinCarved.yellow.name=Geschnizter KÃ¼rbis
-tile.SCBlockPumpkinCarved.white.name=Geschnizter KÃ¼rbis
+tile.SCBlockPumpkinHarvested.white_0.name=Roher Kürbis
+tile.SCBlockPumpkinHarvested.white_1.name=Roher Kürbis
+tile.SCBlockPumpkinHarvested.white_2.name=Roher Kürbis
+tile.SCBlockPumpkinHarvested.white_3.name=Kürbis
 
 
-tile.SCBlockPumpkinJack.orange.name=KÃ¼rbislaterne
-tile.SCBlockPumpkinJack.green.name=KÃ¼rbislaterne
-tile.SCBlockPumpkinJack.yellow.name=KÃ¼rbislaterne
-tile.SCBlockPumpkinJack.white.name=KÃ¼rbislaterne
+tile.SCBlockPumpkinCarved.orange.name=Geschnizter Kürbis
+tile.SCBlockPumpkinCarved.green.name=Geschnizter Kürbis
+tile.SCBlockPumpkinCarved.yellow.name=Geschnizter Kürbis
+tile.SCBlockPumpkinCarved.white.name=Geschnizter Kürbis
+
+
+tile.SCBlockPumpkinJack.orange.name=Kürbislaterne
+tile.SCBlockPumpkinJack.green.name=Kürbislaterne
+tile.SCBlockPumpkinJack.yellow.name=KKürbislaterne
+tile.SCBlockPumpkinJack.white.name=Kürbislaterne
 
 #Bushes
-tile.SCBlockBushSweetberry.sweet_0.name=SÃ¼ÃŸbeerenstrauch
+tile.SCBlockBushSweetberry.sweet_0.name=Süßbeerenstrauch
 tile.SCBlockBushBlueberry.blue_0.name=Heidelbeerstrauch
 
 #Overrides
-tile.pumpkin.name=Alter Geschnizter KÃ¼rbis
-tile.litpumpkin.name=Alte KÃ¼rbislaterne
-tile.fcBlockPumpkinFresh.name=Alter KÃ¼rbis
+tile.pumpkin.name=Alter Geschnizter Kürbis
+tile.litpumpkin.name=Alte Kürbislaterne
+tile.fcBlockPumpkinFresh.name=Alter Kürbis
 
 #Pies
-tile.SCBlockPieCooked.pumpkin.name=Ofenfertiger KÃ¼rbiskuchen
-tile.SCBlockPieCooked.sweet.name=Ofenfertiger SÃ¼ÃŸbeerenkuchen
+tile.SCBlockPieCooked.pumpkin.name=Ofenfertiger Kürbiskuchen
+tile.SCBlockPieCooked.sweet.name=Ofenfertiger Süßbeerenkuchen
 tile.SCBlockPieCooked.blue.name=Ofenfertiger Heidelbeerkuchen
-tile.SCBlockPieRaw.sweet.name=Roher SÃ¼ÃŸbeerenkuchen
+tile.SCBlockPieRaw.sweet.name=Roher Süßbeerenkuchen
 tile.SCBlockPieRaw.blue.name=Roher Heidelbeerkuchen
 
 # Pumpkin Items
-item.SCItemPumpkinSlice.name=Rohes KÃ¼rbisstÃ¼ck
-item.SCItemPumpkinSlice_roasted.name=GerÃ¶stetes KÃ¼rbisstÃ¼ck
-item.SCItemPumpkinSlice_boiled.name=Gekochtes KÃ¼rbisstÃ¼ck
+item.SCItemPumpkinSlice.name=Rohes Kürbisstück
+item.SCItemPumpkinSlice_roasted.name=Geröstetes Kürbisstück
+item.SCItemPumpkinSlice_boiled.name=Gekochtes Kürbisstück
 
 # Melons
 tile.SCBlockMelonHarvested.water_0.name=Rohe Wassermelone
@@ -165,24 +165,24 @@ tile.SCBlockBambooPacked.name=Verpackter Bambus
 
 
 # Melon Items
-item.melon.name=WassermelonenstÃ¼ck
-item.SCItemMelonYellowSlice.name=ZuckermelonenstÃ¼ck
-item.SCItemMelonWhiteSlice.name=HonigmelonenstÃ¼ck
-item.SCItemMelonGreenSlice.name=Cantaloup-MelonenstÃ¼ck
+item.melon.name=Wassermelonenstück
+item.SCItemMelonYellowSlice.name=Zuckermelonenstück
+item.SCItemMelonWhiteSlice.name=Honigmelonenstück
+item.SCItemMelonGreenSlice.name=Cantaloup-Melonenstück
 
 # Pie Items
-item.SCItemCakeSlice.name=KuchenstÃ¼ck
+item.SCItemCakeSlice.name=Kuchenstück
 item.SCItemPieRaw_crust.name=Kuchenboden
-item.SCItemPieSlice_pumpkin.name=KÃ¼rbiskuchenstÃ¼ck
+item.SCItemPieSlice_pumpkin.name=Kürbiskuchenstück
 
-item.SCItemPieRaw_sweetberry.name=Ofenfertiger SÃ¼ÃŸbeerenkuchen
+item.SCItemPieRaw_sweetberry.name=Ofenfertiger Süßbeerenkuchen
 item.SCItemPieRaw_blueberry.name=Ofenfertiger Heidelbeerkuchen
 
-item.SCItemPieCooked_sweetberry.name=SÃ¼ÃŸbeerenkuchen
+item.SCItemPieCooked_sweetberry.name=Süßbeerenkuchen
 item.SCItemPieCooked_blueberry.name=Heidelbeerkuchen
 
-item.SCItemPieSlice_sweetberry.name=SÃ¼ÃŸbeerenkuchenstÃ¼ck
-item.SCItemPieSlice_blueberry.name=HeidelbeerkuchenstÃ¼ck
+item.SCItemPieSlice_sweetberry.name=Süßbeerenkuchenstück
+item.SCItemPieSlice_blueberry.name=Heidelbeerkuchenstück
 
 # Bamboo Items
 item.SCItemBamboo.name=Bambus
@@ -201,10 +201,10 @@ item.SCItemFishTropical_raw.name=Roher Tropischer Fisch
 item.SCItemFishTropical_cooked.name=Gekochter Tropischer Fisch
 
 #Bushes
-item.SCItemBushSapling_sweetberry.name=SÃ¼ÃŸbeerenstrauchwurzeln
+item.SCItemBushSapling_sweetberry.name=Süßbeerenstrauchwurzeln
 item.SCItemBushSapling_blueberry.name=Blaubeerenstrauchwurzeln
 
-item.SCItemSweetberry.name=SÃ¼ÃŸbeeren
+item.SCItemSweetberry.name=Süßbeeren
 item.SCItemBlueberry.name=Blaubeeren
 
 item.SCItemFruitBowl_berries.name=Beeren-Obstschale
@@ -213,20 +213,20 @@ item.SCItemFruitBowl_berries.name=Beeren-Obstschale
 item.SCItemWildCarrot.name=Wilde Karotte
 item.SCItemWildCarrotSeeds.name=Wilde Karottensamen
 item.SCItemWildCarrotRoot.name=Wilde Karottenwurzel
-item.SCItemWildCarrotCut.name=Wildes KarottengrÃ¼n
+item.SCItemWildCarrotCut.name=Wildes Karottengrün
 item.SCItemWildCarrotSapling.name=Wilde Karottensamen mit hoher Ausbeute 
 
 #Carrot
 item.SCItemCarrotRoot.name=Karottenwurzel
-item.SCItemCarrotCut.name=KarottengrÃ¼n
+item.SCItemCarrotCut.name=Karottengrün
 
 #Wild Potato
-item.SCItemWildPotato.name=SÃ¼ÃŸkartoffel
-item.SCItemWildPotatoCut.name=SÃ¼ÃŸkartoffelstÃ¼ck
-item.SCItemWildPotatoSapling.name=SÃ¼ÃŸkartoffelsetzling
+item.SCItemWildPotato.name=Süßkartoffel
+item.SCItemWildPotatoCut.name=Süßkartoffelstück
+item.SCItemWildPotatoSapling.name=Süßkartoffelsetzling
 
 #Potato
-item.SCItemPotatoCut.name=KartoffelstÃ¼ck
+item.SCItemPotatoCut.name=Kartoffelstück
 
 #Pots
 item.SCItemPot_flower.name=Blumentopf mit Erde
@@ -243,3 +243,7 @@ item.SCItemBurger_egg.name=Hamburger mit Spiegelei
 #Moss
 item.SCItemMossBall.name=Moosball
 item.SCItemMossCarpet.name=Moosteppich
+
+#Reeds
+item.fcItemReedRoots.name=Reife Zuckerrohrwurzel
+item.SCItemReedsRoot.name=Zuckerrohrwurzel

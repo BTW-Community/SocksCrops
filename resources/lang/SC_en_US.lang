@@ -240,7 +240,10 @@ item.SCItemBeefPatty_cooked.name=Cooked Beef Patty
 item.SCItemBurger.name=Hamburger
 item.SCItemBurger_egg.name=Hamburger with Fried Egg
 
-
 #Moss
 item.SCItemMossBall.name=Moss Ball
 item.SCItemMossCarpet.name=Moss Carpet
+
+#Reeds
+item.fcItemReedRoots.name=Mature Sugar Cane Roots
+item.SCItemReedsRoot.name=Sugar Cane Roots

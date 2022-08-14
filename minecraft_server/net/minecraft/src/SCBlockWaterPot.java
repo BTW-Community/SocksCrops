@@ -212,8 +212,7 @@ public class SCBlockWaterPot extends BlockContainer {
             
             if (blockInPotID != 0)
             {
-            	potTile.ejectItemFromPot();
-            	
+            	potTile.ejectItemFromPot(world, x, y, z);            	
             }
             
             world.setBlockToAir( x, y, z );
@@ -238,8 +237,7 @@ public class SCBlockWaterPot extends BlockContainer {
            
             if (blockInPotID != 0)
             {
-            	potTile.ejectItemFromPot();
-            	
+            	potTile.ejectItemFromPot(world, x, y, z);
             }
             
             world.setBlockToAir(x, y, z);
@@ -296,6 +294,12 @@ public class SCBlockWaterPot extends BlockContainer {
      */
     public void breakBlock(World world, int x, int y, int z, int var5, int var6)
     {
+        super.breakBlock(world, x, y, z, var5, var6);
+    }
+    
+    @Override
+    public void onBlockHarvested(World world, int x, int y, int z, int par5, EntityPlayer par6EntityPlayer)
+    {
     	SCTileEntityWaterPot potTile = (SCTileEntityWaterPot) world.getBlockTileEntity(x, y, z);
     	int blockInPotID = potTile != null ? potTile.getStoredBlockID() : 0;
     	int blockInPotMeta = potTile.getStoredBlockMetadata();
@@ -303,11 +307,10 @@ public class SCBlockWaterPot extends BlockContainer {
     	
         if (blockInPotID != 0)
         {
-        	potTile.ejectItemFromPot();
+        	potTile.ejectItemFromPot(world, x, y, z);
         	
         }
         
-        super.breakBlock(world, x, y, z, var5, var6);
     }
 
     /**

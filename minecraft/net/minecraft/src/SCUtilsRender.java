@@ -11,9 +11,9 @@ import org.lwjgl.opengl.GL12;
 
 public class SCUtilsRender extends FCClientUtilsRender
 {
-	   public static void drawCrossedSquaresFlowerPot(RenderBlocks render, Block block, int meta, double x, double y, double z, float yHeight, int facing) {
+	   public static void drawCrossedSquaresFlowerPot(RenderBlocks render, Block block, int meta, double x, double y, double z, float yHeight, int facing, Icon icon) {
 	       Tessellator tesselator = Tessellator.instance;
-	       Icon blockIcon = render.getBlockIconFromSideAndMetadata(block, 0, meta);
+	       Icon blockIcon = icon; //render.getBlockIconFromSideAndMetadata(block, 0, meta);
 
 	       if (render.hasOverrideBlockTexture())
 	       {
@@ -59,21 +59,21 @@ public class SCUtilsRender extends FCClientUtilsRender
 	           minZ += z;
 	           maxZ += z;
 	           
-	       	tesselator.addVertexWithUV(minX, maxY, minZ, minU, minV);
+	           tesselator.addVertexWithUV(minX, maxY, minZ, minU, minV);
 	           tesselator.addVertexWithUV(minX, minY, minZ, minU, maxV);
 	           tesselator.addVertexWithUV(maxX, minY, maxZ, maxU, maxV);
 	           tesselator.addVertexWithUV(maxX, maxY, maxZ, maxU, minV);
-	           
+
 	           tesselator.addVertexWithUV(maxX, maxY, maxZ, minU, minV);
 	           tesselator.addVertexWithUV(maxX, minY, maxZ, minU, maxV);
 	           tesselator.addVertexWithUV(minX, minY, minZ, maxU, maxV);
 	           tesselator.addVertexWithUV(minX, maxY, minZ, maxU, minV);
-	           
+
 	           tesselator.addVertexWithUV(minX, maxY, maxZ, minU, minV);
 	           tesselator.addVertexWithUV(minX, minY, maxZ, minU, maxV);
 	           tesselator.addVertexWithUV(maxX, minY, minZ, maxU, maxV);
 	           tesselator.addVertexWithUV(maxX, maxY, minZ, maxU, minV);
-	           
+
 	           tesselator.addVertexWithUV(maxX, maxY, minZ, minU, minV);
 	           tesselator.addVertexWithUV(maxX, minY, minZ, minU, maxV);
 	           tesselator.addVertexWithUV(minX, minY, maxZ, maxU, maxV);

@@ -214,8 +214,7 @@ public class SCBlockWaterPot extends BlockContainer {
             
             if (blockInPotID != 0)
             {
-            	potTile.ejectItemFromPot();
-            	
+            	potTile.ejectItemFromPot(world, x, y, z);            	
             }
             
             world.setBlockToAir( x, y, z );
@@ -240,8 +239,7 @@ public class SCBlockWaterPot extends BlockContainer {
            
             if (blockInPotID != 0)
             {
-            	potTile.ejectItemFromPot();
-            	
+            	potTile.ejectItemFromPot(world, x, y, z);
             }
             
             world.setBlockToAir(x, y, z);
@@ -298,6 +296,12 @@ public class SCBlockWaterPot extends BlockContainer {
      */
     public void breakBlock(World world, int x, int y, int z, int var5, int var6)
     {
+        super.breakBlock(world, x, y, z, var5, var6);
+    }
+    
+    @Override
+    public void onBlockHarvested(World world, int x, int y, int z, int par5, EntityPlayer par6EntityPlayer)
+    {
     	SCTileEntityWaterPot potTile = (SCTileEntityWaterPot) world.getBlockTileEntity(x, y, z);
     	int blockInPotID = potTile != null ? potTile.getStoredBlockID() : 0;
     	int blockInPotMeta = potTile.getStoredBlockMetadata();
@@ -305,11 +309,10 @@ public class SCBlockWaterPot extends BlockContainer {
     	
         if (blockInPotID != 0)
         {
-        	potTile.ejectItemFromPot();
+        	potTile.ejectItemFromPot(world, x, y, z);
         	
         }
         
-        super.breakBlock(world, x, y, z, var5, var6);
     }
 
     /**
@@ -376,10 +379,17 @@ public class SCBlockWaterPot extends BlockContainer {
         tess.setColorOpaque_F(1.0F, 1.0F, 1.0F);
 
 		//Renders other blocks as crossed squares. Double checks validity
-		if (potTile.hasItem()) {
+		if (potTile.hasItem())
+		{
 			Block storedBlock = Block.blocksList[storedBlockID];
-
-			SCUtilsRender.drawCrossedSquaresFlowerPot(render, storedBlock, storedBlockMetadata, potTile.xCoord, potTile.yCoord + .25, potTile.zCoord, 1.0F, 1);
+			Icon icon = render.getBlockIconFromSideAndMetadata(storedBlock, 0, storedBlockMetadata);
+			
+			if (storedBlock == SCDefs.reedRoots)
+			{
+				icon = SCBlockReedRoots.getIconForWaterPot(0, storedBlockMetadata);
+			}
+			
+			SCUtilsRender.drawCrossedSquaresFlowerPot(render, storedBlock, storedBlockMetadata, potTile.xCoord, potTile.yCoord + .25, potTile.zCoord, 1.0F, 1, icon);
 		}
 		else {
 			return false;

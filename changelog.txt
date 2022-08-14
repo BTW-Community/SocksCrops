@@ -1,7 +1,10 @@
 ## Version 1.0.0 Beta 22w32 ##
 
 - Updated to BTW CE 1.3.10b
+
 - Added Deco Integration
+- Added more Textures to Sugar Cane Roots to visualise the growth progress better to the player
+- Added Sugar Cane Roots as a valid block to grow in the waterpot. This allows to speed up the growth of Sugar Cane Roots
 
 - Fixed an Issue where you couldn't fill up an empty waterpot by shift right-clicking water
 - Fixed an Issue where crops in a waterpot would only grow with a Light Block above
