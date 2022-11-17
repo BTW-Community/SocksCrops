@@ -67,7 +67,9 @@ public class SCDefs {
 		id_mossCarpet = 2660,
 		id_lilyRose = 2661,
 		id_rocks = 2662,
-		id_rocksSandstone = 2663;
+		id_rocksSandstone = 2663,
+		id_sunflowerCrop = 2664,
+		id_sunflowerTopCrop = 2665;
 		
 	
 	//Pumpkins
@@ -126,7 +128,7 @@ public class SCDefs {
 	
 	private static int maxID = 2999;
 	
-	// --- ITEM ID's --- //
+	// ---			ITEM ID's			--- //
 	// 31000 - 31299
 	
 	//Tools
@@ -135,6 +137,9 @@ public class SCDefs {
 		id_knifeIron = 31001,
 		id_knifeDiamond = 31002,
 		id_waterPotEmpty = 31003;
+	
+	//Misc
+	private static int id_earthworm = 31009;
 		
 	//Pumpkin & Melon
 	private static int
@@ -147,7 +152,13 @@ public class SCDefs {
 	
 	//Bamboo
 	private static int
-		id_bambooItem = 31020;
+		id_bambooItem = 31020,
+		id_bambooProgressiveItem = 31021,
+		id_bambooWeave = 31022;
+	
+	//Sunflower
+	private static int
+		id_sunflowerSeeds = 31027;
 	
 	//Reeds
 	private static int
@@ -213,6 +224,7 @@ public class SCDefs {
 	public static Block composter;
 	public static Block flowerPot;
 	public static Block waterPot;
+	public static Block multiPot;
 //	public static Block cookingPot;
 //	public static Block juicer;
 //	public static Block barrel;
@@ -235,6 +247,9 @@ public class SCDefs {
 	public static Block compostBlock;
 	public static Block shortPlant;
 	public static Block tallPlant;
+	
+	public static Block sunflowerCrop;
+	public static Block sunflowerTopCrop;
 	
 	public static Block clover;	
 	public static Block mossBlock;
@@ -294,6 +309,9 @@ public class SCDefs {
 	
 	// Bamboo	
 	public static Item bambooItem;
+	public static Item bambooProgressiveItem, bambooWeave;
+	
+	public static Item earthworm;
 	
 	public static Item reedsRootMature;
 	
@@ -346,6 +364,7 @@ public class SCDefs {
 	public static Item burgerEgg;
 	
 	public static Item mossBall;
+	public static Item sunflowerSeeds;
 	
 	private static String[] overrideDeco = new String[] { SCDecoIntegration.DECOADDON };
 	
@@ -371,6 +390,8 @@ public class SCDefs {
 		
 		//Deco Plants
 		addDecorativeDefs();
+		
+		addSunflowerDefs();
 		
 		//Gourds
 		addPumpkinDefs();
@@ -402,7 +423,6 @@ public class SCDefs {
 		TileEntity.addMapping(SCTileEntityStorageJar.class, "SCStorageJar");
 		TileEntity.addMapping(SCTileEntityFlowerPot.class, "SCFlowerPot");
 		TileEntity.addMapping(SCTileEntityWaterPot.class, "SCWaterPot");
-
 	}
 	
 	private static void addTileEntityDefs()
@@ -522,9 +542,21 @@ public class SCDefs {
 		Item.itemsList[mossyLog.blockID] = new ItemMultiTextureTile(id_mossyLog - 256, mossyLog, SCBlockMossyLog.treeTextures);
 		
 		compostBlock = new SCBlockCompost(id_compostBlock);
-		Item.itemsList[compostBlock.blockID] = new ItemBlock(id_compostBlock - 256);		
+		Item.itemsList[compostBlock.blockID] = new ItemBlock(id_compostBlock - 256);	
+		
+		earthworm = new Item(id_earthworm - 256).setUnlocalizedName("SCItemWorm").setCreativeTab(CreativeTabs.tabMaterials).setMaxStackSize(16);
 	}
 
+	private static void addSunflowerDefs()
+	{
+		sunflowerTopCrop = new SCBlockSunflowerTop(id_sunflowerTopCrop);
+		Item.itemsList[sunflowerTopCrop.blockID] = new ItemBlock(id_sunflowerTopCrop - 256);
+		
+		sunflowerCrop = new SCBlockSunflower(id_sunflowerCrop);
+		
+		sunflowerSeeds = new FCItemSeeds(id_sunflowerSeeds - 256, sunflowerCrop.blockID).setUnlocalizedName("SCItemSunflowerSeeds");
+	}
+	
 	private static void addDecorativeDefs()
 	{
 		tallPlant = new SCBlockTallPlant(id_tallPlant);
@@ -751,6 +783,9 @@ public class SCDefs {
 		Item.itemsList[bambooPacked.blockID] = new ItemBlock(id_bambooPacked - 256);
 		
 		bambooItem = new SCItemBamboo(id_bambooItem - 256);
+		
+		bambooProgressiveItem = new SCItemBambooProgressive(id_bambooProgressiveItem - 256);
+		bambooWeave = new SCItemBambooWeave(id_bambooWeave - 256);
 	}
 	
 	private static void addFishDefs()

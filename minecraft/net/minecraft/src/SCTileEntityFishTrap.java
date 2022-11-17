@@ -62,6 +62,7 @@ public class SCTileEntityFishTrap extends TileEntity implements FCITileEntityDat
 		validBait.add(FCBetterThanWolves.fcItemWitchWart.itemID);
 		validBait.add(Item.spiderEye.itemID);
 		validBait.add(Item.rottenFlesh.itemID);
+		validBait.add(SCDefs.earthworm.itemID);
 	}
 	
 	public SCTileEntityFishTrap() {

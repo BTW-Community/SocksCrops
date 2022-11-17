@@ -81,11 +81,11 @@ public class SCBlockReedRoots extends FCBlockReedBase {
 	}
 	
 	//used for rendering in waterpot
-	public static Icon getIconForWaterPot(int side, int meta)
+	public static Icon getIconForWaterPot(int meta)
 	{		
-		if (meta < 2) return rootsFlower[0];
-		if (meta < 4) return rootsFlower[1];
-		if (meta < 6) return rootsFlower[2];
+		if (meta < 3) return rootsFlower[0];
+		if (meta < 5) return rootsFlower[1];
+		if (meta < 7) return rootsFlower[2];
 		else return rootsFlower[3];
 	}
 	

@@ -6,60 +6,54 @@ import java.util.Random;
 
 import org.lwjgl.opengl.GL11;
 
-public class SCBlockWaterPot extends BlockContainer {
+public class SCBlockMultiFlowerPot extends BlockContainer {
 	
 	public static int empty = 0;
 	public static int water = 8;
 	
-	public SCBlockWaterPot(int id) {
+	public SCBlockMultiFlowerPot(int id) {
 		super(id, Material.circuits);
-        this.InitBlockBounds(0.3125D, 0.0D, 0.3125D, 0.6875D, 0.375D, 0.6875D);
+        this.InitBlockBounds(0.3125D - 4/16F, 0.0D, 0.3125D, 0.6875D + 4/16F, 0.375D, 0.6875D);
 		this.setHardness(0.0F);
 		this.setStepSound(soundPowderFootstep);
 		this.setUnlocalizedName("flowerPot");
-		this.setTickRandomly(true);
+		//this.setTickRandomly(true);
 		this.setCreativeTab(CreativeTabs.tabDecorations);
 	}
 	
-	@Override
-	public void updateTick(World world, int x, int y, int z, Random rand)
-	{
-		SCTileEntityWaterPot potTile = (SCTileEntityWaterPot) world.getBlockTileEntity(x, y, z);
-		int insertedItemID = potTile.getInsertedItem();
-		int storedMetadata = potTile.getStoredBlockMetadata();
-		int meta = world.getBlockMetadata(x, y, z);
-		
-		if (UpdateIfBlockStays(world, x, y, z))
-		{
-			if (!hasFillContents(potTile)) {
-				return; // Don't do anything unless it has water
-			}
-			
-			float random = rand.nextFloat();
-			
-			if (world.provider.dimensionId == -1 && potTile.getFillContentsID() == Block.slowSand.blockID)
-			{
-				if (potTile.hasItem() && random <= getGrowthChance(world, x, y, z) )
-				{
-					grow(world, x, y, z, potTile, meta, insertedItemID);
-				}
-			}
-			else if (world.provider.dimensionId == 0 && world.GetBlockNaturalLightValue(x, y + 1, z) >= getLightLevelForGrowth() )
-			{
-				
-				if (potTile.hasItem() && random <= getGrowthChance(world, x, y, z) )
-				{
-					grow(world, x, y, z, potTile, meta, insertedItemID);
-				}
-			}
-		}
-	}
+//	@Override
+//	public void updateTick(World world, int x, int y, int z, Random rand)
+//	{
+//		SCTileEntityMultiFlowerPot potTile = (SCTileEntityMultiFlowerPot) world.getBlockTileEntity(x, y, z);
+//		int insertedItemID = potTile.getInsertedItem();
+//		int storedMetadata = potTile.getCenterStoredBlockMetadata();
+//		int meta = world.getBlockMetadata(x, y, z);
+//		
+//		if (UpdateIfBlockStays(world, x, y, z))
+//		{
+//			if (!hasWater(meta)) {
+//				return; // Don't do anything unless it has water
+//			}
+//			
+//			if (world.GetBlockNaturalLightValue(x, y + 1, z) >= getLightLevelForGrowth() )
+//			{
+//				float random = rand.nextFloat();
+//				System.out.println( random );
+//				System.out.println( getGrowthChance(world, x, y, z) );
+//				
+//				if (potTile.hasItem() && random <= getGrowthChance(world, x, y, z) )
+//				{
+//					grow(world, x, y, z, potTile, meta, insertedItemID);
+//				}
+//			}
+//		}
+//	}
 	
 	private int getLightLevelForGrowth() {
 		return 11;
 	}
 
-	private void grow(World world, int x, int y, int z, SCTileEntityWaterPot potTile, int meta, int insertedItemID)
+	private void grow(World world, int x, int y, int z, SCTileEntityMultiFlowerPot potTile, int meta, int insertedItemID)
 	{
 		
 		int i = 1;
@@ -86,7 +80,7 @@ public class SCBlockWaterPot extends BlockContainer {
 		{
 			System.out.println("growing");
 			world.setBlockMetadataWithNotify(x, y, z, meta + 1);
-			potTile.setStoredBlockMetadata(potTile.getStoredBlockMetadata() + i);
+			potTile.setCenterStoredBlockMetadata(potTile.getCenterStoredBlockMetadata() + i);
 
 			potTile.markBlockForRender();
 			
@@ -100,7 +94,7 @@ public class SCBlockWaterPot extends BlockContainer {
 	
 	private float getGrowthChance(World world, int x, int y, int z)
 	{
-		SCTileEntityWaterPot potTile = (SCTileEntityWaterPot) world.getBlockTileEntity(x, y, z);
+		SCTileEntityMultiFlowerPot potTile = (SCTileEntityMultiFlowerPot) world.getBlockTileEntity(x, y, z);
 		int insertedItemID = potTile.getInsertedItem();
 		
 		if (world.getBlockId(x, y + 1, z) == FCBetterThanWolves.fcLightBulbOn.blockID || 
@@ -115,22 +109,34 @@ public class SCBlockWaterPot extends BlockContainer {
     @Override
     public boolean onBlockActivated( World world, int x, int y, int z, EntityPlayer player, int iFacing, float fXClick, float fYClick, float fZClick ) {
      	ItemStack handItemStack = player.getCurrentEquippedItem();
-    	SCTileEntityWaterPot potTile = (SCTileEntityWaterPot) world.getBlockTileEntity(x, y, z);
+    	SCTileEntityMultiFlowerPot potTile = (SCTileEntityMultiFlowerPot) world.getBlockTileEntity(x, y, z);
     	int potMeta = world.getBlockMetadata(x, y, z);
+    	
+    	int slot = 1;
+    	
+    	System.out.println("x: " + fXClick);
+    	System.out.println("z: " + fZClick);
+    	
+    	if (fXClick < 0.3F) slot = 0; 
+    	else if (fXClick > 0.7) slot = 2;
+    	
+    	System.out.println("Slot: " + slot);
     	
     	//Empty hand retrieves item
     	if (handItemStack == null)
     	{
-    		if (potTile.hasItem() )
+    		System.out.println("hasItemInSlot: " + potTile.hasItemInSlot(slot));
+    		
+    		if (potTile.hasItemInSlot(slot) )
     		{
-        		potTile.retrieveItemFromPot(player);
+        		potTile.retrieveItemFromPot(player, slot);
         		
-//        		if ( hasFillContents(potTile) )
-//        		{
-//        			world.setBlockMetadataWithNotify(x, y, z, water);
-//        		}
-//        		else world.setBlockMetadataWithNotify(x, y, z, empty);
-
+        		if ( hasWater(potMeta) )
+        		{
+        			world.setBlockMetadataWithNotify(x, y, z, water);
+        		}
+        		else world.setBlockMetadataWithNotify(x, y, z, empty);
+        		
         		return true;
     		}
     		else return false;
@@ -139,110 +145,61 @@ public class SCBlockWaterPot extends BlockContainer {
     	int heldID = handItemStack.getItem().itemID;
     	int heldDamage = handItemStack.getItemDamage();
     	
-//    	if ( potTile.getFillContentsID() > 0 )
-//    	{
-//    		potTile.setFillType(handItemStack);
-//			
-//			if (handItemStack.stackSize > 1)
-//			{
-//				--handItemStack.stackSize;
-//			}
-//			else player.inventory.setInventorySlotContents(player.inventory.currentItem, (ItemStack)null);
-//			
-//	    	if (heldID == Item.potion.itemID && heldDamage == 0 )
-//			{
-//	    		player.inventory.addItemStackToInventory(new ItemStack(Item.glassBottle, 1));
-//			}
-//    		return true;
-//    	}
+    	if (heldID == Item.potion.itemID && heldDamage == 0 && !hasWater(potMeta))
+		{
+			world.setBlockMetadataWithNotify(x, y, z, potMeta + 8);
+			
+			if (handItemStack.stackSize > 1)
+			{
+				--handItemStack.stackSize;
+			}
+			else player.inventory.setInventorySlotContents(player.inventory.currentItem, (ItemStack)null);
+			
+			player.inventory.addItemStackToInventory(new ItemStack(Item.glassBottle, 1));
+			
+			return true;
+		}
+		else if (heldID == FCBetterThanWolves.fcItemPileDirt.itemID)
+		{
+			world.setBlockWithNotify(x, y, z, SCDefs.flowerPot.blockID);
+			
+			if (handItemStack.stackSize > 1)
+			{
+				--handItemStack.stackSize;
+			}
+			else player.inventory.setInventorySlotContents(player.inventory.currentItem, (ItemStack)null);
+		}
     	
-    	if (potTile.getFillContentsID() == 0)
-    	{
-        	if (heldID == Item.potion.itemID && heldDamage == 0)
-    		{
-    			world.setBlockAndMetadataWithNotify(x, y, z, this.blockID, water);
-    			
-    			potTile.setFillType(handItemStack);
-    			
-    			if (handItemStack.stackSize > 1)
-    			{
-    				--handItemStack.stackSize;
-    			}
-    			else player.inventory.setInventorySlotContents(player.inventory.currentItem, (ItemStack)null);
-    			
-    			player.inventory.addItemStackToInventory(new ItemStack(Item.glassBottle, 1));
-    			
-    			return true;
-    		}
-        	else if (heldID == Block.slowSand.blockID)
-    		{
-    			world.setBlockAndMetadataWithNotify(x, y, z, this.blockID, water);
-    			
-    			potTile.setFillType(handItemStack);
-    			
-    			if (handItemStack.stackSize > 1)
-    			{
-    				--handItemStack.stackSize;
-    			}
-    			else player.inventory.setInventorySlotContents(player.inventory.currentItem, (ItemStack)null);
-    			
-    			return true;
-    		}
-        	else if (heldID == FCBetterThanWolves.fcItemPileDirt.itemID)
-    		{
-    			world.setBlockWithNotify(x, y, z, SCDefs.flowerPot.blockID);
-    			
-    			if (handItemStack.stackSize > 1)
-    			{
-    				--handItemStack.stackSize;
-    			}
-    			else player.inventory.setInventorySlotContents(player.inventory.currentItem, (ItemStack)null);
-    			
-    			return true;
-    		}
-    	}
+    	return placeItemInSlot(player, potTile, handItemStack, heldID, heldDamage, slot);
+    	
+    }
 
-    	//If pot already has an item do nothing
-    	if (potTile.hasItem()) {
+	private boolean placeItemInSlot(EntityPlayer player, SCTileEntityMultiFlowerPot potTile, ItemStack handItemStack, int heldID, int heldDamage, int slot) {
+    	
+		System.out.println("hasItemInSlot: " + potTile.hasItemInSlot(slot));
+		//If pot already has an item do nothing
+    	if (potTile.hasItemInSlot(slot)) {
     		return false;
     	}
     	//If item is placeable within the pot, place it
-    	else 
+    	else if ( potTile.isValidToStore(heldID, heldDamage) )
     	{
-    		if ( potTile.isValidToStore(heldID, heldDamage) && potTile.getFillContentsID() == Block.waterStill.blockID)
-    		{
-        		potTile.placeItemInPot(heldID, heldDamage);
-        		
-        		//Decrements stack, unless in creative
-        		if (!player.capabilities.isCreativeMode && --handItemStack.stackSize <= 0)
-                {
-        			player.inventory.setInventorySlotContents(player.inventory.currentItem, (ItemStack)null);
-                }
-        		
-        		return true;
-    		}
+    		potTile.placeItemInPot(heldID, heldDamage, slot);
     		
-    		if (potTile.getFillContentsID() == Block.slowSand.blockID && potTile.isValidToStoreNether(heldID, heldDamage) )
-    		{
-        		potTile.placeItemInPot(heldID, heldDamage);
+    		//Decrements stack, unless in creative
+    		if (!player.capabilities.isCreativeMode && --handItemStack.stackSize <= 0)
+            {
+    			player.inventory.setInventorySlotContents(player.inventory.currentItem, (ItemStack)null);
+            }
     		
-        		//Decrements stack, unless in creative
-        		if (!player.capabilities.isCreativeMode && --handItemStack.stackSize <= 0)
-                {
-        			player.inventory.setInventorySlotContents(player.inventory.currentItem, (ItemStack)null);
-                }
-        		
-        		return true;
-    		}
-
-    	} 	
+    		return true;
+    	}
     	
-		
-    	return false;
-    }
+		return false;
+	}
 
-	private boolean hasFillContents(SCTileEntityWaterPot potTile) {
-		return potTile.getFillContentsID() > 0;
+	private boolean hasWater(int meta) {
+		return meta > 7;
 
 	}
 
@@ -271,8 +228,8 @@ public class SCBlockWaterPot extends BlockContainer {
     
     protected boolean UpdateIfBlockStays( World world, int x, int y, int z ) 
     {    
-    	SCTileEntityWaterPot potTile = (SCTileEntityWaterPot) world.getBlockTileEntity(x, y, z);
-		int blockInPotID = potTile != null ? potTile.getStoredBlockID() : 0;
+    	SCTileEntityMultiFlowerPot potTile = (SCTileEntityMultiFlowerPot) world.getBlockTileEntity(x, y, z);
+		int blockInPotID = potTile != null ? potTile.getCenterStoredBlockID() : 0;
 		
         if ( !canBlockStay( world, x, y, z ) )
         {
@@ -280,7 +237,8 @@ public class SCBlockWaterPot extends BlockContainer {
             
             if (blockInPotID != 0)
             {
-            	potTile.ejectItemFromPot(world, x, y, z);            	
+            	int slot = 1;
+            	potTile.ejectItemFromPot(world, x, y, z, slot);            	
             }
             
             world.setBlockToAir( x, y, z );
@@ -296,8 +254,8 @@ public class SCBlockWaterPot extends BlockContainer {
      */
     public void onNeighborBlockChange(World world, int x, int y, int z, int par5)
     {    	
-    	SCTileEntityWaterPot potTile = (SCTileEntityWaterPot) world.getBlockTileEntity(x, y, z);
-		int blockInPotID = potTile != null ? potTile.getStoredBlockID() : 0;
+    	SCTileEntityMultiFlowerPot potTile = (SCTileEntityMultiFlowerPot) world.getBlockTileEntity(x, y, z);
+		int blockInPotID = potTile != null ? potTile.getCenterStoredBlockID() : 0;
 		
         if (!FCUtilsWorld.DoesBlockHaveCenterHardpointToFacing(world, x, y - 1, z, 1))
         {
@@ -305,7 +263,8 @@ public class SCBlockWaterPot extends BlockContainer {
            
             if (blockInPotID != 0)
             {
-            	potTile.ejectItemFromPot(world, x, y, z);
+            	int slot = 1;
+            	potTile.ejectItemFromPot(world, x, y, z, slot);
             }
             
             world.setBlockToAir(x, y, z);
@@ -334,8 +293,8 @@ public class SCBlockWaterPot extends BlockContainer {
      */
     public int idPicked(World world, int x, int y, int z)
     {
-//    	SCTileEntityWaterPot potTile = (SCTileEntityWaterPot) world.getBlockTileEntity(x, y, z);
-//    	int blockInPotID = potTile.getStoredBlockID();
+//    	SCTileEntityMultiFlowerPot potTile = (SCTileEntityMultiFlowerPot) world.getBlockTileEntity(x, y, z);
+//    	int blockInPotID = potTile.getCenterStoredBlockID();
 //    	
 //    	if (blockInPotID == Block.mushroomBrown.blockID)
 //    		return FCBetterThanWolves.fcItemMushroomBrown.itemID;
@@ -352,7 +311,7 @@ public class SCBlockWaterPot extends BlockContainer {
      */
     public int getDamageValue(World world, int x, int y, int z)
     {
-    	SCTileEntityWaterPot potTile = (SCTileEntityWaterPot) world.getBlockTileEntity(x, y, z);
+    	SCTileEntityMultiFlowerPot potTile = (SCTileEntityMultiFlowerPot) world.getBlockTileEntity(x, y, z);
     	//int blockInPotMeta = potTile.getStoredBlockMetadata();
         return 0;
     }
@@ -368,13 +327,14 @@ public class SCBlockWaterPot extends BlockContainer {
     @Override
     public void onBlockHarvested(World world, int x, int y, int z, int par5, EntityPlayer par6EntityPlayer)
     {
-    	SCTileEntityWaterPot potTile = (SCTileEntityWaterPot) world.getBlockTileEntity(x, y, z);
-    	int blockInPotID = potTile != null ? potTile.getStoredBlockID() : 0;
-    	int blockInPotMeta = potTile.getStoredBlockMetadata();
+    	SCTileEntityMultiFlowerPot potTile = (SCTileEntityMultiFlowerPot) world.getBlockTileEntity(x, y, z);
+    	int blockInPotID = potTile != null ? potTile.getCenterStoredBlockID() : 0;
+    	int blockInPotMeta = potTile.getCenterStoredBlockMetadata();
     	
         if (blockInPotID != 0)
         {
-        	potTile.ejectItemFromPot(world, x, y, z);
+        	int slot = 1;
+        	potTile.ejectItemFromPot(world, x, y, z, slot);
         	
         }
         
@@ -393,7 +353,7 @@ public class SCBlockWaterPot extends BlockContainer {
      */
     public TileEntity createNewTileEntity(World par1World)
     {
-        return new SCTileEntityWaterPot();
+        return new SCTileEntityMultiFlowerPot();
     }
     
 
@@ -417,55 +377,72 @@ public class SCBlockWaterPot extends BlockContainer {
         tess.setBrightness(this.getMixedBrightnessForBlock(render.blockAccess, x, y, z));
         float var6 = 1.0F;
         int var7 = this.colorMultiplier(render.blockAccess, x, y, z);
-        Icon var8 = render.getBlockIconFromSide(this, 0);
+        Icon var8 =  render.getBlockIcon(FCBetterThanWolves.fcBlockCookedBrick);
         float var9 = (float)(var7 >> 16 & 255) / 255.0F;
         float var10 = (float)(var7 >> 8 & 255) / 255.0F;
         float var11 = (float)(var7 & 255) / 255.0F;
         tess.setColorOpaque_F(var6 * var9, var6 * var10, var6 * var11);
-        float var12 = 0.1865F;
+        float var12 = 0.1865F + 4/16F;
         render.renderFaceXPos(this, (double)((float)x - 0.5F + var12), (double)y, (double)z, var8);
         render.renderFaceXNeg(this, (double)((float)x + 0.5F - var12), (double)y, (double)z, var8);
         render.renderFaceZPos(this, (double)x, (double)y, (double)((float)z - 0.5F + var12), var8);
         render.renderFaceZNeg(this, (double)x, (double)y, (double)((float)z + 0.5F - var12), var8);
         
-        //Renders the pot's contents
-        SCTileEntityWaterPot potTile = (SCTileEntityWaterPot) render.blockAccess.getBlockTileEntity(x, y, z);
-       
-        if ( hasFillContents(potTile) )
+        if ( hasWater(render.blockAccess.getBlockMetadata(x, y, z)) )
         {
-        	Icon contentsIcon = Block.blocksList[potTile.getFillContentsID()].getBlockTextureFromSide(0);
-        	render.renderFaceYPos(this, (double)x, (double)((float)y - 0.5F + var12 + 4/16F), (double)z, contentsIcon );
+        	 render.renderFaceYPos(this, (double)x, (double)((float)y - 0.5F + var12 + 4/16F), (double)z, render.getBlockIcon(Block.dirt));
         }
         else render.renderFaceYPos(this, (double)x, (double)((float)y - 0.5F + var12 + 0/16F), (double)z, render.getBlockIcon(FCBetterThanWolves.fcBlockCookedBrick));
        
         
         super.RenderBlock(render, x, y, z);
         
-        
-		int storedBlockID = potTile.getStoredBlockID();
-		int storedBlockMetadata = potTile.getStoredBlockMetadata();
-        tess.setColorOpaque_F(1.0F, 1.0F, 1.0F);
-
-    	storedBlockID = potTile.getStoredBlockID();
-		storedBlockMetadata = potTile.getStoredBlockMetadata();
-	
-    
-		//Renders other blocks as crossed squares. Double checks validity
-		if (potTile.hasItem())
+        //Renders the pot's contents
+        SCTileEntityMultiFlowerPot potTile = (SCTileEntityMultiFlowerPot) render.blockAccess.getBlockTileEntity(x, y, z);
+		int storedBlockID = potTile.getCenterStoredBlockID();
+		int storedBlockMetadata = potTile.getCenterStoredBlockMetadata();
+		int storedLeftBlockID = potTile.getLeftStoredBlockID();
+		int storedLeftBlockMetadata = potTile.getLeftStoredBlockMetadata();
+		int storedRightBlockID = potTile.getRightStoredBlockID();
+		int storedRightBlockMetadata = potTile.getRightStoredBlockMetadata();
+		tess.setColorOpaque_F(1.0F, 1.0F, 1.0F);
+		
+		
+		for (int slot = 0; slot < 3; slot++)
 		{
-			Block storedBlock = Block.blocksList[storedBlockID];
-			Icon icon = render.getBlockIconFromSideAndMetadata(storedBlock, 0, storedBlockMetadata);
-
-			if (storedBlock == FCBetterThanWolves.fcBlockReedRoots)
+			//Renders other blocks as crossed squares. Double checks validity
+			if (potTile.hasItemInSlot(slot))
 			{
-				icon = SCBlockReedRoots.getIconForWaterPot(storedBlockMetadata);
+				Block storedBlock = Block.blocksList[storedBlockID];
+				if (slot == 0 ) storedBlock = Block.blocksList[storedLeftBlockID];
+				else if (slot == 2) storedBlock = Block.blocksList[storedRightBlockID];
+				
+				Icon icon = render.getBlockIconFromSideAndMetadata(storedBlock, 0, storedBlockMetadata);
+				if (slot == 0 ) icon = render.getBlockIconFromSideAndMetadata(storedBlock, 0, storedLeftBlockMetadata);
+				else if (slot == 2) icon = render.getBlockIconFromSideAndMetadata(storedBlock, 0, storedRightBlockMetadata);
+				
+				
+				if (storedBlock == FCBetterThanWolves.fcBlockReedRoots)
+				{
+					icon = SCBlockReedRoots.getIconForWaterPot(storedBlockMetadata);
+					if (slot == 0 ) icon = SCBlockReedRoots.getIconForWaterPot(storedLeftBlockMetadata);
+					else if (slot == 2) icon = SCBlockReedRoots.getIconForWaterPot(storedRightBlockMetadata);
+				}
+				
+				if (slot == 0 ) storedBlockMetadata = storedLeftBlockMetadata;
+				else if (slot == 2) storedBlockMetadata = storedRightBlockMetadata;
+				
+				float shift = 0F;
+				if (slot == 0 ) shift = -8/16F;
+				else if (slot == 2) shift = +8/16F;
+				SCUtilsRender.drawCrossedSquaresFlowerPot(render, storedBlock, storedBlockMetadata, potTile.xCoord + shift, potTile.yCoord + .25, potTile.zCoord, 1.0F, 1, icon);
+				
 			}
-			
-			SCUtilsRender.drawCrossedSquaresFlowerPot(render, storedBlock, storedBlockMetadata, potTile.xCoord, potTile.yCoord + .25, potTile.zCoord, 1.0F, 1, icon);
+			else {
+				return false;
+			} 
 		}
-		else {
-			return false;
-		}       
+      
         return true;
     }
 

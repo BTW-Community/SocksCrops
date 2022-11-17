@@ -86,15 +86,24 @@ public class SCRecipes {
 	}
 	
 	private static void addFlowerPotRecipes() {
-		FCRecipes.RemoveVanillaRecipe(new ItemStack(Item.flowerPot, 1), new Object[] {
-				"# #", 
-				" # ", 
-				'#', Item.brick});
 		
-		FCRecipes.AddRecipe(new ItemStack(SCDefs.waterPotEmpty, 1), new Object[] {
-				"# #", 
-				" # ", 
-				'#', Item.brick});
+		if (SCDecoIntegration.isDecoInstalled() )
+		{			
+			FCRecipes.AddShapelessRecipe(new ItemStack(SCDefs.waterPotEmpty, 1), new ItemStack[]{
+					new ItemStack(FCBetterThanWolves.fcItemUrn)});
+		}
+		else
+		{
+			FCRecipes.RemoveVanillaRecipe(new ItemStack(Item.flowerPot, 1), new Object[] {
+					"# #", 
+					" # ", 
+					'#', Item.brick});
+			
+			FCRecipes.AddRecipe(new ItemStack(SCDefs.waterPotEmpty, 1), new Object[] {
+					"# #", 
+					" # ", 
+					'#', Item.brick});
+		}
 		
 		FCRecipes.AddShapelessRecipe(new ItemStack(SCDefs.waterPot, 1),
 				new ItemStack[] {
@@ -216,6 +225,38 @@ public class SCRecipes {
     				},				
     				new ItemStack(knife), //hand
     				new ItemStack(Item.bread, 1)
+    		);
+    		
+    		addChoppingBoardRecipe(
+    				new ItemStack[] {
+    						new ItemStack(Item.appleRed),
+    				},				
+    				new ItemStack(SCDefs.beefPattyCooked), //hand
+    				new ItemStack(SCDefs.breadSlice)
+    		);
+    		
+    		addChoppingBoardRecipe(
+    				new ItemStack[] {
+    						new ItemStack(SCDefs.burger),
+    				},				
+    				new ItemStack(SCDefs.breadSlice), //hand
+    				new ItemStack(Item.appleRed)
+    		);
+    		
+    		addChoppingBoardRecipe(
+    				new ItemStack[] {
+    						new ItemStack(Item.appleGold),
+    				},				
+    				new ItemStack(FCBetterThanWolves.fcItemFriedEgg), //hand
+    				new ItemStack(Item.appleRed)
+    		);
+    		
+    		addChoppingBoardRecipe(
+    				new ItemStack[] {
+    						new ItemStack(SCDefs.burgerEgg),
+    				},				
+    				new ItemStack(SCDefs.breadSlice), //hand
+    				new ItemStack(Item.appleGold)
     		);
     		
     		addChoppingBoardRecipe(
@@ -522,7 +563,7 @@ public class SCRecipes {
 		addKnifeCuttingRecipe(new ItemStack(SCDefs.breadSlice, 2),
 
 				new ItemStack(Item.bread, 1)
-		);
+		);		
 		
 		// --- Wild Carrot --- //
 		
@@ -666,6 +707,62 @@ public class SCRecipes {
 					new ItemStack( FCBetterThanWolves.fcItemChiselDiamond, 1, ignoreMetadata )	
 			} );
 		}
+		
+		if (SCDecoIntegration.isDecoInstalled())
+		{
+			//Replace Deco recipes
+
+			int orangeMature = 3;
+
+//			FCRecipes.AddShapelessRecipeWithSecondaryOutputIndicator(
+//					new ItemStack(SCDefs.pumpkinCarved), 
+//					new ItemStack(Item.pumpkinSeeds, 4),
+//					new Object[] {
+//							new ItemStack(SCDefs.pumpkinHarvested, 1, meta), 
+//							new ItemStack(FCBetterThanWolves.fcItemChiselWood, 1, ignoreMetadata)});
+
+			FCRecipes.AddShapelessRecipe(new ItemStack(SCDecoIntegration.pumpkin, 1, 0), new ItemStack[] {new ItemStack(SCDefs.pumpkinCarved, 1, orangeMature), new ItemStack(FCBetterThanWolves.fcItemChiselWood, 1, ignoreMetadata)});
+//			FCRecipes.AddShapelessRecipe(new ItemStack(SCDecoIntegration.pumpkin, 1, 1), new ItemStack[] {new ItemStack(SCDecoIntegration.pumpkin, 1, 0), new ItemStack(FCBetterThanWolves.fcItemChiselWood, 1, ignoreMetadata)});
+//			FCRecipes.AddShapelessRecipe(new ItemStack(SCDecoIntegration.pumpkin, 1, 2), new ItemStack[] {new ItemStack(SCDecoIntegration.pumpkin, 1, 1), new ItemStack(FCBetterThanWolves.fcItemChiselWood, 1, ignoreMetadata)});
+
+//			FCRecipes.AddShapelessRecipeWithSecondaryOutputIndicator(
+//					new ItemStack(Block.pumpkin), 
+//					new ItemStack(Item.pumpkinSeeds, 4),
+//					new Object[] {
+//							new ItemStack(FCBetterThanWolves.fcBlockPumpkinFresh), 
+//							new ItemStack(FCBetterThanWolves.fcItemChiselStone, 1, ignoreMetadata)});
+
+			FCRecipes.AddShapelessRecipe(new ItemStack(SCDecoIntegration.pumpkin, 1, 0), new ItemStack[] {new ItemStack(SCDefs.pumpkinCarved, 1, orangeMature), new ItemStack(FCBetterThanWolves.fcItemChiselStone, 1, ignoreMetadata)});
+//			FCRecipes.AddShapelessRecipe(new ItemStack(SCDecoIntegration.pumpkin, 1, 1), new ItemStack[] {new ItemStack(SCDecoIntegration.pumpkin, 1, 0), new ItemStack(FCBetterThanWolves.fcItemChiselStone, 1, ignoreMetadata)});
+//			FCRecipes.AddShapelessRecipe(new ItemStack(SCDecoIntegration.pumpkin, 1, 2), new ItemStack[] {new ItemStack(SCDecoIntegration.pumpkin, 1, 1), new ItemStack(FCBetterThanWolves.fcItemChiselStone, 1, ignoreMetadata)});
+
+//			FCRecipes.AddShapelessRecipeWithSecondaryOutputIndicator(
+//					new ItemStack(Block.pumpkin), 
+//					new ItemStack(Item.pumpkinSeeds, 4),
+//					new Object[] {
+//							new ItemStack(FCBetterThanWolves.fcBlockPumpkinFresh), 
+//							new ItemStack(FCBetterThanWolves.fcItemChiselIron, 1, ignoreMetadata)});
+
+			FCRecipes.AddShapelessRecipe(new ItemStack(SCDecoIntegration.pumpkin, 1, 0), new ItemStack[] {new ItemStack(SCDefs.pumpkinCarved, 1, orangeMature), new ItemStack(FCBetterThanWolves.fcItemChiselIron, 1, ignoreMetadata)});
+//			FCRecipes.AddShapelessRecipe(new ItemStack(SCDecoIntegration.pumpkin, 1, 1), new ItemStack[] {new ItemStack(SCDecoIntegration.pumpkin, 1, 0), new ItemStack(FCBetterThanWolves.fcItemChiselIron, 1, ignoreMetadata)});
+//			FCRecipes.AddShapelessRecipe(new ItemStack(SCDecoIntegration.pumpkin, 1, 2), new ItemStack[] {new ItemStack(SCDecoIntegration.pumpkin, 1, 1), new ItemStack(FCBetterThanWolves.fcItemChiselIron, 1, ignoreMetadata)});
+
+//			FCRecipes.AddShapelessRecipeWithSecondaryOutputIndicator(
+//					new ItemStack(Block.pumpkin), 
+//					new ItemStack(Item.pumpkinSeeds, 4),
+//					new Object[] {
+//							new ItemStack(FCBetterThanWolves.fcBlockPumpkinFresh), 
+//							new ItemStack(FCBetterThanWolves.fcItemChiselDiamond, 1, ignoreMetadata)});
+
+			FCRecipes.AddShapelessRecipe(new ItemStack(SCDecoIntegration.pumpkin, 1, 0), new ItemStack[] {new ItemStack(SCDefs.pumpkinCarved, 1, orangeMature), new ItemStack(FCBetterThanWolves.fcItemChiselDiamond, 1, ignoreMetadata)});
+//			FCRecipes.AddShapelessRecipe(new ItemStack(SCDecoIntegration.pumpkin, 1, 1), new ItemStack[] {new ItemStack(SCDecoIntegration.pumpkin, 1, 0), new ItemStack(FCBetterThanWolves.fcItemChiselDiamond, 1, ignoreMetadata)});
+//			FCRecipes.AddShapelessRecipe(new ItemStack(SCDecoIntegration.pumpkin, 1, 2), new ItemStack[] {new ItemStack(SCDecoIntegration.pumpkin, 1, 1), new ItemStack(FCBetterThanWolves.fcItemChiselDiamond, 1, ignoreMetadata)});
+
+//			FCRecipes.AddShapelessRecipe(new ItemStack(SCDecoIntegration.pumpkinLit, 1, 0), new Object[] {new ItemStack(SCDecoIntegration.pumpkin, 1, 0), new ItemStack(FCBetterThanWolves.fcItemCandle, 1, ignoreMetadata)});
+//			FCRecipes.AddShapelessRecipe(new ItemStack(SCDecoIntegration.pumpkinLit, 1, 1), new Object[] {new ItemStack(SCDecoIntegration.pumpkin, 1, 1), new ItemStack(FCBetterThanWolves.fcItemCandle, 1, ignoreMetadata)});
+//			FCRecipes.AddShapelessRecipe(new ItemStack(SCDecoIntegration.pumpkinLit, 1, 2), new Object[] {new ItemStack(SCDecoIntegration.pumpkin, 1, 2), new ItemStack(FCBetterThanWolves.fcItemCandle, 1, ignoreMetadata)});
+
+		}
 	}
 
 	private static void addPieRecipes()
@@ -777,16 +874,57 @@ public class SCRecipes {
 		FCRecipes.addPistonPackingRecipe(SCDefs.bambooPacked,
 				new ItemStack(SCDefs.bambooItem, 8));
 		
+		//Bamboo Weaving
+		FCRecipes.AddRecipe( new ItemStack( SCDefs.bambooProgressiveItem, 1,
+				SCItemBambooProgressive.bambooWeavingMaxDamage - 1 ), new Object[] {
+	    		"#S#", 
+	    		"SSS",
+	    		"#S#",
+	    		'#', SCDefs.bambooItem,
+	    		'S', Item.stick
+			} );
+		
+		CraftingManager.getInstance().getRecipeList().add( new SCRecipesFishingRodBaiting() );
+		
 		//FishTrap
-		FCRecipes.AddRecipe( new ItemStack (SCDefs.fishTrap),
-				new Object[] {
-						"SBS", 
-						"BFB", 
-						"SBS", 
-						'B', new ItemStack( SCDefs.bambooItem ), 
-						'S', new ItemStack( Item.silk ),
-						'F', new ItemStack( FCBetterThanWolves.fcItemFishHookBone ),
-				});
+		Item hook = FCBetterThanWolves.fcItemFishHookBone;
+		Item string = Item.silk;
+		
+		for (int i = 0; i < 2; i++) {
+			
+			switch (i) {
+			case 1:
+				hook = FCBetterThanWolves.fcItemNuggetIron;
+				break;
+
+			default:
+				hook = FCBetterThanWolves.fcItemFishHookBone;
+				break;
+			}
+			
+			for (int j = 0; j < 2; j++) {
+				
+					switch (j) {
+					case 1:
+						string = FCBetterThanWolves.fcItemHempFibers;
+						break;
+	
+					default:
+						string = Item.silk;
+						break;
+					}
+				
+				FCRecipes.AddRecipe( new ItemStack (SCDefs.fishTrap),
+						new Object[] {
+								"SBS", 
+								"BFB", 
+								"SBS", 
+								'B', new ItemStack( SCDefs.bambooWeave ), 
+								'S', new ItemStack( string ),
+								'F', new ItemStack( hook ),
+						});
+			}
+		}
 	}
 	
 	private static void addFishRecipes()

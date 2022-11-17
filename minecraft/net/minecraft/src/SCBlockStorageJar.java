@@ -645,6 +645,9 @@ public class SCBlockStorageJar extends BlockContainer {
 		contentsIcon[31] = register.registerIcon("SCBlockJarContents_decoFertilizer");
 		labelIcon[31] = register.registerIcon("SCBlockJarLabel_decoFertilizer");
 		
+		contentsIcon[32] = register.registerIcon("SCBlockJarContents_decoShard");
+		labelIcon[32] = register.registerIcon("SCBlockJarLabel_decoShard");
+		
 		
 		//Dyes
 		for (int i = 0; i < dyeIcon.length; i++) {
@@ -803,7 +806,7 @@ public class SCBlockStorageJar extends BlockContainer {
     		renderBlocks.setRenderBounds(getBounds(4, 0.001 + moveUp, 10 + moveUp, 4));
     		renderBlocks.renderStandardBlock(this, i, j, k);
     		
-    		if ( jar.hasLabel() && itemDamage < 16 )
+    		if ( jar.hasLabel() && itemDamage < 32 )
     		{ 
     			if (dir == 0)
     			{
@@ -870,6 +873,21 @@ public class SCBlockStorageJar extends BlockContainer {
 		}
 	}
 	
+//  int iLabel;
+//  
+//  if (label)
+//  {
+//      iLabel = 1;
+//  }
+//  else iLabel = 0;
+//  
+//  int fillDamage = fill *10;
+//  int typeDamage = type *100;
+//  
+//  System.out.println("iDamage = " + (iLabel + fillDamage + typeDamage) );
+//  
+//  return iLabel + fillDamage + typeDamage;
+	
 	/**
 	 * 
 	 * @param label
@@ -901,23 +919,8 @@ public class SCBlockStorageJar extends BlockContainer {
 		// set jars damage by ORing the different shifted bit together
 		return labelVal | fillVal | damageVal | typeVal;
 
-    	
-//        int iLabel;
-//        
-//        if (label)
-//        {
-//            iLabel = 1;
-//        }
-//        else iLabel = 0;
-//        
-//        int fillDamage = fill *10;
-//        int typeDamage = type *100;
-//        
-//        System.out.println("iDamage = " + (iLabel + fillDamage + typeDamage) );
-//        
-//        return iLabel + fillDamage + typeDamage;
     }
-    
+
     /**
      * 
      * @param jarDamageVal
@@ -944,25 +947,24 @@ public class SCBlockStorageJar extends BlockContainer {
     	int newlabel = jarDamageVal & 1; 
     	
     	return new int[] {newlabel, newfill, newdamage, newtype};
-
-    	
-    	
-//		int label=(n/1)%10;
-//		int fill= (n/10)%10;
-//		int type = (n/100)%10;
-//    	int typeExtended = (n/1000)%10;
-//   	 	int typeExtendedPlus = (n/10000)%10;
-//    
-//   	 	int content = typeExtendedPlus*100 + typeExtended*10 + type;
-//    
-////    	boolean hasLabel = label == 1;
-////    	boolean empty = fill == 0;
-//    	
-//    	int[] intArray;
-//    	
-//    	return intArray = new int[] {content, fill, label};
     }
     
+	
+	
+//	int label=(n/1)%10;
+//	int fill= (n/10)%10;
+//	int type = (n/100)%10;
+//	int typeExtended = (n/1000)%10;
+//	 	int typeExtendedPlus = (n/10000)%10;
+//
+//	 	int content = typeExtendedPlus*100 + typeExtended*10 + type;
+//
+////	boolean hasLabel = label == 1;
+////	boolean empty = fill == 0;
+//	
+//	int[] intArray;
+//	
+//	return intArray = new int[] {content, fill, label};
 
 
 }

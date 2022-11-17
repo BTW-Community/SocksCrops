@@ -22,7 +22,7 @@ public abstract class SCBlockGourdGrowing extends SCBlockGourdFalling {
         SetBuoyant();        
         
 		setHardness(1.0F);
-        
+		
         setStepSound(soundWoodFootstep);
         
 	}

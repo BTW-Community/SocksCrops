@@ -10,8 +10,13 @@ public class SCDecoIntegration {
 	public static Block flower2;
 	public static Block tulip;
 	public static Block cherrySapling;
+	public static Block acaciaSapling;
+	public static Block autumnSapling;
+	public static Block pumpkin;
+	public static Block pumpkinLit;
 	
 	public static Item fertilizer;
+	public static Item amethystShard;
 	
 	public static void init() {
 		try {
@@ -26,9 +31,13 @@ public class SCDecoIntegration {
 				flower2 = (Block) getDecoField("flower2");
 				tulip = (Block) getDecoField("tulip");
 				cherrySapling = (Block) getDecoField("cherrySapling");
+				acaciaSapling = (Block) getDecoField("acaciaSapling");
+				autumnSapling = (Block) getDecoField("autumnSapling");
+				pumpkin = (Block) getDecoField("pumpkin");
+				pumpkinLit = (Block) getDecoField("pumpkinLit");
 
-				
 				fertilizer = (Item) getDecoField("fertilizer");
+				amethystShard = (Item) getDecoField("amethystShard");
 			}
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();

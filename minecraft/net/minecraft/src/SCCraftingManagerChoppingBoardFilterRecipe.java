@@ -17,6 +17,10 @@ public class SCCraftingManagerChoppingBoardFilterRecipe {
 				this.stackOnBoard.isItemEqual(recipe.stackOnBoard );
 	}
 	
+	public boolean matchesRecipe(ItemStack stackOnBoard) {
+			return this.stackOnBoard.isItemEqual(stackOnBoard );
+	}
+	
 	public boolean matchesInputs(ItemStack heldStack, ItemStack stackOnBoard) {
 		return this.heldStack.isItemEqual(heldStack) &&
 				this.stackOnBoard.isItemEqual(stackOnBoard);
@@ -29,6 +33,10 @@ public class SCCraftingManagerChoppingBoardFilterRecipe {
 	
 	public boolean matchesInputs3( ItemStack stackOnBoard) {
 		return this.stackOnBoard.isItemEqual(stackOnBoard);
+	}
+	
+	public boolean matchesInputs(ItemStack inputToCheck) {
+		return this.stackOnBoard.isItemEqual(inputToCheck);
 	}
 
 	public ItemStack[] getBoardOutput() {

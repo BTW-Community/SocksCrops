@@ -370,6 +370,40 @@ public class SCUtilsRender extends FCClientUtilsRender
         var10.addVertexWithUV(var22, k + (double)par9, var28, var16, var14);
     }   
     
+    public static void renderSunflowerPlaneWithTexturesAndRotation( RenderBlocks renderBlocks, Block block, int i, int j, int k, Icon texture, double height, int rotation)
+    {
+    	 boolean bHasOverride = renderBlocks.hasOverrideBlockTexture();
+         
+         if ( !bHasOverride )
+         {
+         	renderBlocks.setOverrideBlockTexture( texture );
+         }
+         
+         renderFrontSideFlowerWithRotation(renderBlocks, block, i, j, k, texture, height, rotation);
+         
+         if ( !bHasOverride )
+         {
+         	renderBlocks.clearOverrideBlockTexture();
+         }
+	}
+    
+    public static void renderBackSunflowerPlaneWithTexturesAndRotation( RenderBlocks renderBlocks, Block block, int i, int j, int k, Icon texture, double height, int rotation)
+    {
+    	 boolean bHasOverride = renderBlocks.hasOverrideBlockTexture();
+         
+         if ( !bHasOverride )
+         {
+         	renderBlocks.setOverrideBlockTexture( texture );
+         }
+         
+         renderBackSideFlowerWithRotation(renderBlocks, block, i, j, k, texture, height, rotation);
+         
+         if ( !bHasOverride )
+         {
+         	renderBlocks.clearOverrideBlockTexture();
+         }
+	}
+    
     public static void renderSunflowerPlaneWithTextures( RenderBlocks renderBlocks, Block block, int i, int j, int k, Icon texture, double height)
     {
     	 boolean bHasOverride = renderBlocks.hasOverrideBlockTexture();
@@ -403,6 +437,142 @@ public class SCUtilsRender extends FCClientUtilsRender
          	renderBlocks.clearOverrideBlockTexture();
          }
 	}
+    
+    public static void renderFrontSideFlowerWithRotation(RenderBlocks renderer, Block block, int x, int y, int z, Icon texture, double height, int rotation)
+    {
+    	Tessellator tess = Tessellator.instance;
+        tess.setBrightness(block.getMixedBrightnessForBlock(renderer.blockAccess, x, y, z));
+        float var6 = 1.0F;
+        int var7 = block.colorMultiplier(renderer.blockAccess, x, y, z);
+        float var8 = (float)(var7 >> 16 & 255) / 255.0F;
+        float var9 = (float)(var7 >> 8 & 255) / 255.0F;
+        float var10 = (float)(var7 & 255) / 255.0F;
+
+        tess.setColorOpaque_F(var6 * var8, var6 * var9, var6 * var10);
+        
+        Icon icon = texture;
+        
+        double minU = (double)icon.getMinU();
+        double minV = (double)icon.getMinV();
+        double maxU = (double)icon.getMaxU();
+        double maxV = (double)icon.getMaxV();
+        
+        double minX = x + 0.5D + (0.125/2);
+        double maxX = x + 0.5D + (0.125/2);
+        
+        double minX2 = x + 0.5D + (0.125/2);
+        double maxX2 = x + 0.5D + (0.125/2);
+        
+        double minZ = z + 0D;
+        double maxZ = z + 1D;
+        
+        double yUp = 0.125D + height;
+        
+        double xShift = 0.25D;
+        double yShiftMax = 1D;
+        double yShiftMin = 0D;
+        
+        if (rotation == 1)
+        {
+        	yShiftMax = 0.75D;
+            yShiftMin = 0.25D;
+            xShift = 0.5D;
+        }
+        else if (rotation == 2)
+        {
+        	minX = x + 0.5D - (0.125/2);
+        	maxX = x + 0.5D - (0.125/2);
+        	
+        	yShiftMax = 0.75D;
+            yShiftMin = 0.25D;
+            xShift = -0.5D;
+        }
+        else if (rotation == 3)
+        {
+        	minX = x + 0.5D - (0.125/2);
+        	maxX = x + 0.5D - (0.125/2);
+        	
+        	yShiftMax = 1D;
+            yShiftMin = 0D;
+            
+            xShift = -0.25D;
+        }
+        
+        tess.addVertexWithUV(maxX - xShift, y + yShiftMax + yUp, maxZ, maxU, minV);
+        
+        tess.addVertexWithUV(maxX + xShift, y + yShiftMin + yUp, maxZ, maxU, maxV);
+        tess.addVertexWithUV(minX + xShift, y + yShiftMin + yUp, minZ, minU, maxV);
+        
+        tess.addVertexWithUV(minX - xShift , y + yShiftMax + yUp, minZ, minU, minV);
+		
+    }
+
+    public static void renderBackSideFlowerWithRotation(RenderBlocks renderer, Block block, int x, int y, int z, Icon texture, double height, int rotation)
+    {
+        Tessellator tess = Tessellator.instance;
+        tess.setBrightness(block.getMixedBrightnessForBlock(renderer.blockAccess, x, y, z));
+        float var6 = 1.0F;
+        int var7 = block.colorMultiplier(renderer.blockAccess, x, y, z);
+        float var8 = (float)(var7 >> 16 & 255) / 255.0F;
+        float var9 = (float)(var7 >> 8 & 255) / 255.0F;
+        float var10 = (float)(var7 & 255) / 255.0F;
+
+        tess.setColorOpaque_F(var6 * var8, var6 * var9, var6 * var10);
+        
+        Icon icon = texture;
+
+        
+        
+        double minU = (double)icon.getMinU();
+        double minV = (double)icon.getMinV();
+        double maxU = (double)icon.getMaxU();
+        double maxV = (double)icon.getMaxV();
+        
+        double minX = x + 0.5D + (0.125/2);
+        double maxX = x + 0.5D + (0.125/2);
+        double minZ = z + 0D;
+        double maxZ = z + 1D;
+        
+        double yUp = 0.125D + height;
+
+        double xShift = 0.25D;
+        double yShiftMax = 1D;
+        double yShiftMin = 0D;
+        
+        if (rotation == 1)
+        {
+        	yShiftMax = 0.75D;
+            yShiftMin = 0.25D;
+            xShift = 0.5D;
+        }
+        else if (rotation == 2)
+        {
+        	minX = x + 0.5D - (0.125/2);
+        	maxX = x + 0.5D - (0.125/2);
+        	
+        	yShiftMax = 0.75D;
+            yShiftMin = 0.25D;
+            xShift = -0.5D;
+        }
+        else if (rotation == 3)
+        {
+        	minX = x + 0.5D - (0.125/2);
+        	maxX = x + 0.5D - (0.125/2);
+        	
+        	yShiftMax = 1D;
+            yShiftMin = 0D;
+            
+            xShift = -0.25D;
+        }
+        
+        tess.addVertexWithUV(minX - xShift, y + yShiftMax + yUp, minZ, minU, minV);
+        
+        tess.addVertexWithUV(minX + xShift, y + yShiftMin + yUp, minZ , minU, maxV);
+        tess.addVertexWithUV(maxX + xShift, y + yShiftMin + yUp, maxZ , maxU, maxV);
+        
+        tess.addVertexWithUV(maxX - xShift, y + yShiftMax + yUp, maxZ , maxU, minV);
+		
+    }
     
     public static void renderFrontSideFlower(RenderBlocks renderer, int x, int y, int z, Icon texture, double height)
     {

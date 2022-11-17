@@ -271,6 +271,14 @@ public class SCTileEntityComposter extends TileEntity
     	compostingTypes.put(FCBetterThanWolves.fcItemCarrot.itemID, 4);
     	compostingTypes.put(Item.potato.itemID, 4);
     	
+		if (SCDecoIntegration.isDecoInstalled() )
+		{
+			compostingTypes.put(SCDecoIntegration.cherrySapling.blockID, 2);
+			compostingTypes.put(SCDecoIntegration.flower.blockID, 1);
+			compostingTypes.put(SCDecoIntegration.flower2.blockID, 1);
+			compostingTypes.put(SCDecoIntegration.tulip.blockID, 1);
+		}
+    	
     	
     } 
 

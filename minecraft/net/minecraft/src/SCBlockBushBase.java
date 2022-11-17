@@ -96,8 +96,7 @@ public abstract class SCBlockBushBase extends BlockFlower {
         {
         	// kill the plant if not harvested by shears
         	
-        	if ( player.getCurrentEquippedItem() == null ||
-        		player.getCurrentEquippedItem().itemID != Item.shears.itemID )
+        	if ( player.getCurrentEquippedItem() == null || !(player.getCurrentEquippedItem().getItem() instanceof FCItemShears ) )
         	{   
         		if ( iMetadata == 5 )
 	            {
@@ -105,7 +104,7 @@ public abstract class SCBlockBushBase extends BlockFlower {
         			world.setBlockToAir( i, j , k );
 	            }
         	}
-        	else if (player.getCurrentEquippedItem().itemID == Item.shears.itemID )
+        	else if (player.getCurrentEquippedItem().getItem() instanceof FCItemShears )
             {        		
         		if ( iMetadata == 5 )
 	            {
@@ -113,7 +112,9 @@ public abstract class SCBlockBushBase extends BlockFlower {
 	            }
         		
         		this.dropBlockAsItem_do(world, i, j, k, new ItemStack(this.getSaplingID(), 1, 0));
-        		world.setBlockToAir( i, j , k );    
+        		player.getCurrentEquippedItem().damageItem(1, player);
+        		
+        		world.setBlockToAir( i, j , k );
             }
         }
         

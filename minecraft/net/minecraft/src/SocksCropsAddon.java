@@ -27,12 +27,12 @@ public class SocksCropsAddon extends FCAddOn {
     public void Initialize()
     {
     	FCAddOnHandler.LogMessage(this.getName() + " Version " + this.getVersionString() + " Initializing...");
-    	    	
-    	SCDefs.addDefinitions();
-    	SCDefs.addTileEntityDefinitions();
-    	SCRecipes.addRecipes();
     	
     	SCDecoIntegration.init();
+    	
+    	SCDefs.addDefinitions();
+    	SCDefs.addTileEntityDefinitions();
+    	SCRecipes.addRecipes();    	
        	
     	FCAddOnHandler.LogMessage(this.getName() + " Initialized");
     }

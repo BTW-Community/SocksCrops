@@ -143,14 +143,14 @@ public class SCBlockTallPlant extends BlockFlower {
 		else return super.CanGrowOnBlock(world, i, j, k);
 	}
 	
-	private boolean isTopBlock(int meta) {
+	public boolean isTopBlock(int meta) {
 		if (meta > 7) {
 			return true;
 		}
 		else return false;
 	}
 	
-	private int setTopBlock(int meta)
+	protected int setTopBlock(int meta)
 	{
 		return meta + 8;
 	}

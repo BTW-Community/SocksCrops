@@ -34,6 +34,16 @@ public class SCCraftingManagerChoppingBoardFilter {
 		return false;
 	}
 	
+	public boolean hasRecipe(ItemStack onBoardStack) {
+		for (SCCraftingManagerChoppingBoardFilterRecipe recipe : recipes) {
+			if (recipe.matchesRecipe(onBoardStack)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
 	public SCCraftingManagerChoppingBoardFilterRecipe getRecipe(ItemStack heldStack, ItemStack onBoardStack) {
 		for (SCCraftingManagerChoppingBoardFilterRecipe recipe : recipes) {
 			if (recipe.matchesInputs2(heldStack, onBoardStack)) {
@@ -47,6 +57,16 @@ public class SCCraftingManagerChoppingBoardFilter {
 	public SCCraftingManagerChoppingBoardFilterRecipe getRecipe2(ItemStack onBoardStack) {
 		for (SCCraftingManagerChoppingBoardFilterRecipe recipe : recipes) {
 			if (recipe.matchesInputs3(onBoardStack)) {
+				return recipe;
+			}
+		}
+		
+		return null;
+	}
+	
+	public SCCraftingManagerChoppingBoardFilterRecipe getRecipe(ItemStack input) {
+		for (SCCraftingManagerChoppingBoardFilterRecipe recipe : recipes) {
+			if (recipe.matchesInputs(input)) {
 				return recipe;
 			}
 		}

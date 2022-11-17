@@ -38,122 +38,133 @@ public class SCBlockChoppingBoard extends BlockContainer {
 		return specialRenderItems.contains(item);
 	}
 	
-	@Override
+    @Override
     public boolean onBlockActivated( World world, int i, int j, int k, EntityPlayer player, int iFacing, float fXClick, float fYClick, float fZClick )
     {
-		SCTileEntityChoppingBoard choppingBoard = (SCTileEntityChoppingBoard)world.getBlockTileEntity( i, j, k );
-        
-        ItemStack knifeStack = choppingBoard.getKnifeStack();
-        ItemStack cuttingStack = choppingBoard.getCuttingStack();
-		
+    	SCTileEntityChoppingBoard choppingBoard = (SCTileEntityChoppingBoard)world.getBlockTileEntity( i, j, k );
+
+    	ItemStack knifeStack = choppingBoard.getKnifeStack();
+    	ItemStack cuttingStack = choppingBoard.getCuttingStack();
+
     	ItemStack heldStack = player.getCurrentEquippedItem();
-    	
+
     	if (choppingBoard != null)
     	{
     		if (heldStack != null)
     		{
     			if ( knifeStack == null )
     			{
-			        ItemStack stackToStore = heldStack.splitStack(1);
+    				ItemStack stackToStore = heldStack.splitStack(1);
 
-			        choppingBoard.setInventorySlotContents(0, stackToStore);
-			        
-			    	if (!world.isRemote)
-	    			{  
-			    		world.playAuxSFX( FCBetterThanWolves.m_iItemCollectionPopSoundAuxFXID, i, j, k, 0 );	
-	    			}
-			        
-			        return true;
+    				choppingBoard.setInventorySlotContents(0, stackToStore);
+
+    				if (!world.isRemote)
+    				{  
+    					world.playAuxSFX( FCBetterThanWolves.m_iItemCollectionPopSoundAuxFXID, i, j, k, 0 );	
+    				}
+
+    				return true;
     			}
     			else 
     			{
     				//knifeStack has item
-    				
-//    				Item itemOnBoard = choppingBoard.getKnifeStack().getItem();
+
+    				//Item itemOnBoard = choppingBoard.getKnifeStack().getItem();
     				ItemStack onBoardStack = choppingBoard.getKnifeStack();
-    				
+
     				SCCraftingManagerChoppingBoardFilterRecipe recipe = onBoardStack == null ?
-							null : SCCraftingManagerChoppingBoardFilter.instance.getRecipe(heldStack, onBoardStack);
-    				
-    				
+    						null : SCCraftingManagerChoppingBoardFilter.instance.getRecipe(heldStack, onBoardStack);
+
+    				boolean recipe3 = SCCraftingManagerChoppingBoardFilter.instance.hasRecipe( onBoardStack );
+
     				if (recipe != null) {
-    					   					
+
     					ItemStack[] output = recipe.getBoardOutput();
-    					
+
     					world.playAuxSFX( SCCustomAuxFX.choppingBoardAuxFXID, i, j, k, 0);
-        	    		
-        				assert( output != null && output.length > 0 );
-        				
-        	            for ( int listIndex = 0; listIndex < output.length; listIndex++ )
-        	            {
-        		    		ItemStack cutStack = output[listIndex].copy();
-        		    		
-        		    		if ( cutStack != null )
-        		    		{
-        		    			if (!world.isRemote)
-        		    			{   
-        		    				
-        		    				
-        		    	            world.playSoundAtEntity( player, this.stepSound.getStepSound(), this.stepSound.getVolume() * 0.2F, this.stepSound.getPitch() * 3F );
 
-        		    	            int dir = getDirection(world.getBlockMetadata(i, j, k));
-        		    	            dir = Direction.rotateOpposite[dir];
-        		    	            int facing = Direction.directionToFacing[dir];
+    					assert( output != null && output.length > 0 );
 
-        		    	            
-        		    				FCUtilsItem.EjectStackFromBlockTowardsFacing( world, i, j, k, cutStack, facing );
-        		    				
-        		    			}
-        		    			
-        		    			player.playSound( "mob.zombie.wood", 0.05F, 2.5F * 10 );
+    					for ( int listIndex = 0; listIndex < output.length; listIndex++ )
+    					{
+    						ItemStack cutStack = output[listIndex].copy();
 
-        		    		}
-        	            }
-        	            
-        	            ItemStack arrow = GetFirstArrowStackInHotbar(player, recipe.getStackOnBoard() );
-  
-        	            if (arrow != null)
-        	            {        	            	        	            	
-        	            	ItemStack stackToStore;
-        	            	
-        	            	if (arrow.stackSize > 1)
-        	            	{
-        	            		stackToStore = arrow.splitStack(1);
-        	            		choppingBoard.setInventorySlotContents(0, stackToStore);
-        	            	}
-        	            	else
-        	            	{
-        	            		player.inventory.consumeInventoryItem( arrow.itemID );
-        	            		choppingBoard.setInventorySlotContents(0, arrow);
-        	            	}
-        	            	
-        			    	if (!world.isRemote)
-        	    			{  
-        			    		world.playAuxSFX( FCBetterThanWolves.m_iItemCollectionPopSoundAuxFXID, i, j, k, 0 );	
-        	    			}
-        	            	
-        	            }
-        	            else choppingBoard.setKnifeStack(null);
-        	            
-        	            if ( heldStack.getItem() instanceof FCItemTool )
-        	            {
-            	            heldStack.attemptDamageItem(1, world.rand);
-            	            
-            	            int maxDamage = heldStack.getMaxDamage();
-            	            if (heldStack.getItemDamage() >= maxDamage)
-            	            {
-            	            	//break tool
-            	            	heldStack.stackSize = 0;
-            	            	player.playSound( "random.break", 0.8F, 0.8F + player.worldObj.rand.nextFloat() * 0.4F );            	            	
-            	            }
-            	            
+    						if ( cutStack != null )
+    						{
+    							if (recipe3 == true)
+    							{
+    								System.out.println("Recipe2 is NOT null?" + recipe3);
+    								choppingBoard.setKnifeStack(cutStack);
+    							}
+    							
+    							
+    							
+    							if (recipe3 == false) {
 
-        	            }
+    								System.out.println("Recipe2 is null?" + recipe3);
+    								if (!world.isRemote)
+    								{   
+    									world.playSoundAtEntity( player, this.stepSound.getStepSound(), this.stepSound.getVolume() * 0.2F, this.stepSound.getPitch() * 3F );
 
-        	            
-        	            return true;   					
+    									int dir = getDirection(world.getBlockMetadata(i, j, k));
+    									dir = Direction.rotateOpposite[dir];
+    									int facing = Direction.directionToFacing[dir];
+
+
+    									FCUtilsItem.EjectStackFromBlockTowardsFacing( world, i, j, k, cutStack, facing );
+
+    								}
+
+    								player.playSound( "mob.zombie.wood", 0.05F, 2.5F * 10 );
+    							}
+
+    						}
+    					}
+
+//    					ItemStack arrow = GetFirstArrowStackInHotbar(player, recipe.getStackOnBoard() );
+//
+//    					if (arrow != null)
+//    					{        	            	        	            	
+//    						ItemStack stackToStore;
+//
+//    						if (arrow.stackSize > 1)
+//    						{
+//    							stackToStore = arrow.splitStack(1);
+//    							choppingBoard.setInventorySlotContents(0, stackToStore);
+//    						}
+//    						else
+//    						{
+//    							player.inventory.consumeInventoryItem( arrow.itemID );
+//    							choppingBoard.setInventorySlotContents(0, arrow);
+//    						}
+//
+//    						if (!world.isRemote)
+//    						{  
+//    							world.playAuxSFX( FCBetterThanWolves.m_iItemCollectionPopSoundAuxFXID, i, j, k, 0 );	
+//    						}
+//
+//    					}
+//    					else choppingBoard.setKnifeStack(null);
+
+    					if ( heldStack.getItem() instanceof FCItemTool )
+    					{
+    						heldStack.attemptDamageItem(1, world.rand);
+
+    						int maxDamage = heldStack.getMaxDamage();
+    						if (heldStack.getItemDamage() >= maxDamage)
+    						{
+    							//break tool
+    							heldStack.stackSize = 0;
+    							player.playSound( "random.break", 0.8F, 0.8F + player.worldObj.rand.nextFloat() * 0.4F );            	            	
+    						}
+
+
+    					}
+
+
+    					return true;   					
     				}
-    					
+
     			}
 
     		}
@@ -161,24 +172,26 @@ public class SCBlockChoppingBoard extends BlockContainer {
     		{
     			if ( knifeStack != null )
     			{
-	    			//hand is empty	    			
-    		        FCUtilsItem.GivePlayerStackOrEject( player, knifeStack, i, j, k );
-    		        
-    		        choppingBoard.setKnifeStack(null);
-    		        
-			    	if (!world.isRemote)
-	    			{  
-			    		world.playAuxSFX( FCBetterThanWolves.m_iItemCollectionPopSoundAuxFXID, i, j, k, 0 );	
-	    			}
-    		        
-    		        return true;
-			        
+    				//hand is empty	    			
+    				FCUtilsItem.GivePlayerStackOrEject( player, knifeStack, i, j, k );
+
+    				choppingBoard.setKnifeStack(null);
+
+    				if (!world.isRemote)
+    				{  
+    					world.playAuxSFX( FCBetterThanWolves.m_iItemCollectionPopSoundAuxFXID, i, j, k, 0 );	
+    				}
+
+    				return true;
+
     			}
     		}
     	}
-    	
-		return false;
+
+    	return false;
+
     }
+
 
 
 	private ItemStack GetFirstArrowStackInHotbar(EntityPlayer player, ItemStack itemOnBoard) {
