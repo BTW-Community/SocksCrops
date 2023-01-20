@@ -333,6 +333,37 @@ public class SCBlockCookieRaw extends Block{
     	
     	return true;
     }
+    
+    @Override
+    public void RenderBlockAsItem(RenderBlocks renderBlocks, int iItemDamage, float fBrightness) {
+
+    	int iCookiesAlongI;
+    	int iCookiesAlongK;
+    	
+    	float fStartCenterX;
+    	float fStartCenterZ;
+    	
+    	iCookiesAlongI = 4;
+		iCookiesAlongK = 2;
+		
+    	fStartCenterX = 0.5F -  ( 3 * m_fUnfiredPotteryUncookedCookiesIndividualWidth );
+    	fStartCenterZ = 0.5F - m_fUnfiredPotteryUncookedCookiesIndividualWidth;
+
+    	for ( int iCountAlongI = 0; iCountAlongI < iCookiesAlongI; iCountAlongI++ )
+    	{
+        	for ( int iCountAlongK = 0; iCountAlongK < iCookiesAlongK; iCountAlongK++ )
+        	{
+        		float fCenterCookieX = fStartCenterX + ( (float)iCountAlongI  * m_fUnfiredPotteryUncookedCookiesIndividualWidth * 2F );
+        		float fCenterCookieZ = fStartCenterZ + ( (float)iCountAlongK  * m_fUnfiredPotteryUncookedCookiesIndividualWidth * 2F );
+        		
+                renderBlocks.setRenderBounds( 
+                	fCenterCookieX - m_fUnfiredPotteryUncookedCookiesIndividualHalfWidth, 0.0F, fCenterCookieZ - m_fUnfiredPotteryUncookedCookiesIndividualHalfWidth, 
+                	fCenterCookieX + m_fUnfiredPotteryUncookedCookiesIndividualHalfWidth, m_fUnfiredPotteryUncookedCookiesHeight, fCenterCookieZ + m_fUnfiredPotteryUncookedCookiesIndividualHalfWidth );
+            
+                FCClientUtilsRender.RenderInvBlockWithMetadata(renderBlocks, this, -0.5F, -0.5F, -0.5F, iItemDamage);         
+        	}
+    	}
+    }
 	
 
 }

@@ -304,16 +304,16 @@ public class SCRecipes extends SCRecipeHelper {
 	private static void addHedgesRecipes()
 	{
 		//TREES
-		for (int type = SCBlockHedges.OAK; type <= SCBlockHedges.JUNGLE; type++)
-		{
-			FCRecipes.AddRecipe( new ItemStack (SCDefs.hedges, 2, type),
-					new Object[] {
-							"L",
-							"W",
-							'L', new ItemStack( Block.leaves, 1, type ),
-							'W', new ItemStack( Block.wood, 1, type ),
-					});
-		}
+//		for (int type = SCBlockHedges.OAK; type <= SCBlockHedges.JUNGLE; type++)
+//		{
+//			FCRecipes.AddRecipe( new ItemStack (SCDefs.hedges, 2, type),
+//					new Object[] {
+//							"L",
+//							"W",
+//							'L', new ItemStack( Block.leaves, 1, type ),
+//							'W', new ItemStack( Block.wood, 1, type ),
+//					});
+//		}
 		
 		//BLOOD TREE
 		FCRecipes.AddRecipe( new ItemStack (SCDefs.hedges, 2, SCBlockHedges.BLOOD),
@@ -331,8 +331,8 @@ public class SCRecipes extends SCRecipeHelper {
 					new Object[] {
 							"L",
 							"W",
-							'L', new ItemStack( SCDefs.fruitLeaves, 1, type ),
-							'W', new ItemStack( SCDefs.fruitLog, 1, type ),
+							'L', new ItemStack( SCDefs.fruitLeaves, 1, type - 5 ),
+							'W', new ItemStack( SCDefs.fruitLog, 1, type - 5 ), //-5 meta Adjustment
 					});
 		}
 		
@@ -343,8 +343,8 @@ public class SCRecipes extends SCRecipeHelper {
 					new Object[] {
 							"L",
 							"W",
-							'L', new ItemStack( SCDefs.fruitLeavesFlowers, 1, type ),
-							'W', new ItemStack( SCDefs.fruitLog, 1, type ),
+							'L', new ItemStack( SCDefs.fruitLeavesFlowers, 1, type - 9),
+							'W', new ItemStack( SCDefs.fruitLog, 1, type - 9), //-9 meta adjustment
 					});
 		}
 		
@@ -483,14 +483,7 @@ public class SCRecipes extends SCRecipeHelper {
 		//MOSSBALL > BLOCK
 		FCRecipes.addPistonPackingRecipe(SCDefs.mossBlock,
 				new ItemStack[] {	    		
-					new ItemStack( SCDefs.mossBall ),
-					new ItemStack( SCDefs.mossBall ),
-					new ItemStack( SCDefs.mossBall ),
-					new ItemStack( SCDefs.mossBall ),
-					new ItemStack( SCDefs.mossBall ),
-					new ItemStack( SCDefs.mossBall ),
-					new ItemStack( SCDefs.mossBall ),
-					new ItemStack( SCDefs.mossBall ),
+					new ItemStack( SCDefs.mossBall, 8 )
 	    });
 		
 		//BLOCK > MOSSBALL
@@ -721,13 +714,13 @@ public class SCRecipes extends SCRecipeHelper {
 				}	
 		);
 		
-		FCRecipes.addPistonPackingRecipe(SCDefs.smallPacked, SCBlockBambooPacked.BAMBOO,
+		FCRecipes.addPistonPackingRecipe(SCDefs.bambooPacked, SCBlockBambooPacked.BAMBOO,
 				new ItemStack[]	{
 					new ItemStack(SCDefs.bambooItem, 8)
 				}	
 		);
 		
-		FCRecipes.addPistonPackingRecipe(SCDefs.smallPacked, SCBlockBambooPacked.STRIPPED_BAMBOO,
+		FCRecipes.addPistonPackingRecipe(SCDefs.bambooPacked, SCBlockBambooPacked.STRIPPED_BAMBOO,
 				new ItemStack[]	{
 					new ItemStack(SCDefs.bambooStrippedItem, 8)
 				}	
@@ -947,8 +940,8 @@ public class SCRecipes extends SCRecipeHelper {
 		addPieRecipe(SCDefs.pumpkinSliceRaw, FCBetterThanWolves.fcItemPastryUncookedPumpkinPie, Item.pumpkinPie, FCBetterThanWolves.fcUnfiredPottery, FCBlockUnfiredPottery.m_iSubtypeUncookedPumpkinPie);
 
 		//FruitPies
-		addPieRecipe(SCDefs.sweetberry, SCDefs.sweetberryPieRaw, SCDefs.sweetberryPieCooked, SCDefs.pieRaw, SCBlockPieRaw.sweetberry);
-		addPieRecipe(SCDefs.blueberry, SCDefs.blueberryPieRaw, SCDefs.blueberryPieCooked, SCDefs.pieRaw, SCBlockPieRaw.blueberry);
+		addPieRecipe(SCDefs.sweetberry, SCDefs.sweetberryPieRaw, SCDefs.sweetberryPieCooked, SCDefs.pieRaw, SCBlockPieRaw.SWEETBERRY);
+		addPieRecipe(SCDefs.blueberry, SCDefs.blueberryPieRaw, SCDefs.blueberryPieCooked, SCDefs.pieRaw, SCBlockPieRaw.BLUEBERRY);
 		
 		addPieRecipe(SCDefs.appleSlice, SCDefs.applePieRaw, SCDefs.applePieCooked, SCDefs.fruitPieRaw, SCBlockFruitPieRaw.apple);
 		addPieRecipe(SCDefs.cherrySlice, SCDefs.cherryPieRaw, SCDefs.cherryPieCooked, SCDefs.fruitPieRaw, SCBlockFruitPieRaw.cherry);
@@ -1133,7 +1126,7 @@ public class SCRecipes extends SCRecipeHelper {
 		
 		FurnaceRecipes.smelting().addSmelting( SCDefs.baconRaw.itemID, new ItemStack( SCDefs.baconCooked ), 0 );
 		FurnaceRecipes.smelting().addSmelting( SCDefs.beefPattyRaw.itemID, new ItemStack( SCDefs.beefPattyCooked ), 0 );
-		FurnaceRecipes.smelting().addSmelting( SCDefs.chickenDrumRaw.itemID, new ItemStack( SCDefs.cherryPieCooked ), 0 );
+		FurnaceRecipes.smelting().addSmelting( SCDefs.chickenDrumRaw.itemID, new ItemStack( SCDefs.chickenDrumCooked ), 0 );
 	}
 	
 	private static void addBurgerCuttingRecipes()

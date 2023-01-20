@@ -7,7 +7,7 @@ import net.minecraft.client.Minecraft;
 
 public class SocksCropsAddon extends FCAddOn {
     public static final String ADDON_NAME = "Sock's Crops";
-    public static final String ADDON_VERSION = "1.0.0";
+    public static final String ADDON_VERSION = "1.0.0 Prerelease 1";
     public static final String LANGUAGE_PREFIX = "SC";
    
     public static SocksCropsAddon instance = new SocksCropsAddon();

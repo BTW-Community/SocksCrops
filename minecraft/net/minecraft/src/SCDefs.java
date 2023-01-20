@@ -1449,7 +1449,7 @@ public class SCDefs {
 	
 	private static void addFenceAndRopeDefs() {
 		
-		Block.fence = Block.replaceBlock(Block.fence.blockID, SCBlockFence.class, SocksCropsAddon.instance, FCBetterThanWolves.fcMaterialPlanks);
+		Block.fence = Block.replaceBlock(Block.fence.blockID, SCBlockFence.class, overrideDeco, SocksCropsAddon.instance, FCBetterThanWolves.fcMaterialPlanks);
 		Item.itemsList[Block.fence.blockID] = new ItemMultiTextureTile(Block.fence.blockID - 256, Block.fence, SCBlockFence.types );
 
 		Block.netherFence = Block.replaceBlock(Block.netherFence.blockID, SCBlockNetherFence.class, SocksCropsAddon.instance, FCBetterThanWolves.fcMaterialNetherRock );
@@ -1753,6 +1753,7 @@ public class SCDefs {
 		//Blocks
 		pieRaw = new SCBlockPieRaw(id_pieRaw);
 		Item.itemsList[pieRaw.blockID] = new ItemMultiTextureTile(id_pieRaw - 256, pieRaw, new String[] {
+				"pumpkin", "pumpkin", "pumpkin", "pumpkin",
 				"sweet", "sweet", "sweet", "sweet",
 				"blue", "blue", "blue", "blue",});
 		
@@ -1781,16 +1782,19 @@ public class SCDefs {
 		pumpkinPieSlice = new FCItemFoodHighRes ( id_pumpkinPieSlice - 256, SCItemFood.pieSliceHungerHealed, SCItemFood.pieSliceSaturationModifier, false, "SCItemPieSlice_pumpkin").setAlwaysEdible();
 		
 		Item.pumpkinPie = Item.replaceItem( Item.pumpkinPie.itemID, SCItemPie.class, SocksCropsAddon.instance, SCItemFood.pieHungerHealed, SCItemFood.pieSaturationModifier, false, "pumpkinPie", id_pieCooked, SCBlockPieCooked.pumpkin);
+	
+		FCBetterThanWolves.fcItemPastryUncookedPumpkinPie = Item.replaceItem( FCBetterThanWolves.fcItemPastryUncookedPumpkinPie.itemID, FCItemPlacesAsBlock.class, SocksCropsAddon.instance,
+				id_pieRaw, SCBlockPieRaw.PUMPKIN, "fcItemPastryUncookedPumpkinPie").SetBuoyant().setCreativeTab(CreativeTabs.tabFood);
 		
 		//Sweetberry
-		sweetberryPieRaw = new FCItemPlacesAsBlock(id_sweetberryPieRaw - 256, id_pieRaw, SCBlockPieRaw.sweetberry, "SCItemPieRaw_sweetberry").SetBuoyant().setCreativeTab(CreativeTabs.tabFood);	
+		sweetberryPieRaw = new FCItemPlacesAsBlock(id_sweetberryPieRaw - 256, id_pieRaw, SCBlockPieRaw.SWEETBERRY, "SCItemPieRaw_sweetberry").SetBuoyant().setCreativeTab(CreativeTabs.tabFood);	
 		
 		sweetberryPieCooked = new SCItemPie(id_sweetberryPieCooked - 256, SCItemFood.pieHungerHealed, SCItemFood.pieSaturationModifier, false, "SCItemPie_sweetberry", id_pieCooked, SCBlockPieCooked.sweetberry);
 		
 		sweetberryPieSlice = new SCItemFood ( id_sweetberryPieSlice - 256, SCItemFood.pieSliceHungerHealed, SCItemFood.pieSliceSaturationModifier, false, "SCItemPieSlice_sweetberry").setAlwaysEdible();
 		
 		//Blueberry
-		blueberryPieRaw = new FCItemPlacesAsBlock(id_blueberryPieRaw - 256, id_pieRaw, SCBlockPieRaw.blueberry, "SCItemPieRaw_blueberry").SetBuoyant().setCreativeTab(CreativeTabs.tabFood);
+		blueberryPieRaw = new FCItemPlacesAsBlock(id_blueberryPieRaw - 256, id_pieRaw, SCBlockPieRaw.BLUEBERRY, "SCItemPieRaw_blueberry").SetBuoyant().setCreativeTab(CreativeTabs.tabFood);
 		
 		blueberryPieCooked = new SCItemPie(id_blueberryPieCooked - 256, SCItemFood.pieHungerHealed, SCItemFood.pieSaturationModifier, false, "SCItemPie_blueberry", id_pieCooked, SCBlockPieCooked.blueberry);
 		

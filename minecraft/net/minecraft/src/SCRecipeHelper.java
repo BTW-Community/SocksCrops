@@ -60,10 +60,7 @@ public class SCRecipeHelper {
 		FCRecipes.addPistonPackingRecipe(pie, subtype,
 				new ItemStack[] {	    		
 			    		new ItemStack( Item.sugar ),
-			    		new ItemStack( fruit ),
-			    		new ItemStack( fruit ),
-			    		new ItemStack( fruit ),
-			    		new ItemStack( fruit ),
+			    		new ItemStack( fruit, 4),
 			    		new ItemStack( SCDefs.pieCrust )
 			} );
 		

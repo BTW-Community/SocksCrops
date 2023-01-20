@@ -4,8 +4,9 @@ import java.util.Random;
 
 public class SCBlockPieRaw extends SCBlockPieBase {
 
-	public static int sweetberry = 0;
-	public static int blueberry = 1;
+	public static final int PUMPKIN = 0;
+	public static final int SWEETBERRY = 1;
+	public static final int BLUEBERRY = 2;
 	
 	protected SCBlockPieRaw(int blockID)
 	{
@@ -16,8 +17,9 @@ public class SCBlockPieRaw extends SCBlockPieBase {
 	@Override
 	public int idDropped( int meta, Random random, int fortuneModifier)
 	{
-		if (meta == sweetberry) return SCDefs.sweetberryPieRaw.itemID;
-		else if (meta == blueberry) return SCDefs.blueberryPieRaw.itemID;
+		if (meta == PUMPKIN) return FCBetterThanWolves.fcItemPastryUncookedPumpkinPie.itemID;
+		else if (meta == SWEETBERRY) return SCDefs.sweetberryPieRaw.itemID;
+		else if (meta == BLUEBERRY) return SCDefs.blueberryPieRaw.itemID;
 		else return 0;
 	}
 	
@@ -34,8 +36,9 @@ public class SCBlockPieRaw extends SCBlockPieBase {
 	public void registerIcons(IconRegister register)
 	{
 		blockIcon = rawPastry = register.registerIcon( "fcBlockPastryUncooked" );
-		pieTop[0] = register.registerIcon( "SCBlockPieRawTop_sweetberry" );
-		pieTop[1] = register.registerIcon( "SCBlockPieRawTop_blueberry" );
+		pieTop[PUMPKIN] = register.registerIcon( "fcBlockUncookedPumpkinPie_top" );
+		pieTop[SWEETBERRY] = register.registerIcon( "SCBlockPieRawTop_sweetberry" );
+		pieTop[BLUEBERRY] = register.registerIcon( "SCBlockPieRawTop_blueberry" );
 	}
 	
 	@Override
