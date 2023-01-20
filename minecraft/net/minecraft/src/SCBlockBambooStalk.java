@@ -95,7 +95,6 @@ public class SCBlockBambooStalk extends SCBlockBambooRoot {
 	private Icon bigLeaves;
 	private Icon sideLeaves;
 
-
     public void registerIcons( IconRegister register )
     {
 		blockIcon = register.registerIcon( "SCBlockBambooStalk" );
@@ -127,21 +126,21 @@ public class SCBlockBambooStalk extends SCBlockBambooRoot {
     	int blockBelow = blockAccess.getBlockId(i, j-1, k);
     	
     	if (blockAbove != this.blockID && blockBelow == this.blockID) {
-    		SCUtilsRender.RenderCrossedSquaresWithTexture(renderer, this, i, j, k, bigLeaves, true);
+    		SCUtilsRender.RenderCrossedSquaresWithTextureAndOffset(renderer, this, i, j, k, bigLeaves, true);
  
     	}
 
     	if (blockAbove != this.blockID && blockBelow == SCDefs.bambooRoot.blockID) {
-    		SCUtilsRender.RenderCrossedSquaresWithTexture(renderer, this, i, j, k, sideLeaves,true);
+    		SCUtilsRender.RenderCrossedSquaresWithTextureAndOffset(renderer, this, i, j, k, sideLeaves,true);
     	}
     	
     	if (blockAbove == this.blockID && blockBelow == this.blockID && blockAccess.getBlockId(i, j+2, k) != this.blockID) 
     	{
-    		SCUtilsRender.RenderCrossedSquaresWithTexture(renderer, this, i, j, k, sideLeaves,true);
+    		SCUtilsRender.RenderCrossedSquaresWithTextureAndOffset(renderer, this, i, j, k, sideLeaves,true);
     	}
 
     	renderer.setRenderBounds(getBambooRenderBounds(2, i, j, k)); //4px x 4px
-    	FCClientUtilsRender.RenderStandardBlockWithTexture(renderer, this, i, j, k, this.blockIcon);
+    	renderer.renderStandardBlock(this, i, j, k);
 
     	
     	return true;

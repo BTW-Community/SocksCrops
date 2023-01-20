@@ -6,3 +6,9 @@ minecraft/net/minecraft/src/DecoManager.java
 minecraft_server/net/minecraft/src/DecoManager.java
 
 minecraft/net/minecraft/src/DecoDefs.java
+minecraft/net/minecraft/src/custom_model.java
+minecraft/net/minecraft/src/EntityBoat.java
+minecraft/net/minecraft/src/EntityTrackerEntry.java
+minecraft/net/minecraft/src/ItemBlock.java
+minecraft/net/minecraft/src/GuiIngame.java
+minecraft/net/minecraft/src/FoodStats.java

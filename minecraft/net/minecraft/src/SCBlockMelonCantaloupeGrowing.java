@@ -4,9 +4,9 @@ import java.util.Random;
 
 public class SCBlockMelonCantaloupeGrowing extends SCBlockMelonGrowing {
 
-	protected SCBlockMelonCantaloupeGrowing(int iBlockID, int stemBlock, int vineBlock, int flowerBlock, int convertedBlockID)
+	protected SCBlockMelonCantaloupeGrowing(int iBlockID, int stemBlock, int vineBlock, int flowerBlock, int convertedBlockID, int sleepingFruit)
 	{
-		super(iBlockID, stemBlock, vineBlock, flowerBlock, convertedBlockID);
+		super(iBlockID, stemBlock, vineBlock, flowerBlock, convertedBlockID, sleepingFruit);
 		
 		setUnlocalizedName("SCBlockMelonHoneydewGrowing");
 	}
@@ -53,17 +53,17 @@ public class SCBlockMelonCantaloupeGrowing extends SCBlockMelonGrowing {
 		//Orange
 		if (growthLevel == 0)
 		{
-			return GetGourdBounds(4, 4, 4);
+			return GetGourdBounds(6, 6, 6);
 		}
 		else if (growthLevel == 1)
 		{
-			return GetGourdBounds(6, 6, 6);
+			return GetGourdBounds(8, 8, 8);
 		}
 		else if (growthLevel == 2)
 		{
-			return GetGourdBounds(8, 8, 8);
+			return GetGourdBounds(10, 10, 10);
 		}
-		else return GetGourdBounds(10, 10, 10);
+		else return GetGourdBounds(12, 12, 12);
 	}	
 	
 	@Override
@@ -83,12 +83,11 @@ public class SCBlockMelonCantaloupeGrowing extends SCBlockMelonGrowing {
 	protected Icon[] waterMelonIcon;
 	protected Icon[] waterMelonIconTop;
 	protected Icon[] connectorIcon;
-	private Icon overlayIcon;
 	
 	@Override
   	public void registerIcons( IconRegister register )
   	{
-		overlayIcon = register.registerIcon("SCBlockMelonWhiteSideOverlay");
+		super.registerIcons(register);
 		
 		//Orange
 		waterMelonIcon = new Icon[4];
@@ -126,11 +125,4 @@ public class SCBlockMelonCantaloupeGrowing extends SCBlockMelonGrowing {
     	
     	return waterMelonIcon[growthLevel];
     }
-
-	@Override
-	Icon getOverlayIcon() {
-		return overlayIcon;
-	}
-	
-
 }

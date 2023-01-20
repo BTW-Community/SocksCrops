@@ -1,17 +1,24 @@
 package net.minecraft.src;
 
 import com.prupe.mcpatcher.mal.block.RenderBlocksUtils;
-
 import java.util.Random;
 
 public class BlockMycelium extends Block
 {
 	//SCADDON
-    static {
-    	SocksCropsAddon.instance.getVersionString();
-    }
-    //SCADDON END
-	
+	static {
+		try {
+			Class.forName("net.minecraft.src.SocksAddonsUtils");
+			new  SocksAddonsUtils();
+		} catch (ClassNotFoundException e){}
+		try {
+			Class.forName("net.minecraft.src.SocksCropsAddon");
+			new SocksCropsAddon();
+		} catch (ClassNotFoundException e){}
+
+	}
+	//SCADDON END
+    
     private Icon field_94422_a;
     private Icon field_94421_b;
 

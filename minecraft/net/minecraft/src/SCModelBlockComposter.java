@@ -71,15 +71,5 @@ public class SCModelBlockComposter extends FCModelBlock
 		
 		AddBox( center + 6/16D, 15/16D, center - 6/16D,
 				center + 8/16D, 16/16D, center + 6/16D );
-		
-		
-		
-		
-
-		
-    }
-	
-	//----------- Client Side Functionality -----------//
-
-	
+    }	
 }

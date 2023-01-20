@@ -9,6 +9,7 @@ public class SCBlockFarmlandNutrition3Fertilized extends FCBlockFarmlandFertiliz
 	public SCBlockFarmlandNutrition3Fertilized(int iBlockID) {
 		super(iBlockID);
 		setUnlocalizedName("SCBlockFarmlandFertilized");
+		this.setCreativeTab(CreativeTabs.tabBlock);
 	}
 	
 	private void setLooseDirt(World world, int i, int j, int k) {
@@ -148,7 +149,7 @@ public class SCBlockFarmlandNutrition3Fertilized extends FCBlockFarmlandFertiliz
 			{
 				return fertilizerOverlayWet;
 			}
-			else return fertilizerOverlayWet;
+			else return fertilizerOverlayDry;
 		}
 		else return null;
 	}

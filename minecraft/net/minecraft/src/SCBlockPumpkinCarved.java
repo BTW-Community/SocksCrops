@@ -203,7 +203,7 @@ public class SCBlockPumpkinCarved extends FCBlockPumpkinCarved {
 		}
 		//Green
 		if (meta == 4 || meta == 5 || meta == 6 || meta == 7){
-			renderer.setRenderBounds(GetPumpkinBounds(8/16D, 8/16D)); 
+			renderer.setRenderBounds(GetPumpkinBounds(8/16D, 10/16D)); 
 			renderer.renderStandardBlock( this, i, j, k );
 		}
 		//Yellow
@@ -213,7 +213,7 @@ public class SCBlockPumpkinCarved extends FCBlockPumpkinCarved {
 		}
 		//White
 		if (meta == 12 || meta == 13 || meta == 14 || meta == 15){
-			renderer.setRenderBounds(GetPumpkinBounds(5/16D, 6/16D));
+			renderer.setRenderBounds(GetPumpkinBounds(6/16D, 8/16D));
 			renderer.renderStandardBlock( this, i, j, k );
 		}
 
@@ -237,14 +237,14 @@ public class SCBlockPumpkinCarved extends FCBlockPumpkinCarved {
 		}
 		//Green
 		else if (meta == 4 || meta == 5 || meta == 6 || meta == 7){
-			return GetPumpkinBounds(8/16D, 8/16D);
+			return GetPumpkinBounds(8/16D, 10/16D);
 		}
 		//Yellow
 		else if (meta == 8 || meta == 9 || meta == 10 || meta == 11){
 			return GetPumpkinBounds(6/16D, 12/16D);
 		}
 		//White
-		else return GetPumpkinBounds(5/16D, 6/16D);
+		else return GetPumpkinBounds(6/16D, 8/16D);
 	}
 	
 	

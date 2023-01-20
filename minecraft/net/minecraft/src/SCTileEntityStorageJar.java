@@ -7,21 +7,14 @@ public class SCTileEntityStorageJar extends TileEntity implements IInventory, FC
 	private ItemStack storageStack;
 	private boolean hasLabel;
 	private int seedType;
+	private int corkType;
+	private boolean hasAttachableBlockAbove;
 	
 	private static ArrayList<Integer> validItemList = new ArrayList<Integer>();
     
     static
     {
     	validItemList.add( Item.dyePowder.itemID );
-    	
-    	//CROPS
-    	validItemList.add( Item.melonSeeds.itemID );
-    	validItemList.add( Item.pumpkinSeeds.itemID );    	
-    	validItemList.add( Item.netherStalkSeeds.itemID );
-    	
-    	validItemList.add( FCBetterThanWolves.fcItemHempSeeds.itemID );
-    	validItemList.add( FCBetterThanWolves.fcItemWheatSeeds.itemID );
-    	validItemList.add( FCBetterThanWolves.fcItemCarrotSeeds.itemID );
     	
     	//BREWING
     	validItemList.add( Item.spiderEye.itemID );
@@ -51,17 +44,38 @@ public class SCTileEntityStorageJar extends TileEntity implements IInventory, FC
     	validItemList.add( Item.lightStoneDust.itemID );
     	validItemList.add( Item.sugar.itemID );
     	validItemList.add( FCBetterThanWolves.fcItemFlour.itemID );
-    	validItemList.add( FCBetterThanWolves.fcItemCocoaBeans.itemID );
-    	validItemList.add( FCBetterThanWolves.fcItemChickenFeed.itemID );
     	
-    	//SC
-    	validItemList.add( SCDefs.wildCarrotSeeds.itemID);
-    	validItemList.add( SCDefs.wildCarrotCropSapling.blockID);
+    	validItemList.add( FCBetterThanWolves.fcItemBloodMossSpores.itemID );
+    	validItemList.add( FCBetterThanWolves.fcItemBrimstone.itemID );
+    	validItemList.add( FCBetterThanWolves.fcItemPotash.itemID );
+    	validItemList.add( FCBetterThanWolves.fcItemGlue.itemID );
+    	validItemList.add( FCBetterThanWolves.fcItemMetalFragment.itemID );
+    	validItemList.add( FCBetterThanWolves.fcItemChunkIronOre.itemID );
+    	validItemList.add( FCBetterThanWolves.fcItemChunkGoldOre.itemID );
+    	
+    	validItemList.add( Item.fireballCharge.itemID );
+    	validItemList.add( Item.netherQuartz.itemID );
+    	validItemList.add( Item.emerald.itemID );
+    	validItemList.add( Item.enderPearl.itemID );
+    	validItemList.add( Item.diamond.itemID );
+    	
+    	validItemList.add( Item.goldNugget.itemID );
+    	validItemList.add( FCBetterThanWolves.fcItemNuggetIron.itemID );
+    	
+    	validItemList.add( FCBetterThanWolves.fcItemHempFibers.itemID );
+    	validItemList.add( FCBetterThanWolves.fcItemGear.itemID );
+    	validItemList.add( FCBetterThanWolves.fcItemStrap.itemID );
+    	validItemList.add( FCBetterThanWolves.fcItemTallow.itemID );
+    	
+    	validItemList.add( Item.silk.itemID );
+    	
     	
     	if( SCDecoIntegration.isDecoInstalled() )
     	{
     		validItemList.add( SCDecoIntegration.fertilizer.itemID );
     		validItemList.add( SCDecoIntegration.amethystShard.itemID );
+    		validItemList.add( SCDecoIntegration.prismarineCrystal.itemID );
+    		validItemList.add( SCDecoIntegration.prismarineShard.itemID );
     	}
     } 
     
@@ -73,10 +87,11 @@ public class SCTileEntityStorageJar extends TileEntity implements IInventory, FC
     @Override
     public void updateEntity()
     {
-    	if ( worldObj.isRemote )
-    	{
-    		return;
-    	}
+		FCTileEntityHopper hopper = (FCTileEntityHopper) worldObj.getBlockTileEntity(xCoord, yCoord + 1, zCoord);
+		if (hopper != null)
+		{
+			markBlockForUpdate();
+		}
     }
     
     @Override
@@ -87,8 +102,13 @@ public class SCTileEntityStorageJar extends TileEntity implements IInventory, FC
     	if (storageStack != null )
     	{
     		setSeedType( storageStack.itemID );
+    		
+    		if (storageStack.stackSize == 0) setStorageStack(null);    		
     	}
     	else setSeedType(0);
+    	
+    	
+    	markBlockForUpdate();
     }
     
 
@@ -120,8 +140,7 @@ public class SCTileEntityStorageJar extends TileEntity implements IInventory, FC
 	
 	public void setStorageStack(ItemStack storageStack) {
 		this.storageStack = storageStack;
-		markBlockForUpdate();
-		onInventoryChanged();
+		//onInventoryChanged();
 	}
 	
 	public ItemStack getStorageStack() {
@@ -134,7 +153,16 @@ public class SCTileEntityStorageJar extends TileEntity implements IInventory, FC
 	
 	public void setLabel(boolean hasLabel) {
 		this.hasLabel = hasLabel;
-		markBlockForUpdate();
+		//markBlockForUpdate();
+	}
+	
+	public boolean hasAttachableBlockAbove() {
+		return hasAttachableBlockAbove;
+	}
+	
+	public void setHasAttachableBlockAbove(boolean hasAttachableBlockAbove) {
+		this.hasAttachableBlockAbove = hasAttachableBlockAbove;
+		//markBlockForUpdate();
 	}
 	
 	public int getSeedType() {
@@ -143,10 +171,16 @@ public class SCTileEntityStorageJar extends TileEntity implements IInventory, FC
 	
 	public void setSeedType(int seedType) {
 		this.seedType = seedType;
-		markBlockForUpdate();
+		//markBlockForUpdate();
 	}
 
+	public int getCorkType() {
+		return corkType;
+	}
 	
+	public void setCorkType(int corkType) {
+		this.corkType = corkType;
+	}
     public void ejectStorageContents( int iFacing )
     {
     	
@@ -184,10 +218,20 @@ public class SCTileEntityStorageJar extends TileEntity implements IInventory, FC
         {
         	hasLabel = tag.getBoolean( "hasLabel" );
         }
-        
+
         if ( tag.hasKey( "seedType" ) )
         {
         	seedType = tag.getInteger( "seedType" );
+        }
+        
+        if ( tag.hasKey( "corkType" ) )
+        {
+        	corkType = tag.getInteger( "corkType" );
+        }
+        
+        if ( tag.hasKey( "hasAttachableBlockAbove" ) )
+        {
+        	hasAttachableBlockAbove = tag.getBoolean( "hasAttachableBlockAbove" );
         }
 	}
 	
@@ -208,6 +252,10 @@ public class SCTileEntityStorageJar extends TileEntity implements IInventory, FC
 		tag.setBoolean( "hasLabel", hasLabel ); 
 		
 		tag.setInteger( "seedType", seedType ); 
+		
+		tag.setInteger( "corkType", corkType ); 
+		
+		tag.setBoolean( "hasAttachableBlockAbove", hasAttachableBlockAbove ); 
 		
 		// force a visual update for the block since the above variables affect it
         
@@ -230,7 +278,9 @@ public class SCTileEntityStorageJar extends TileEntity implements IInventory, FC
         
         nbttagcompound1.setBoolean( "hasLabel", hasLabel );
         
-        nbttagcompound1.setInteger( "seedType", seedType ); 
+        nbttagcompound1.setInteger( "seedType", seedType );
+        
+        nbttagcompound1.setInteger( "corkType", corkType ); 
         
         return new Packet132TileEntityData( xCoord, yCoord, zCoord, 1, nbttagcompound1 );
 	}
@@ -255,6 +305,16 @@ public class SCTileEntityStorageJar extends TileEntity implements IInventory, FC
         if ( tag.hasKey( "seedType" ) )
         {
         	seedType = tag.getInteger( "seedType" );
+        }
+        
+        if ( tag.hasKey( "corkType" ) )
+        {
+        	corkType = tag.getInteger( "corkType" );
+        }
+        
+        if ( tag.hasKey( "hasAttachableBlockAbove" ) )
+        {
+        	hasAttachableBlockAbove = tag.getBoolean( "hasAttachableBlockAbove" );
         }
         
         // force a visual update for the block since the above variables affect it
@@ -286,14 +346,27 @@ public class SCTileEntityStorageJar extends TileEntity implements IInventory, FC
 		return null;
 	}
 
-	@Override
 	public void setInventorySlotContents(int slot, ItemStack stack)
 	{
-		if (isStackValidForSlot(slot, stack))
+		if (stack != null)
 		{
-			setStorageStack(stack);
+			if (isStackStorageItem(stack))
+			{
+				setStorageStack(stack);
+				setSeedType(stack.itemID);
+			}
+		}	
+	}
+
+	private void convertToSeedJar() {
+		
+		if (worldObj.getBlockId(xCoord, yCoord, zCoord) != SCDefs.seedJar.blockID)
+		{
+			worldObj.setBlockAndMetadata(xCoord, yCoord, zCoord, SCDefs.seedJar.blockID, worldObj.getBlockMetadata(xCoord, yCoord, zCoord));
+			
+			SCTileEntitySeedJar seedJar = (SCTileEntitySeedJar) worldObj.getBlockTileEntity(xCoord, yCoord, zCoord);
+			seedJar.setLabel(this.hasLabel());
 		}
-	
 	}
 
 	@Override
@@ -331,11 +404,35 @@ public class SCTileEntityStorageJar extends TileEntity implements IInventory, FC
 	@Override
 	public void closeChest() {}
 
+	//Normally not used, but in this case used by FCTileEntityHopper
 	@Override
-	public boolean isStackValidForSlot(int var1, ItemStack stack) {
+	public boolean isStackValidForSlot(int slot, ItemStack stack)
+	{
+		//If the item is valid, let it be stored
+		if (validItemList.contains( stack.itemID ))
+		{
+			return true;
+		}
+		else //If the item can't be stored
+		{
+			ArrayList<Integer> validSeedList = SCTileEntitySeedJar.getValidSeedList();
+			
+			SCTileEntityStorageJar storageJar = (SCTileEntityStorageJar) worldObj.getBlockTileEntity(xCoord, yCoord, zCoord);
+			
+			//Convert to a seed jar if the item can be stored in a seedjar and the storage jar is empty
+			if (validSeedList.contains(stack.itemID) && storageJar != null && storageJar.getStorageStack() == null)
+			{
+				convertToSeedJar();
+			}
+			
+			//else don't store items
+			return false;
+		}
+	}
+	
+	public static boolean isStackStorageItem(ItemStack stack)
+	{
 		return validItemList.contains( stack.itemID );
 	}
-
-
 
 }

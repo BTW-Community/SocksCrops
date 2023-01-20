@@ -18,6 +18,7 @@ public class SCWorldGenBamboo extends WorldGenerator
 	}
 	
 	static {
+//		SCWorldGenBamboo.addBiomeToGenerator(BiomeGenBase.jungle);
 		SCWorldGenBamboo.addBiomeToGenerator(BiomeGenBase.jungleHills);
 //		SCWorldGenBamboo.addBiomeToGenerator(BiomeGenBase.plains); //debug
 	}
@@ -32,9 +33,9 @@ public class SCWorldGenBamboo extends WorldGenerator
         
         for (int var6 = 0; var6 < 64; ++var6)
         {
-            int plantX = x + random.nextInt(2) - random.nextInt(2);
+            int plantX = x + random.nextInt(4) - random.nextInt(4);
             int plantY = y + random.nextInt(2) - random.nextInt(2);
-            int plantZ = z + random.nextInt(2) - random.nextInt(2);
+            int plantZ = z + random.nextInt(4) - random.nextInt(4);
 
             if (world.isAirBlock(plantX, y, plantZ) && world.isAirBlock(plantX, y + 1, plantZ))
             {

@@ -4,13 +4,37 @@ import java.util.Random;
 
 public class SCBlockPieCooked extends SCBlockPieBase {
 
-	public static final int subtypePumpkin = 0;
-	public static final int subtypeSweetberry = 4;
-	public static final int subtypeBlueberry = 8;
+	public static final int pumpkin = 0;
+	public static final int sweetberry = 4;
+	public static final int blueberry = 8;
 	
 	protected SCBlockPieCooked(int blockID) {
 		super(blockID);
 		setUnlocalizedName("SCBlockPieCooked");
+	}
+	
+	@Override
+	public int idDropped(int meta, Random rand, int fortuneModifier)
+	{
+		if (GetEatState(meta) == 0)
+		{
+			if (getType(meta) == pumpkin) return Item.pumpkinPie.itemID;
+			else if (getType(meta) == sweetberry) return SCDefs.sweetberryPieCooked.itemID;
+			else if (getType(meta) == blueberry) return SCDefs.blueberryPieCooked.itemID;
+			else return 0;
+		}
+		return 0;
+	}
+		
+	@Override
+	public int idPicked(World world, int x, int y, int z) {
+		
+		int meta = world.getBlockMetadata(x, y, z);
+		
+		if (getType(meta) == pumpkin) return Item.pumpkinPie.itemID;
+		else if (getType(meta) == sweetberry) return SCDefs.sweetberryPieCooked.itemID;
+		else if (getType(meta) == blueberry) return SCDefs.blueberryPieCooked.itemID;
+		else return 0;
 	}
 	
     public boolean onBlockActivated( World world, int i, int j, int k, EntityPlayer player, int iFacing, float fXClick, float fYClick, float fZClick )
@@ -41,21 +65,14 @@ public class SCBlockPieCooked extends SCBlockPieBase {
         return false;
     }
     
-    private void cutPie(World world, int i, int j, int k, EntityPlayer player)
+    protected void cutPie(World world, int i, int j, int k, EntityPlayer player)
     {
         int iEatState = GetEatState( world, i, j, k ) + 1; 
 
     	int sliceID = 0;
     	int meta =  world.getBlockMetadata(i, j, k);
     	
-    	if (getType(meta) == subtypePumpkin)
-    		sliceID = SCDefs.pumpkinPieSlice.itemID;
-    	
-    	else if (getType(meta) == subtypeSweetberry)
-    		sliceID = SCDefs.sweetberryPieSlice.itemID;
-    	
-    	else if (getType(meta) == subtypeBlueberry)
-    		sliceID = SCDefs.blueberryPieSlice.itemID;
+    	sliceID = getSliceItem(sliceID, meta);
     	
         if(!world.isRemote)
         {
@@ -71,6 +88,18 @@ public class SCBlockPieCooked extends SCBlockPieBase {
             SetEatState( world, i, j, k, iEatState );
 
         }
+	}
+
+	protected int getSliceItem(int sliceID, int meta) {
+		if (getType(meta) == pumpkin)
+    		sliceID = SCDefs.pumpkinPieSlice.itemID;
+    	
+    	else if (getType(meta) == sweetberry)
+    		sliceID = SCDefs.sweetberryPieSlice.itemID;
+    	
+    	else if (getType(meta) == blueberry)
+    		sliceID = SCDefs.blueberryPieSlice.itemID;
+		return sliceID;
 	}
 
 	protected void EatCakeSliceLocal( World world, int i, int j, int k, EntityPlayer player )
@@ -108,9 +137,9 @@ public class SCBlockPieCooked extends SCBlockPieBase {
     
     public int getType( int meta )
     {
-    	if (meta < 4) return subtypePumpkin; //Pumpkin
-    	else if (meta >= 4 && meta < 8) return subtypeSweetberry; //Sweetberry
-    	else if (meta >= 8 && meta < 12) return subtypeBlueberry; //Blueberry
+    	if (meta < 4) return pumpkin; //Pumpkin
+    	else if (meta >= 4 && meta < 8) return sweetberry; //Sweetberry
+    	else if (meta >= 8 && meta < 12) return blueberry; //Blueberry
     	else return 12;
     }
     
@@ -135,24 +164,14 @@ public class SCBlockPieCooked extends SCBlockPieBase {
 		
         world.setBlockMetadataWithNotify( i, j, k, iMetaData );
     }
-	
-	@Override
-	public int idDropped( int meta, Random random, int fortuneModifier) {
-		
-		if (GetEatState(meta) == 0)
-			if (getType(meta) == subtypePumpkin) return Item.pumpkinPie.itemID;
-			else if (getType(meta) == subtypeSweetberry) return SCDefs.sweetberryPieCooked.itemID;
-			else if (getType(meta) == subtypeBlueberry) return SCDefs.blueberryPieCooked.itemID;
-			else return 0;
-		else return 0;
-	}
+
 	
 	//----------- Client Side Functionality -----------//
 
-    private Icon cookedPie;
-    private Icon[] cookedTop = new Icon[4];
-    private Icon[] cookedCrustInside = new Icon[4];
-    private Icon[] cookedPieInside = new Icon[4];
+	protected Icon cookedPie;
+    protected Icon[] cookedTop = new Icon[4];
+    protected Icon[] cookedCrustInside = new Icon[4];
+    protected Icon[] cookedPieInside = new Icon[4];
    
     protected boolean secondPass;
     

@@ -11,6 +11,8 @@ public class SCTileEntityFishTrap extends TileEntity implements FCITileEntityDat
 	private int waterSpots;
 	
 	private ItemStack fishStack;
+	public int ticks;
+	public double distanceToPlayer;
 	
 	private static ArrayList<Integer> validBait = new ArrayList<Integer>();
 
@@ -18,6 +20,103 @@ public class SCTileEntityFishTrap extends TileEntity implements FCITileEntityDat
 	private static ArrayList<FCUtilsRandomItemStack> exoticLoot = new ArrayList();
 	private static ArrayList<FCUtilsRandomItemStack> riverLoot = new ArrayList();
 	private static ArrayList<FCUtilsRandomItemStack> oceanLoot = new ArrayList();
+	
+	public SCTileEntityFishTrap()
+	{
+		this.isBaited = false;
+		this.hasFish = false;
+	}
+	
+	@Override
+	public void updateEntity()
+	{
+		EntityPlayer playerInRange = worldObj.getClosestPlayer(xCoord, yCoord, zCoord, 12);
+		
+		if (hasFish && playerInRange != null)
+		{
+			EntityPlayer player = worldObj.getClosestPlayer(xCoord, yCoord, zCoord, 5);
+			
+			if (player != null)
+			{
+				double distance = player.getDistanceSq(xCoord, yCoord, zCoord);
+				
+				this.distanceToPlayer = Math.sqrt(distance); // distance;
+			}
+			else this.distanceToPlayer = 1;
+			
+			//System.out.println("Distance: " + distanceToPlayer);
+			
+			
+    		if (ticks > 360)
+    		{
+    			ticks = 0;
+    		}
+    		
+    		ticks++;
+		}
+		
+		
+		if (!worldObj.isRemote) {
+				
+
+			
+			//System.out.println(worldObj.getBiomeGenForCoords(xCoord, zCoord));
+			//System.out.println(worldObj.getBiomeGenForCoords(xCoord, zCoord).biomeName);
+			
+			if (!hasFish && isBaited && isTouchingWater() && worldObj.getBlockMetadata(xCoord, yCoord, zCoord) == 1) {
+				// System.out.println("I have water");
+				
+				if (isBodyOfWaterLargeEnoughForFishing()) { // && worldObj.rand.nextInt(64) == 0) 
+					if (checkForBite()) {
+						//System.out.println("fish");
+
+						catchFish();
+					}
+				}
+			}
+		}
+
+	}
+	
+	private void catchFish()
+	{
+		setHasFish(true);
+		setBaited(false);
+		
+		BiomeGenBase biome = worldObj.getBiomeGenForCoords(xCoord, zCoord);
+		
+		if (biome == BiomeGenBase.ocean || biome == BiomeGenBase.frozenOcean || biome instanceof BiomeGenBeachBase || biome == BiomeGenBase.mushroomIslandShore)
+		{
+			FCUtilsRandomItemStack[] arr = new FCUtilsRandomItemStack[oceanLoot.size()];
+			setFishStack( FCUtilsRandomItemStack.GetRandomStack( worldObj.rand, oceanLoot.toArray(arr)) );
+			
+			System.out.println("Ocean Loot");
+		}
+		else if (biome == BiomeGenBase.riverJungle || biome == BiomeGenBase.jungle || biome == BiomeGenBase.jungleHills)
+		{
+			FCUtilsRandomItemStack[] arr = new FCUtilsRandomItemStack[exoticLoot.size()];
+			setFishStack( FCUtilsRandomItemStack.GetRandomStack( worldObj.rand, exoticLoot.toArray(arr)) );
+			
+			System.out.println("Jungle Loot");
+		}
+		else if (biome instanceof BiomeGenRiver && biome != BiomeGenBase.riverJungle  )
+		{
+			FCUtilsRandomItemStack[] arr = new FCUtilsRandomItemStack[riverLoot.size()];
+			setFishStack( FCUtilsRandomItemStack.GetRandomStack( worldObj.rand, riverLoot.toArray(arr)) );
+			
+			System.out.println("River Loot");
+		}
+		else {
+			FCUtilsRandomItemStack[] arr = new FCUtilsRandomItemStack[normalLoot.size()];
+			setFishStack( FCUtilsRandomItemStack.GetRandomStack( worldObj.rand, normalLoot.toArray(arr)) );
+			
+			System.out.println("Normal Loot");
+		}
+
+		worldObj.setBlockMetadata(xCoord, yCoord, zCoord, SCBlockFishTrap.NO_BAIT);
+		
+		this.markBlockForUpdate();
+	}
 	
 	public static void addValidBait(int itemID) {
 		validBait.add(itemID);
@@ -39,37 +138,29 @@ public class SCTileEntityFishTrap extends TileEntity implements FCITileEntityDat
 		oceanLoot.add(randomItemStack);
 	}
 	
-	static {    	
+	static {
+		addValidBait( FCBetterThanWolves.fcItemCreeperOysters.itemID );
+		addValidBait( FCBetterThanWolves.fcItemBatWing.itemID );
+		addValidBait( FCBetterThanWolves.fcItemWitchWart.itemID );
+		addValidBait( Item.spiderEye.itemID );
+		addValidBait( Item.rottenFlesh.itemID );
+		
 		addNormalLoot( new FCUtilsRandomItemStack(Item.fishRaw.itemID, 0, 1, 1, 100)); //itemID, damage, minNum, maxNum, weight
 		addNormalLoot( new FCUtilsRandomItemStack(Item.bootsLeather.itemID, 0, 1, 1, 1));
 		
-		addExoticLoot( new FCUtilsRandomItemStack(Item.fishRaw.itemID, 0, 1, 1, 100)); //itemID, damage, minNum, maxNum, weight
-		addExoticLoot( new FCUtilsRandomItemStack(SCDefs.tropicalRaw.itemID, 0, 1, 1, 25));
+		addExoticLoot( new FCUtilsRandomItemStack(Item.fishRaw.itemID, 0, 1, 1, 75)); //itemID, damage, minNum, maxNum, weight
+		addExoticLoot( new FCUtilsRandomItemStack(SCDefs.tropical.itemID, 0, 1, 1, 25));
 		addExoticLoot( new FCUtilsRandomItemStack(Item.bootsLeather.itemID, 0, 1, 1, 1));
 		
-		addRiverLoot( new FCUtilsRandomItemStack(Item.fishRaw.itemID, 0, 1, 1, 100)); //itemID, damage, minNum, maxNum, weight
-		addRiverLoot( new FCUtilsRandomItemStack(SCDefs.salmonRaw.itemID, 0, 1, 1, 25));
+		addRiverLoot( new FCUtilsRandomItemStack(Item.fishRaw.itemID, 0, 1, 1, 75)); //itemID, damage, minNum, maxNum, weight
+		addRiverLoot( new FCUtilsRandomItemStack(SCDefs.salmon.itemID, 0, 1, 1, 25));
 		addRiverLoot( new FCUtilsRandomItemStack(Item.bootsLeather.itemID, 0, 1, 1, 1));
 		
-		addOceanLoot( new FCUtilsRandomItemStack(Item.fishRaw.itemID, 0, 1, 1, 100)); //itemID, damage, minNum, maxNum, weight
-		addOceanLoot( new FCUtilsRandomItemStack(SCDefs.codRaw.itemID, 0, 1, 1, 25));
+		addOceanLoot( new FCUtilsRandomItemStack(Item.fishRaw.itemID, 0, 1, 1, 75)); //itemID, damage, minNum, maxNum, weight
+		addOceanLoot( new FCUtilsRandomItemStack(SCDefs.cod.itemID, 0, 1, 1, 25));
 		addOceanLoot( new FCUtilsRandomItemStack(Item.bootsLeather.itemID, 0, 1, 1, 1));
 	}
-
-	static {  
-		validBait.add(FCBetterThanWolves.fcItemCreeperOysters.itemID);
-		validBait.add(FCBetterThanWolves.fcItemBatWing.itemID);
-		validBait.add(FCBetterThanWolves.fcItemWitchWart.itemID);
-		validBait.add(Item.spiderEye.itemID);
-		validBait.add(Item.rottenFlesh.itemID);
-		validBait.add(SCDefs.earthworm.itemID);
-	}
-	
-	public SCTileEntityFishTrap() {
-		this.isBaited = false;
-		this.hasFish = false;
-	}
-	
+		
 	public void setBaited(boolean isBaited) {
 		this.isBaited = isBaited;
 	}
@@ -77,86 +168,14 @@ public class SCTileEntityFishTrap extends TileEntity implements FCITileEntityDat
 	public boolean isBaited() {
 		return isBaited;
 	}
-	
-	
+		
 	public boolean hasFish() {
 		return hasFish;
 	}
 
 	public void setHasFish(boolean hasFish) {
 		this.hasFish = hasFish;
-	}
-
-	@Override
-	public void updateEntity() {
-		if (!worldObj.isRemote) {
-			
-			//System.out.println(worldObj.getBiomeGenForCoords(xCoord, zCoord));
-			//System.out.println(worldObj.getBiomeGenForCoords(xCoord, zCoord).biomeName);
-			
-			if (isTouchingWater() && worldObj.getBlockMetadata(xCoord, yCoord, zCoord) == 1) {
-				// System.out.println("I have water");
-				
-				if (isBodyOfWaterLargeEnoughForFishing() && worldObj.rand.nextInt(64) == 0) {
-					if (checkForBite()) {
-						//System.out.println("fish");
-
-						catchFish();
-					}
-				}
-			}
-		}
-	}
-	
-	private void catchFish()
-	{
-		setHasFish(true);
-		setBaited(false);
-		
-		BiomeGenBase biome = worldObj.getBiomeGenForCoords(xCoord, zCoord);
-		
-		if (biome == BiomeGenBase.ocean || biome == BiomeGenBase.frozenOcean || biome instanceof BiomeGenBeach)
-		{
-			FCUtilsRandomItemStack[] arr = new FCUtilsRandomItemStack[oceanLoot.size()];
-			setFishStack( FCUtilsRandomItemStack.GetRandomStack( worldObj.rand, oceanLoot.toArray(arr)) );
-		}
-		else if (biome instanceof SCBiomeGenRiverJungle || biome == BiomeGenBase.jungle || biome == BiomeGenBase.jungleHills)
-		{
-			FCUtilsRandomItemStack[] arr = new FCUtilsRandomItemStack[exoticLoot.size()];
-			setFishStack( FCUtilsRandomItemStack.GetRandomStack( worldObj.rand, exoticLoot.toArray(arr)) );
-		}
-		else if (biome instanceof BiomeGenRiver && !(biome instanceof SCBiomeGenRiverJungle) )
-		{
-			FCUtilsRandomItemStack[] arr = new FCUtilsRandomItemStack[riverLoot.size()];
-			setFishStack( FCUtilsRandomItemStack.GetRandomStack( worldObj.rand, riverLoot.toArray(arr)) );
-		}
-		else {
-			FCUtilsRandomItemStack[] arr = new FCUtilsRandomItemStack[normalLoot.size()];
-			setFishStack( FCUtilsRandomItemStack.GetRandomStack( worldObj.rand, normalLoot.toArray(arr)) );
-		}
-
-		worldObj.setBlockMetadata(xCoord, yCoord, zCoord, 0);
-		this.markBlockForUpdate();
-	}
-
-		
-//        int i = MathHelper.floor_double( xCoord );
-//        int j = MathHelper.floor_double( yCoord );
-//        int k = MathHelper.floor_double( zCoord );
-//		
-//        for ( int iTempI = i - 2; iTempI <= i + 2; iTempI++ )
-//        {
-//            for ( int iTempJ = j - 2; iTempJ <= j + 2; iTempJ++ )
-//            {
-//                for ( int iTempK = k - 2; iTempK <= k + 2; iTempK++ )
-//                {
-//                    if(worldObj.rand.nextInt(16)==0)
-//                    {
-//                        worldObj.spawnParticle("reddust", iTempI+0.5D, iTempJ+0.5D, iTempK+0.5D, 0, 0, 0);
-//                    }      	
-//                }
-//            }
-//        }
+	}	
 	
 	public ItemStack getFishStack() {
 		return fishStack;
@@ -170,6 +189,11 @@ public class SCTileEntityFishTrap extends TileEntity implements FCITileEntityDat
     @Override
     public void readFromNBT(NBTTagCompound tag) {
     	super.readFromNBT(tag);
+    	
+        if ( tag.hasKey( "scIsBaited" ) )
+        {
+        	ticks = tag.getInteger("ticks");
+        }
     	
         if ( tag.hasKey( "scIsBaited" ) )
         {
@@ -187,11 +211,16 @@ public class SCTileEntityFishTrap extends TileEntity implements FCITileEntityDat
         {
         	fishStack = ItemStack.loadItemStackFromNBT( fishTag );
         }
+        
+        
+        
     }
     
     @Override
     public void writeToNBT(NBTTagCompound tag) {
     	super.writeToNBT(tag);
+    	
+        tag.setInteger("ticks", ticks);
     	
         tag.setBoolean( "scIsBaited", isBaited );
         
@@ -214,10 +243,11 @@ public class SCTileEntityFishTrap extends TileEntity implements FCITileEntityDat
     @Override
     public Packet getDescriptionPacket()
     {
-    	NBTTagCompound nbttagcompound1 = new NBTTagCompound();
+    	NBTTagCompound tag = new NBTTagCompound();
 
-        nbttagcompound1.setBoolean( "scIsBaited", isBaited );
-        nbttagcompound1.setBoolean( "scHasFish", hasFish );
+    	tag.setInteger("ticks", ticks);
+        tag.setBoolean( "scIsBaited", isBaited );
+        tag.setBoolean( "scHasFish", hasFish );
         
         if ( fishStack != null)
         {
@@ -225,16 +255,17 @@ public class SCTileEntityFishTrap extends TileEntity implements FCITileEntityDat
             
             fishStack.writeToNBT( fishTag );
             
-            nbttagcompound1.setCompoundTag( "fishStack", fishTag );
+            tag.setCompoundTag( "fishStack", fishTag );
         }
         
-        return new Packet132TileEntityData( xCoord, yCoord, zCoord, 1, nbttagcompound1 );
+        return new Packet132TileEntityData( xCoord, yCoord, zCoord, 1, tag );
     }
 	
     
     @Override
     public void readNBTFromPacket( NBTTagCompound tag )
     {
+    	ticks = tag.getInteger("ticks");
     	isBaited = tag.getBoolean( "scIsBaited" );
     	hasFish = tag.getBoolean( "scHasFish" );
     	
@@ -315,8 +346,8 @@ public class SCTileEntityFishTrap extends TileEntity implements FCITileEntityDat
 		
     	if ( isBaited )
     	{
-//	        int iBiteOdds = 100; // previously 1500 
-	        int iBiteOdds = 4000 - waterSpots * 15; //max waterspots is 124, min is 50 atm
+	        int iBiteOdds = 100; // previously 1500 
+//	        int iBiteOdds = 4000 - waterSpots * 15; //max waterspots is 124, min is 50 atm
 	        
 	        
 	        
@@ -364,7 +395,7 @@ public class SCTileEntityFishTrap extends TileEntity implements FCITileEntityDat
 	            }
 	        }
 	        
-	        // System.out.println(iBiteOdds);
+//	         System.out.println(iBiteOdds);
 	
 	        if ( worldObj.rand.nextInt( iBiteOdds ) == 0 )
 	        {

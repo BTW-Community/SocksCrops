@@ -77,7 +77,7 @@ public class SCBlockFarmlandNutrition1Dung extends SCBlockFarmlandNutrition1 {
 			{
 				return dungOverlayWet;
 			}
-			else return dungOverlayWet;
+			else return dungOverlayDry;
 		}
 		else return null;
 	}
@@ -100,5 +100,12 @@ public class SCBlockFarmlandNutrition1Dung extends SCBlockFarmlandNutrition1 {
 
 		secondPass = false;
 	}
-
+	
+	@Override
+	public void RenderBlockAsItem(RenderBlocks renderBlocks, int iItemDamage, float fBrightness) {
+		
+		super.RenderBlockAsItem(renderBlocks, iItemDamage, fBrightness);
+		
+		FCClientUtilsRender.RenderInvBlockWithTexture(renderBlocks, this, -0.5F, -0.5F, -0.5F, dungOverlayDry);
+	}
 }

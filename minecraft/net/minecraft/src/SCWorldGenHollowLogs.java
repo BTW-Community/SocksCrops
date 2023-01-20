@@ -41,7 +41,7 @@ public class SCWorldGenHollowLogs {
         int dir = getRandomDirection(randomDir);
         
         int oakOrBirch = rand.nextInt(3);
-        boolean placeMoss = rand.nextInt(2) == 0;
+        boolean placeMoss = true;
         
         if ( !isValidBiome )
         {
@@ -73,12 +73,10 @@ public class SCWorldGenHollowLogs {
         		placeLogs(world, plantX, plantY, plantZ, hollowLog, dir, type, placeMoss);
         	}
         	
-			if (world.isAirBlock(plantX, plantY + 1, plantZ) && placeMoss)
+			if (world.isAirBlock(plantX + 1, plantY, plantZ))
 			{
-				world.setBlock(plantX, plantY + 1, plantZ, SCDefs.mossCarpet.blockID, 0, 2);
-			}
-        	
-        	
+				world.setBlock(plantX + 1, plantY, plantZ, SCDefs.mossCarpet.blockID, 0, 2);
+			}        	
         }
 
         return true;

@@ -4,8 +4,8 @@ import java.util.Random;
 
 public class SCBlockPieRaw extends SCBlockPieBase {
 
-	public static int subtypeSweetberry = 0;
-	public static int subtypeBlueberry = 1;
+	public static int sweetberry = 0;
+	public static int blueberry = 1;
 	
 	protected SCBlockPieRaw(int blockID)
 	{
@@ -16,8 +16,8 @@ public class SCBlockPieRaw extends SCBlockPieBase {
 	@Override
 	public int idDropped( int meta, Random random, int fortuneModifier)
 	{
-		if (meta == subtypeSweetberry) return SCDefs.sweetberryPieRaw.itemID;
-		else if (meta == subtypeBlueberry) return SCDefs.blueberryPieRaw.itemID;
+		if (meta == sweetberry) return SCDefs.sweetberryPieRaw.itemID;
+		else if (meta == blueberry) return SCDefs.blueberryPieRaw.itemID;
 		else return 0;
 	}
 	
@@ -27,8 +27,8 @@ public class SCBlockPieRaw extends SCBlockPieBase {
 		return idDropped(world.getBlockMetadata(i, j, k), world.rand, 0);
 	}
 	
-	private Icon rawPastry;
-	private Icon[] pieTop = new Icon[16];
+	protected Icon rawPastry;
+	protected Icon[] pieTop = new Icon[16];
 	
 	@Override
 	public void registerIcons(IconRegister register)
@@ -50,9 +50,8 @@ public class SCBlockPieRaw extends SCBlockPieBase {
 	}
 	
     @Override
-    public void RenderBlockSecondPass( RenderBlocks renderBlocks, int i, int j, int k, boolean bFirstPassResult )
+    public void RenderBlockSecondPass( RenderBlocks renderer, int x, int y, int z, boolean firstPassResult )
     {
-        RenderCookingByKilnOverlay( renderBlocks, i, j, k, bFirstPassResult );
+        RenderCookingByKilnOverlay( renderer, x, y, z, firstPassResult );
     }
-
 }

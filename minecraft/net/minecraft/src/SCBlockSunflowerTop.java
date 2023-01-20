@@ -3,15 +3,52 @@ package net.minecraft.src;
 import java.util.Iterator;
 import java.util.Random;
 
-public class SCBlockSunflowerTop extends BlockFlower {
+public class SCBlockSunflowerTop extends FCBlockCrops {
 
 	protected SCBlockSunflowerTop(int par1) {
-		super(par1, Material.plants);
+		super(par1);
 		setUnlocalizedName("SCBlockSunflowerTop");
-		setCreativeTab(CreativeTabs.tabAllSearch);
+		
+        InitBlockBounds( 0.5D - m_dBoundsHalfWidth, 0D, 0.5D - m_dBoundsHalfWidth, 
+            	0.5D + m_dBoundsHalfWidth, 1D, 0.5D + m_dBoundsHalfWidth );
 	}
 	
-	private int updateRotationForTime( World world, int i, int j, int k, Random rand )
+    public float GetBaseGrowthChance( World world, int i, int j, int k )
+    {
+    	return 0.5F;
+    }
+	
+	@Override
+	public AxisAlignedBB GetBlockBoundsFromPoolBasedOnState(IBlockAccess blockAccess, int i, int j, int k) {
+		
+		return GetFixedBlockBoundsFromPool();
+	}
+
+	@Override
+	protected int GetGrowthLevel(int meta) {
+		
+		if (meta <= 3)
+		{
+			return 0;
+		}
+		else if (meta > 3 && meta <= 7)
+		{
+			return 1;
+		}
+		else if (meta > 7 && meta <= 11)
+		{
+			return 2;
+		}
+		else return 3;
+	}
+	
+	@Override
+	protected boolean IsFullyGrown(int iMetadata) {
+		return GetGrowthLevel(iMetadata) > 2;
+	}
+
+	
+	public static int updateRotationForTime( World world )
 	{
 		int timeOfDay = (int)( world.worldInfo.getWorldTime() % 24000L );
 
@@ -25,7 +62,6 @@ public class SCBlockSunflowerTop extends BlockFlower {
 		boolean afterMoon = timeOfDay >= 18000 && timeOfDay < 21000;
 		boolean lateNight = timeOfDay >= 21000 && timeOfDay < 24000;
 		
-		int meta = world.getBlockMetadata(i, j, k);
 		int rotation = 0;
 
 		if (isMorning) rotation = 0;
@@ -43,25 +79,61 @@ public class SCBlockSunflowerTop extends BlockFlower {
 	@Override
 	public void updateTick( World world, int i, int j, int k, Random rand )
 	{
-
-		int rotation = updateRotationForTime(world, i, j, k, rand);
+		int meta = world.getBlockMetadata(i, j, k);
+		int rotation = updateRotationForTime(world);
+		int growthStage = GetGrowthLevel(meta);
 		
-		world.setBlockAndMetadata(i, j, k, this.blockID, rotation);
-
-		//AttemptToGrow( world, i, j, k, rand );
-
+        if ( UpdateIfBlockStays( world, i, j, k ) )
+        {
+    		if (world.provider.dimensionId != 1 && !IsFullyGrown(meta))
+    		{
+    			AttemptToGrow( world, i, j, k, rand );
+    			world.setBlockAndMetadata(i, j, k, this.blockID, growthStage + rotation);
+    		}
+        }
 	}
 	
-//	@Override
-//	protected int GetCropItemID() {
-//		return 0;
-//	}
-//
-//	@Override
-//	protected int GetSeedItemID() {
-//		return 0;
-//	}
+    protected void AttemptToGrow(World world, int x, int y, int z, Random rand) {
+    	if (GetWeedsGrowthLevel(world, x, y, z) == 0 && canGrowAtCurrentLightLevel(world, x, y, z)) {
+	        Block blockBelow = Block.blocksList[world.getBlockId(x, y - 1, z)];
+	        
+	        if (blockBelow != null && blockBelow.IsBlockHydratedForPlantGrowthOn(world, x, y - 1, z)) {
+	    		float fGrowthChance = GetBaseGrowthChance(world, x, y, z) *
+	    			blockBelow.GetPlantGrowthOnMultiplier(world, x, y - 2, z, this);
+	    		
+	            if (rand.nextFloat() <= fGrowthChance) {
+	            	System.out.println("Growing");
+	            	
+	            	IncrementGrowthLevel(world, x, y, z);
+	            }
+	        }
+	    }
+    }
+    
+    protected void IncrementGrowthLevel( World world, int i, int j, int k )
+    {
+    	int iGrowthLevel = GetGrowthLevel( world, i, j, k ) + 1;
+    	
+        SetGrowthLevel( world, i, j, k, iGrowthLevel );
+        
+        if ( IsFullyGrown( world, i, j, k ) )
+        {
+        	Block blockBelow = Block.blocksList[world.getBlockId( i, j - 2, k )];
+        	
+        	if ( blockBelow != null )
+        	{
+        		blockBelow.NotifyOfFullStagePlantGrowthOn( world, i, j - 2, k, this );
+        	}
+        }
+    }
 	
+    protected boolean CanGrowOnBlock( World world, int i, int j, int k )
+    {
+    	Block blockOn = Block.blocksList[world.getBlockId( i, j, k )];
+    	
+    	return blockOn != null && world.getBlockId(i, j, k) == SCDefs.sunflowerCrop.blockID;
+    }
+		
 	private Icon front[] = new Icon[4];
 	private Icon back[] = new Icon[4];
 	private Icon stem[] = new Icon[4];
@@ -83,22 +155,34 @@ public class SCBlockSunflowerTop extends BlockFlower {
 		
 		int growthLevel = renderer.blockAccess.getBlockMetadata(i, j, k) & 3;
 		int meta = renderer.blockAccess.getBlockMetadata(i, j, k);
-		float flowerHeight = 0/16F;
+		float flowerHeight = 1/16F; // * GetGrowthLevel(meta);
 
-		if (growthLevel <= 1)
+		if (growthLevel < 2)
 		{
-			SCUtilsRender.renderSunflowerPlaneWithTexturesAndRotation(renderer, this, i, j, k, front[3], flowerHeight, growthLevel);
-			SCUtilsRender.renderBackSunflowerPlaneWithTexturesAndRotation(renderer, this, i, j, k, back[3], flowerHeight, growthLevel);
+			SCUtilsRender.renderSunflowerPlaneWithTexturesAndRotation(renderer, this, i, j, k, front[GetGrowthLevel(meta)], flowerHeight, growthLevel);
+			SCUtilsRender.renderBackSunflowerPlaneWithTexturesAndRotation(renderer, this, i, j, k, back[GetGrowthLevel(meta)], flowerHeight, growthLevel);
 		}
 		else
 		{
-			SCUtilsRender.renderSunflowerPlaneWithTexturesAndRotation(renderer, this, i, j, k, back[3], flowerHeight, growthLevel);
-			SCUtilsRender.renderBackSunflowerPlaneWithTexturesAndRotation(renderer, this, i, j, k, front[3], flowerHeight, growthLevel);
+			SCUtilsRender.renderSunflowerPlaneWithTexturesAndRotation(renderer, this, i, j, k, back[GetGrowthLevel(meta)], flowerHeight, growthLevel);
+			SCUtilsRender.renderBackSunflowerPlaneWithTexturesAndRotation(renderer, this, i, j, k, front[GetGrowthLevel(meta)], flowerHeight, growthLevel);
 		}
 
 		
-		SCUtilsRender.RenderCrossedSquaresWithTexture(renderer, this, i, j, k, stem[3], false);
+		SCUtilsRender.RenderCrossedSquaresWithTextureAndOffset(renderer, this, i, j, k, stem[GetGrowthLevel(meta)], false);
 		return true;
+	}
+
+	@Override
+	protected int GetCropItemID() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	protected int GetSeedItemID() {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 

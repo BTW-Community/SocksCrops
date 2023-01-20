@@ -80,9 +80,11 @@ public class SCBlockBambooShoot extends BlockFlower {
      */
     public void harvestBlock(World par1World, EntityPlayer par2EntityPlayer, int par3, int par4, int par5, int par6)
     {
-        if (!par1World.isRemote && par2EntityPlayer.getCurrentEquippedItem() != null && par2EntityPlayer.getCurrentEquippedItem().itemID == Item.shears.itemID)
+        if (!par1World.isRemote && par2EntityPlayer.getCurrentEquippedItem() != null && par2EntityPlayer.getCurrentEquippedItem().getItem() instanceof FCItemShears)
         {
             this.dropBlockAsItem_do(par1World, par3, par4, par5, new ItemStack(SCDefs.bambooShoot, 1, par6));
+            par2EntityPlayer.getCurrentEquippedItem().damageItem(1, par2EntityPlayer);
+            
         }
         else
         {
@@ -99,8 +101,8 @@ public class SCBlockBambooShoot extends BlockFlower {
         {
         	
         	
-        	byte radius = 5;
-            int famSize = 7;
+        	byte radius = 4;
+            int famSize = 5;
             int var8;
             int var9;
             int var10;
@@ -161,8 +163,8 @@ public class SCBlockBambooShoot extends BlockFlower {
 
 	public static int randomMetaForHeight(Random random) {
 		
-		int minHeight = 11;
-		int randomHeight =  minHeight + random.nextInt(5); //sets the metadata to a random int between 12 & 16
+		int minHeight = 3;
+		int randomHeight =  minHeight + random.nextInt(5); //sets the metadata to a random int between 4 and 8
 		//System.out.println("using meta: " + randomHeight);
 		return randomHeight;
 	}
@@ -203,7 +205,7 @@ public class SCBlockBambooShoot extends BlockFlower {
 	public boolean RenderBlock(RenderBlocks renderer, int i, int j, int k)
 	{
 		int meta = renderer.blockAccess.getBlockMetadata(i, j, k); 
-		SCUtilsRender.RenderCrossedSquaresWithTexture(renderer, this, i, j, k, m_iconArray[meta], true);
+		SCUtilsRender.RenderCrossedSquaresWithTextureAndOffset(renderer, this, i, j, k, m_iconArray[meta], true);
 		return true;
 	}
     

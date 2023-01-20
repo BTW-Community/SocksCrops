@@ -21,7 +21,7 @@ public class SCBlockMelonVineFlowering extends SCBlockGourdVineFloweringBase {
 		this.vineBlock = vineBlock;
 		this.convertedBlockID = convertedBlockID;
 		
-		setUnlocalizedName("SCBlockPumpkinVineFlowering");
+		setUnlocalizedName("SCBlockMelonVineFlowering");
 	}
 	
 	@Override
@@ -37,7 +37,7 @@ public class SCBlockMelonVineFlowering extends SCBlockGourdVineFloweringBase {
 	}
 	
 	@Override
-	protected void growFruit(World world, int i, int j, int k, Random random) {
+	protected boolean growFruit(World world, int i, int j, int k, Random random) {
 		
 		int targetDirection = random.nextInt(4);
 		
@@ -53,8 +53,10 @@ public class SCBlockMelonVineFlowering extends SCBlockGourdVineFloweringBase {
 			
 			world.setBlockAndMetadataWithNotify( finalI, j, finalK, biomeFruit.blockID, targetDirection);
 			
+			return true;
 			//set this to mature vine to stop it growing a second pumpkin
 		}
+		return false;
 	}
 	
 	protected boolean CanGrowMelonAt( World world, int i, int j, int k )
@@ -194,28 +196,24 @@ public class SCBlockMelonVineFlowering extends SCBlockGourdVineFloweringBase {
 	
 	//RENDER 
 	
-	public Icon[] flowerIcons;
+	public Icon[] flowerIcons = new Icon[3];
 	
-	private Icon flowerIcon;
+	private Icon plantIcon;
 
     @Override
     public void registerIcons( IconRegister register )
     {
-    	flowerIcon = register.registerIcon("SCBlockMelonVineFlowering_flower");
+    	blockIcon = plantIcon = register.registerIcon("SCBlockMelonVine_3");
     	
-        flowerIcons = new Icon[1];
-
-        for ( int iTempIndex = 0; iTempIndex < flowerIcons.length; iTempIndex++ )
+        for ( int i = 0; i < flowerIcons.length; i++ )
         {
-        	flowerIcons[0] = register.registerIcon( "SCBlockMelonVineFlowering");
+        	flowerIcons[i] = register.registerIcon( "SCBlockMelonVineFlower_" + i);
         }
         
-        blockIcon = flowerIcons[0]; // for block hit effects and item render
-        
         connectorIcons = new Icon[4];
-        for ( int iTempIndex = 0; iTempIndex < connectorIcons.length; iTempIndex++ )
+        for ( int i = 0; i < connectorIcons.length; i++ )
         {
-        	connectorIcons[iTempIndex] = register.registerIcon( "SCBlockMelonVineConnector_" + iTempIndex );
+        	connectorIcons[i] = register.registerIcon( "SCBlockMelonVineConnector_" + i );
         }
    
     }
@@ -223,29 +221,28 @@ public class SCBlockMelonVineFlowering extends SCBlockGourdVineFloweringBase {
 	@Override
     public Icon getBlockTexture( IBlockAccess blockAccess, int i, int j, int k, int iSide )
     {
-		if (!secondPass) {
-			return flowerIcons[0];
-		}
-		else 
+		if (secondPass) 
 		{
-			if (!IsFullyGrown(blockAccess.getBlockMetadata(i, j, k)))
+			int meta = blockAccess.getBlockMetadata(i, j, k);
+			
+			if ( !IsFullyGrown(meta) )
 			{
 				return getBlockTextureSecondPass(blockAccess, i, j, k, iSide);
 			}
-			
-			return flowerIcons[0];
 		}
-        
+		
+		return plantIcon;  
     }
 	
 	private Icon getBlockTextureSecondPass(IBlockAccess blockAccess, int i, int j, int k, int side) {
 
-		return getOverlayIcon();
+		return getOverlayIcon(blockAccess.getBlockMetadata(i, j, k));
 	}
 
 	@Override
-	protected Icon getOverlayIcon() {
-		return flowerIcon;
+	protected Icon getOverlayIcon(int meta)
+	{
+		return flowerIcons[GetGrowthLevel(meta)];
 	}
 
 }

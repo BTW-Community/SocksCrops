@@ -209,11 +209,11 @@ public class SCBlockRocks extends Block {
 	@Override
 	public void registerIcons(IconRegister register) {
 		blockIcon = textureIcon = register.registerIcon(textureString);
-		mossTop = register.registerIcon("grass_top");
-		mossSide = register.registerIcon("SCBlockRockMossOverlay_side");
+		mossTop = register.registerIcon("SCBlockMoss");
+		mossSide = register.registerIcon("SCBlockRocks_moss");
 		
 		snow = register.registerIcon("snow");
-		snowSide = register.registerIcon("SCBlockRockMossOverlay_sideSnow");
+		snowSide = register.registerIcon("SCBlockRocks_snow");
 	}
 	
 //	@Override
@@ -241,41 +241,41 @@ public class SCBlockRocks extends Block {
 	public static boolean secondPass;
 	    
 	
-	@Override
-	public int colorMultiplier(IBlockAccess blockAccess, int x, int y, int z) {
-		
-
-		if ( hasSnowOnTop || !secondPass ) {
-			return 16777215;
-		}
-		else {
-			if ( blockAccess.getBlockMetadata(x, y, z) > 7)
-			{
-//		        int var5 = 0;
-//		        int var6 = 0;
-//		        int var7 = 0;
+//	@Override
+//	public int colorMultiplier(IBlockAccess blockAccess, int x, int y, int z) {
+//		
 //
-//		        for (int var8 = -1; var8 <= 1; ++var8)
-//		        {
-//		            for (int var9 = -1; var9 <= 1; ++var9)
-//		            {
-//		                int var10 = blockAccess.getBiomeGenForCoords(x + var9, z + var8).getBiomeGrassColor();
-//		                var5 += (var10 & 16711680) >> 16;
-//		                var6 += (var10 & 65280) >> 8;
-//		                var7 += var10 & 255;
-//		            }
-//		        }
-//
-//		        return (var5 / 9 & 255) << 16 | (var6 / 9 & 255) << 8 | var7 / 9 & 255;
-				
-	        	double var1 = 1.0D;
-	        	double var3 = 0.5D;
-	        	//return 16777215;
-	        	return ColorizerGrass.getGrassColor(var1, var3);
-			}
-			else return 16777215;
-		}
-	}
+//		if ( hasSnowOnTop || !secondPass ) {
+//			return 16777215;
+//		}
+//		else {
+//			if ( blockAccess.getBlockMetadata(x, y, z) > 7)
+//			{
+////		        int var5 = 0;
+////		        int var6 = 0;
+////		        int var7 = 0;
+////
+////		        for (int var8 = -1; var8 <= 1; ++var8)
+////		        {
+////		            for (int var9 = -1; var9 <= 1; ++var9)
+////		            {
+////		                int var10 = blockAccess.getBiomeGenForCoords(x + var9, z + var8).getBiomeGrassColor();
+////		                var5 += (var10 & 16711680) >> 16;
+////		                var6 += (var10 & 65280) >> 8;
+////		                var7 += var10 & 255;
+////		            }
+////		        }
+////
+////		        return (var5 / 9 & 255) << 16 | (var6 / 9 & 255) << 8 | var7 / 9 & 255;
+//				
+//	        	double var1 = 1.0D;
+//	        	double var3 = 0.5D;
+//	        	//return 16777215;
+//	        	return ColorizerGrass.getGrassColor(var1, var3);
+//			}
+//			else return 16777215;
+//		}
+//	}
 	
 	@Override
 	public Icon getBlockTexture(IBlockAccess blockAccess, int x, int y, int z, int side) {
@@ -316,7 +316,7 @@ public class SCBlockRocks extends Block {
 	@Override
 	public boolean RenderBlock(RenderBlocks renderer, int i, int j, int k) {
 		hasSnowOnTop = IsSnowCoveringTopSurface(renderer.blockAccess, i, j, k);
-		hasMossOnTop = renderer.blockAccess.getBlockId(i, j+1, k) == SCDefs.mossCarpet.blockID;
+		hasMossOnTop = Block.blocksList[renderer.blockAccess.getBlockId(i, j + 1, k)] instanceof FCBlockGroundCover;
 		return renderRocks(renderer,i,j,k);
 	}
 	

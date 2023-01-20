@@ -1,0 +1,197 @@
+package net.minecraft.src;
+
+import java.util.Random;
+
+public class SCBlockSunflowerTopCrop extends SCBlockSunflowerBase {
+
+	protected SCBlockSunflowerTopCrop(int iBlockID, String name) {
+		super(iBlockID, name);
+	}
+	
+    @Override
+    public void updateTick( World world, int i, int j, int k, Random rand )
+    {
+    	int meta = world.getBlockMetadata(i, j, k);
+		int rotation = damageToData(meta)[0];
+		int growthLevel = damageToData(meta)[1];
+		
+		System.out.println("Rot: " + rotation + " - GrowthLevel: " + growthLevel);
+    	
+        if ( UpdateIfBlockStays( world, i, j, k ) )
+        {
+        	// no plants can grow in the end
+        	
+	        if ( world.provider.dimensionId != 1 && !IsFullyGrown( world, i, j, k ) )
+	        {
+	        	AttemptToGrow( world, i, j, k, rand );
+	        	
+	        	setFlowerRotation(world, i, j, k);
+	        }
+	        
+	        
+        }
+    }
+
+	protected void setFlowerRotation(World world, int i, int j, int k)
+	{
+		int meta = world.getBlockMetadata(i, j, k);		
+		int rotation = updateRotationForTime(world); 
+		
+		int newMeta = dataToDamage(rotation, GetGrowthLevel(meta));
+		
+		world.setBlockMetadataWithNotify(i, j, k, newMeta);
+	}
+    
+    protected void AttemptToGrow(World world, int x, int y, int z, Random rand) {
+    	if (GetWeedsGrowthLevel(world, x, y, z) == 0 && canGrowAtCurrentLightLevel(world, x, y, z)) {
+	        Block blockBelow = Block.blocksList[world.getBlockId(x, y - 1, z)];
+	        
+	        if (blockBelow != null && blockBelow.IsBlockHydratedForPlantGrowthOn(world, x, y - 1, z)) {
+	    		float fGrowthChance = GetBaseGrowthChance(world, x, y, z) *
+	    			blockBelow.GetPlantGrowthOnMultiplier(world, x, y - 2, z, this);
+	    		
+	            if (rand.nextFloat() <= fGrowthChance) {
+	            	IncrementGrowthLevel(world, x, y, z);
+	            }
+	        }
+	    }
+    }
+    
+    protected void IncrementGrowthLevel( World world, int i, int j, int k )
+    {    	
+    	int meta = world.getBlockMetadata(i, j, k);
+    	int rotation = damageToData(meta)[0];
+    	int growthLevel = damageToData(meta)[1];
+    	
+    	int newMeta = dataToDamage(rotation, growthLevel + 1);
+    	
+    	world.setBlockMetadataWithNotify( i, j, k, newMeta);
+        
+        if ( IsFullyGrown( world, i, j, k ) )
+        {
+        	Block blockBelow = Block.blocksList[world.getBlockId( i, j - 1, k )];
+        	
+        	if ( blockBelow != null )
+        	{
+        		blockBelow.NotifyOfFullStagePlantGrowthOn( world, i, j - 1, k, this );
+        		
+//        		if (!isTopBlock())
+//            	{
+//        			int meta = updateRotationForTime(world); 
+//        			world.setBlockAndMetadata(i, j + 1, k, SCDefs.sunflowerTopCrop.blockID, meta);
+//            	}
+        	}        	
+        }
+    }
+    
+	@Override
+	public int GetWeedsGrowthLevel( IBlockAccess blockAccess, int i, int j, int k )
+	{
+		int iBlockBelowID = blockAccess.getBlockId( i, j - 2, k );
+		Block blockBelow = Block.blocksList[iBlockBelowID];
+		
+		if ( blockBelow != null && iBlockBelowID != blockID )
+		{
+			return blockBelow.GetWeedsGrowthLevel( blockAccess, i, j - 2, k );
+		}
+		
+		return 0;
+	}
+
+
+	
+	@Override
+	protected int getMaxGrowthStage() {
+		return 3;
+	}
+
+	@Override
+	protected int GetCropItemID() {
+		return SCDefs.sunflower.itemID;
+	}
+
+	@Override
+	protected int GetSeedItemID() {
+		return 0;
+	}
+
+	@Override
+	protected boolean isTopBlock() {
+		return true;
+	}
+
+    protected int GetGrowthLevel( int meta )
+    {
+    	return damageToData(meta)[1];
+    	
+//    	return meta & 7;
+    }
+    
+    protected void SetGrowthLevel( World world, int i, int j, int k, int iLevel )
+    {
+    	int iMetadata = world.getBlockMetadata( i, j, k );
+    	
+    	world.setBlockMetadataWithNotify( i, j, k, iMetadata + 4);
+    }
+    
+    protected boolean IsFullyGrown( World world, int i, int j, int k )
+    {
+    	return IsFullyGrown( world.getBlockMetadata( i, j, k ) );
+    }
+    
+    protected boolean IsFullyGrown( int iMetadata )
+    {
+    	return GetGrowthLevel( iMetadata ) >= getMaxGrowthStage();
+    }
+    
+	@Override
+	public boolean RenderBlock(RenderBlocks renderer, int i, int j, int k)
+	{
+		int meta = renderer.blockAccess.getBlockMetadata(i, j, k); 
+		
+		renderStem(renderer, i, j, k, meta);
+		
+		renderFlower(renderer, i, j, k, meta);
+		
+		return true;
+	}
+	
+	protected void renderStem(RenderBlocks renderer, int i, int j, int k, int meta)
+	{
+		int growthLevel = damageToData(meta)[1];
+		
+		SCUtilsRender.RenderCrossedSquaresWithTextureAndOffset(renderer, this, i, j, k, crop[growthLevel], false);
+	}
+    
+    private void renderFlower(RenderBlocks renderer, int i, int j, int k, int meta)
+	{
+		int rotation = damageToData(meta)[0];
+		int growthLevel = damageToData(meta)[1];
+		float flowerHeight = - (3 - growthLevel) * 1/16F;
+
+		if (rotation < 2)
+		{
+			SCUtilsRender.renderSunflowerPlaneWithTexturesAndRotation(renderer, this, i, j, k, front[growthLevel], flowerHeight, rotation);
+			SCUtilsRender.renderBackSunflowerPlaneWithTexturesAndRotation(renderer, this, i, j, k, back[growthLevel], flowerHeight, rotation);
+		}
+		else
+		{
+			SCUtilsRender.renderSunflowerPlaneWithTexturesAndRotation(renderer, this, i, j, k, back[growthLevel], flowerHeight, rotation);
+			SCUtilsRender.renderBackSunflowerPlaneWithTexturesAndRotation(renderer, this, i, j, k, front[growthLevel], flowerHeight, rotation);
+		}
+	}
+    
+    public static int dataToDamage(int rotation, int growthLevel)
+    {
+		return rotation | growthLevel << 2;
+    }
+
+	protected static int[] damageToData(int damage)
+	{
+		int rotation = damage & 3;
+		int growthLevel = (damage >> 2) & 3;
+		
+		return new int[] { rotation, growthLevel };
+	}
+    
+}

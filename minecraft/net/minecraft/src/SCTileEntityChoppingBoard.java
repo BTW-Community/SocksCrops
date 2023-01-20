@@ -6,95 +6,34 @@ import java.util.List;
 public class SCTileEntityChoppingBoard extends TileEntity implements FCITileEntityDataPacketHandler, IInventory {
 	
 	private ItemStack knifeStack;
-	private ItemStack cuttingStack;
+	
+	private int itemRotation = 0;
+
+	public int ticks = 0;
+	
+	private int woodType;
 	
     @Override
     public void updateEntity()
-    {
+    {   	
     	super.updateEntity();
+    	
+    	EntityPlayer player = this.worldObj.getClosestPlayer(xCoord, yCoord, zCoord, 12);
+    	
+    	if (player != null && knifeStack != null && knifeStack.itemID == FCBetterThanWolves.fcItemDung.itemID)
+    	{
+    		if (ticks > 30)
+    		{
+    			ticks = 0;
+    		}
+    		
+    		ticks++;
+    	}
+    	
+    	
+    	//System.out.println(ticks);
     }
     	
-//    	if ( !worldObj.isRemote )
-//    	{
-//			int iBlockID = worldObj.getBlockId( xCoord, yCoord, zCoord );
-//			
-//			SCBlockChoppingBoard choppingBoard = (SCBlockChoppingBoard)Block.blocksList[iBlockID];
-//			
-//			if ( choppingBoard != null && cuttingStack != null )
-//			{
-//    			//cutContents( choppingBoard );
-//	    	}
-//    	}
-//    }
-	
-	//------------- Class specific ------------//
-	
-    
-//    public boolean cutContents( SCBlockChoppingBoard cuttingBoard )
-//    {
-//		Item filterItem = knifeStack.getItem();
-//		
-//		SCCraftingManagerChoppingBoardFilterRecipe recipe = filterItem == null ?
-//				null : SCCraftingManagerChoppingBoardFilter.instance.getRecipe(null, new ItemStack(filterItem));
-//		
-//		if (recipe != null) {
-//			
-//    		ItemStack[] output = recipe.getBoardOutput();
-//    		
-//			assert( output != null && output.length > 0 );
-//			
-//            for ( int listIndex = 0; listIndex < output.length; listIndex++ )
-//            {
-//	    		ItemStack cutStack = output[listIndex].copy();
-//	    		
-//	    		if ( cutStack != null )
-//	    		{
-//	    			int iFacing = worldObj.getBlockMetadata(xCoord, yCoord, zCoord) + 2;
-//	    			FCUtilsItem.EjectStackFromBlockTowardsFacing( worldObj, xCoord, yCoord, zCoord, cutStack, iFacing );
-//
-//
-//	    		}
-//            }
-//            
-//            setCuttingStack(null);
-//            
-//            int oldDamage = knifeStack.getItemDamage();
-//            knifeStack.setItemDamage(oldDamage + 1);
-//            
-//            return true;
-//			
-//		}
-    	
-    	
-//		SCCraftingManagerCuttingBoard manager = SCCraftingManagerCuttingBoard.getInstance();
-//		
-//    	if ( manager != null )
-//    	{
-//        	if ( manager.GetCraftingResult( this ) != null )
-//        	{        		
-//        		List<ItemStack> outputList = manager.ConsumeIngrediantsAndReturnResult( this );
-//        		
-//    			assert( outputList != null && outputList.size() > 0 );
-//    			
-//                for ( int listIndex = 0; listIndex < outputList.size(); listIndex++ )
-//                {
-//    	    		ItemStack cutStack = ((ItemStack)outputList.get( listIndex )).copy();
-//    	    		
-//    	    		if ( cutStack != null )
-//    	    		{
-//    	    			int iFacing = worldObj.rand.nextInt( 4 ) + 2;
-//    	    			FCUtilsItem.EjectStackFromBlockTowardsFacing( worldObj, xCoord, yCoord, zCoord, cutStack, iFacing );
-//
-//    	    		}
-//                }
-//                
-//                return true;
-//    		}        	
-//    	}
-//    	
-//    	return false;
-//	}
-
 	public ItemStack getKnifeStack() {
 		return knifeStack;
 	}
@@ -102,15 +41,6 @@ public class SCTileEntityChoppingBoard extends TileEntity implements FCITileEnti
 	public void setKnifeStack(ItemStack knifeStack) {
 		this.knifeStack = knifeStack;
 		markBlockForUpdate();
-	}
-	
-	public ItemStack getCuttingStack() {
-		return cuttingStack;
-	}
-	
-	public void setCuttingStack(ItemStack cuttingStack) {
-		markBlockForUpdate();
-		this.cuttingStack = cuttingStack;
 	}
 	
 	public void markBlockForUpdate() {
@@ -133,12 +63,12 @@ public class SCTileEntityChoppingBoard extends TileEntity implements FCITileEnti
         	knifeStack = ItemStack.loadItemStackFromNBT( knifeTag );
         }
         
-        NBTTagCompound cuttingTag = tag.getCompoundTag( "cuttingStack" );
-
-        if ( cuttingTag != null )
-        {
-        	cuttingStack = ItemStack.loadItemStackFromNBT( cuttingTag );
-        }
+        this.itemRotation = tag.getByte("Rot");
+        
+        this.ticks = tag.getInteger("Ticks");
+        
+        this.woodType = tag.getInteger("woodType");
+        
 
     }
 	
@@ -156,15 +86,12 @@ public class SCTileEntityChoppingBoard extends TileEntity implements FCITileEnti
             tag.setCompoundTag( "knifeStack", knifeTag );
         }
         
-        if ( cuttingStack != null)
-        {
-            NBTTagCompound cuttingTag = new NBTTagCompound();
-            
-            cuttingStack.writeToNBT( cuttingTag );
-            
-            tag.setCompoundTag( "cuttingStack", cuttingTag );
-        }
         
+        tag.setByte("Rot", (byte)(this.itemRotation & 255));
+        
+        tag.setInteger("Ticks", this.ticks);
+
+        tag.setInteger("woodType", this.woodType);
         
         // force a visual update for the block since the above variables affect it
         
@@ -175,7 +102,7 @@ public class SCTileEntityChoppingBoard extends TileEntity implements FCITileEnti
     @Override
     public Packet getDescriptionPacket()
     {
-    	NBTTagCompound nbttagcompound1 = new NBTTagCompound();
+    	NBTTagCompound tag = new NBTTagCompound();
         
     	if ( knifeStack != null)
         {
@@ -183,19 +110,17 @@ public class SCTileEntityChoppingBoard extends TileEntity implements FCITileEnti
             
             knifeStack.writeToNBT( knifeTag );
             
-            nbttagcompound1.setCompoundTag( "knifeStack", knifeTag );
+            tag.setCompoundTag( "knifeStack", knifeTag );
         }
         
-        if ( cuttingStack != null)
-        {
-            NBTTagCompound cuttingTag = new NBTTagCompound();
-            
-            cuttingStack.writeToNBT( cuttingTag );
-            
-            nbttagcompound1.setCompoundTag( "cuttingStack", cuttingTag );
-        }
         
-        return new Packet132TileEntityData( xCoord, yCoord, zCoord, 1, nbttagcompound1 );
+        tag.setByte("Rot", (byte)(this.itemRotation & 255));
+        
+        tag.setInteger("Ticks", this.ticks);
+        
+        tag.setInteger("woodType", this.woodType);
+        
+        return new Packet132TileEntityData( xCoord, yCoord, zCoord, 1, tag );
     }
     
     
@@ -211,20 +136,18 @@ public class SCTileEntityChoppingBoard extends TileEntity implements FCITileEnti
         	knifeStack = ItemStack.loadItemStackFromNBT( knifeTag );
         }
         
-        NBTTagCompound cuttingTag = tag.getCompoundTag( "cuttingStack" );
-
-        if ( cuttingTag != null )
-        {
-        	cuttingStack = ItemStack.loadItemStackFromNBT( cuttingTag );
-        }   
+        this.itemRotation = tag.getByte("Rot");
         
+        this.ticks = tag.getInteger("Ticks");
+        
+        this.woodType = tag.getInteger("woodType");
         
         // force a visual update for the block since the above variables affect it
         
         worldObj.markBlockRangeForRenderUpdate( xCoord, yCoord, zCoord, xCoord, yCoord, zCoord ); 
     }
     
-    //------------- IInventory ------------//
+    //------------- Inventory ------------//
 
 	@Override
 	public int getSizeInventory() {
@@ -233,17 +156,7 @@ public class SCTileEntityChoppingBoard extends TileEntity implements FCITileEnti
 
 	@Override
 	public ItemStack getStackInSlot(int slot) {
-    	if ( slot == 0 )
-    	{
-    		return knifeStack;
-    	}
-    	
-    	else if ( slot == 1 )
-    	{
-    		return cuttingStack;
-    	}
-    	
-        return null;
+		return knifeStack;
 	}
 
     @Override
@@ -260,8 +173,7 @@ public class SCTileEntityChoppingBoard extends TileEntity implements FCITileEnti
 	@Override
 	public void setInventorySlotContents(int slot, ItemStack stack)
 	{
-		if (slot == 0 ) setKnifeStack(stack);
-		if (slot == 1 ) setCuttingStack(stack);
+		setKnifeStack(stack);
 	}
 
 	@Override
@@ -310,6 +222,7 @@ public class SCTileEntityChoppingBoard extends TileEntity implements FCITileEnti
 	
 	protected boolean specialRenderer = false;
 
+
 	public boolean hasItemSpecialRenderer() {
 		return specialRenderer;
 	}
@@ -318,5 +231,22 @@ public class SCTileEntityChoppingBoard extends TileEntity implements FCITileEnti
 		this.specialRenderer = boo;
 	}
 
+	public void setItemRotation(int rotation) {
+		this.itemRotation = rotation;
+	}
+	
+	public int getItemRotation()
+	{
+		return this.itemRotation;
+	}
+
+	public void setWoodType(int type) {
+		this.woodType = type;
+	}
+	
+	public int getWoodType()
+	{
+		return this.woodType;
+	}
   
 }

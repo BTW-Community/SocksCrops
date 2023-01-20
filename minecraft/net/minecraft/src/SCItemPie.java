@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-public class SCItemPie extends FCItemFood {
+public class SCItemPie extends SCItemFood {
 	
 	protected int m_iBlockID;
 	protected int m_iBlockMetadata = 0;

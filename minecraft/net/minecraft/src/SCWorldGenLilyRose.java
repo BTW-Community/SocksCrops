@@ -32,6 +32,7 @@ public class SCWorldGenLilyRose extends WorldGenerator
             int var7 = x + par2Random.nextInt(8) - par2Random.nextInt(8);
             int var8 = y + par2Random.nextInt(4) - par2Random.nextInt(4);
             int var9 = z + par2Random.nextInt(8) - par2Random.nextInt(8);
+            int whiteChance = par2Random.nextInt(8);
             
             if (par1World.isAirBlock(var7, var8, var9) && SCDefs.lilyRose.canPlaceBlockAt(par1World, var7, var8, var9))
             {
@@ -42,7 +43,11 @@ public class SCWorldGenLilyRose extends WorldGenerator
                 	continue;
                 }
             	
-                par1World.setBlock(var7, var8, var9, SCDefs.lilyRose.blockID, 0, 2);
+                if (whiteChance == 0)
+                {
+                	par1World.setBlock(var7, var8, var9, SCDefs.lilyRose.blockID, SCBlockLilyRose.WHITE, 2);
+                }
+                else par1World.setBlock(var7, var8, var9, SCDefs.lilyRose.blockID, SCBlockLilyRose.PINK, 2);
             }
         }
 

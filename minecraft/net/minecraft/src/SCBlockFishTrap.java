@@ -5,8 +5,14 @@ import java.util.Random;
 
 public class SCBlockFishTrap extends BlockContainer {
 
+	//Block states
+	public final static int NO_BAIT = 0;
+	public final static int BAITED = 1;
+	
 	protected SCBlockFishTrap(int blockID) {
 		super(blockID, Material.wood);
+		
+		SetAxesEffectiveOn();
 		SetFireProperties( FCEnumFlammability.WICKER );
         SetBuoyant();
 		setCreativeTab(CreativeTabs.tabBlock);
@@ -14,31 +20,38 @@ public class SCBlockFishTrap extends BlockContainer {
 	}
 	
 	@Override
-    public boolean onBlockActivated( World world, int i, int j, int k, EntityPlayer player, int iFacing, float fXClick, float fYClick, float fZClick )
+    public boolean onBlockActivated( World world, int x, int y, int z, EntityPlayer player, int targetFace, float xClick, float yClick, float zClick )
     {
 		if ( !world.isRemote )
 		{
 			ItemStack heldStack = player.getCurrentEquippedItem();
-			SCTileEntityFishTrap fishTrap = (SCTileEntityFishTrap)world.getBlockTileEntity( i, j, k );
+			SCTileEntityFishTrap fishTrap = (SCTileEntityFishTrap)world.getBlockTileEntity( x, y, z );
+			boolean isBaited = fishTrap.isBaited();
+			boolean hasFish = fishTrap.hasFish();
+			ItemStack fishStack = fishTrap.getFishStack();
 			
-			if (heldStack != null && !fishTrap.isBaited() && !fishTrap.hasFish() && fishTrap.isBodyOfWaterLargeEnoughForFishing() && fishTrap.IsFishingBait(heldStack))
+			if (heldStack != null && !isBaited && !hasFish && fishTrap.isBodyOfWaterLargeEnoughForFishing() && fishTrap.IsFishingBait(heldStack))
 			{				
 				fishTrap.setBaited(true);
-				world.setBlockMetadata(i, j, k, 1);
+				world.setBlockMetadata(x, y, z, BAITED);
+				
 				fishTrap.markBlockForUpdate();
 				heldStack.stackSize--;
 				return true;
 			}
-			else if(fishTrap.hasFish() && ( heldStack == null || heldStack.itemID ==fishTrap.getFishStack().itemID ) )
+			else if( hasFish && ( heldStack == null || heldStack.itemID == fishStack.itemID ) )
 			{
+				
+				System.out.println("Biome: " + world.getBiomeGenForCoords(x, z).biomeName);
+				
 				fishTrap.setHasFish(false);
 				
-				FCUtilsItem.EjectStackFromBlockTowardsFacing(world, i, j, k, fishTrap.getFishStack(), iFacing);
+				FCUtilsItem.EjectStackFromBlockTowardsFacing(world, x, y, z, fishStack, targetFace);
 				fishTrap.setFishStack(null);
 				fishTrap.markBlockForUpdate();
 				return true;
 			}
-			else if (heldStack != null && !fishTrap.isBaited() && !fishTrap.hasFish() && !fishTrap.isBodyOfWaterLargeEnoughForFishing() && fishTrap.IsFishingBait(heldStack))
+			else if (heldStack != null && !isBaited && !hasFish && !fishTrap.isBodyOfWaterLargeEnoughForFishing() && fishTrap.IsFishingBait(heldStack))
 			{
 				player.addChatMessage("There doesn't seem to be enough Water around the Fish Trap");
 				return true;
@@ -46,9 +59,27 @@ public class SCBlockFishTrap extends BlockContainer {
 		}
 		return false;
     }
+	
+	@Override
+	public void onBlockHarvested(World world, int x, int y, int z, int meta, EntityPlayer player) {
+		
+		if ( !world.isRemote )
+		{
+			ItemStack heldStack = player.getCurrentEquippedItem();
+			SCTileEntityFishTrap fishTrap = (SCTileEntityFishTrap)world.getBlockTileEntity( x, y, z );
+			boolean hasFish = fishTrap.hasFish();
+			ItemStack fishStack = fishTrap.getFishStack();
+			
+			if( hasFish )
+			{
+				FCUtilsItem.EjectStackWithRandomOffset(world, x, y, z, fishStack);
+			}
+			
+		}
+	}
 
 	@Override
-	public TileEntity createNewTileEntity(World var1) {
+	public TileEntity createNewTileEntity(World world) {
 		return new SCTileEntityFishTrap();
 	}
 	
@@ -58,76 +89,72 @@ public class SCBlockFishTrap extends BlockContainer {
 		return false;
 	}	
 	
-    public void randomDisplayTick(World world, int i, int j, int k, Random rand)
+    public void randomDisplayTick(World world, int x, int y, int z, Random rand)
     {
-        super.randomDisplayTick(world, i, j, k, rand);
+        SCTileEntityFishTrap fishTrap = (SCTileEntityFishTrap)world.getBlockTileEntity( x, y, z );
         
-        SCTileEntityFishTrap fishTrap = (SCTileEntityFishTrap)world.getBlockTileEntity( i, j, k );
-        
-        double xPos = i + 0.25F + rand.nextFloat() * 0.5F;
-        double yPos = j + 1.0F + rand.nextFloat() * 0.25F;
-        double zPos = k + 0.25F + rand.nextFloat() * 0.5F;
+        double xPos = x + 0.25F + rand.nextFloat() * 0.5F;
+        double yPos = y + 1.0F + rand.nextFloat() * 0.25F;
+        double zPos = z + 0.25F + rand.nextFloat() * 0.5F;
        
         if  (fishTrap.hasFish())
         {
             if (rand.nextInt(2) == 0)
             {   
-            	double particleJ = j + 1.0F;
+            	double particleYPos = y + 1.0F;
             	
-                for ( int iTempJ = j; iTempJ <= j + 16; iTempJ++ )
+                for ( int tempY = y; tempY <= y + 16; tempY++ )
                 {
-                	if ( !FCUtilsWorld.IsWaterSourceBlock( world, i, iTempJ, k ) && world.isAirBlock(i, iTempJ, k) )
+                	if ( !FCUtilsWorld.IsWaterSourceBlock( world, x, tempY, z ) && world.isAirBlock(x, tempY, z) )
             		{
-                		
-    					particleJ = iTempJ;
+    					particleYPos = tempY;
     					break;
             		}
                 }
             	
             	for (int index=0; index < 4; index++) {
             		
-            		world.spawnParticle( "splash", xPos, particleJ, zPos, 0.0D, 0.0D, 0.0D );
-    			}
-               
+            		world.spawnParticle( "splash", xPos, particleYPos, zPos, 0.0D, 0.0D, 0.0D );
+    			}     
             }
         }
-        
         else if (fishTrap.isBaited() && fishTrap.isBodyOfWaterLargeEnoughForFishing() )
         {
-        	for (int index=0; index < 2; index++) {
+        	for (int i = 0; i < 2; i++) {
         		
-        		world.spawnParticle( "bubble", xPos, j + 1.0F, zPos, 0.0D, 0.1D, 0.0D );
-			}
-			
+        		world.spawnParticle( "bubble", xPos, y + 1.0F, zPos, 0.0D, 0.1D, 0.0D );
+        	}
         }
-        
-
     }
-		
-	private Icon outsideIcon;
-	private Icon ropeIcon;
+	
+    // --- Client Side --- //
+    
+	private Icon outside;
+	private Icon rope;
+	
 	@Override
-	public void registerIcons(IconRegister register) {
-		outsideIcon = register.registerIcon("SCBlockFishTrap_outside");
-		ropeIcon = register.registerIcon("SCBlockFishTrap_rope");
+	public void registerIcons(IconRegister register)
+	{
+		blockIcon = outside = register.registerIcon("SCBlockFishTrap_outside");
+		rope = register.registerIcon("SCBlockFishTrap_rope");
 	}
 	
 	@Override
 	public Icon getIcon(int side, int meta)
 	{
-		return outsideIcon;
+		return outside;
 	}
 	
 	@Override
-	public boolean RenderBlock(RenderBlocks renderer, int i, int j, int k)
+	public boolean RenderBlock(RenderBlocks renderer, int x, int y, int z)
 	{
-		super.RenderBlock(renderer, i, j, k);
+		super.RenderBlock(renderer, x, y, z); //Renders Normal Cube
 		
-		int meta = renderer.blockAccess.getBlockMetadata(i, j, k);
+		int meta = renderer.blockAccess.getBlockMetadata(x, y, z);
 		
-		if (meta == 1)
+		if (meta == BAITED)
 		{
-			SCUtilsRender.RenderCrossedSquaresWithTexture(renderer, this, i, j, k, ropeIcon, false);
+			SCUtilsRender.renderCrossedSquaresWithTexture(renderer, this, x, y, z, rope, false);
 		}
 		
 		return true;

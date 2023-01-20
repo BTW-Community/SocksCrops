@@ -4,9 +4,9 @@ import java.util.Random;
 
 public abstract class SCBlockPumpkinGrowing extends SCBlockGourdGrowing {
 
-	protected SCBlockPumpkinGrowing(int iBlockID, int stemBlock, int vineBlock, int flowerBlock, int convertedBlockID)
+	protected SCBlockPumpkinGrowing(int iBlockID, int stemBlock, int vineBlock, int flowerBlock, int convertedBlockID, int sleepingFruit)
 	{
-		super(iBlockID, stemBlock, vineBlock, flowerBlock, convertedBlockID);
+		super(iBlockID, stemBlock, vineBlock, flowerBlock, convertedBlockID, sleepingFruit);
 	}
 
 	@Override

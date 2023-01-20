@@ -1,9 +1,9 @@
 package net.minecraft.src;
 
-public class SCItemMelonSlice extends FCItemFoodHighRes {
+public class SCItemMelonSlice extends SCItemFood {
 
 	protected SCItemMelonSlice(int par1, String sItemName) {
-		super(par1, 2, 0F, false, sItemName );
+		super(par1, SCItemFood.melonSliceHungerHealed, SCItemFood.melonSliceSaturationModifier, false, sItemName );
 		setAlwaysEdible();
 		
 		setUnlocalizedName( sItemName ); 

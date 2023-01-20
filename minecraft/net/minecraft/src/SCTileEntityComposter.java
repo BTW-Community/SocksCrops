@@ -7,8 +7,7 @@ public class SCTileEntityComposter extends TileEntity
 	implements FCITileEntityDataPacketHandler {
 	
 	private static HashMap<Integer, Integer> compostingTypes = new HashMap<Integer, Integer>();
-
-
+	
 	private int fillLevel = 0;
 	public int maxFillLevel = 256;
 	
@@ -110,7 +109,7 @@ public class SCTileEntityComposter extends TileEntity
     	int iBlockAboveID = worldObj.getBlockId( xCoord, yCoord + 1, zCoord );
     	Block blockAbove = Block.blocksList[iBlockAboveID];
     	
-    	if (getFillLevel() == maxFillLevel)
+    	if (getFillLevel() >= maxFillLevel)
     	{
     		if ( blockAbove != null && blockAbove.IsGroundCover( ) && !seeSky )
         	{
@@ -206,82 +205,6 @@ public class SCTileEntityComposter extends TileEntity
     	compostingTypes.put(id, fillValue);
     }
     
-    static
-    {
-    	//SCStuff
-    	compostingTypes.put(SCDefs.bambooItem.itemID, 2);
-    	compostingTypes.put(SCDefs.bambooShoot.blockID, 2);
-    	compostingTypes.put(SCDefs.sweetberry.itemID, 4);
-    	compostingTypes.put(SCDefs.blueberry.itemID, 4);
-    	compostingTypes.put(SCDefs.sweetberrySapling.itemID, 2);
-    	compostingTypes.put(SCDefs.blueberrySapling.itemID, 2);
-    	compostingTypes.put(SCDefs.pumpkinSliceRaw.itemID, 4);
-    	compostingTypes.put(SCDefs.melonHoneydewSlice.itemID, 4);
-    	compostingTypes.put(SCDefs.melonCantaloupeSlice.itemID, 4);
-    	compostingTypes.put(SCDefs.melonCanarySlice.itemID, 4);
-    	
-    	compostingTypes.put(SCDefs.clover.blockID, 1);
-    	compostingTypes.put(SCDefs.shortPlant.blockID, 1);
-    	compostingTypes.put(SCDefs.tallPlant.blockID, 1);
-    	compostingTypes.put(SCDefs.mossCarpet.blockID, 1);
-    	compostingTypes.put(SCDefs.lilyRose.blockID, 1);
-
-    	//Seeds
-    	compostingTypes.put(Item.melonSeeds.itemID, 2);
-    	compostingTypes.put(Item.pumpkinSeeds.itemID, 2);
-    	compostingTypes.put(FCBetterThanWolves.fcItemWheatSeeds.itemID, 2);
-    	compostingTypes.put(Item.netherStalkSeeds.itemID, 2);
-    	compostingTypes.put(FCBetterThanWolves.fcItemHempSeeds.itemID, 2);
-    	compostingTypes.put(FCBetterThanWolves.fcItemCarrotSeeds.itemID, 2);
-    	
-    	//other
-    	compostingTypes.put(Item.spiderEye.itemID, 2);    	
-    	compostingTypes.put(Item.fermentedSpiderEye.itemID, 2);    	
-    	compostingTypes.put(Item.poisonousPotato.itemID, 2);    	
-    	compostingTypes.put(FCBetterThanWolves.fcItemHemp.itemID, 2);    	
-    	compostingTypes.put(FCBetterThanWolves.fcItemFoulFood.itemID, 2);    	
-    	compostingTypes.put(FCBetterThanWolves.fcItemDogFood.itemID, 2);    	
-    	compostingTypes.put(FCBetterThanWolves.fcItemCreeperOysters.itemID, 2);    	
-    	compostingTypes.put(Block.cocoaPlant.blockID, 2);   	
-    	
-    	//Plants    	
-    	compostingTypes.put(Item.reed.itemID, 2);
-    	compostingTypes.put(FCBetterThanWolves.fcItemReedRoots.itemID, 2);
-    	compostingTypes.put(Block.tallGrass.blockID, 1);
-    	compostingTypes.put(Block.plantYellow.blockID, 1);
-    	compostingTypes.put(Block.plantRed.blockID, 1);
-    	compostingTypes.put(Block.leaves.blockID, 1);
-    	compostingTypes.put(FCBetterThanWolves.fcBlockBloodLeaves.blockID, 1);    	
-    	//Blood sapling here..    	
-    	compostingTypes.put(Block.vine.blockID, 1);
-    	compostingTypes.put(Block.sapling.blockID, 2);
-    	compostingTypes.put(Block.waterlily.blockID, 2);
-    	compostingTypes.put(FCBetterThanWolves.fcItemMushroomBrown.itemID, 4);
-    	compostingTypes.put(FCBetterThanWolves.fcItemMushroomRed.itemID, 4);
-    	
-    	compostingTypes.put(FCBetterThanWolves.fcItemBark.itemID, 2);
-    	compostingTypes.put(FCBetterThanWolves.fcItemSawDust.itemID, 1);  
-    	
-    	//Food
-    	compostingTypes.put(FCBetterThanWolves.fcItemMushroomBrown.itemID, 4);
-    	compostingTypes.put(FCBetterThanWolves.fcItemMushroomRed.itemID, 4);
-    	compostingTypes.put(Item.appleRed.itemID, 4);
-    	compostingTypes.put(Item.melon.itemID, 4);
-    	compostingTypes.put(Item.carrot.itemID, 4);
-    	compostingTypes.put(FCBetterThanWolves.fcItemCarrot.itemID, 4);
-    	compostingTypes.put(Item.potato.itemID, 4);
-    	
-		if (SCDecoIntegration.isDecoInstalled() )
-		{
-			compostingTypes.put(SCDecoIntegration.cherrySapling.blockID, 2);
-			compostingTypes.put(SCDecoIntegration.flower.blockID, 1);
-			compostingTypes.put(SCDecoIntegration.flower2.blockID, 1);
-			compostingTypes.put(SCDecoIntegration.tulip.blockID, 1);
-		}
-    	
-    	
-    } 
-
     public static boolean isValidItem(int id)
     {
     	return compostingTypes.containsKey(id);
@@ -309,4 +232,92 @@ public class SCTileEntityComposter extends TileEntity
 		worldObj.markBlockForUpdate( xCoord, yCoord, zCoord );
 	}
     
+	//the higher the value, the less of that item is needed to fill a composter
+	public static final int plantValue = 1;
+	public static final int cropValue = 2;
+	public static final int foodValue = 4;
+	
+	static
+    {
+    	//SCStuff
+		compostingTypes.put(SCDefs.redGrapes.itemID, foodValue);
+		compostingTypes.put(SCDefs.whiteGrapes.itemID, foodValue);
+		
+    	compostingTypes.put(SCDefs.bambooItem.itemID, cropValue);
+    	compostingTypes.put(SCDefs.bambooShoot.blockID, cropValue);
+    	
+    	compostingTypes.put(SCDefs.sweetberry.itemID, foodValue);
+    	compostingTypes.put(SCDefs.blueberry.itemID, foodValue);
+    	
+    	compostingTypes.put(SCDefs.sweetberrySapling.itemID, cropValue);
+    	compostingTypes.put(SCDefs.blueberrySapling.itemID, cropValue);
+    	
+    	compostingTypes.put(SCDefs.pumpkinSliceRaw.itemID, foodValue);
+    	compostingTypes.put(SCDefs.melonHoneydewSlice.itemID, foodValue);
+    	compostingTypes.put(SCDefs.melonCantaloupeSlice.itemID, foodValue);
+    	compostingTypes.put(SCDefs.melonCanarySlice.itemID, foodValue);
+    	
+    	compostingTypes.put(SCDefs.clover.blockID, plantValue);
+    	compostingTypes.put(SCDefs.groundFlowers.blockID, plantValue);
+    	compostingTypes.put(SCDefs.doubleTallGrass.blockID, plantValue);
+    	compostingTypes.put(SCDefs.lilyRose.blockID, plantValue);
+    	compostingTypes.put(SCDefs.mossBall.itemID, cropValue);
+
+    	//Seeds
+    	compostingTypes.put(Item.melonSeeds.itemID, cropValue);
+    	compostingTypes.put(Item.pumpkinSeeds.itemID, cropValue);
+    	compostingTypes.put(FCBetterThanWolves.fcItemWheatSeeds.itemID, cropValue);
+    	compostingTypes.put(Item.netherStalkSeeds.itemID, cropValue);
+    	compostingTypes.put(FCBetterThanWolves.fcItemHempSeeds.itemID, cropValue);
+    	compostingTypes.put(FCBetterThanWolves.fcItemCarrotSeeds.itemID, cropValue);
+    	
+    	//other
+    	compostingTypes.put(Item.spiderEye.itemID, cropValue);    	
+    	compostingTypes.put(Item.fermentedSpiderEye.itemID, cropValue);    	
+    	compostingTypes.put(Item.poisonousPotato.itemID, cropValue);    	
+    	compostingTypes.put(FCBetterThanWolves.fcItemHemp.itemID, cropValue);    	
+    	compostingTypes.put(FCBetterThanWolves.fcItemFoulFood.itemID, cropValue);    	
+    	compostingTypes.put(FCBetterThanWolves.fcItemDogFood.itemID, cropValue);    	
+    	compostingTypes.put(FCBetterThanWolves.fcItemCreeperOysters.itemID, cropValue);    	
+    	compostingTypes.put(Block.cocoaPlant.blockID, cropValue);   	
+    	
+    	//Plants    	
+    	compostingTypes.put(Item.reed.itemID, cropValue);
+    	compostingTypes.put(FCBetterThanWolves.fcItemReedRoots.itemID, cropValue);
+    	compostingTypes.put(Block.tallGrass.blockID, plantValue);
+    	compostingTypes.put(Block.plantYellow.blockID, plantValue);
+    	compostingTypes.put(Block.plantRed.blockID, plantValue);
+    	compostingTypes.put(Block.leaves.blockID, plantValue);
+    	compostingTypes.put(FCBetterThanWolves.fcBlockBloodLeaves.blockID, plantValue);    	
+    	
+    	//Blood sapling here..    	
+    	compostingTypes.put(Block.vine.blockID, plantValue);
+    	compostingTypes.put(Block.sapling.blockID, cropValue);
+    	compostingTypes.put(Block.waterlily.blockID, cropValue);
+    	compostingTypes.put(FCBetterThanWolves.fcItemMushroomBrown.itemID, foodValue);
+    	compostingTypes.put(FCBetterThanWolves.fcItemMushroomRed.itemID, foodValue);
+    	
+    	compostingTypes.put(FCBetterThanWolves.fcItemBark.itemID, plantValue);
+    	compostingTypes.put(FCBetterThanWolves.fcItemSawDust.itemID, plantValue);  
+    	
+    	//Food
+    	compostingTypes.put(FCBetterThanWolves.fcItemMushroomBrown.itemID, foodValue);
+    	compostingTypes.put(FCBetterThanWolves.fcItemMushroomRed.itemID, foodValue);
+    	compostingTypes.put(Item.appleRed.itemID, foodValue);
+    	compostingTypes.put(Item.melon.itemID, foodValue);
+    	compostingTypes.put(Item.carrot.itemID, foodValue);
+    	compostingTypes.put(FCBetterThanWolves.fcItemCarrot.itemID, foodValue);
+    	compostingTypes.put(Item.potato.itemID, foodValue);
+    	
+		if (SCDecoIntegration.isDecoInstalled() )
+		{
+			compostingTypes.put(SCDecoIntegration.cherrySapling.blockID, cropValue);
+			compostingTypes.put(SCDecoIntegration.cherryLeaves.blockID, plantValue);
+			compostingTypes.put(SCDecoIntegration.autumnSapling.blockID, cropValue);
+			compostingTypes.put(SCDecoIntegration.autumnLeaves.blockID, plantValue);
+			compostingTypes.put(SCDecoIntegration.flower.blockID, plantValue);
+			compostingTypes.put(SCDecoIntegration.flower2.blockID, plantValue);
+			compostingTypes.put(SCDecoIntegration.tulip.blockID, plantValue);
+		}
+    } 
 }

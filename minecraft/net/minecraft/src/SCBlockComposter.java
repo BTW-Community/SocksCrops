@@ -44,6 +44,8 @@ public class SCBlockComposter extends BlockContainer {
 			
 			composter.markBlockForUpdate();
 			
+			composter.UpdateCooking();
+			
 			return true;
 		}
 		else if ( heldStack == null && world.getBlockMetadata(i, j, k) == 15 )
@@ -57,13 +59,9 @@ public class SCBlockComposter extends BlockContainer {
 			if (!world.isRemote)
 			{
 				FCUtilsItem.EjectStackFromBlockTowardsFacing(world, i, j, k, new ItemStack(SCDefs.compostBlock, 1), iFacing);
-				
-				if (world.rand.nextFloat() <= 0.2F)
-				{
-					FCUtilsItem.EjectStackFromBlockTowardsFacing(world, i, j, k, new ItemStack(SCDefs.earthworm, 1), iFacing);
-				}
 			}
 			
+			world.markBlockForUpdate(i, j, k);
 			
 			return true;
 			

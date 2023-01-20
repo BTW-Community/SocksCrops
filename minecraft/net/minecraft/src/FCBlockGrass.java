@@ -24,29 +24,16 @@ public class FCBlockGrass extends BlockGrass {
 
 		setStepSound(soundGrassFootstep);
 
-		setUnlocalizedName("grass");
+		setUnlocalizedName("grass");    	
 	}
-	
-	//SCADDON: Added
-	@Override
-	public void NotifyOfFullStagePlantGrowthOn(World world, int i, int j, int k, Block plantBlock) {
-
-		world.setBlockAndMetadataWithNotify(i, j, k, SCDefs.grassNutrition.blockID, 2);
-
-	}
-
-	@Override
-	public float GetPlantGrowthOnMultiplier(World world, int i, int j, int k, Block plantBlock) {
-		return 1F;
-	}
-	//END SCADDON
 
 	@Override
 	public void updateTick(World world, int x, int y, int z, Random rand) {
 		if (!canGrassSurviveAtLocation(world, x, y, z)) {
 			// convert back to dirt in low light
 			world.setBlockWithNotify(x, y, z, Block.dirt.blockID);
-		} else if (canGrassSpreadFromLocation(world, x, y, z)) {
+		}
+		else if (canGrassSpreadFromLocation(world, x, y, z)) {
 			if (rand.nextFloat() <= GROWTH_CHANCE) {
 				checkForGrassSpreadFromLocation(world, x, y, z);
 			}
@@ -57,6 +44,20 @@ public class FCBlockGrass extends BlockGrass {
 		}
 	}
 
+	//SCADDON: Added
+	@Override
+	public void NotifyOfFullStagePlantGrowthOn(World world, int i, int j, int k, Block plantBlock)
+	{
+		world.setBlockAndMetadataWithNotify(i, j, k, SCDefs.grassNutrition.blockID, 2);
+	}
+	
+	@Override
+	public float GetPlantGrowthOnMultiplier(World world, int i, int j, int k, Block plantBlock)
+	{
+		return 1F;
+	}
+	//END SCADDON
+	
 	@Override
 	public int idDropped(int metadata, Random rand, int fortuneModifier) {
 		return FCBetterThanWolves.fcBlockDirtLoose.blockID;
@@ -73,7 +74,7 @@ public class FCBlockGrass extends BlockGrass {
 	public void OnBlockDestroyedWithImproperTool(World world, EntityPlayer player, int x, int y, int z, int metadata) {
 		super.OnBlockDestroyedWithImproperTool(world, player, x, y, z, metadata);
 
-		OnDirtDugWithImproperTool(world, x, y, z);
+		OnDirtDugWithImproperTool(world, x, y, z);    	
 	}
 
 	@Override
@@ -89,7 +90,7 @@ public class FCBlockGrass extends BlockGrass {
 
 		if (toFacing == 0) {
 			world.setBlockWithNotify(x, y, z, FCBetterThanWolves.fcBlockDirtLoose.blockID);
-		}
+		}    		
 	}
 
 	@Override
@@ -107,10 +108,12 @@ public class FCBlockGrass extends BlockGrass {
 		if (!animal.GetDisruptsEarthOnGraze()) {
 			if (isSparse(world, x, y, z)) {
 				world.setBlockWithNotify(x, y, z, Block.dirt.blockID);
-			} else {
+			}
+			else {
 				setSparse(world, x, y, z);
 			}
-		} else {
+		}
+		else {
 			world.setBlockWithNotify(x, y, z, FCBetterThanWolves.fcBlockDirtLoose.blockID);
 			NotifyNeighborsBlockDisrupted(world, x, y, z);
 		}
@@ -155,8 +158,7 @@ public class FCBlockGrass extends BlockGrass {
 
 		if (!world.isRemote) {
 			if (world.rand.nextInt(25) == 0) {
-				FCUtilsItem.EjectStackFromBlockTowardsFacing(world, x, y, z,
-						new ItemStack(FCBetterThanWolves.fcItemHempSeeds), fromSide);
+				FCUtilsItem.EjectStackFromBlockTowardsFacing(world, x, y, z, new ItemStack(FCBetterThanWolves.fcItemHempSeeds), fromSide);
 			}
 		}
 
@@ -173,12 +175,13 @@ public class FCBlockGrass extends BlockGrass {
 		if (isSparse(world, x, y, z)) {
 			setFullyGrown(world, x, y, z);
 			return true;
-		} else {
+		}
+		else {
 			return false;
 		}
 	}
 
-	// ------------- Class Specific Methods ------------//
+	//------------- Class Specific Methods ------------//
 
 	public static boolean canGrassSurviveAtLocation(World world, int x, int y, int z) {
 		int blockAboveID = world.getBlockId(x, y + 1, z);
@@ -188,8 +191,9 @@ public class FCBlockGrass extends BlockGrass {
 
 		int blockAboveCurrentNaturalLight = blockAboveMaxNaturalLight - world.skylightSubtracted;
 
-		if (blockAboveMaxNaturalLight < SURVIVE_LIGHT_LEVEL || Block.lightOpacity[blockAboveID] > 2
-				|| (blockAbove != null && !blockAbove.GetCanGrassGrowUnderBlock(world, x, y + 1, z, false))) {
+		if (blockAboveMaxNaturalLight < SURVIVE_LIGHT_LEVEL || Block.lightOpacity[blockAboveID] > 2 ||
+				(blockAbove != null && !blockAbove.GetCanGrassGrowUnderBlock(world, x, y + 1, z, false)))
+		{
 			return false;
 		}
 
@@ -231,9 +235,10 @@ public class FCBlockGrass extends BlockGrass {
 		Block targetBlock = Block.blocksList[targetBlockID];
 
 		if (canGrassSurviveAtLocation(world, x, y, z)) {
-			if (targetBlock.GetCanGrassSpreadToBlock(world, x, y, z)
-					&& Block.lightOpacity[world.getBlockId(x, y + 1, z)] <= 2
-					&& !FCBlockGroundCover.IsGroundCoverRestingOnBlock(world, x, y, z)) {
+			if (targetBlock.GetCanGrassSpreadToBlock(world, x, y, z) &&
+					Block.lightOpacity[world.getBlockId(x, y + 1, z)] <= 2 &&
+					!FCBlockGroundCover.IsGroundCoverRestingOnBlock(world, x, y, z))    		
+			{
 				return targetBlock.SpreadGrassToBlock(world, x, y, z);
 			}
 		}
@@ -257,7 +262,7 @@ public class FCBlockGrass extends BlockGrass {
 		world.setBlockMetadataWithNotify(x, y, z, 0);
 	}
 
-	// ----------- Client Side Functionality -----------//
+	//----------- Client Side Functionality -----------//    
 
 	private boolean hasSnowOnTop; // temporary variable used by rendering
 	public static boolean secondPass;
@@ -286,27 +291,28 @@ public class FCBlockGrass extends BlockGrass {
 	public int colorMultiplier(IBlockAccess blockAccess, int x, int y, int z) {
 		if (hasSnowOnTop || !secondPass) {
 			return 16777215;
-		} else {
+		}
+		else {
 			return super.colorMultiplier(blockAccess, x, y, z);
 		}
 	}
 
 	@Override
-	public boolean shouldSideBeRendered(IBlockAccess blockAccess, int neighborX, int neighborY, int neighborZ,
-			int side) {
+	public boolean shouldSideBeRendered(IBlockAccess blockAccess, int neighborX, int neighborY, int neighborZ, int side) {
 		FCUtilsBlockPos pos = new FCUtilsBlockPos(neighborX, neighborY, neighborZ, Facing.oppositeSide[side]);
 
-		if (!secondPass) {
-			// Don't render dirt under normal grass
+		if (!secondPass ) {
+			//Don't render dirt under normal grass
 			if (side == 1 && !isSparse(blockAccess, pos.i, pos.j, pos.k) && !hasSnowOnTop) {
-				// return false;
+				//return false;
 			}
-		} else {
-			// Bottom never has a second pass texture
+		}
+		else {
+			//Bottom never has a second pass texture
 			if (side == 0) {
 				return false;
 			}
-			// Snow has its own texture and should not render the second pass
+			//Snow has its own texture and should not render the second pass
 			else if (side >= 2 && hasSnowOnTop) {
 				return false;
 			}
@@ -320,20 +326,22 @@ public class FCBlockGrass extends BlockGrass {
 		if (!secondPass) {
 			if (side == 1 && this.isSparse(blockAccess, x, y, z)) {
 				return this.iconGrassTopSparseDirt;
-			} else if (side > 1 && hasSnowOnTop) {
-				Icon betterGrassIcon = RenderBlocksUtils.getGrassTexture(this, blockAccess, x, y, z, side,
-						iconGrassTop);
+			}
+			else if (side > 1 && hasSnowOnTop) {
+				Icon betterGrassIcon = RenderBlocksUtils.getGrassTexture(this, blockAccess, x, y, z, side, iconGrassTop);
 
-				if (betterGrassIcon != null && betterGrassIcon != iconGrassTop
-						&& betterGrassIcon != iconGrassTopSparse) {
+				if (betterGrassIcon != null && betterGrassIcon != iconGrassTop && betterGrassIcon != iconGrassTopSparse) {
 					return betterGrassIcon;
-				} else {
+				}
+				else {
 					return iconSnowSide;
 				}
-			} else {
+			}
+			else {
 				return Block.grass.getBlockTextureFromSide(side);
 			}
-		} else {
+		}
+		else {
 			return getBlockTextureSecondPass(blockAccess, x, y, z, side);
 		}
 	}
@@ -343,7 +351,8 @@ public class FCBlockGrass extends BlockGrass {
 
 		if (isSparse(blockAccess, x, y, z)) {
 			topIcon = iconGrassTopSparse;
-		} else {
+		}
+		else {
 			topIcon = iconGrassTop;
 		}
 
@@ -351,9 +360,11 @@ public class FCBlockGrass extends BlockGrass {
 
 		if (betterGrassIcon != null) {
 			return betterGrassIcon;
-		} else if (side == 1) {
+		}
+		else if (side == 1) {
 			return topIcon;
-		} else if (side > 1) {
+		}
+		else if (side > 1) {
 			return this.iconGrassSideOverlay;
 		}
 

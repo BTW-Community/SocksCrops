@@ -7,7 +7,7 @@ public abstract class SCBlockBushBase extends BlockFlower {
 	protected SCBlockBushBase(int blockID)
 	{
 		super(blockID);
-        this.setHardness( 0.1F );
+//        this.setHardness( 0.1F );
         this.SetAxesEffectiveOn( true );        
         this.SetBuoyant();        
         this.SetFireProperties( FCEnumFlammability.CROPS );
@@ -94,9 +94,10 @@ public abstract class SCBlockBushBase extends BlockFlower {
 		
         if( !world.isRemote )
         {
-        	// kill the plant if not harvested by shears
+        	ItemStack heldItem = player.getCurrentEquippedItem();
         	
-        	if ( player.getCurrentEquippedItem() == null || !(player.getCurrentEquippedItem().getItem() instanceof FCItemShears ) )
+        	// kill the plant if not harvested by shears
+        	if ( heldItem == null || !(heldItem.getItem() instanceof FCItemShears ) )
         	{   
         		if ( iMetadata == 5 )
 	            {
@@ -104,7 +105,7 @@ public abstract class SCBlockBushBase extends BlockFlower {
         			world.setBlockToAir( i, j , k );
 	            }
         	}
-        	else if (player.getCurrentEquippedItem().getItem() instanceof FCItemShears )
+        	else if (heldItem.getItem() instanceof FCItemShears )
             {        		
         		if ( iMetadata == 5 )
 	            {
@@ -112,7 +113,7 @@ public abstract class SCBlockBushBase extends BlockFlower {
 	            }
         		
         		this.dropBlockAsItem_do(world, i, j, k, new ItemStack(this.getSaplingID(), 1, 0));
-        		player.getCurrentEquippedItem().damageItem(1, player);
+        		heldItem.damageItem(1, player);
         		
         		world.setBlockToAir( i, j , k );
             }
@@ -144,6 +145,8 @@ public abstract class SCBlockBushBase extends BlockFlower {
         Block var5 = Block.blocksList[var1.getBlockId(var2, var3, var4)];
         return var5 != null && var5.CanWildVegetationGrowOnBlock(var1, var2, var3, var4);
     }
+    
+
     
 
 }

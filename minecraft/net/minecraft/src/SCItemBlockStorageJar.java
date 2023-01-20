@@ -5,12 +5,18 @@ import java.util.List;
 
 public class SCItemBlockStorageJar extends ItemBlock {
         
-	private int m_iPlacedBlockID;
+	protected int m_iPlacedBlockID;
 
-	public SCItemBlockStorageJar(int par1) {
+	public static final int OAK = 0;
+	public static final int SPRUCE = 1;
+	public static final int BIRCH = 2;
+	public static final int JUNGLE = 3;
+	public static final int BLOOD = 4;
+	
+	public SCItemBlockStorageJar(int par1, Block placedBlock) {
 		super(par1);
 		this.setMaxStackSize(1);
-		m_iPlacedBlockID = SCDefs.storageJar.blockID;
+		m_iPlacedBlockID = placedBlock.blockID;
 	}
 	
     @Override
@@ -34,15 +40,15 @@ public class SCItemBlockStorageJar extends ItemBlock {
         
         return false;
 	}
-		
+    
 	private void placeBlock(World world, int i, int j, int k, ItemStack itemStack, int iFacing) {
 		
 
 		world.setBlock(i, j, k, m_iPlacedBlockID);
 		
-		SCTileEntityStorageJar tileEntity = (SCTileEntityStorageJar)( world.getBlockTileEntity(i, j, k) );
+		SCTileEntityStorageJar storageJar = (SCTileEntityStorageJar)( world.getBlockTileEntity(i, j, k) );
 		
-		if ( tileEntity != null )
+		if ( storageJar != null )
     	{			
 			//NBTTagCompound newTag = new NBTTagCompound("storageStack");
 			//ItemStack newStack = new ItemStack(this, 1, itemStack.getItemDamage());
@@ -54,6 +60,7 @@ public class SCItemBlockStorageJar extends ItemBlock {
 				int damage = 0;
 				int seedDamage = 0;
 				
+				int corkType = 0;				
 				int seedType = 0;
 				boolean label = false;
 				
@@ -78,13 +85,19 @@ public class SCItemBlockStorageJar extends ItemBlock {
 				if (itemStack.stackTagCompound.hasKey("seedType") )
 				{
 					seedType = itemStack.stackTagCompound.getInteger("seedType");
-					tileEntity.setSeedType(seedType);	
+					storageJar.setSeedType(seedType);	
 				}
 				
 				if (itemStack.stackTagCompound.hasKey("seedDamage") )
 				{
 					seedDamage = itemStack.stackTagCompound.getInteger("seedDamage");
-					tileEntity.setSeedType(seedType);
+					storageJar.setSeedType(seedType);
+				}
+				
+				if (itemStack.stackTagCompound.hasKey("corkType") )
+				{
+					corkType = itemStack.stackTagCompound.getInteger("corkType");
+					storageJar.setCorkType(corkType);
 				}
 				
 				
@@ -97,9 +110,9 @@ public class SCItemBlockStorageJar extends ItemBlock {
 				
 				
 				
-				tileEntity.setInventorySlotContents(0, new ItemStack(id, count, damage));
+				storageJar.setInventorySlotContents(0, new ItemStack(id, count, damage));
 				
-				tileEntity.getStorageStack().setItemDamage(seedDamage);
+				storageJar.getStorageStack().setItemDamage(seedDamage);
 				
 			}
 			
@@ -109,14 +122,14 @@ public class SCItemBlockStorageJar extends ItemBlock {
 			
 			if (labelDamage == 1)
 			{
-				tileEntity.setLabel(true);
+				storageJar.setLabel(true);
 			}
-			else tileEntity.setLabel(false);
+			else storageJar.setLabel(false);
 			
-			int dir = Direction.facingToDirection[iFacing];
+			//int dir = Direction.facingToDirection[iFacing];
 			//int dir = SCBlockStorageJar.getDirection(iFacing);
 			
-			world.setBlockMetadata(i, j, k, dir);
+			//world.setBlockMetadata(i, j, k, dir);
 			
     	}
 	}
@@ -124,9 +137,9 @@ public class SCItemBlockStorageJar extends ItemBlock {
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
 	{			
-		String contains = StatCollector.translateToLocal( "scItemBlockStorageJar.contains" );
-		String empty = StatCollector.translateToLocal( "scItemBlockStorageJar.empty" );
-		String hasLabel = StatCollector.translateToLocal( "scItemBlockStorageJar.hasLabel" );
+		String contains = StatCollector.translateToLocal( "SCItemBlockStorageJar.contains" );
+		String empty = StatCollector.translateToLocal( "SCItemBlockStorageJar.empty" );
+		String hasLabel = StatCollector.translateToLocal( "SCItemBlockStorageJar.hasLabel" );
 		
 		if (stack.stackTagCompound != null)
 		{
@@ -179,23 +192,27 @@ public class SCItemBlockStorageJar extends ItemBlock {
 	
 	private String getName(ItemStack stack)
 	{
-		if (stack.stackTagCompound != null && stack.stackTagCompound.hasKey("seedType"))
+		if (stack.stackTagCompound != null)
     	{
-			int seedType = stack.stackTagCompound.getInteger("seedType");
+			int seedType = 0;
+			int seedDamage = 0;
+			
+			if (stack.stackTagCompound.hasKey("seedType"))
+			{
+				seedType = stack.stackTagCompound.getInteger("seedType");
+			}
 
 			if (stack.stackTagCompound.hasKey("seedDamage") )
 			{
-				int seedDamage = stack.stackTagCompound.getInteger("seedDamage");
-				ItemStack itemStack = new ItemStack(seedType, 1, seedDamage);
-				
-				return itemStack.getDisplayName();
+				seedDamage = stack.stackTagCompound.getInteger("seedDamage");
 			}
+			
+			
+			return new ItemStack(seedType, 1, seedDamage).getDisplayName();
 
     	}
 		
 		return "N/A";
-
-		
 	}
-	
+
 }

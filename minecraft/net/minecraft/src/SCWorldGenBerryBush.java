@@ -35,6 +35,7 @@ public class SCWorldGenBerryBush {
 		
 		validTaigaBiome.add(BiomeGenBase.taiga);
 		validTaigaBiome.add(BiomeGenBase.taigaHills);
+		validTaigaBiome.add(BiomeGenBase.icePlains);
 	}
 	
 	private void debug(boolean boo, int plantX, int plantY, int plantZ)
@@ -65,6 +66,7 @@ public class SCWorldGenBerryBush {
             if (par1World.isAirBlock(plantX, plantY, plantZ))
             {                
                 int newMeta = 1 + par2Random.nextInt(5);
+                int hasSnow = par2Random.nextInt(2);
                 
                 if ( !isValidBiome )
                 {
@@ -89,6 +91,11 @@ public class SCWorldGenBerryBush {
                     	if ( berryBush == SCDefs.sweetberryBush)
                     	{
                     		par1World.setBlock(plantX, plantY, plantZ, this.plantBlock.blockID, newMeta, 2);
+                    		
+                    		if (hasSnow == 1)
+                    		{
+                    			par1World.setBlock(plantX, plantY + 1, plantZ, Block.snow.blockID, 0, 2);
+                    		}
                     		
                     		debug(false, plantX, plantY, plantZ);
                     	}

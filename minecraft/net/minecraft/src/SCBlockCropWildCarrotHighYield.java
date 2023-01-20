@@ -9,7 +9,7 @@ public class SCBlockCropWildCarrotHighYield extends SCBlockCropWildCarrot {
 	
 	@Override
 	protected int GetSeedItemID() {
-		return SCDefs.wildCarrotCropSapling.blockID;
+		return 0; // SCDefs.wildCarrotCropSapling.blockID;
 	}
 	
 	@Override

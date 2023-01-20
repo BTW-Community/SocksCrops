@@ -47,37 +47,59 @@ public class GuiIngame extends Gui
     public void renderGameOverlay(float par1, boolean par2, int par3, int par4)
     {
         ScaledResolution var5 = new ScaledResolution(this.mc.gameSettings, this.mc.displayWidth, this.mc.displayHeight);
-        int var6 = var5.getScaledWidth();
-        int var7 = var5.getScaledHeight();
+        int scaledWidth = var5.getScaledWidth();
+        int scaledHeight = var5.getScaledHeight();
         FontRenderer var8 = this.mc.fontRenderer;
         this.mc.entityRenderer.setupOverlayRendering();
         GL11.glEnable(GL11.GL_BLEND);
 
         if (Minecraft.isFancyGraphicsEnabled())
         {
-            this.renderVignette(this.mc.thePlayer.getBrightness(par1), var6, var7);
+            this.renderVignette(this.mc.thePlayer.getBrightness(par1), scaledWidth, scaledHeight);
         }
         else
         {
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         }
 
-        ItemStack var9 = this.mc.thePlayer.inventory.armorItemInSlot(3);
+        ItemStack itemStack = this.mc.thePlayer.inventory.armorItemInSlot(3);
 
-        // SCADDON: changed
-        if (this.mc.gameSettings.thirdPersonView == 0 && var9 != null && ( var9.itemID == Block.pumpkin.blockID || ( var9.itemID == SCDefs.pumpkinCarved.blockID && var9.getItemDamage() == 3 ) ) )
-        {
-            this.renderPumpkinBlur(var6, var7);
-        }
+       
 //        if (this.mc.gameSettings.thirdPersonView == 0 && var9 != null && var9.itemID == Block.pumpkin.blockID)
 //        {
 //            this.renderPumpkinBlur(var6, var7);
 //        }
-        // END SCADDON
-        
-        // FCMOD: Added (client only)
-        RenderModSpecificPlayerSightEffects();
-        // END FCMOD
+        // SAU: Replaced above with below
+        if (this.mc.gameSettings.thirdPersonView == 0 && itemStack != null )
+        {
+        	if (itemStack.itemID == Block.pumpkin.blockID)
+        	{
+        		this.renderPumpkinBlur(scaledWidth, scaledHeight, "%blur%/misc/pumpkinblur.png");
+        	}
+        	else if ( itemStack.getItem().isValidForArmorSlot(0, itemStack) )
+        	{
+    			int itemID = itemStack.itemID;
+    			int meta = itemStack.getItemDamage();
+    			Block block = Block.blocksList[itemID];
+
+    			if (itemStack != null && itemStack.getItem().getBlurOverlay(itemStack) != null )
+    			{
+    				this.renderPumpkinBlur(scaledWidth, scaledHeight, itemStack.getItem().getBlurOverlay(itemStack));
+    			}
+    			else if (block != null && block.getBlurOverlay(itemStack) != null )
+    			{
+    				this.renderPumpkinBlur(scaledWidth, scaledHeight, block.getBlurOverlay(itemStack));
+    			}
+        	}
+        	else
+        	{
+                // FCMOD: Added (client only)
+                RenderModSpecificPlayerSightEffects();
+                // END FCMOD
+        	}
+        }
+
+        // END SAU
 
         if (!this.mc.thePlayer.isPotionActive(Potion.confusion))
         {
@@ -85,7 +107,7 @@ public class GuiIngame extends Gui
 
             if (var10 > 0.0F)
             {
-                this.renderPortalOverlay(var10, var6, var7);
+                this.renderPortalOverlay(var10, scaledWidth, scaledHeight);
             }
         }
 
@@ -110,12 +132,12 @@ public class GuiIngame extends Gui
             this.mc.renderEngine.bindTexture("/gui/gui.png");
             InventoryPlayer var31 = this.mc.thePlayer.inventory;
             this.zLevel = -90.0F;
-            this.drawTexturedModalRect(var6 / 2 - 91, var7 - 22, 0, 0, 182, 22);
-            this.drawTexturedModalRect(var6 / 2 - 91 - 1 + var31.currentItem * 20, var7 - 22 - 1, 0, 22, 24, 22);
+            this.drawTexturedModalRect(scaledWidth / 2 - 91, scaledHeight - 22, 0, 0, 182, 22);
+            this.drawTexturedModalRect(scaledWidth / 2 - 91 - 1 + var31.currentItem * 20, scaledHeight - 22 - 1, 0, 22, 24, 22);
             this.mc.renderEngine.bindTexture("/gui/icons.png");
             GL11.glEnable(GL11.GL_BLEND);
             GL11.glBlendFunc(GL11.GL_ONE_MINUS_DST_COLOR, GL11.GL_ONE_MINUS_SRC_COLOR);
-            this.drawTexturedModalRect(var6 / 2 - 7, var7 / 2 - 7, 0, 0, 16, 16);
+            this.drawTexturedModalRect(scaledWidth / 2 - 7, scaledHeight / 2 - 7, 0, 0, 16, 16);
             GL11.glDisable(GL11.GL_BLEND);
             var11 = this.mc.thePlayer.hurtResistantTime / 3 % 2 == 1;
 
@@ -138,8 +160,8 @@ public class GuiIngame extends Gui
 
             if (this.mc.playerController.shouldDrawHUD())
             {
-                var18 = var6 / 2 - 91;
-                var19 = var6 / 2 + 91;
+                var18 = scaledWidth / 2 - 91;
+                var19 = scaledWidth / 2 + 91;
                 this.mc.mcProfiler.startSection("expBar");
                 var20 = this.mc.thePlayer.xpBarCap();
 
@@ -147,7 +169,7 @@ public class GuiIngame extends Gui
                 {
                     short var21 = 182;
                     var22 = (int)(this.mc.thePlayer.experience * (float)(var21 + 1));
-                    var23 = var7 - 32 + 3;
+                    var23 = scaledHeight - 32 + 3;
                     this.drawTexturedModalRect(var18, var23, 0, 64, var21, 5);
 
                     if (var22 > 0)
@@ -156,7 +178,7 @@ public class GuiIngame extends Gui
                     }
                 }
 
-                var47 = var7 - 39;
+                var47 = scaledHeight - 39;
                 var22 = var47 - 10;
                 var23 = this.mc.thePlayer.getTotalArmorValue();
                 var24 = -1;
@@ -359,8 +381,8 @@ public class GuiIngame extends Gui
 
             for (var18 = 0; var18 < 9; ++var18)
             {
-                var19 = var6 / 2 - 90 + var18 * 20 + 2;
-                var20 = var7 - 16 - 3;
+                var19 = scaledWidth / 2 - 90 + var18 * 20 + 2;
+                var20 = scaledHeight - 16 - 3;
                 this.renderInventorySlot(var18, var19, var20, par1);
             }
 
@@ -385,7 +407,7 @@ public class GuiIngame extends Gui
             }
 
             var12 = (int)(220.0F * var33) << 24 | 1052704;
-            drawRect(0, 0, var6, var7, var12);
+            drawRect(0, 0, scaledWidth, scaledHeight, var12);
             GL11.glEnable(GL11.GL_ALPHA_TEST);
             GL11.glEnable(GL11.GL_DEPTH_TEST);
             this.mc.mcProfiler.endSection();
@@ -400,8 +422,8 @@ public class GuiIngame extends Gui
             var11 = false;
             var12 = var11 ? 16777215 : 8453920;
             String var34 = "" + this.mc.thePlayer.experienceLevel;
-            var38 = (var6 - var8.getStringWidth(var34)) / 2;
-            var37 = var7 - 31 - 4;
+            var38 = (scaledWidth - var8.getStringWidth(var34)) / 2;
+            var37 = scaledHeight - 31 - 4;
             var8.drawString(var34, var38 + 1, var37, 0);
             var8.drawString(var34, var38 - 1, var37, 0);
             var8.drawString(var34, var38, var37 + 1, 0);
@@ -419,8 +441,8 @@ public class GuiIngame extends Gui
             if (this.remainingHighlightTicks > 0 && this.highlightingItemStack != null)
             {
                 var35 = this.highlightingItemStack.getDisplayName();
-                var12 = (var6 - var8.getStringWidth(var35)) / 2;
-                var13 = var7 - 59;
+                var12 = (scaledWidth - var8.getStringWidth(var35)) / 2;
+                var13 = scaledHeight - 59;
 
                 if (!this.mc.playerController.shouldDrawHUD())
                 {
@@ -463,7 +485,7 @@ public class GuiIngame extends Gui
             }
 
             var12 = var8.getStringWidth(var35);
-            var8.drawStringWithShadow(var35, var6 - var12 - 10, 5, 16777215);
+            var8.drawStringWithShadow(var35, scaledWidth - var12 - 10, 5, 16777215);
             this.mc.mcProfiler.endSection();
         }
 
@@ -481,9 +503,9 @@ public class GuiIngame extends Gui
             long var43 = Runtime.getRuntime().freeMemory();
             long var44 = var40 - var43;
             String var46 = "Used memory: " + var44 * 100L / var36 + "% (" + var44 / 1024L / 1024L + "MB) of " + var36 / 1024L / 1024L + "MB";
-            this.drawString(var8, var46, var6 - var8.getStringWidth(var46) - 2, 2, 14737632);
+            this.drawString(var8, var46, scaledWidth - var8.getStringWidth(var46) - 2, 2, 14737632);
             var46 = "Allocated memory: " + var40 * 100L / var36 + "% (" + var40 / 1024L / 1024L + "MB)";
-            this.drawString(var8, var46, var6 - var8.getStringWidth(var46) - 2, 12, 14737632);
+            this.drawString(var8, var46, scaledWidth - var8.getStringWidth(var46) - 2, 12, 14737632);
             // FCMOD: Removed (client only)
             /*
             var47 = MathHelper.floor_double(this.mc.thePlayer.posX);
@@ -525,7 +547,7 @@ public class GuiIngame extends Gui
             if (var12 > 0)
             {
                 GL11.glPushMatrix();
-                GL11.glTranslatef((float)(var6 / 2), (float)(var7 - 48), 0.0F);
+                GL11.glTranslatef((float)(scaledWidth / 2), (float)(scaledHeight - 48), 0.0F);
                 GL11.glEnable(GL11.GL_BLEND);
                 GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
                 var13 = 16777215;
@@ -547,14 +569,14 @@ public class GuiIngame extends Gui
 
         if (var42 != null)
         {
-            this.func_96136_a(var42, var7, var6, var8);
+            this.func_96136_a(var42, scaledHeight, scaledWidth, var8);
         }
 
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
         GL11.glPushMatrix();
-        GL11.glTranslatef(0.0F, (float)(var7 - 48), 0.0F);
+        GL11.glTranslatef(0.0F, (float)(scaledHeight - 48), 0.0F);
         this.mc.mcProfiler.startSection("chat");
         this.persistantChatGUI.drawChat(this.updateCounter);
         this.mc.mcProfiler.endSection();
@@ -581,7 +603,7 @@ public class GuiIngame extends Gui
                 var17 = 150;
             }
 
-            var18 = (var6 - var16 * var17) / 2;
+            var18 = (scaledWidth - var16 * var17) / 2;
             byte var45 = 10;
             drawRect(var18 - 1, var45 - 1, var18 + var17 * var16, var45 + 9 * var37, Integer.MIN_VALUE);
 
@@ -733,14 +755,16 @@ public class GuiIngame extends Gui
         }
     }
 
-    private void renderPumpkinBlur(int par1, int par2)
+    private void renderPumpkinBlur(int par1, int par2, String blurOverlay)
     {
         GL11.glDisable(GL11.GL_DEPTH_TEST);
         GL11.glDepthMask(false);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         GL11.glDisable(GL11.GL_ALPHA_TEST);
-        this.mc.renderEngine.bindTexture("%blur%/misc/pumpkinblur.png");
+        // SAU: Replace this.mc.renderEngine.bindTexture("%blur%/misc/pumpkinblur.png");
+        this.mc.renderEngine.bindTexture(blurOverlay);
+        // END SAU
         Tessellator var3 = Tessellator.instance;
         var3.startDrawingQuads();
         var3.addVertexWithUV(0.0D, (double)par2, -90.0D, 0.0D, 1.0D);
@@ -1128,14 +1152,53 @@ public class GuiIngame extends Gui
             GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         }
 
-        ItemStack var9 = this.mc.thePlayer.inventory.armorItemInSlot(3);
+        ItemStack itemStack = this.mc.thePlayer.inventory.armorItemInSlot(3);
 
-        if (this.mc.gameSettings.thirdPersonView == 0 && var9 != null && var9.itemID == Block.pumpkin.blockID)
+//        if (this.mc.gameSettings.thirdPersonView == 0 && itemStack != null && itemStack.itemID == Block.pumpkin.blockID)
+//        {
+//            this.renderPumpkinBlur(iScreenWidth, iScreenHeight);
+//        }
+        
+        // SAU: Replaced above with below
+        if (this.mc.gameSettings.thirdPersonView == 0 && itemStack != null )
         {
-            this.renderPumpkinBlur(iScreenWidth, iScreenHeight);
+        	if (itemStack.itemID == Block.pumpkin.blockID)
+        	{
+        		this.renderPumpkinBlur(iScreenWidth, iScreenHeight, "%blur%/misc/pumpkinblur.png");
+        	}
+        	else if (itemStack.getItem().isValidForArmorSlot(0, itemStack) )
+        	{
+        		int itemID = itemStack.itemID;
+    			int meta = itemStack.getItemDamage();
+    			Block block = Block.blocksList[itemID];
+    			boolean itemGUIDisabled = itemStack.getItem().showBlurOverlayWithGuiDisabled(itemStack);
+    			boolean blockGUIDisabled = block.showBlurOverlayWithGuiDisabled(itemStack);
+
+    			if (itemStack != null && itemStack.getItem().getBlurOverlay(itemStack) != null )
+    			{
+    				if (itemGUIDisabled)
+    				{
+    					this.renderPumpkinBlur(iScreenWidth, iScreenHeight, itemStack.getItem().getBlurOverlay(itemStack));
+    				}
+    				
+    			}
+    			else if (block != null  && block.getBlurOverlay(itemStack) != null )
+    			{
+    				if (blockGUIDisabled)
+    				{
+    					this.renderPumpkinBlur(iScreenWidth, iScreenHeight, block.getBlurOverlay(itemStack));
+    				}
+    				
+    			}
+        	}
+        	else
+        	{
+        		RenderModSpecificPlayerSightEffects();
+        	}
         }
 
-        RenderModSpecificPlayerSightEffects();
+        // END SAU
+        // RenderModSpecificPlayerSightEffects();
 
         if (!this.mc.thePlayer.isPotionActive(Potion.confusion))
         {

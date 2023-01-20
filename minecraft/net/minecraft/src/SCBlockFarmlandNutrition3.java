@@ -41,9 +41,16 @@ public class SCBlockFarmlandNutrition3 extends SCBlockFarmlandBase {
 	
 	protected void SetDung( World world, int i, int j, int k )
 	{
-	    	int iTargetBlockMetadata = world.getBlockMetadata( i, j, k );
+	    int iTargetBlockMetadata = world.getBlockMetadata( i, j, k );
 	    	
-	    	world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.farmlandNutrition3Dung.blockID, iTargetBlockMetadata );
+	    world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.farmlandNutrition3Dung.blockID, iTargetBlockMetadata );
+	}
+	
+	@Override
+	protected void SetHay(World world, int i, int j, int k) {
+		int iTargetBlockMetadata = world.getBlockMetadata( i, j, k );
+    	
+    	world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.farmlandNutrition3Hay.blockID, iTargetBlockMetadata );
 	}
 
 	@Override

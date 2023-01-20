@@ -37,7 +37,7 @@ public class SCBlockPumpkinVineFlowering extends SCBlockGourdVineFloweringBase {
 	}
 	
 	@Override
-	protected void growFruit(World world, int i, int j, int k, Random random) {
+	protected boolean growFruit(World world, int i, int j, int k, Random random) {
 		
 		int targetDirection = random.nextInt(4);
 		
@@ -53,8 +53,10 @@ public class SCBlockPumpkinVineFlowering extends SCBlockGourdVineFloweringBase {
 			
 			world.setBlockAndMetadataWithNotify( finalI, j, finalK, biomeFruit.blockID, targetDirection);
 			
+			return true;
 			//set this to mature vine to stop it growing a second pumpkin
 		}
+		return false;
 	}
 	
 	protected boolean CanGrowPumpkinAt( World world, int i, int j, int k )
@@ -184,28 +186,55 @@ public class SCBlockPumpkinVineFlowering extends SCBlockGourdVineFloweringBase {
 		else return GetVineBounds(16, 16, 16);
     		
     }
+	//RENDER 
 	
-	private Icon flowerIcon;
+	public Icon[] flowerIcons = new Icon[3];
 	
-	@Override
-	public void registerIcons(IconRegister register) {
-		
-		super.registerIcons(register);
+	private Icon plantIcon;
 
-		flowerIcon = register.registerIcon("SCBlockPumpkinVineFlowering_flower");
-		
-        flowerIcons = new Icon[1];
-
-        for ( int iTempIndex = 0; iTempIndex < flowerIcons.length; iTempIndex++ )
+    @Override
+    public void registerIcons( IconRegister register )
+    {
+    	blockIcon = plantIcon = register.registerIcon("SCBlockPumpkinVine_3");
+    	
+        for ( int i = 0; i < flowerIcons.length; i++ )
         {
-        	flowerIcons[iTempIndex] = register.registerIcon( "SCBlockPumpkinVineFlowering");
+        	flowerIcons[i] = register.registerIcon( "SCBlockPumpkinVineFlower_" + i);
         }
+        
+        connectorIcons = new Icon[4];
+        for ( int i = 0; i < connectorIcons.length; i++ )
+        {
+        	connectorIcons[i] = register.registerIcon( "SCBlockPumpkinVineConnector_" + i );
+        }
+   
+    }
+
+	@Override
+    public Icon getBlockTexture( IBlockAccess blockAccess, int i, int j, int k, int iSide )
+    {
+		if (secondPass) 
+		{
+			int meta = blockAccess.getBlockMetadata(i, j, k);
+			
+			if ( !IsFullyGrown(meta) )
+			{
+				return getBlockTextureSecondPass(blockAccess, i, j, k, iSide);
+			}
+		}
 		
+		return plantIcon;  
+    }
+	
+	private Icon getBlockTextureSecondPass(IBlockAccess blockAccess, int i, int j, int k, int side) {
+
+		return getOverlayIcon(blockAccess.getBlockMetadata(i, j, k));
 	}
 
 	@Override
-	protected Icon getOverlayIcon() {
-		return flowerIcon;
+	protected Icon getOverlayIcon(int meta)
+	{
+		return flowerIcons[GetGrowthLevel(meta)];
 	}
 
 }

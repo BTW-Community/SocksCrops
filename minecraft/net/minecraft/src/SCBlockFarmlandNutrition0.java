@@ -37,6 +37,13 @@ public class SCBlockFarmlandNutrition0 extends SCBlockFarmlandBase {
 	}
 	
 	@Override
+	protected void SetHay(World world, int i, int j, int k) {
+		int iTargetBlockMetadata = world.getBlockMetadata( i, j, k );
+    	
+    	world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.farmlandNutrition0Hay.blockID, iTargetBlockMetadata );
+	}
+	
+	@Override
 	public boolean DropComponentItemsOnBadBreak( World world, int i, int j, int k, int iMetadata, float fChanceOfDrop )
 	{
 		DropItemsIndividualy( world, i, j, k, FCBetterThanWolves.fcItemPileSand.itemID, 3, 0, fChanceOfDrop );

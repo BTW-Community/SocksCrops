@@ -1,10 +1,10 @@
 package net.minecraft.src;
 
-public class SCItemBlockLily extends ItemBlock {
+public class SCItemBlockLily extends ItemMultiTextureTile {
 	private Block lily;
 
-	public SCItemBlockLily(int var1, Block block) {
-		super(var1);
+	public SCItemBlockLily(int var1, Block block, String[] array) {
+		super(var1, block, array);
 		this.lily = block;
 	}
 
@@ -39,7 +39,7 @@ public class SCItemBlockLily extends ItemBlock {
 
                 if (par2World.getBlockMaterial(var5, var6, var7) == Material.water && par2World.getBlockMetadata(var5, var6, var7) == 0 && par2World.isAirBlock(var5, var6 + 1, var7))
                 {
-                    par2World.setBlock(var5, var6 + 1, var7, lily.blockID);
+                    par2World.setBlockAndMetadata(var5, var6 + 1, var7, lily.blockID, par1ItemStack.getItemDamage());
 
                     if (!par3EntityPlayer.capabilities.isCreativeMode)
                     {

@@ -4,9 +4,9 @@ import java.util.Random;
 
 public class SCBlockPumpkinGrowingGreen extends SCBlockPumpkinGrowing {
 
-	protected SCBlockPumpkinGrowingGreen(int iBlockID, int stemBlock, int vineBlock, int flowerBlock, int convertedBlockID)
+	protected SCBlockPumpkinGrowingGreen(int iBlockID, int stemBlock, int vineBlock, int flowerBlock, int convertedBlockID, int sleepingFruit)
 	{
-		super(iBlockID, stemBlock, vineBlock, flowerBlock, convertedBlockID);
+		super(iBlockID, stemBlock, vineBlock, flowerBlock, convertedBlockID, sleepingFruit);
 		
 		setUnlocalizedName("SCBlockPumpkinGrowingGreen");
 	}
@@ -58,17 +58,17 @@ public class SCBlockPumpkinGrowingGreen extends SCBlockPumpkinGrowing {
 		//Orange
 		if (growthLevel == 0)
 		{
-			return GetGourdBounds(6, 4, 6);
+			return GetGourdBounds(10, 6, 10);
 		}
 		else if (growthLevel == 1)
 		{
-			return GetGourdBounds(8, 5, 8);
+			return GetGourdBounds(12, 8, 12);
 		}
 		else if (growthLevel == 2)
 		{
-			return GetGourdBounds(12, 6, 12);
+			return GetGourdBounds(14, 9, 14);
 		}
-		else return GetGourdBounds(16, 8, 16);
+		else return GetGourdBounds(16, 10, 16);
 	}	
 	
 	//--- Render ---//
@@ -93,13 +93,11 @@ public class SCBlockPumpkinGrowingGreen extends SCBlockPumpkinGrowing {
 	protected Icon[] greenIcon;
 	protected Icon[] greenIconTop;
 	protected Icon[] connectorIcon;
-	private Icon overlayIcon;
-	
+
 	@Override
   	public void registerIcons( IconRegister register )
   	{
-		overlayIcon = register.registerIcon("SCBlockPumpkinGreenSideOverlay");
-		
+		super.registerIcons(register);
 		//Orange
 		greenIcon = new Icon[4];
 		
@@ -138,9 +136,4 @@ public class SCBlockPumpkinGrowingGreen extends SCBlockPumpkinGrowing {
 
     	return greenIcon[growthLevel];
     }
-
-	@Override
-	Icon getOverlayIcon() {
-		return overlayIcon;
-	}
 }

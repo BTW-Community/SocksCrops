@@ -6,15 +6,17 @@ public class SCBlockGourdVine extends BlockDirectional {
 	
 	protected int floweringBlock;
 	protected int stemBlock;
+	protected int hangingVine;
 	
 	int convertedBlockID;
 
-	protected SCBlockGourdVine(int iBlockID, int floweringBlock, int stemBlock, int convertedBlockID, String texVine, String texConnector) {
+	protected SCBlockGourdVine(int iBlockID, int floweringBlock, int stemBlock, int convertedBlockID, int hangingVine, String texVine, String texConnector) {
 		super( iBlockID, Material.plants );
 		
 		this.floweringBlock = floweringBlock;
 		this.stemBlock = stemBlock;
 		this.convertedBlockID = convertedBlockID;
+		this.hangingVine = hangingVine;
 		
 		this.texVine = texVine;
 		this.texConnector = texConnector;
@@ -38,7 +40,7 @@ public class SCBlockGourdVine extends BlockDirectional {
 	
 	protected float GetVineGrowthChance()
     {
-    	return 0.1F; //was 0.2f
+    	return 0.125F; //was 0.2f
     }
 	
 	@Override
@@ -120,6 +122,21 @@ public class SCBlockGourdVine extends BlockDirectional {
   		if( CanGrowVineAt( world, finalI, j, finalK ) )
   		{
   			world.setBlockAndMetadata(finalI, j, finalK, this.blockID, sideFinal);
+  		}
+  		else
+  		{
+  			int id = world.getBlockId(finalI, j, finalK);
+  			Block block = Block.blocksList[id];
+  			
+  			int idBelow = world.getBlockId(finalI, j - 1, finalK);
+  			Block blockBelow = Block.blocksList[idBelow];
+  			
+  			//world.setBlockAndMetadata(finalI, j - 1, finalK, Block.blockDiamond.blockID, sideFinal);
+  			
+  			if (world.getBlockId(finalI, j, finalK) == 0 && world.getBlockId(finalI, j - 1, finalK) == 0)
+  			{
+  				world.setBlockAndMetadata(finalI, j - 1, finalK, hangingVine, sideFinal);
+  			}
   		}
 
   	}
@@ -243,15 +260,19 @@ public class SCBlockGourdVine extends BlockDirectional {
 	    int oppositeFacing = Direction.rotateOpposite[dir];
 	    int iTargetFacing = Direction.directionToFacing[oppositeFacing];
 	    
-	    
-	    
 	    targetPos.AddFacingAsOffset( iTargetFacing );
 	    
 	    int targetBlockID = world.getBlockId(targetPos.i, targetPos.j, targetPos.k);
 	    Block block = Block.blocksList[targetBlockID];
+	    	
+	    if (block instanceof SCBlockGourdVineDead)
+	    {
+	    	return false;
+	    }
 	    
-	    if ( targetBlockID == this.stemBlock || targetBlockID == this.blockID || targetBlockID == this.floweringBlock || block instanceof SCBlockGourdGrowing)
-	    {	
+	    if (block instanceof SCBlockGourdVine || targetBlockID == this.stemBlock)
+	    {
+	    	//System.out.println(block.blockID);
 	    	return true;
 	    	
 	    }
@@ -274,8 +295,8 @@ public class SCBlockGourdVine extends BlockDirectional {
 	    
 	    int targetBlockID = r.blockAccess.getBlockId(targetPos.i, targetPos.j, targetPos.k);
 	    
-	    
-	    if ( targetBlockID == this.stemBlock || targetBlockID == this.blockID || targetBlockID == this.floweringBlock )
+	    Block block = Block.blocksList[targetBlockID];
+	    if ( block instanceof SCBlockGourdVine || block instanceof SCBlockGourdGrowing || targetBlockID == this.stemBlock)
 	    {	
 	    	return true;
 	    	
@@ -293,10 +314,10 @@ public class SCBlockGourdVine extends BlockDirectional {
         if ( (block == null || FCUtilsWorld.IsReplaceableBlock( world, i, j, k) )
         		
         	//but not a stem, vine or flowering vine
-        	&& ( blockID != this.blockID || blockID != this.stemBlock || blockID != this.floweringBlock ) ) {
+        	&& ( blockID != this.blockID || blockID != this.stemBlock || blockID != this.floweringBlock || blockID != hangingVine) ) {
                 
         	// CanGrowOnBlock() to allow vine to grow on tilled earth and such
-        	if ( CanGrowOnBlock( world, i, j - 1, k ) )
+        	if ( CanGrowOnBlock( world, i, j - 1, k ) && !world.isAirBlock(i, j - 1, k))
 	        {				
         		return true;
 	        }
@@ -471,17 +492,40 @@ public class SCBlockGourdVine extends BlockDirectional {
 	
     @Override
     public boolean RenderBlock(RenderBlocks r, int i, int j, int k) {
-    	r.renderCrossedSquares(this, i, j, k);
+    	renderLeavesCrossedSquares(r, i, j, k);
     	
     	int iMetadata = r.blockAccess.getBlockMetadata( i, j, k );
     	
     	if (this.hasStemFacing(r, i, j, k))
     	{
-    		this.renderVineConnector( r, i, j, k);        
+    		this.renderVineConnector( r, i, j, k);
+    		return true;
     	}
     	return true;
     }
+    
+	public boolean renderLeavesCrossedSquares(RenderBlocks r, int par2, int par3, int par4)
+    {
+    	IBlockAccess blockAccess = r.blockAccess;
+    	
+    	Tessellator tess = Tessellator.instance;
+        tess.setBrightness(this.getMixedBrightnessForBlock(blockAccess, par2, par3, par4));
+        float var6 = 1.0F;
+        int var7 = this.colorMultiplier(blockAccess, par2, par3, par4);
+        float var8 = (float)(var7 >> 16 & 255) / 255.0F;
+        float var9 = (float)(var7 >> 8 & 255) / 255.0F;
+        float var10 = (float)(var7 & 255) / 255.0F;
 
+
+        tess.setColorOpaque_F(var6 * var8, var6 * var9, var6 * var10);
+        double var19 = (double)par2;
+        double var20 = (double)par3;
+        double var15 = (double)par4;
+        SCUtilsRender.drawCrossedSquares(r, this, blockAccess.getBlockMetadata(par2, par3, par4), var19, var20, var15, 1.0F);
+        
+		return true;
+
+    }
 
 	public boolean renderVineConnector(RenderBlocks r, int par2, int par3, int par4)
     {

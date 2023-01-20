@@ -8,7 +8,7 @@ public class SCBlockGourdVineDead extends SCBlockGourdVine {
 	private static String texConnector;
 
 	protected SCBlockGourdVineDead(int iBlockID, int floweringBlock, int stemBlock) {
-		super(iBlockID, floweringBlock, stemBlock, 0, texVine, texConnector);
+		super(iBlockID, floweringBlock, stemBlock, 0, 0, texVine, texConnector);
 		
 		setHardness( 0F );
 	}

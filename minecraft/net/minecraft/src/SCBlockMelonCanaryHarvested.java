@@ -124,19 +124,29 @@ public class SCBlockMelonCanaryHarvested extends SCBlockGourdHarvested {
 		
 	//----------- Render/Icon Functionality -----------//
 	
-	private Icon[] yellowIcon;
+	private Icon[] yellowIconSide;
+	private Icon[] yellowIconSideMirrored;
 	private Icon[] yellowIconTop;
+	private Icon[] yellowIconFront;
+	private Icon[] yellowIconEnd;
 	
 	@Override
   	public void registerIcons( IconRegister register )
   	{
 
 		//Yellow
-		yellowIcon = new Icon[4];
+		yellowIconSide = new Icon[4];
 		
-  		for ( int iTempIndex = 0; iTempIndex < yellowIcon.length; iTempIndex++ )
+  		for ( int iTempIndex = 0; iTempIndex < yellowIconSide.length; iTempIndex++ )
 		{
-  			yellowIcon[iTempIndex] = register.registerIcon( "SCBlockMelonYellowSide_" + iTempIndex );
+  			yellowIconSide[iTempIndex] = register.registerIcon( "SCBlockMelonYellowSide_" + iTempIndex );
+		}
+  		
+  		yellowIconSideMirrored = new Icon[4];
+		
+  		for ( int iTempIndex = 0; iTempIndex < yellowIconSideMirrored.length; iTempIndex++ )
+		{
+  			yellowIconSideMirrored[iTempIndex] = register.registerIcon( "SCBlockMelonYellowSide_mirrored_" + iTempIndex );
 		}
 	
   		yellowIconTop = new Icon[4];
@@ -146,32 +156,139 @@ public class SCBlockMelonCanaryHarvested extends SCBlockGourdHarvested {
 			yellowIconTop[iTempIndex] = register.registerIcon( "SCBlockMelonYellowTop_" + iTempIndex );
 		}
 		
+		yellowIconFront = new Icon[4];
+ 		
+		for ( int iTempIndex = 0; iTempIndex < yellowIconFront.length; iTempIndex++ )
+		{
+			yellowIconFront[iTempIndex] = register.registerIcon( "SCBlockMelonYellowFront_" + iTempIndex );
+		}
+		
+		yellowIconEnd = new Icon[4];
+ 		
+		for ( int iTempIndex = 0; iTempIndex < yellowIconEnd.length; iTempIndex++ )
+		{
+			yellowIconEnd[iTempIndex] = register.registerIcon( "SCBlockMelonYellowBack_" + iTempIndex );
+		}
+		
 	}
 	
 	@Override
-    public Icon getIcon( int iSide, int iMetadata )
+    public Icon getIcon( int side, int iMetadata )
     {
     	int growthLevel = GetGrowthLevel(iMetadata);
     	int dir = getDirection(iMetadata);
+    	if (dir == 0)
+    	{
+        	if (side == 0 || side == 1)
+        	{
+        		return yellowIconTop[growthLevel];
+        	}
+        	else if (side == 3)
+        	{
+        		return yellowIconEnd[growthLevel];
+        	}
+        	else if (side == 2)
+        	{
+        		return yellowIconFront[growthLevel];
+        	}
+        	else
+        	{
+        		if (side == 4)
+        		{
+        			return yellowIconSideMirrored[growthLevel];
+        		}
+        		return yellowIconSide[growthLevel];
+        	}
+    	}
+    	else if (dir == 2)
+    	{
+        	if (side == 0 || side == 1)
+        	{
+        		return yellowIconTop[growthLevel];
+        	}
+        	else if (side == 2)
+        	{
+        		return yellowIconEnd[growthLevel];
+        	}
+        	else if (side == 3)
+        	{
+        		return yellowIconFront[growthLevel];
+        	}
+        	else
+        	{
+        		if (side == 5)
+        		{
+        			return yellowIconSideMirrored[growthLevel];
+        		}
+        		return yellowIconSide[growthLevel];
+        	}
+    	}
+    	else if (dir == 3)
+    	{
+        	if (side == 0 || side == 1)
+        	{
+        		return yellowIconTop[growthLevel];
+        	}
+        	else if (side == 5)
+        	{
+        		return yellowIconEnd[growthLevel];
+        	}
+        	else if (side == 4)
+        	{
+        		return yellowIconFront[growthLevel];
+        	}
+        	else
+        	{
+        		if (side == 3)
+        		{
+        			return yellowIconSideMirrored[growthLevel];
+        		}
+        		return yellowIconSide[growthLevel];
+        	}
+    	}
+    	else
+    	{
 
+        	if (side == 0 || side == 1)
+        	{
+        		return yellowIconTop[growthLevel];
+        	}
+        	else if (side == 4)
+        	{
+        		return yellowIconEnd[growthLevel];
+        	}
+        	else if (side == 5)
+        	{
+        		return yellowIconFront[growthLevel];
+        	}
+        	else
+        	{
+        		if (side == 2)
+        		{
+        			return yellowIconSideMirrored[growthLevel];
+        		}
+        		return yellowIconSide[growthLevel];
+        	}
+    	}
     	
-    	if (iSide == 2 || iSide == 3 )
-    	{
-    		if (dir == 0 || dir == 2)
-    		{
-    			return yellowIconTop[growthLevel];
-    		}
-    		else return yellowIcon[growthLevel];
-    	}
-    	else if (iSide == 4 || iSide == 5 )
-    	{
-    		if (dir == 1 || dir == 3)
-    		{
-    			return yellowIconTop[growthLevel];
-    		}
-    		else return yellowIcon[growthLevel];
-    	}
-    	else return yellowIcon[growthLevel];
+//    	
+//    	if (iSide == 2 || iSide == 3 )
+//    	{
+//    		if (dir == 0 || dir == 2)
+//    		{
+//    			return yellowIconTop[growthLevel];
+//    		}
+//    		else return yellowIconSide[growthLevel];
+//    	}
+//    	else if (iSide == 4 || iSide == 5 )
+//    	{
+//    		if (dir == 1 || dir == 3)
+//    		{
+//    			return yellowIconTop[growthLevel];
+//    		}
+//    		else return yellowIconSide[growthLevel];
+//    	}
+//    	else return yellowIconSide[growthLevel];
     }
 	
 	public AxisAlignedBB GetBlockBoundsFromPoolBasedOnState( int meta )
@@ -220,19 +337,20 @@ public class SCBlockMelonCanaryHarvested extends SCBlockGourdHarvested {
 	{
 		int dir = this.getDirection(meta);
 		
-		if (dir == 0 || dir == 2)
+		if (dir == 0)
 		{
-			renderer.SetUvRotateTop(0);
-			renderer.SetUvRotateBottom(0);
-			renderer.SetUvRotateNorth(1);
-			renderer.SetUvRotateSouth(1);
+			renderer.SetUvRotateTop(2);
+			renderer.SetUvRotateBottom(2);
 		}
-		else if (dir == 1 || dir == 3)
+		else if (dir == 2)
 		{
 			renderer.SetUvRotateTop(1);
 			renderer.SetUvRotateBottom(1);
-			renderer.SetUvRotateEast(1);
-			renderer.SetUvRotateWest(1);
+		}
+		else if (dir == 3)
+		{
+			renderer.SetUvRotateTop(3);
+			renderer.SetUvRotateBottom(3);
 		}
 			
 		

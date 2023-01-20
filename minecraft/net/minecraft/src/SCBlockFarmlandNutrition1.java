@@ -9,7 +9,7 @@ public class SCBlockFarmlandNutrition1 extends SCBlockFarmlandBase {
 		this.setUnlocalizedName("SCBlockFarmlandNutrition");
 		this.setCreativeTab(CreativeTabs.tabBlock);
 	}
-	
+		
 	@Override
 	public float GetPlantGrowthOnMultiplier(World world, int i, int j, int k, Block plantBlock) {
 		return getNutritionMultiplier();
@@ -34,6 +34,13 @@ public class SCBlockFarmlandNutrition1 extends SCBlockFarmlandBase {
 	    	int iTargetBlockMetadata = world.getBlockMetadata( i, j, k );
 	    	
 	    	world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.farmlandNutrition1Dung.blockID, iTargetBlockMetadata );
+	}
+	
+	@Override
+	protected void SetHay(World world, int i, int j, int k) {
+		int iTargetBlockMetadata = world.getBlockMetadata( i, j, k );
+    	
+    	world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.farmlandNutrition1Hay.blockID, iTargetBlockMetadata );
 	}
 	
 	@Override

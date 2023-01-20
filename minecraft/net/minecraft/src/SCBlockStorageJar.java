@@ -3,188 +3,153 @@ package net.minecraft.src;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class SCBlockStorageJar extends BlockContainer {
+public class SCBlockStorageJar extends SCBlockJarBase {
 	
 	private ArrayList<Integer> validItemList = SCTileEntityStorageJar.getValidItemList();
 	
 	protected SCBlockStorageJar(int blockID) {
-		super(blockID, Material.glass);
-		
-		setCreativeTab(CreativeTabs.tabMisc);
+		super(blockID);
 		setUnlocalizedName("SCBlockStorageJar");
 	}
 	
 	@Override
-	public TileEntity createNewTileEntity(World var1) {
+	public TileEntity createNewTileEntity(World world) {
 		return new SCTileEntityStorageJar();
 	}
 
-//	@Override
-//	public int getLightValue(IBlockAccess blockAccess, int x, int y, int z)
-//	{
-//		SCTileEntityStorageJar jar = (SCTileEntityStorageJar)blockAccess.getBlockTileEntity( x, y, z );
-//		
-//		ItemStack stack = jar.getStorageStack();
-//		
-//		if (stack != null)
-//		{
-//			int stackID = stack.itemID;
-//			int stackSize = stack.stackSize;
-//			
-//			if (stackID == Item.lightStoneDust.itemID)
-//			{
-//				if (stackSize <= 8) return 2;
-//				else if (stackSize <= 16) return 3;
-//				else if (stackSize <= 24) return 4;
-//				else if (stackSize <= 32) return 5;
-//				else if (stackSize <= 40) return 6;
-//				else if (stackSize <= 48) return 7;
-//				else if (stackSize <= 56) return 8;
-//				else if (stackSize <= 64) return 9;
-//			}
-//			else if (stackID == Item.redstone.itemID)
-//			{
-//				return 5;
-//			}
-//		}
-//
-//		return super.getLightValue(blockAccess, x, y, z);
-//	}
-	
 	@Override
-	public int quantityDropped(Random random) {
-		return 0;
-	}
-	
-	@Override
-	public int damageDropped(int par1) {
-		return 0;
-	}	
-	
-	@Override
-    public boolean onBlockActivated( World world, int i, int j, int k, EntityPlayer player, int iFacing, float fXClick, float fYClick, float fZClick )
-    {
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int facing, float xClick, float yClick, float zClick)
+	{
 		ItemStack heldStack = player.getCurrentEquippedItem();
-		SCTileEntityStorageJar jar = (SCTileEntityStorageJar)world.getBlockTileEntity( i, j, k );
-		ItemStack storageStack = jar.getStorageStack();
-//        ArrayList<Integer> validItemList = jar.getValidItemList();
-		
-		if ( world.isRemote )
-        {
-        	//jar.AttemptToAddToStorageFromStack( heldStack );
-            return true;
-        }
-		else {
-	    	if ( heldStack != null )
-        	{
-	    		if ( !jar.hasLabel() && heldStack.itemID == Item.paper.itemID )
-	    		{
-	    			jar.setLabel( true );
-	    			
-	    			return true;
-	    		}   			
-	    		
-	    		if ( validItemList.contains( heldStack.itemID ) )
-	    		{
-	    			if (!player.isSneaking())
-	    			{
-	    				
-	    			}
-	    			
-	    			if (storageStack == null )
-	    			{
-	    				jar.setSeedType( heldStack.itemID );
-	    				
-		    			if (!player.isSneaking())
-		    			{
-			    			
-			    			FCUtilsInventory.AddItemStackToInventory(jar , heldStack);
-			    			
-			    			jar.markBlockForUpdate();
-			    			world.markBlockForRenderUpdate(i, j, k);
-		    			}
-		    			else 
-		    			{
-		    				ItemStack splitStack = heldStack.splitStack(1);
-		    				
-			    			FCUtilsInventory.AddItemStackToInventory(jar , splitStack);
-			    			
-			    			jar.markBlockForUpdate();
-			    			world.markBlockForRenderUpdate(i, j, k);
-		    			}
-	
-	    			}
-	    			else if (storageStack != null && storageStack.itemID == heldStack.itemID )
-	    			{
-	    				if (storageStack.stackSize < 64 && (storageStack.stackSize + heldStack.stackSize) <= 64)
-						{	 
-			    			
-							int newStackSize = storageStack.stackSize + heldStack.stackSize;
-							storageStack.stackSize = newStackSize;
+		SCTileEntityStorageJar storageJar = (SCTileEntityStorageJar) world.getBlockTileEntity(x, y, z);
+		int contentType = storageJar.getSeedType();
+		ItemStack storageStack = storageJar.getStorageStack();
+
+		if (storageJar != null)
+		{
+			// Player is holding something
+			if (heldStack != null)
+			{
+				// Is not a storage item
+				if (!storageJar.isStackStorageItem(heldStack))
+				{
+					//and is a valid seed item
+					if (SCTileEntitySeedJar.isStackSeedItem(heldStack))
+					{
+						//Convert to seedJar
+						world.setBlockAndMetadata(x, y, z, SCDefs.seedJar.blockID, world.getBlockMetadata(x, y, z));
+						
+						SCTileEntitySeedJar seedJar = (SCTileEntitySeedJar) world.getBlockTileEntity(x, y, z);
+						seedJar.setLabel(storageJar.hasLabel());
+						
+						int blockID = world.getBlockId(x, y, z);
+						return blocksList[SCDefs.seedJar.blockID].onBlockActivated(world, x, y, z, player, facing, xClick, yClick, zClick);	
+					}
+				}
+				
+				// Jar doesn't have a label and player is holding paper
+				if (!storageJar.hasLabel() && heldStack.itemID == Item.paper.itemID)
+				{
+					storageJar.setLabel(true);
+					storageJar.markBlockForUpdate();
+
+					if (!player.capabilities.isCreativeMode)
+					{
+						heldStack.stackSize--;
+					}
+
+					return true;
+				}
+				// Remove label by using soap
+				else if (storageJar.hasLabel() && heldStack.itemID == FCBetterThanWolves.fcItemSoap.itemID)
+				{
+					storageJar.setLabel(false);
+					storageJar.markBlockForUpdate();
+
+					if (!player.capabilities.isCreativeMode)
+					{
+						heldStack.stackSize--;
+						ItemStack paper = new ItemStack(Item.paper);
+						if (!world.isRemote) FCUtilsItem.EjectStackFromBlockTowardsFacing(world, x, y, z, paper, facing);
+					}
+
+					return true;
+				}
+				else // try add item to inventory
+				{
+					if (validItemList.contains(heldStack.itemID))
+					{
+						// only allow one type in the jar
+						if (contentType == 0 || contentType == heldStack.itemID)
+						{
+							FCUtilsInventory.AddItemStackToInventory(storageJar, heldStack);
 							
-							heldStack.stackSize = 0;
+							//TODO: FIX since you can overfill. Change to remove only number of items that is space for
+							if ( storageStack != null &&
+								 storageStack.stackSize >= storageStack.getMaxStackSize() &&
+								 storageStack.stackSize + heldStack.stackSize <= storageJar.getInventoryStackLimit() )
+							{
+								storageStack.stackSize += heldStack.stackSize;
+								heldStack.stackSize -= heldStack.stackSize;
+							}
 							
-							jar.markBlockForUpdate();
-							world.markBlockForRenderUpdate(i, j, k);
-							
+							storageJar.onInventoryChanged();
+
 							return true;
 						}
-	    			}
-	    			
-	    			return true;
-	    			
-	    		}
-        	}
-	    	else if (heldStack == null || heldStack.itemID == jar.getStorageStack().itemID )
-	    	{
-	    		//jar.ejectStorageContents(iFacing);
-	    		
-	    		if (storageStack != null )
-	    		{
-		    		if (!player.isSneaking())
-		    		{
+					}
+				}
 
-		    			jar.ejectStorageContents(iFacing);
-			    		
-			    		jar.setSeedType(0);
-			    		
-			    		jar.onInventoryChanged();
-		    		}
-		    		else
-		    		{
-		    			
-		    		}
+			}
+			else if (heldStack == null) // Empty hand
+			{
+				// Eject only single item
+				if (player.isSneaking())
+				{
+					if (storageStack.stackSize > 0)
+					{
+						ItemStack ejectStack = storageStack.splitStack(1);
+						
+						if (!world.isRemote) FCUtilsItem.EjectStackFromBlockTowardsFacing(world, x, y, z, ejectStack, facing);
+						
+						storageJar.onInventoryChanged();
+						
+						return true;
+					}
+				}
+				else //eject all
+				{
+					if (!world.isRemote) storageJar.ejectStorageContents(facing);
 
-		    		
-		    		return true;
-	    		}	    		
-
-	    	}
+					storageJar.onInventoryChanged();
+					return true;
+				}
+			}
 		}
+
 		return false;
-    }	
+	}
 	
 	public ItemStack GetStackRetrievedByBlockDispenser( World world, int i, int j, int k )
 	{
-		SCTileEntityStorageJar tileEntity = (SCTileEntityStorageJar)( world.getBlockTileEntity(i, j, k) );
+		SCTileEntityStorageJar storageJar = (SCTileEntityStorageJar)( world.getBlockTileEntity(i, j, k) );
+		ItemStack storageStack = storageJar.getStorageStack();
 		ItemStack newStack = new ItemStack(this, 1, this.getDamageValue(world, i, j, k));
 		
-    	if ( tileEntity != null )
+    	if ( storageJar != null )
     	{
-            if ( tileEntity.getStackInSlot(0) != null)
+            if (  storageStack != null)
             {
-            	ItemStack oldStack = tileEntity.getStorageStack();
-            	
                 NBTTagCompound newTag = new NBTTagCompound();
                 
                 newStack.setTagCompound(newTag);
-                newStack.getTagCompound().setInteger( "id", oldStack.itemID );
-                newStack.getTagCompound().setInteger( "Count", oldStack.stackSize );
+                newStack.getTagCompound().setInteger( "id", storageStack.itemID );
+                newStack.getTagCompound().setInteger( "Count", storageStack.stackSize );
                 newStack.getTagCompound().setInteger( "Damage",  this.getDamageValue(world, i, j, k) );
                 
-                newStack.getTagCompound().setInteger( "seedType", tileEntity.getSeedType() );
-                newStack.getTagCompound().setBoolean( "hasLabel", tileEntity.hasLabel() );
-                newStack.getTagCompound().setInteger( "seedDamage", oldStack.getItemDamage());
+                newStack.getTagCompound().setInteger( "seedType", storageJar.getSeedType() );
+                newStack.getTagCompound().setBoolean( "hasLabel", storageJar.hasLabel() );
+                newStack.getTagCompound().setInteger( "seedDamage", storageStack.getItemDamage());
             	
             }
     	}
@@ -194,45 +159,44 @@ public class SCBlockStorageJar extends BlockContainer {
 
 	
 	@Override
-	public void onBlockHarvested(World world, int i, int j, int k, int par5, EntityPlayer par6EntityPlayer) {
+	public void onBlockHarvested(World world, int i, int j, int k, int par5, EntityPlayer player) {
 		
-		SCTileEntityStorageJar tileEntity = (SCTileEntityStorageJar)( world.getBlockTileEntity(i, j, k) );
-		ItemStack newStack = new ItemStack(this.blockID, 1, this.getDamageValue(world, i, j, k));
+		SCTileEntityStorageJar storageJar = (SCTileEntityStorageJar)( world.getBlockTileEntity(i, j, k) );
+		ItemStack storageStack = storageJar.getStorageStack();
+		ItemStack newStack = new ItemStack(SCDefs.storageJar.blockID, 1, this.getDamageValue(world, i, j, k));
 		
-    	if ( tileEntity != null )
+    	if ( storageJar != null )
     	{
-            if ( tileEntity.getStackInSlot(0) != null)
+            if ( storageStack != null)
             {
-            	ItemStack oldStack = tileEntity.getStorageStack();
-            	
                 NBTTagCompound newTag = new NBTTagCompound();
                 
                 newStack.setTagCompound(newTag);
-                newStack.getTagCompound().setInteger( "id", oldStack.itemID );
-                newStack.getTagCompound().setInteger( "Count", oldStack.stackSize );
+                newStack.getTagCompound().setInteger( "id", storageStack.itemID );
+                newStack.getTagCompound().setInteger( "Count", storageStack.stackSize );
                 newStack.getTagCompound().setInteger( "Damage",  this.getDamageValue(world, i, j, k) );
                 
-                newStack.getTagCompound().setInteger( "seedType", tileEntity.getSeedType() );
-                newStack.getTagCompound().setBoolean( "hasLabel", tileEntity.hasLabel() );
-                newStack.getTagCompound().setInteger( "seedDamage", oldStack.getItemDamage());
-            	
+                newStack.getTagCompound().setInteger( "seedType", storageJar.getSeedType() );
+                newStack.getTagCompound().setBoolean( "hasLabel", storageJar.hasLabel() );
+                newStack.getTagCompound().setInteger( "seedDamage", storageStack.getItemDamage());
             }
     	}
     	
-        this.dropBlockAsItem_do(world, i, j, k, newStack);
+    	this.dropBlockAsItem_do(world, i, j, k, newStack);
+    		
 	}
 
+	@Override
 	public int getDamageValue(World world, int i, int j, int k)
     {
-    	SCTileEntityStorageJar jar = (SCTileEntityStorageJar) world.getBlockTileEntity(i, j, k);
-    	ItemStack storageStack;
+    	SCTileEntityStorageJar storageJar = (SCTileEntityStorageJar) world.getBlockTileEntity(i, j, k);
+    	ItemStack storageStack = storageJar.getStorageStack();
+    	
     	int stackSize = 0;
     	int contentHeight = 0;
     	
-    	if (jar.getStorageStack() != null)
+    	if (storageStack != null)
 		{
-    		storageStack = jar.getStorageStack();
-    		
     		stackSize = storageStack.stackSize;
     		
     	    if (stackSize != 0)
@@ -248,43 +212,31 @@ public class SCBlockStorageJar extends BlockContainer {
     	    	else
     	    		contentHeight =(int) (Math.floor( stackSize/8 ));
     	    }
+    	    
+			int seedID = storageStack.itemID;
+			int seedTypeForItemRender = storageJar.getSeedTypeForItemRender(seedID);
 
-//			if (stackSize <= 8)
-//			{
-//				contentHeight = (int) (Math.ceil( stackSize/8 ) + 1);
-//			}
-//			else contentHeight = (int) Math.ceil( stackSize/8 );
-//        	
-			int seedID = jar.getStackInSlot(0).itemID;
-			int seedTypeForItemRender = jar.getSeedTypeForItemRender(seedID);
-			
-//			if (storageStack.itemID == Item.dyePowder.itemID)
-//			{
-//				int dyeDamage = storageStack.getItemDamage();
-//				
-//				seedTypeForItemRender = seedTypeForItemRender + dyeDamage;
-//			}
-
-			return  dataToDamage(jar.hasLabel(), contentHeight, storageStack.getItemDamage(), seedTypeForItemRender);
+			return  dataToDamage(storageJar.hasLabel(), contentHeight, storageStack.getItemDamage(), seedTypeForItemRender);
 		}
     	
-    	else return  dataToDamage(jar.hasLabel(), 0, 0, 0);
+    	else return  dataToDamage(storageJar.hasLabel(), 0, 0, 0);
     }
-
     
 	@Override
 	public void onBlockPlacedBy(World world, int i, int j, int k, EntityLiving player, ItemStack itemStack)
 	{
-		SCTileEntityStorageJar tileEntity = (SCTileEntityStorageJar)( world.getBlockTileEntity(i, j, k) );
-	
-		int playerRotation = ((MathHelper.floor_double((double)(player.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3) + 2) % 4;
-		world.setBlockMetadataWithNotify(i, j, k, playerRotation);
+		SCTileEntityStorageJar storageJar = (SCTileEntityStorageJar) world.getBlockTileEntity(i, j, k);
 		
-		
-		if ( tileEntity != null )
+		setRotation(world, i, j, k, player);
+				
+		if ( storageJar != null )
     	{
 			
-			hasAttachableBlockAbove(world, i, j, k);
+			if (hasAttachableBlockAbove(world, i, j, k))
+			{
+				storageJar.setHasAttachableBlockAbove(true);
+			}
+			else storageJar.setHasAttachableBlockAbove(false);
 			
 			//NBTTagCompound newTag = new NBTTagCompound("storageStack");
 			//ItemStack newStack = new ItemStack(this, 1, itemStack.getItemDamage());
@@ -320,13 +272,13 @@ public class SCBlockStorageJar extends BlockContainer {
 				if (itemStack.stackTagCompound.hasKey("seedType") )
 				{
 					seedType = itemStack.stackTagCompound.getInteger("seedType");
-					tileEntity.setSeedType(seedType);	
+					storageJar.setSeedType(seedType);	
 				}
 				
 				if (itemStack.stackTagCompound.hasKey("seedDamage") )
 				{
 					seedDamage = itemStack.stackTagCompound.getInteger("seedDamage");
-					tileEntity.setSeedType(seedType);
+					storageJar.setSeedType(seedType);
 				}
 				
 				
@@ -339,9 +291,13 @@ public class SCBlockStorageJar extends BlockContainer {
 				
 				
 				
-				tileEntity.setInventorySlotContents(0, new ItemStack(id, count, damage));
+				storageJar.setInventorySlotContents(0, new ItemStack(id, count, damage));
 				
-				tileEntity.getStorageStack().setItemDamage(seedDamage);
+				if (storageJar.getStorageStack() != null)
+				{
+					storageJar.getStorageStack().setItemDamage(seedDamage);
+				}
+				
 				
 			}
 			
@@ -349,341 +305,184 @@ public class SCBlockStorageJar extends BlockContainer {
 			
 			if (labelDamage == 1)
 			{
-				tileEntity.setLabel(true);
+				storageJar.setLabel(true);
 			}
-			else tileEntity.setLabel(false);
+			else storageJar.setLabel(false);
 			
     	}
 	}
 
-	
 	@Override
-    public boolean canPlaceBlockAt( World world, int i, int j, int k )
-    { 
-		int id = world.getBlockId(i, j +1, k); 
-		if ( !isAttachableBlock(id) ) 
-		{
-			if ( !FCUtilsWorld.DoesBlockHaveLargeCenterHardpointToFacing( world, i, j - 1, k, 1, true ) ) return false; 
-			else return super.canPlaceBlockAt( world, i, j, k );
-		}
-		else return super.canPlaceBlockAt( world, i, j, k );
-    }
-	
-	@Override
-	public void onNeighborBlockChange(World world, int i, int j, int k, int par5)
+	public void onNeighborBlockChange(World world, int x, int y, int z, int iNeighborBlockID)
 	{
-        if ( !FCUtilsWorld.DoesBlockHaveLargeCenterHardpointToFacing( world, i, j - 1, k, 1, true ) )
+        if (!hasAttachableBlockAbove(world, x, y, z) && !FCUtilsWorld.DoesBlockHaveLargeCenterHardpointToFacing( world, x, y - 1, z, 1, true ))
         {
-    		SCTileEntityStorageJar tileEntity = (SCTileEntityStorageJar)( world.getBlockTileEntity(i, j, k) );
-    		ItemStack newStack = new ItemStack(this, 1, this.getDamageValue(world, i, j, k));
-        	
-        	//dropItemBlock(world, i, j, k, tileEntity, newStack);
-        	world.setBlockToAir(i, j, k);
-        	world.removeBlockTileEntity(i, j, k);
-        	
+    		SCTileEntityStorageJar storageJar = (SCTileEntityStorageJar)( world.getBlockTileEntity(x, y, z) );
+    		ItemStack storageStack = storageJar.getStorageStack();    	
+    		
+    		removeJar(world, x, y, z, storageStack);        	
         }
-        else
-        {
-        	hasAttachableBlockAbove(world, i, j, k);
-        }
-
-	}
-	
-	private static ArrayList<Integer> attachableBlocks = new ArrayList<Integer>();
-	
-	public static void addAttachableBlock(int id)
-	{
-		attachableBlocks.add(id);
-	}
-	
-	public static boolean isAttachableBlock(int id)
-	{
-		return attachableBlocks.contains(id);
-	}
-	
-	static {
-		addAttachableBlock(FCBetterThanWolves.fcHopper.blockID);
-		addAttachableBlock(Block.fence.blockID);
-	}
-	
-    private boolean hasAttachableBlockAbove(World world, int i, int j, int k)
-    {
-    	int blockAbove = world.getBlockId(i, j + 1, k);
-		int meta = world.getBlockMetadata(i, j, k);
-		
-		if (meta <= 3)
-		{
-    		if ( isAttachableBlock(blockAbove))
-    		{
-    			world.setBlockMetadataWithNotify(i, j, k, meta + 4);
-    			return true;
-    		}
-		}
-		else
-		{
-    		if (!isAttachableBlock(blockAbove))
-    		{
-    			world.setBlockMetadataWithNotify(i, j, k, meta - 4);
-    			return false;
-    		}
-		}
-		
-		return false;
-		
 	}
 
-    @Override
-    public boolean CanRotateOnTurntable(IBlockAccess blockAccess, int i, int j, int k)
-    {
-    	return true;
-    }
-    
-    @Override
-    public int SetFacing(int iMetadata, int iFacing) {
-
-    	return iMetadata;
-    }
-    
-    @Override
-    public int GetFacing(IBlockAccess blockAccess, int i, int j, int k) {
-    	return getDirection(blockAccess.getBlockMetadata(i, j, k));
-    }
-    
-	@Override
-	public int RotateMetadataAroundJAxis( int iMetadata, boolean bReverse )
-	{
-		int iDirection = iMetadata;
-		
-		if ( iDirection == 0 )
-		{
-			iDirection = 3;
-		}
-		else if ( iDirection == 3 )
-		{
-			iDirection = 2;
-		}
-		else if ( iDirection == 2 )
-		{
-			iDirection = 1;
-		}
-		else if ( iDirection == 1 )
-		{
-			iDirection = 0;
-		}
-		
-		iMetadata = iDirection;
-		
-		return iMetadata;
-	}
-    
-	/**
-     * Returns the orentation value from the specified metadata
-     */
-    public static int getDirection(int meta)
-    {
-        return meta & 3;
-    }
-	
 	//----------- Client Side Functionality -----------//
-	
-	 /**
-    * Returns true if the given side of this block type should be rendered, if the adjacent block is at the given
-    * coordinates.  Args: blockAccess, x, y, z, side
-    */
-	public boolean shouldSideBeRendered(IBlockAccess blockAccess, int i, int j, int k, int side)
-	{
-		return true;
-	}
-	
-	@Override
-    public boolean isOpaqueCube()
-    {
-        return false;
-    }
 
 	@Override
-    public boolean renderAsNormalBlock()
-    {
-        return false;
-    }
-	    
-	public int getRenderBlockPass()
+	public void registerIcons(IconRegister register)
 	{
-		return 1;
-	}
-	
-	@Override
-	public AxisAlignedBB GetBlockBoundsFromPoolBasedOnState(IBlockAccess blockAccess, int i, int j, int k) {
-		
-		int meta = blockAccess.getBlockMetadata(i, j, k);
-
-		if (meta > 3) return getBounds(4, 0 + moveUp, 16 + moveUp, 4);
-		
-		else return getBounds(4, 0, 11, 4);
-	}
-	
-	public AxisAlignedBB GetBlockBoundsFromPoolForItemRender( int iItemDamage )
-	{
-		return getBounds(4, 0, 11, 4);
-	}
-	
-	private AxisAlignedBB getBounds(double i, double minJ, double maxJ, double k)
-	{
-   	
-		AxisAlignedBB box = AxisAlignedBB.getAABBPool().getAABB( 
-			8/16D - i/16D, minJ/16D, 8/16D - k/16D, 
-			8/16D + i/16D, maxJ/16D, 8/16D + k/16D);
-		
-		return box;
-	}
-	
-
-	
-	private Icon glassSide;
-	private Icon glassSideTop;
-	private Icon glassTop;
-	private Icon cork;
-	
-	private Icon gravel;	//for unknown contents
-	private Icon labelBlank;
-
-	protected Icon[] contentsIcon = new Icon[64];
-	protected Icon[] labelIcon = new Icon[64];
-	
-	protected Icon[] dyeIcon = new Icon[32];
-	protected Icon[] dyeLabelIcon = new Icon[32];
-	
-	@Override
-	public void registerIcons(IconRegister register) {
-		glassSide = register.registerIcon("SCBlockJar_side");
-		glassSideTop = register.registerIcon("SCBlockJar_sideTop");
-		glassTop = register.registerIcon("SCBlockJar_top");
-		cork = register.registerIcon("SCBlockJar_cork");
-		
-		labelBlank = register.registerIcon("SCBlockJarLabel_blank");
-		gravel = register.registerIcon("gravel");
-		
+		//Jar textures
+		super.registerIcons(register);		
 		
 		//contentsIcon[0] kept clear for dyes
 		
-		//CROPS
-		contentsIcon[1] = register.registerIcon("SCBlockJarContents_melon");
-		contentsIcon[2] = register.registerIcon("SCBlockJarContents_pumpkin");
-		contentsIcon[3] = register.registerIcon("SCBlockJarContents_netherwart");
-		contentsIcon[4] = register.registerIcon("SCBlockJarContents_hemp");
-		contentsIcon[5] = register.registerIcon("SCBlockJarContents_wheat");
-		contentsIcon[6] = register.registerIcon("SCBlockJarContents_carrot");
-
-		labelIcon[1] = register.registerIcon("SCBlockJarLabel_melon");
-		labelIcon[2] = register.registerIcon("SCBlockJarLabel_pumpkin");
-		labelIcon[3] = register.registerIcon("SCBlockJarLabel_netherwart");
-		labelIcon[4] = register.registerIcon("SCBlockJarLabel_hemp");
-		labelIcon[5] = register.registerIcon("SCBlockJarLabel_wheat");
-		labelIcon[6] = register.registerIcon("SCBlockJarLabel_carrot");
+		String contents = "SCBlockJarContents_";
+		String label = "SCBlockJarLabel_";
 		
-		//BREWING
-		contentsIcon[7] = register.registerIcon("SCBlockJarContents_spiderEye");
-		contentsIcon[8] = register.registerIcon("SCBlockJarContents_spiderEyeFermented");
-		contentsIcon[9] = register.registerIcon("SCBlockJarContents_magmaCream");
-		contentsIcon[10] = register.registerIcon("SCBlockJarContents_ghastTear");
-		contentsIcon[11] = register.registerIcon("SCBlockJarContents_blazePowder");
-		contentsIcon[12] = register.registerIcon("SCBlockJarContents_gunpowder");
-		contentsIcon[13] = register.registerIcon("SCBlockJarContents_mushroomRed");
-		contentsIcon[14] = register.registerIcon("SCBlockJarContents_mysteriousGland");
-		contentsIcon[15] = register.registerIcon("SCBlockJarContents_witchWart");
-		contentsIcon[16] = register.registerIcon("SCBlockJarContents_soulFlux");
+		//BREWING		
+		contentsIcon[getIndex(Item.spiderEye.itemID)] = register.registerIcon(contents + "spiderEye");
+		contentsIcon[getIndex(Item.fermentedSpiderEye.itemID)] = register.registerIcon(contents + "spiderEyeFermented");
+		contentsIcon[getIndex(Item.magmaCream.itemID)] = register.registerIcon(contents + "magmaCream");
+		contentsIcon[getIndex(Item.ghastTear.itemID)] = register.registerIcon(contents + "ghastTear");
+		contentsIcon[getIndex(Item.blazePowder.itemID)] = register.registerIcon(contents + "blazePowder");
+		contentsIcon[getIndex(Item.gunpowder.itemID)] = register.registerIcon(contents + "gunpowder");
+		contentsIcon[getIndex(FCBetterThanWolves.fcItemMushroomRed.itemID)] = register.registerIcon(contents + "mushroomRed");
+		contentsIcon[getIndex(FCBetterThanWolves.fcItemMysteriousGland.itemID)] = register.registerIcon(contents + "mysteriousGland");
+		contentsIcon[getIndex(FCBetterThanWolves.fcItemWitchWart.itemID)] = register.registerIcon(contents + "witchWart");
+		contentsIcon[getIndex(FCBetterThanWolves.fcItemSoulFlux.itemID)] = register.registerIcon(contents + "soulFlux");
 		
-		labelIcon[7] = register.registerIcon("SCBlockJarLabel_spiderEye");
-		labelIcon[8] = register.registerIcon("SCBlockJarLabel_spiderEyeFermented");
-		labelIcon[9] = register.registerIcon("SCBlockJarLabel_magmaCream");
-		labelIcon[10] = register.registerIcon("SCBlockJarLabel_ghastTear");
-		labelIcon[11] = register.registerIcon("SCBlockJarLabel_blazePowder");
-		labelIcon[12] = register.registerIcon("SCBlockJarLabel_gunpowder");
-		labelIcon[13] = register.registerIcon("SCBlockJarLabel_mushroomRed");
-		labelIcon[14] = register.registerIcon("SCBlockJarLabel_mysteriousGland");
-		labelIcon[15] = register.registerIcon("SCBlockJarLabel_witchWart");
-		labelIcon[16] = register.registerIcon("SCBlockJarLabel_soulFlux");
+		
+		labelIcon[getIndex(Item.spiderEye.itemID)] = register.registerIcon(label + "spiderEye");
+		labelIcon[getIndex(Item.fermentedSpiderEye.itemID)] = register.registerIcon(label + "spiderEyeFermented");
+		labelIcon[getIndex(Item.magmaCream.itemID)] = register.registerIcon(label + "magmaCream");
+		labelIcon[getIndex(Item.ghastTear.itemID)] = register.registerIcon(label + "ghastTear");
+		labelIcon[getIndex(Item.blazePowder.itemID)] = register.registerIcon(label + "blazePowder");
+		labelIcon[getIndex(Item.gunpowder.itemID)] = register.registerIcon(label + "gunpowder");
+		labelIcon[getIndex(FCBetterThanWolves.fcItemMushroomRed.itemID)] = register.registerIcon(label + "mushroomRed");
+		labelIcon[getIndex(FCBetterThanWolves.fcItemMysteriousGland.itemID)] = register.registerIcon(label + "mysteriousGland");
+		labelIcon[getIndex(FCBetterThanWolves.fcItemWitchWart.itemID)] = register.registerIcon(label + "witchWart");
+		labelIcon[getIndex(FCBetterThanWolves.fcItemSoulFlux.itemID)] = register.registerIcon(label + "soulFlux");
 		
 		//BAIT
-		contentsIcon[17] = register.registerIcon("SCBlockJarContents_rottenFlesh");
-		contentsIcon[18] = register.registerIcon("SCBlockJarContents_batwing");
-		contentsIcon[19] = register.registerIcon("SCBlockJarContents_oysters");
+		contentsIcon[getIndex(Item.rottenFlesh.itemID)] = register.registerIcon(contents + "rottenFlesh");
+		contentsIcon[getIndex(FCBetterThanWolves.fcItemBatWing.itemID)] = register.registerIcon(contents + "batwing");
+		contentsIcon[getIndex(FCBetterThanWolves.fcItemCreeperOysters.itemID)] = register.registerIcon(contents + "oysters");
 		
-		labelIcon[17] = register.registerIcon("SCBlockJarLabel_rottenFlesh");
-		labelIcon[18] = register.registerIcon("SCBlockJarLabel_batwing");
-		labelIcon[19] = register.registerIcon("SCBlockJarLabel_oysters");
+		labelIcon[getIndex(Item.rottenFlesh.itemID)] = register.registerIcon(label + "rottenFlesh");
+		labelIcon[getIndex(FCBetterThanWolves.fcItemBatWing.itemID)] = register.registerIcon(label + "batwing");
+		labelIcon[getIndex(FCBetterThanWolves.fcItemCreeperOysters.itemID)] = register.registerIcon(label + "oysters");
 		
 		//OTHER
-		contentsIcon[20] = register.registerIcon("SCBlockJarContents_nitre");
-		contentsIcon[21] = register.registerIcon("SCBlockJarContents_mushroomBrown");
-		contentsIcon[22] = register.registerIcon("SCBlockJarContents_slime");
-		contentsIcon[23] = register.registerIcon("SCBlockJarContents_redstone");
-		contentsIcon[24] = register.registerIcon("SCBlockJarContents_glowstone");
-		contentsIcon[25] = register.registerIcon("SCBlockJarContents_sugar");
-		contentsIcon[26] = register.registerIcon("SCBlockJarContents_flour");
-		contentsIcon[27] = register.registerIcon("SCBlockJarContents_cocoaBeans");
-		contentsIcon[28] = register.registerIcon("SCBlockJarContents_chickenFeed");
+		contentsIcon[getIndex(FCBetterThanWolves.fcItemNitre.itemID)] = register.registerIcon(contents + "nitre");
+		contentsIcon[getIndex(FCBetterThanWolves.fcItemMushroomBrown.itemID)] = register.registerIcon(contents + "mushroomBrown");
+		contentsIcon[getIndex(Item.slimeBall.itemID)] = register.registerIcon(contents + "slime");
+		contentsIcon[getIndex(Item.redstone.itemID)] = register.registerIcon(contents + "redstone");
+		contentsIcon[getIndex(Item.lightStoneDust.itemID)] = register.registerIcon(contents + "glowstone");
+		contentsIcon[getIndex(Item.sugar.itemID)] = register.registerIcon(contents + "sugar");
+		contentsIcon[getIndex(FCBetterThanWolves.fcItemFlour.itemID)] = register.registerIcon(contents + "flour");
+	
+		labelIcon[getIndex(FCBetterThanWolves.fcItemNitre.itemID)] = register.registerIcon(label + "nitre");
+		labelIcon[getIndex(FCBetterThanWolves.fcItemMushroomBrown.itemID)] = register.registerIcon(label + "mushroomBrown");
+		labelIcon[getIndex(Item.slimeBall.itemID)]  = register.registerIcon(label + "slime");
+		labelIcon[getIndex(Item.redstone.itemID)] = register.registerIcon(label + "redstone");
+		labelIcon[getIndex(Item.lightStoneDust.itemID)] = register.registerIcon(label + "glowstone");
+		labelIcon[getIndex(Item.sugar.itemID)] = register.registerIcon(label + "sugar");
+		labelIcon[getIndex(FCBetterThanWolves.fcItemFlour.itemID)] = register.registerIcon(label + "flour");
 		
-		labelIcon[20] = register.registerIcon("SCBlockJarLabel_nitre");
-		labelIcon[21] = register.registerIcon("SCBlockJarLabel_mushroomBrown");
-		labelIcon[22] = register.registerIcon("SCBlockJarLabel_slime");
-		labelIcon[23] = register.registerIcon("SCBlockJarLabel_redstone");
-		labelIcon[24] = register.registerIcon("SCBlockJarLabel_glowstone");
-		labelIcon[25] = register.registerIcon("SCBlockJarLabel_sugar");
-		labelIcon[26] = register.registerIcon("SCBlockJarLabel_flour");
-		labelIcon[27] = register.registerIcon("SCBlockJarLabel_cocoaBeans");
-		labelIcon[28] = register.registerIcon("SCBlockJarLabel_chickenFeed");
+		contentsIcon[getIndex(FCBetterThanWolves.fcItemBloodMossSpores.itemID)] = register.registerIcon(contents + "spores");
+		contentsIcon[getIndex(FCBetterThanWolves.fcItemBrimstone.itemID)] = register.registerIcon(contents + "brimstone");
+		contentsIcon[getIndex(FCBetterThanWolves.fcItemPotash.itemID)] = register.registerIcon(contents + "potash");
+		contentsIcon[getIndex(FCBetterThanWolves.fcItemGlue.itemID)] = register.registerIcon(contents + "glue");
+		contentsIcon[getIndex(FCBetterThanWolves.fcItemMetalFragment.itemID)] = register.registerIcon(contents + "metalFragment");
+		contentsIcon[getIndex(FCBetterThanWolves.fcItemChunkIronOre.itemID)] = register.registerIcon(contents + "ironChunk");
+		contentsIcon[getIndex(FCBetterThanWolves.fcItemChunkGoldOre.itemID)] = register.registerIcon(contents + "goldChunk");
 		
-		//SC
-		contentsIcon[29] = register.registerIcon("SCBlockJarContents_wildCarrot");
-		contentsIcon[30] = register.registerIcon("SCBlockJarContents_wildCarrotHighYield");
+		labelIcon[getIndex(FCBetterThanWolves.fcItemBloodMossSpores.itemID)] = register.registerIcon(label + "spores");
+		labelIcon[getIndex(FCBetterThanWolves.fcItemBrimstone.itemID)] = register.registerIcon(label + "brimstone");
+		labelIcon[getIndex(FCBetterThanWolves.fcItemPotash.itemID)] = register.registerIcon(label + "potash");
+		labelIcon[getIndex(FCBetterThanWolves.fcItemGlue.itemID)] = register.registerIcon(label + "glue");
+		labelIcon[getIndex(FCBetterThanWolves.fcItemMetalFragment.itemID)] = register.registerIcon(label + "metalFragment");
+		labelIcon[getIndex(FCBetterThanWolves.fcItemChunkIronOre.itemID)] = register.registerIcon(label + "ironChunk");
+		labelIcon[getIndex(FCBetterThanWolves.fcItemChunkGoldOre.itemID)] = register.registerIcon(label + "goldChunk");
 		
-		labelIcon[29] = register.registerIcon("SCBlockJarLabel_wildCarrot");
-		labelIcon[30] = register.registerIcon("SCBlockJarLabel_wildCarrotHighYield");
+		contentsIcon[getIndex(Item.fireballCharge.itemID)] = register.registerIcon(contents + "firecharge");		
+		contentsIcon[getIndex(Item.netherQuartz.itemID)] = register.registerIcon(contents + "quartz");		
+		contentsIcon[getIndex(Item.emerald.itemID)] = register.registerIcon(contents + "emerald");		
+		contentsIcon[getIndex(Item.enderPearl.itemID)] = register.registerIcon(contents + "enderpearls");		
+		contentsIcon[getIndex(Item.diamond.itemID)] = register.registerIcon(contents + "diamond");
+		
+		labelIcon[getIndex(Item.fireballCharge.itemID)] = register.registerIcon(label + "firecharge");
+		labelIcon[getIndex(Item.netherQuartz.itemID)] = register.registerIcon(label + "quartz");
+		labelIcon[getIndex(Item.emerald.itemID)] = register.registerIcon(label + "emerald");
+		labelIcon[getIndex(Item.enderPearl.itemID)] = register.registerIcon(label + "enderpearls");
+		labelIcon[getIndex(Item.diamond.itemID)] = register.registerIcon(label + "diamond");
+		
+		contentsIcon[getIndex(FCBetterThanWolves.fcItemNuggetIron.itemID)] = register.registerIcon(contents + "ironNugget");
+		labelIcon[getIndex(FCBetterThanWolves.fcItemNuggetIron.itemID)] = register.registerIcon(label + "ironNugget");
+		
+		contentsIcon[getIndex(Item.goldNugget.itemID)] = register.registerIcon(contents + "goldNugget");
+		labelIcon[getIndex(Item.goldNugget.itemID)] = register.registerIcon(label + "goldNugget");
+		
+		contentsIcon[getIndex(FCBetterThanWolves.fcItemTallow.itemID)] = register.registerIcon(contents + "tallow");
+		labelIcon[getIndex(FCBetterThanWolves.fcItemTallow.itemID)] = register.registerIcon(label + "tallow");
+		
+		contentsIcon[getIndex(FCBetterThanWolves.fcItemStrap.itemID)] = register.registerIcon(contents + "strap");
+		labelIcon[getIndex(FCBetterThanWolves.fcItemStrap.itemID)] = register.registerIcon(label + "strap");
+		
+		contentsIcon[getIndex(FCBetterThanWolves.fcItemGear.itemID)] = register.registerIcon(contents + "gear");
+		labelIcon[getIndex(FCBetterThanWolves.fcItemGear.itemID)] = register.registerIcon(label + "gear");
+		
+		contentsIcon[getIndex(Item.silk.itemID)] = register.registerIcon(contents + "string");
+		labelIcon[getIndex(Item.silk.itemID)] = register.registerIcon(label + "string");
+		
 		
 		//Deco
-		contentsIcon[31] = register.registerIcon("SCBlockJarContents_decoFertilizer");
-		labelIcon[31] = register.registerIcon("SCBlockJarLabel_decoFertilizer");
-		
-		contentsIcon[32] = register.registerIcon("SCBlockJarContents_decoShard");
-		labelIcon[32] = register.registerIcon("SCBlockJarLabel_decoShard");
-		
-		
+		if (SCDecoIntegration.isDecoInstalled())
+		{
+			contentsIcon[getIndex(SCDecoIntegration.fertilizer.itemID)] = register.registerIcon(contents + "decoFertilizer");
+			contentsIcon[getIndex(SCDecoIntegration.amethystShard.itemID)] = register.registerIcon(contents + "decoShard");
+			contentsIcon[getIndex(SCDecoIntegration.prismarineShard.itemID)] = register.registerIcon(contents + "decoPrismarineShard");
+			contentsIcon[getIndex(SCDecoIntegration.prismarineCrystal.itemID)] = register.registerIcon(contents + "decoPrismarineCrystal");
+			
+			labelIcon[getIndex(SCDecoIntegration.fertilizer.itemID)] = register.registerIcon(label + "decoFertilizer");
+			labelIcon[getIndex(SCDecoIntegration.amethystShard.itemID)] = register.registerIcon(label + "decoShard");
+			labelIcon[getIndex(SCDecoIntegration.prismarineShard.itemID)] = register.registerIcon(label + "decoPrismarineShard");
+			labelIcon[getIndex(SCDecoIntegration.prismarineCrystal.itemID)] = register.registerIcon(label + "decoPrismarineCrystal");
+		}
+	
 		//Dyes
 		for (int i = 0; i < dyeIcon.length; i++) {
 			if (i >= 16)
 			{
-				dyeIcon[i] = register.registerIcon( "SCBlockJarContents_dye" + (i - 16) );
+				dyeIcon[i] = register.registerIcon( contents + "dye" + (i - 16) );
 			}
-			else dyeIcon[i] = register.registerIcon( "SCBlockJarContents_dye" + i );
+			else dyeIcon[i] = register.registerIcon( contents + "dye" + i );
 		}
+		
+//		dyeIcon[16] = register.registerIcon(contents + "decoDye0");
+//		dyeIcon[20] = register.registerIcon(contents + "decoDye4");
+//		dyeIcon[31] = register.registerIcon(contents + "decoDye15");
 		
 		for (int i = 0; i < dyeLabelIcon.length; i++) {
 			if (i >= 16)
 			{
-				dyeLabelIcon[i] = register.registerIcon( "SCBlockJarLabel_dye" + (i - 16) );
+				dyeLabelIcon[i] = register.registerIcon( label + "dye" + (i - 16) );
 			}
-			else dyeLabelIcon[i] = register.registerIcon( "SCBlockJarLabel_dye" + i );
+			else dyeLabelIcon[i] = register.registerIcon( label + "dye" + i );
 		}
-		
+		dyeLabelIcon[16] = register.registerIcon(label + "decoDye0");
+		dyeLabelIcon[20] = register.registerIcon(label + "decoDye4");
+		dyeLabelIcon[31] = register.registerIcon(label + "decoDye15");
 
 	}
 	
 	@Override
-	public Icon getIcon(int side, int meta)
-	{
-		if (side == 0 || side == 1)
-		{
-			return glassTop;
-		}
-		else
-		{
-			if (meta > 3 ) return glassSideTop;
-			else return glassSide;
-		}
+	protected int getIndex(int seedType)
+	{	
+		return this.validItemList.indexOf(seedType);
+		
 	}
 	
-	private Icon setContentIcon(int seedType, int itemDamage)
+	@Override
+	protected Icon getContentIcon(int seedType, int itemDamage)
 	{	
 		if ( validItemList.contains(seedType) )
 		{
@@ -697,7 +496,8 @@ public class SCBlockStorageJar extends BlockContainer {
 		
 	}
 	
-	private Icon getLabelIcon(int seedType, int itemDamage)
+	@Override
+	protected Icon getLabelIcon(int seedType, int itemDamage)
 	{		
 		if ( validItemList.contains(seedType) )
 		{
@@ -710,125 +510,27 @@ public class SCBlockStorageJar extends BlockContainer {
 		else return labelBlank;
 	}
 	
-	private int moveUp = 0;
-	
 	@Override
-    public boolean RenderBlock( RenderBlocks renderBlocks, int i, int j, int k )
-    {
+	public boolean RenderBlock(RenderBlocks renderer, int x, int y, int z) {
 		
-		SCTileEntityStorageJar jar = (SCTileEntityStorageJar)renderBlocks.blockAccess.getBlockTileEntity( i, j, k );
-		ItemStack storageStack = jar.getStorageStack();
-		int seedType;
-		int storageSize = 0;
-		int meta = renderBlocks.blockAccess.getBlockMetadata(i, j, k);
-		int itemDamage = 0;
+		SCTileEntityStorageJar storageJar = (SCTileEntityStorageJar) renderer.blockAccess.getBlockTileEntity(x, y, z);
+		int meta = renderer.blockAccess.getBlockMetadata(x, y, z);
+		float shiftUp = 0;
 		
-		
-		if ( meta > 3)
-		{
-			moveUp = 5;
-		}
-		else 
-		{
-			moveUp = 0;
-
-		}
-		
-		//Cork
-		renderBlocks.setRenderBounds(getBounds(3, 9 + moveUp, 11 + moveUp, 3));
-		FCClientUtilsRender.RenderStandardBlockWithTexture(renderBlocks, this, i, j, k, cork);
-		
-		if (storageStack != null) 
-		{
-			seedType = jar.getSeedType();
-			storageSize = storageStack.stackSize;
-			itemDamage = storageStack.getItemDamage();
-			int contentHeight = 0;
-			
-			if (storageSize > 0)
-			{
-			    if (storageSize == 64)
-		        {
-			    	contentHeight =(int) (Math.floor( storageSize/8 ));
-		        }
-		        else if (storageSize < 8)
-		        {
-		        	contentHeight =(int) (Math.floor( storageSize/8 )) + 1;
-		        }
-		    	else
-		    		contentHeight =(int) (Math.floor( storageSize/8 ));
-				
-				//Contents
-				renderBlocks.setRenderBounds(getBounds(3, 0 + moveUp,contentHeight + moveUp , 3));
-
-				boolean isGlowing = storageStack.itemID == Item.lightStoneDust.itemID || storageStack.itemID == Item.redstone.itemID;
-				
-				if (isGlowing) {
-					FCClientUtilsRender.RenderBlockFullBrightWithTexture(renderBlocks, renderBlocks.blockAccess, i, j, k, setContentIcon(seedType, itemDamage));
-				}
-				else FCClientUtilsRender.RenderStandardBlockWithTexture(renderBlocks, this, i, j, k, setContentIcon(seedType, itemDamage));
-			
-			}
-		}
-		
-    	return true;
-    }
-	
-	@Override
-	public void RenderBlockSecondPass(RenderBlocks renderBlocks, int i, int j, int k, boolean bFirstPassResult)
-	{
-		SCTileEntityStorageJar jar = (SCTileEntityStorageJar)renderBlocks.blockAccess.getBlockTileEntity( i, j, k );
-		ItemStack storageStack;
-		int dir = getDirection(renderBlocks.blockAccess.getBlockMetadata(i, j, k));
-		int itemDamage = 0;
-		
-		if (jar != null)
-		{
-			storageStack = jar.getStackInSlot(0);
-			
-			if (storageStack != null)
-			{
-				itemDamage = storageStack.getItemDamage();
-			}
-		}
-		
+		if (hasAttachableBlockAbove(renderer.blockAccess, x, y, z)) shiftUp = 5/16F;
 
 		
-		if (renderBlocks.blockAccess.getBlockMetadata(i, j, k) > 3)
-		{
-			moveUp = 5;
-		}
-		else moveUp = 0;
+		renderJar(renderer, x, y, z, 
+				storageJar.hasLabel(),
+				meta,
+				getDirection(meta),
+				storageJar.getStorageStack(),
+				storageJar.getSeedType() );
 		
-    	if ( bFirstPassResult)
-    	{
-    		//Jar
-    		renderBlocks.setRenderBounds(getBounds(4, 0.001 + moveUp, 10 + moveUp, 4));
-    		renderBlocks.renderStandardBlock(this, i, j, k);
-    		
-    		if ( jar.hasLabel() && itemDamage < 32 )
-    		{ 
-    			if (dir == 0)
-    			{
-    				renderBlocks.renderFaceZPos(this, i, j + 0/16D, k  + 0.001D, getLabelIcon( jar.getSeedType(), itemDamage ));
-    			}
-    			else if (dir == 1)
-    			{
-    				renderBlocks.renderFaceXNeg(this, i  - 0.001D, j + 0/16D, k, getLabelIcon( jar.getSeedType(), itemDamage ));
-    			}
-    			else if (dir == 2)
-    			{
-    				renderBlocks.renderFaceZNeg(this, i, j + 0/16D, k - 0.001D, getLabelIcon( jar.getSeedType(), itemDamage ));
-    			}
-    			else if (dir == 3)
-    			{
-    				renderBlocks.renderFaceXPos(this, i  + 0.001D, j + 0/16D, k , getLabelIcon( jar.getSeedType(), itemDamage ));
-    			}
-    		}
-
-    	}
+		renderContents(renderer, x, y, z, meta, getDirection(meta), shiftUp, storageJar.getStorageStack());
+		return true;
 	}
-	
+
 	@Override
 	public void RenderBlockAsItem(RenderBlocks renderBlocks, int iItemDamage, float fBrightness)
 	{
@@ -846,25 +548,25 @@ public class SCBlockStorageJar extends BlockContainer {
 		
 		
 		//Jar
-		renderBlocks.setRenderBounds( getBounds(4, 0, 10, 4) );
-		FCClientUtilsRender.RenderInvBlockWithTexture( renderBlocks, this, -0.5F, -0.5F, -0.5F, glassSide );
-		
+		renderBlocks.setRenderBounds( getBounds(jarWidth/2, mindTheGap, jarHeight, jarWidth/2) );
+		FCClientUtilsRender.RenderInvBlockWithMetadata(renderBlocks, this, -0.5F, -0.5F, -0.5F, iItemDamage);
 		
 		//Cork
-		renderBlocks.setRenderBounds( getBounds(3, 9, 11, 3) );
+		float corkY = jarHeight - 1/16F;
+		renderBlocks.setRenderBounds( getBounds(corkWidth/2, corkY, corkY + corkHeight, corkWidth/2) );
 		FCClientUtilsRender.RenderInvBlockWithTexture( renderBlocks, this, -0.5F, -0.5F, -0.5F, cork );
 		
 		//Contents
 		if (fill > 0) {
-						
-			renderBlocks.setRenderBounds( getBounds(3, 0, fill, 3) );
-			FCClientUtilsRender.RenderInvBlockWithTexture( renderBlocks, this, -0.5F, -0.5F, -0.5F,  setContentIcon( seedID, damage ) );
+			
+			renderBlocks.setRenderBounds( getBounds(contentsWidth/2, mindTheGap*2, fill/16F, contentsWidth/2) );
+			FCClientUtilsRender.RenderInvBlockWithTexture( renderBlocks, this, -0.5F, -0.5F, -0.5F,  getContentIcon( seedID, damage ) );
 		}
 		
 		//label
 		if (label == 1) 
 		{
-			renderBlocks.setRenderBounds( getBounds(0.001, 0, 10, 4) );
+			renderBlocks.setRenderBounds( getBounds(mindTheGap, 0, jarHeight, jarWidth/2) );
 			if (fill == 0) //ie empty
 			{
 				FCClientUtilsRender.RenderInvBlockWithTexture( renderBlocks, this, -0.5F + 4/16F, -0.5F, -0.5F, labelBlank );
@@ -872,99 +574,4 @@ public class SCBlockStorageJar extends BlockContainer {
 			else FCClientUtilsRender.RenderInvBlockWithTexture( renderBlocks, this, -0.5F + 4/16F, -0.5F, -0.5F, getLabelIcon( seedID, damage) );
 		}
 	}
-	
-//  int iLabel;
-//  
-//  if (label)
-//  {
-//      iLabel = 1;
-//  }
-//  else iLabel = 0;
-//  
-//  int fillDamage = fill *10;
-//  int typeDamage = type *100;
-//  
-//  System.out.println("iDamage = " + (iLabel + fillDamage + typeDamage) );
-//  
-//  return iLabel + fillDamage + typeDamage;
-	
-	/**
-	 * 
-	 * @param label
-	 * @param fill
-	 * @param damage
-	 * @param typeID
-	 * @return damage value, combining the input par
-	 */
-    public static int dataToDamage(boolean label, int fill, int damage , int typeID)
-    {
-    	int labelVal;
-    	
-    	// set first bit for label
-    	if (label)
-    	{
-    		labelVal = 1;
-    	}
-    	else labelVal = 0;
-    	
-		// shift fill bits and set them
-		int fillVal = fill << 1; // 0-7
-
-		// shift damage bits and set them
-		int damageVal = damage << 4; // 0-31
-
-		// shift type bits and set them
-		int typeVal = typeID << 9; // 0-63
-
-		// set jars damage by ORing the different shifted bit together
-		return labelVal | fillVal | damageVal | typeVal;
-
-    }
-
-    /**
-     * 
-     * @param jarDamageVal
-     * @return int[] where 0 = label, 1 = fill, 2 = damage, 3 = type 
-     */
-    public static int[] damageToData( int jarDamageVal )
-    {
-    	//shift type bits and return the value 
-    	int newtype = jarDamageVal >> 9; 
-
-    	//shift damage bits by 4 (skipping fill and label bits
-    	int shiftdamage = jarDamageVal >> 4;
-
-    	// AND check if damage bits are 1 or 0
-    	int newdamage = shiftdamage & 31;
-    	
-    	//shift fill bits by one
-    	int shiftfill = jarDamageVal >> 1; 
-
-    	// AND check if fill bits are 1 or 0
-    	int newfill = shiftfill & 7;
-
-    	// AND check to see if label bit is 1 or 0
-    	int newlabel = jarDamageVal & 1; 
-    	
-    	return new int[] {newlabel, newfill, newdamage, newtype};
-    }
-    
-	
-	
-//	int label=(n/1)%10;
-//	int fill= (n/10)%10;
-//	int type = (n/100)%10;
-//	int typeExtended = (n/1000)%10;
-//	 	int typeExtendedPlus = (n/10000)%10;
-//
-//	 	int content = typeExtendedPlus*100 + typeExtended*10 + type;
-//
-////	boolean hasLabel = label == 1;
-////	boolean empty = fill == 0;
-//	
-//	int[] intArray;
-//	
-//	return intArray = new int[] {content, fill, label};
-
-
 }

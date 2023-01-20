@@ -49,6 +49,12 @@ public class SCBlockHollowLog extends SCBlockLogBase {
 	{
 		return false;
 	}
+	
+	@Override
+	public boolean HasLargeCenterHardPointToFacing(IBlockAccess blockAccess, int i, int j, int k, int iFacing, boolean bIgnoreTransparency)
+	{
+		return true;
+	}
 
     /**
      * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
@@ -164,23 +170,23 @@ public class SCBlockHollowLog extends SCBlockLogBase {
     	if (rot == 0)
     	{
     		renderer.setRenderBounds( 
-    				0.001/16F, 0.001F, 0.001/16F, 
-    				1.999/16F, 0.999F, 15.999/16F );
+    				1.001/16F, 0.001F, 1.001/16F, 
+    				1.999/16F, 0.999F, 14.999/16F );
     		FCClientUtilsRender.RenderInvBlockWithTexture( renderer, this, -0.5F, -0.5F, -0.5F, tree_inner[type] );
     		
     		renderer.setRenderBounds( 
-    				14/16F, 0.001F, 0.001/16F, 
-    				15.999/16F, 0.999F, 15.999/16F );
+    				14/16F, 0.001F, 1.001/16F, 
+    				14.999/16F, 0.999F, 14.999/16F );
     		FCClientUtilsRender.RenderInvBlockWithTexture( renderer, this, -0.5F, -0.5F, -0.5F, tree_inner[type] );
     		
     		renderer.setRenderBounds( 
-    				0.001/16F, 0.001F, 0.001/16F, 
-    				15.999/16F, 0.999F, 1.999/16F );
+    				1.001/16F, 0.001F, 1.001/16F, 
+    				14.999/16F, 0.999F, 1.999/16F );
     		FCClientUtilsRender.RenderInvBlockWithTexture( renderer, this, -0.5F, -0.5F, -0.5F, tree_inner[type] );
     		
     		renderer.setRenderBounds( 
-    				0.001/16F, 0.001F, 14/16F, 
-    				15.999/16F, 0.999F, 15.999/16F );
+    				1.001/16F, 0.001F, 14/16F, 
+    				14.999/16F, 0.999F, 14.999/16F );
     		FCClientUtilsRender.RenderInvBlockWithTexture( renderer, this, -0.5F, -0.5F, -0.5F, tree_inner[type] );
     	}
     	

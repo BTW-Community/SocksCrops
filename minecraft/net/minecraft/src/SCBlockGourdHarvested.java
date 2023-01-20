@@ -88,11 +88,11 @@ public abstract class SCBlockGourdHarvested extends SCBlockGourdFalling {
 		//Orange
 		if (meta == 0)
 		{
-			return GetGourdBounds(6, 6, 6);
+			return GetGourdBounds(8, 8, 8);
 		}
 		else if (meta == 1)
 		{
-			return GetGourdBounds(8, 8, 8);
+			return GetGourdBounds(10, 10, 10);
 		}
 		else if (meta == 2)
 		{
@@ -106,29 +106,29 @@ public abstract class SCBlockGourdHarvested extends SCBlockGourdFalling {
 		//Green
 		else if (meta == 4)
 		{
-			return GetGourdBounds(6, 4, 6);
+			return GetGourdBounds(10, 6, 10);
 		}
 		else if (meta == 5)
 		{
-			return GetGourdBounds(8, 5, 8);
+			return GetGourdBounds(12, 8, 12);
 		}
 		else if (meta == 6)
 		{
-			return GetGourdBounds(12, 6, 12);
+			return GetGourdBounds(14, 9, 14);
 		}
 		else if (meta == 7)
 		{
-			return GetGourdBounds(16, 8, 16);
+			return GetGourdBounds(16, 10, 16);
 		}
 		
 		//Yellow
 		else if (meta == 8)
 		{
-			return GetGourdBounds(4, 4, 4);
+			return GetGourdBounds(6, 6, 6);
 		}
 		else if (meta == 9)
 		{
-			return GetGourdBounds(6, 6, 6);
+			return GetGourdBounds(8, 8, 8);
 		}
 		else if (meta == 10)
 		{
@@ -142,17 +142,17 @@ public abstract class SCBlockGourdHarvested extends SCBlockGourdFalling {
 		//White
 		else if (meta == 12)
 		{
-			return GetGourdBounds(4, 3, 4);
+			return GetGourdBounds(6, 4, 6);
 		}
 		else if (meta == 13)
 		{
-			return GetGourdBounds(6, 4, 6);
+			return GetGourdBounds(8, 5, 8);
 		}
 		else if (meta == 14)
 		{
-			return GetGourdBounds(8, 5, 8);
+			return GetGourdBounds(10, 6, 10);
 		}
-		else return GetGourdBounds(10, 6, 10);
+		else return GetGourdBounds(12, 8, 12);
 	}
 	
 

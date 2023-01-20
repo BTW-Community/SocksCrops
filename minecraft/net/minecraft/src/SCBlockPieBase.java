@@ -1,6 +1,6 @@
 package net.minecraft.src;
 
-public abstract class SCBlockPieBase extends Block {
+public abstract class SCBlockPieBase extends SCBlockPastryBase {
 
 	public static final float pieHeight = ( 4F / 16F );
 	public static final float pieWidth = ( 12F / 16F );
@@ -13,8 +13,6 @@ public abstract class SCBlockPieBase extends Block {
 		
 		setHardness( 0.6F );
         SetShovelsEffectiveOn( true );
-        
-        setStepSound( FCBetterThanWolves.fcStepSoundSquish );
 	}
 	
 	@Override
@@ -30,24 +28,6 @@ public abstract class SCBlockPieBase extends Block {
 		return AxisAlignedBB.getAABBPool().getAABB(         	
         		( 0.5F - pieHalfWidth ), 0.0F, ( 0.5F - pieHalfLength ), 
         		( 0.5F + pieHalfWidth ), pieHeight, ( 0.5F + pieHalfLength ) );
-    }
-	
-    @Override
-    public boolean shouldSideBeRendered( IBlockAccess blockAccess, int iNeighborI, int iNeighborJ, int iNeighborK, int iSide )
-    {
-		return m_currentBlockRenderer.ShouldSideBeRenderedBasedOnCurrentBounds( iNeighborI, iNeighborJ, iNeighborK, iSide );
-    }	
-    
-	@Override
-    public boolean isOpaqueCube()
-    {
-        return false;
-    }
-
-	@Override
-    public boolean renderAsNormalBlock()
-    {
-        return false;
     }
 	
 	@Override

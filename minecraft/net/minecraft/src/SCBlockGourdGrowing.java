@@ -8,14 +8,16 @@ public abstract class SCBlockGourdGrowing extends SCBlockGourdFalling {
 	protected int vineBlock;
 	protected int flowerBlock;
 	protected int convertedBlockID;
+	protected int sleepingFruit;
 	
-	protected SCBlockGourdGrowing(int iBlockID, int stemBlock, int vineBlock, int flowerBlock, int convertedBlockID) {
+	protected SCBlockGourdGrowing(int iBlockID, int stemBlock, int vineBlock, int flowerBlock, int convertedBlockID, int sleepingFruit) {
 		super(iBlockID);
 		
 		this.stemBlock = stemBlock;
 		this.vineBlock = vineBlock;
         this.flowerBlock = flowerBlock;
         this.convertedBlockID = convertedBlockID;
+        this.sleepingFruit = sleepingFruit;
         
         SetAxesEffectiveOn( true );
         
@@ -29,12 +31,12 @@ public abstract class SCBlockGourdGrowing extends SCBlockGourdFalling {
 	
 	protected float GetBaseGrowthChance()
     {
-    	return 0.1F;
+    	return 0.5F; //TODO
     }
 	
 	protected float getPossesionChance()
     {
-    	return 1.0F;
+    	return 0.0F;
     }
 	
 	protected int GetPortalRange()
@@ -56,7 +58,7 @@ public abstract class SCBlockGourdGrowing extends SCBlockGourdFalling {
 		    {
 				this.becomePossessed(world, i, j, k, random);
 		    }
-			else if ( checkTimeOfDay(world) && !IsFullyGrown( world, i, j, k) && random.nextFloat() <= this.GetBaseGrowthChance() ) //daytime
+			else if ( isDaytime(world) && !IsFullyGrown( world, i, j, k) && random.nextFloat() <= this.GetBaseGrowthChance() ) //daytime
 			{
 				this.grow(world, i, j, k, random);
 			}
@@ -82,10 +84,14 @@ public abstract class SCBlockGourdGrowing extends SCBlockGourdFalling {
 	 */
 	protected abstract int getMetaHarvested(int growthLevel);
 
-	private void grow(World world, int i, int j, int k, Random random)
+	protected void grow(World world, int i, int j, int k, Random random)
 	{
 		int meta = world.getBlockMetadata(i, j, k);        
-		world.setBlockAndMetadataWithNotify(i, j, k, this.blockID ,meta + 4);
+		
+		if (GetGrowthLevel(meta) < 3)
+		{
+			world.setBlockAndMetadataWithNotify(i, j, k, this.sleepingFruit, meta + 4);
+		}
 	}
 
 	protected int GetGrowthLevel( int meta) {
@@ -105,7 +111,7 @@ public abstract class SCBlockGourdGrowing extends SCBlockGourdFalling {
 		else return 3;
 	}
 	
-	protected boolean checkTimeOfDay(World world) {
+	protected boolean isDaytime(World world) {
 		int iTimeOfDay = (int)( world.worldInfo.getWorldTime() % 24000L );
 		return (iTimeOfDay > 24000 || iTimeOfDay > 0 && iTimeOfDay < 14000 );
 	}
@@ -176,6 +182,11 @@ public abstract class SCBlockGourdGrowing extends SCBlockGourdFalling {
 	    
 	    int targetBlockID = world.getBlockId(targetPos.i, targetPos.j, targetPos.k);
 	    
+	    if (targetBlockID == SCDefs.gourdVineDead.blockID)
+	    {
+	    	return false;
+	    }
+	    
 	    if ( targetBlockID == this.vineBlock || targetBlockID == this.flowerBlock || targetBlockID == SCDefs.gourdVineDead.blockID)
 	    {	
 	    	return true;
@@ -235,16 +246,41 @@ public abstract class SCBlockGourdGrowing extends SCBlockGourdFalling {
 
         return false;
     }
+    
+	@Override
+	public int colorMultiplier(IBlockAccess blockAccess, int x, int y, int z)
+	{
+		int meta = blockAccess.getBlockMetadata(x, y, z);
+		
+		if (!secondPass)
+		{
+			return 0xFFFFFF;
+		}
+		else {
 
+			int biomeTint = 0xFFFFFF;
+			BiomeGenBase currentBiome = blockAccess.getBiomeGenForCoords(x, z);
+			biomeTint = currentBiome.getBiomeGrassColor();
+			
+			if (currentBiome == BiomeGenBase.mushroomIsland || currentBiome == BiomeGenBase.mushroomIslandShore)
+			{
+				return 0xFFFFFF;
+			}
+			
+			return biomeTint;
+		}
+	}
 	protected boolean secondPass;
 	
-	abstract Icon getOverlayIcon();
-	
+	private Icon overlayIcon;
+	private Icon myceliumOverlayIcon;
+
 	@Override
     public void registerIcons( IconRegister register )
     {
-		super.registerIcons(register);
-
+		overlayIcon = register.registerIcon("SCBlockGourdSideOverlay");
+		myceliumOverlayIcon = register.registerIcon("SCBlockGourdSideOverlay_mycelium");
+		
     }
 	
 	@Override
@@ -256,15 +292,24 @@ public abstract class SCBlockGourdGrowing extends SCBlockGourdFalling {
 	}
 	
 	
-	private Icon getBlockTextureSecondPass(IBlockAccess blockAccess, int i, int j, int k, int side) {
-		return getOverlayIcon();
+	private Icon getBlockTextureSecondPass(IBlockAccess blockAccess, int i, int j, int k, int side)
+	{
+		Block blockBelow = Block.blocksList[blockAccess.getBlockId(i, j - 1, k)];
+		BiomeGenBase currentBiome =  blockAccess.getBiomeGenForCoords(i, k);
+		
+ 		if (blockBelow != null && currentBiome == BiomeGenBase.mushroomIsland || currentBiome == BiomeGenBase.mushroomIslandShore)
+		{
+			return myceliumOverlayIcon;
+		}
+		
+		return overlayIcon;
 	}
 	
 	@Override
 	public boolean shouldSideBeRendered(IBlockAccess blockAccess, int i, int j, int k, int side) {
 		if (secondPass)
 		{
-			if (side == 1) return false;
+			if (side <= 1) return false;
 			return true;
 		}
 		else return super.shouldSideBeRendered(blockAccess, i, j, k, side);
@@ -305,14 +350,9 @@ public abstract class SCBlockGourdGrowing extends SCBlockGourdFalling {
     	
     	Tessellator tess = Tessellator.instance;
         tess.setBrightness(this.getMixedBrightnessForBlock(blockAccess, par2, par3, par4));
-        float var6 = 1.0F;
-        int var7 = this.colorMultiplier(blockAccess, par2, par3, par4);
-        float var8 = (float)(var7 >> 16 & 255) / 255.0F;
-        float var9 = (float)(var7 >> 8 & 255) / 255.0F;
-        float var10 = (float)(var7 & 255) / 255.0F;
 
-
-        tess.setColorOpaque_F(var6 * var8, var6 * var9, var6 * var10);
+        tess.setColorOpaque_F(1F, 1F, 1F);
+        
         double var19 = (double)par2;
         double var20 = (double)par3;
         double var15 = (double)par4;

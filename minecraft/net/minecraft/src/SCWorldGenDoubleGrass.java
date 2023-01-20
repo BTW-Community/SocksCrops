@@ -32,6 +32,8 @@ public class SCWorldGenDoubleGrass extends WorldGenerator
 		SCWorldGenDoubleGrass.addBiomeToGenerator(BiomeGenBase.taigaHills);
 		SCWorldGenDoubleGrass.addBiomeToGenerator(BiomeGenBase.forest);
 		SCWorldGenDoubleGrass.addBiomeToGenerator(BiomeGenBase.forestHills);
+		SCWorldGenDoubleGrass.addBiomeToGenerator(BiomeGenBase.jungle);
+		SCWorldGenDoubleGrass.addBiomeToGenerator(BiomeGenBase.jungleHills);
 	}
 
     public boolean generate(World par1World, Random par2Random, int par3, int par4, int par5)

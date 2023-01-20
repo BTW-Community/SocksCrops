@@ -1,31 +1,53 @@
 package net.minecraft.src;
 
+import java.util.List;
+
 import com.prupe.mcpatcher.cc.ColorizeBlock;
 
 public class SCBlockLilyRose extends FCBlockLilyPad {
 
+	public static String[] types = {"pink","white"};
+	
+	public static final int PINK = 0;
+	public static final int WHITE = 1;
+	
 	protected SCBlockLilyRose(int iBlockID) {
 		super(iBlockID);
 		setHardness(0.0F);
 		setStepSound(soundGrassFootstep);
-		setUnlocalizedName("SCBlockItemLilyFlower");
+		setUnlocalizedName("SCBlockLilyRose");
+	}
+	
+	@Override
+	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List) {
+		for (int i = 0; i < types.length; i++) {
+			 par3List.add(new ItemStack(par1, 1, i));
+		}
 	}
 	
 	private boolean secondRenderpass = false;
 	
-	private Icon rose;
-	private Icon flower;
+	private Icon[] rose = new Icon[16];
+	private Icon[] flower = new Icon[16];
 	private Icon lily;
 	private Icon roots;
+	private Icon[] icon = new Icon[16];
 	
 	@Override
 	public void registerIcons(IconRegister register) {
-		super.registerIcons(register);
+		for (int i = 0; i < types.length; i++) {
+			rose[i] = register.registerIcon("SCBlockLilyRose_" + types[i]);
+			flower[i] = register.registerIcon("SCBlockLilyFlower_" + types[i]);
+			icon[i] = register.registerIcon("SCBlockItemLilyRose_" + types[i]);
+		}
 		
-		rose = register.registerIcon("SCBlockLilyRose");
-		flower = register.registerIcon("SCBlockLilyFlower");
 		lily = register.registerIcon("waterlily");
 		roots = register.registerIcon("SCBlockLilyRose_roots");
+	}
+	
+	@Override
+	public Icon getIcon(int side, int meta) {
+		return blockIcon = icon[meta];
 	}
 	
     /**
@@ -66,11 +88,13 @@ public class SCBlockLilyRose extends FCBlockLilyPad {
     @Override
     public void RenderBlockSecondPass(RenderBlocks renderer, int i, int j, int k, boolean bFirstPassResult)
     {   
+    	int meta = renderer.blockAccess.getBlockMetadata(i, j, k);
+    	
     	secondRenderpass = true;
     	
-    	SCUtilsRender.renderBlockSaladWithTexture(renderer, this, i, j, k, rose);
+    	SCUtilsRender.renderBlockSaladWithTexture(renderer, this, i, j, k, rose[meta]);
     	
-    	renderer.setOverrideBlockTexture(flower);
+    	renderer.setOverrideBlockTexture(flower[meta]);
     	renderer.renderCrossedSquares(this, i, j, k);
     	renderer.clearOverrideBlockTexture();
     	
@@ -78,10 +102,10 @@ public class SCBlockLilyRose extends FCBlockLilyPad {
     }
     
     @Override
-    public void RenderBlockAsItem(RenderBlocks renderBlocks, int iItemDamage, float fBrightness)
+    public void RenderBlockAsItem(RenderBlocks renderBlocks, int damage, float fBrightness)
     {
-    	renderBlocks.setOverrideBlockTexture(flower);
-    	renderBlocks.renderBlockAsItemVanilla(this, iItemDamage, fBrightness);
+    	renderBlocks.setOverrideBlockTexture(flower[damage]);
+    	renderBlocks.renderBlockAsItemVanilla(this, damage, fBrightness);
     	renderBlocks.clearOverrideBlockTexture();
  
     }

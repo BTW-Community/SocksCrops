@@ -7,13 +7,16 @@ public class SCBlockGourdStem extends FCBlockCrops {
 	protected int vineBlock;
 	protected int flowerBlock;
 	public Block convertedBlock;
+	private String name;
 	
 	private static final double m_dWidth = 0.25D;
 	private static final double m_dHalfWidth = ( m_dWidth / 2D );
 	
-	protected SCBlockGourdStem(int iBlockID, int vineBlock , int flowerBlock, Block convertedBlock) {
+	protected SCBlockGourdStem(int iBlockID, int vineBlock , int flowerBlock, Block convertedBlock, String name) {
 		super( iBlockID );
         
+		this.name = name;
+		
         this.vineBlock = vineBlock;
         this.flowerBlock = flowerBlock;
         this.convertedBlock = convertedBlock;
@@ -227,7 +230,7 @@ public class SCBlockGourdStem extends FCBlockCrops {
         double var19 = (double)par2;
         double var20 = (double)par3;
         double var15 = (double)par4;
-        r.drawCrossedSquares(this, blockAccess.getBlockMetadata(par2, par3, par4), var19, var20, var15, 2.0F);
+        SCUtilsRender.drawCrossedSquares(r, this, blockAccess.getBlockMetadata(par2, par3, par4), var19, var20, var15, 2.0F);
         
 		return true;
 
@@ -239,15 +242,16 @@ public class SCBlockGourdStem extends FCBlockCrops {
     @Override
     public void registerIcons( IconRegister register )
     {
-		blockIcon = register.registerIcon( "SCBlockPumpkinStem_7" );
+		
 		
 		stemArray = new Icon[8];
 
         for ( int iTempIndex = 0; iTempIndex < stemArray.length; iTempIndex++ )
         {
-        	stemArray[iTempIndex] = register.registerIcon( "SCBlockPumpkinStem_" + iTempIndex );
+        	stemArray[iTempIndex] = register.registerIcon( name + "_" + iTempIndex );
         }
- 
+        
+        blockIcon = stemArray[7];
     }
 
     @Override

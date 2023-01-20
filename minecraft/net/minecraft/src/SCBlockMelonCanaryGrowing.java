@@ -4,9 +4,9 @@ import java.util.Random;
 
 public class SCBlockMelonCanaryGrowing extends SCBlockMelonGrowing {
 
-	protected SCBlockMelonCanaryGrowing(int iBlockID, int stemBlock, int vineBlock, int flowerBlock, int convertedBlockID)
+	protected SCBlockMelonCanaryGrowing(int iBlockID, int stemBlock, int vineBlock, int flowerBlock, int convertedBlockID, int sleepingFruit)
 	{
-		super(iBlockID, stemBlock, vineBlock, flowerBlock, convertedBlockID);
+		super(iBlockID, stemBlock, vineBlock, flowerBlock, convertedBlockID, sleepingFruit);
 		
 		setUnlocalizedName("SCBlockMelonCanaryGrowing");
 	}
@@ -128,22 +128,21 @@ public class SCBlockMelonCanaryGrowing extends SCBlockMelonGrowing {
 	{
 		int dir = this.getDirection(meta);
 		
-		if (dir == 0 || dir == 2)
+		if (dir == 0)
 		{
-			renderer.SetUvRotateTop(0);
-			renderer.SetUvRotateBottom(0);
-			renderer.SetUvRotateNorth(1);
-			renderer.SetUvRotateSouth(1);
+			renderer.SetUvRotateTop(2);
+			renderer.SetUvRotateBottom(2);
 		}
-		else if (dir == 1 || dir == 3)
+		else if (dir == 2)
 		{
 			renderer.SetUvRotateTop(1);
 			renderer.SetUvRotateBottom(1);
-			renderer.SetUvRotateEast(1);
-			renderer.SetUvRotateWest(1);
 		}
-			
-		
+		else if (dir == 3)
+		{
+			renderer.SetUvRotateTop(3);
+			renderer.SetUvRotateBottom(3);
+		}
 		
 	}
 
@@ -161,29 +160,52 @@ public class SCBlockMelonCanaryGrowing extends SCBlockMelonGrowing {
 		renderer.ClearUvRotation();
 	}
 	
-	protected Icon[] waterCanaryIcon;
+	protected Icon[] waterCanaryIconSide;
+	protected Icon[] waterCanaryIconSideMirrored;
 	protected Icon[] waterCanaryIconTop;
+	protected Icon[] waterCanaryIconFront;
+	protected Icon[] waterCanaryIconEnd;
 	protected Icon[] connectorIcon;
-	private Icon overlayIcon;
 	
 	@Override
   	public void registerIcons( IconRegister register )
   	{
-		overlayIcon = register.registerIcon("SCBlockMelonYellowSideOverlay");
+		super.registerIcons(register);
 		
 		//Orange
-		waterCanaryIcon = new Icon[4];
+		waterCanaryIconSide = new Icon[4];
 		
-  		for ( int iTempIndex = 0; iTempIndex < waterCanaryIcon.length; iTempIndex++ )
+  		for ( int iTempIndex = 0; iTempIndex < waterCanaryIconSide.length; iTempIndex++ )
 		{
-  			waterCanaryIcon[iTempIndex] = register.registerIcon( "SCBlockMelonYellowSide_" + iTempIndex );
+  			waterCanaryIconSide[iTempIndex] = register.registerIcon( "SCBlockMelonYellowSide_" + iTempIndex );
 		}
-	
+  		
+  		waterCanaryIconSideMirrored = new Icon[4];
+		
+  		for ( int iTempIndex = 0; iTempIndex < waterCanaryIconSideMirrored.length; iTempIndex++ )
+		{
+  			waterCanaryIconSideMirrored[iTempIndex] = register.registerIcon( "SCBlockMelonYellowSide_mirrored_" + iTempIndex );
+		}
+  		
   		waterCanaryIconTop = new Icon[4];
 	
 		for ( int iTempIndex = 0; iTempIndex < waterCanaryIconTop.length; iTempIndex++ )
 		{
 			waterCanaryIconTop[iTempIndex] = register.registerIcon( "SCBlockMelonYellowTop_" + iTempIndex );
+		}
+		
+ 		waterCanaryIconFront = new Icon[4];
+ 		
+		for ( int iTempIndex = 0; iTempIndex < waterCanaryIconTop.length; iTempIndex++ )
+		{
+			waterCanaryIconFront[iTempIndex] = register.registerIcon( "SCBlockMelonYellowFront_" + iTempIndex );
+		}
+		
+ 		waterCanaryIconEnd = new Icon[4];
+ 		
+		for ( int iTempIndex = 0; iTempIndex < waterCanaryIconTop.length; iTempIndex++ )
+		{
+			waterCanaryIconEnd[iTempIndex] = register.registerIcon( "SCBlockMelonYellowBack_" + iTempIndex );
 		}
 		
         connectorIcon = new Icon[4];
@@ -192,40 +214,127 @@ public class SCBlockMelonCanaryGrowing extends SCBlockMelonGrowing {
         	connectorIcon[iTempIndex] = register.registerIcon( "SCBlockMelonYellowConnector_" + iTempIndex );
         }
 		
-		blockIcon = waterCanaryIcon[3];
+		blockIcon = waterCanaryIconSide[3];
 	}
 	
 	@Override
-    public Icon getIcon( int iSide, int iMetadata )
+    public Icon getIcon( int side, int iMetadata )
     {
     	int growthLevel = GetGrowthLevel(iMetadata);
     	int dir = getDirection(iMetadata);
 
     	
-    	if (iSide == 2 || iSide == 3 )
+    	if (dir == 0)
     	{
-    		if (dir == 0 || dir == 2)
-    		{
-    			return waterCanaryIconTop[growthLevel];
-    		}
-    		else return waterCanaryIcon[growthLevel];
+        	if (side == 0 || side == 1)
+        	{
+        		return waterCanaryIconTop[growthLevel];
+        	}
+        	else if (side == 3)
+        	{
+        		return waterCanaryIconEnd[growthLevel];
+        	}
+        	else if (side == 2)
+        	{
+        		return waterCanaryIconFront[growthLevel];
+        	}
+        	else
+        	{
+        		if (side == 4)
+        		{
+        			return waterCanaryIconSideMirrored[growthLevel];
+        		}
+        		return waterCanaryIconSide[growthLevel];
+        	}
     	}
-    	else if (iSide == 4 || iSide == 5 )
+    	else if (dir == 2)
     	{
-    		if (dir == 1 || dir == 3)
-    		{
-    			return waterCanaryIconTop[growthLevel];
-    		}
-    		else return waterCanaryIcon[growthLevel];
+        	if (side == 0 || side == 1)
+        	{
+        		return waterCanaryIconTop[growthLevel];
+        	}
+        	else if (side == 2)
+        	{
+        		return waterCanaryIconEnd[growthLevel];
+        	}
+        	else if (side == 3)
+        	{
+        		return waterCanaryIconFront[growthLevel];
+        	}
+        	else
+        	{
+        		if (side == 5)
+        		{
+        			return waterCanaryIconSideMirrored[growthLevel];
+        		}
+        		return waterCanaryIconSide[growthLevel];
+        	}
     	}
-    	else return waterCanaryIcon[growthLevel];
-    }
+    	else if (dir == 3)
+    	{
+        	if (side == 0 || side == 1)
+        	{
+        		return waterCanaryIconTop[growthLevel];
+        	}
+        	else if (side == 5)
+        	{
+        		return waterCanaryIconEnd[growthLevel];
+        	}
+        	else if (side == 4)
+        	{
+        		return waterCanaryIconFront[growthLevel];
+        	}
+        	else
+        	{
+        		if (side == 3)
+        		{
+        			return waterCanaryIconSideMirrored[growthLevel];
+        		}
+        		return waterCanaryIconSide[growthLevel];
+        	}
+    	}
+    	else
+    	{
 
-	@Override
-	Icon getOverlayIcon() {
-		return overlayIcon;
-	}
+        	if (side == 0 || side == 1)
+        	{
+        		return waterCanaryIconTop[growthLevel];
+        	}
+        	else if (side == 4)
+        	{
+        		return waterCanaryIconEnd[growthLevel];
+        	}
+        	else if (side == 5)
+        	{
+        		return waterCanaryIconFront[growthLevel];
+        	}
+        	else
+        	{
+        		if (side == 2)
+        		{
+        			return waterCanaryIconSideMirrored[growthLevel];
+        		}
+        		return waterCanaryIconSide[growthLevel];
+        	}
+    	}
 
-	
+//    	if (iSide == 2 || iSide == 3 )
+//    	{
+//    		if (dir == 0 || dir == 2)
+//    		{
+//    			return waterCanaryIconTop[growthLevel];
+//    		}
+//    		else return waterCanaryIconSide[growthLevel];
+//    	}
+//    	else if (iSide == 4 || iSide == 5 )
+//    	{
+//    		if (dir == 1 || dir == 3)
+//    		{
+//    			return waterCanaryIconTop[growthLevel];
+//    		}
+//    		else return waterCanaryIconSide[growthLevel];
+//    	}
+//    	else return waterCanaryIconSide[growthLevel];
+    }	
 
 }

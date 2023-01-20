@@ -72,7 +72,7 @@ public class SCBlockFarmlandNutrition1Fertilized extends SCBlockFarmlandNutritio
 			{
 				return fertilizerOverlayWet;
 			}
-			else return fertilizerOverlayWet;
+			else return fertilizerOverlayDry;
 		}
 		else return null;
 	}
@@ -94,5 +94,13 @@ public class SCBlockFarmlandNutrition1Fertilized extends SCBlockFarmlandNutritio
 		renderer.renderStandardBlock(this, i, j, k);
 
 		secondPass = false;
+	}
+	
+	@Override
+	public void RenderBlockAsItem(RenderBlocks renderBlocks, int iItemDamage, float fBrightness) {
+		
+		super.RenderBlockAsItem(renderBlocks, iItemDamage, fBrightness);
+		
+		FCClientUtilsRender.RenderInvBlockWithTexture(renderBlocks, this, -0.5F, -0.5F, -0.5F, fertilizerOverlayDry);
 	}
 }

@@ -12,6 +12,8 @@ public class SCCustomAuxFX {
 	public static final int melonCanaryExplodeAuxFXID = 2303;    
 	public static final int pumpkinExplodeAuxFXID = 2305;
 	
+	public static final int coconutExplodeAuxFXID = 2306;
+	
 	public static final int choppingBoardAuxFXID = 2320;
 	
 	public static boolean playChoppingBoardAuxFX(Minecraft mcInstance, World world, EntityPlayer player, int iFXID, int i, int j, int k, int iFXSpecificData) {
@@ -69,7 +71,7 @@ public class SCCustomAuxFX {
 							dChunkVelX, dChunkVelY, dChunkVelZ);
 				}    	
 				
-			} 	        
+			} 
 
 			//world.playSound(posX, posY, posZ, "mob.zombie.wood", 0.2F, 0.60F + (rand.nextFloat() * 0.25F));
 
@@ -101,27 +103,35 @@ public class SCCustomAuxFX {
 		case melonHoneydewExplodeAuxFXID:
 		case melonCanaryExplodeAuxFXID:
 		case pumpkinExplodeAuxFXID:
+		case coconutExplodeAuxFXID:
 			
 			// 360 = melon slice based particles
 
 			String particle = "iconcrack_" + Item.melon.itemID;
-			if (iFXID == pumpkinExplodeAuxFXID)
+			
+			if (iFXID == coconutExplodeAuxFXID)
 			{
-				particle = "iconcrack_" + Item.pumpkinSeeds.itemID;
+				particle = "iconcrack_" + SCDefs.coconutSlice.itemID;
 			}
-			else if (iFXID == melonCanaryExplodeAuxFXID)
-			{
-				particle = "iconcrack_" + SCDefs.melonCanarySlice.itemID;
-			}
-			else if (iFXID == melonHoneydewExplodeAuxFXID)
-			{
-				particle = "iconcrack_" + SCDefs.melonHoneydewSlice.itemID;
-			}
-			else if (iFXID == melonCantaloupeExplodeAuxFXID)
-			{
-				particle = "iconcrack_" + SCDefs.melonCantaloupeSlice.itemID;
-			}
+			
+//			if (iFXID == pumpkinExplodeAuxFXID)
+//			{
+//				particle = "iconcrack_" + Item.pumpkinSeeds.itemID;
+//			}
+//			else if (iFXID == melonCanaryExplodeAuxFXID)
+//			{
+//				particle = "iconcrack_" + SCDefs.melonCanarySlice.itemID;
+//			}
+//			else if (iFXID == melonHoneydewExplodeAuxFXID)
+//			{
+//				particle = "iconcrack_" + SCDefs.melonHoneydewSlice.itemID;
+//			}
+//			else if (iFXID == melonCantaloupeExplodeAuxFXID)
+//			{
+//				particle = "iconcrack_" + SCDefs.melonCantaloupeSlice.itemID;
+//			}
 
+			
 			for (int iTempCount = 0; iTempCount < 150; iTempCount ++)
 			{
 				double dChunkX = posX + world.rand.nextDouble() - 0.5D;

@@ -8,7 +8,9 @@ public abstract class SCBlockFarmlandBase extends FCBlockFarmland{
 
 	protected SCBlockFarmlandBase(int iBlockID) {
 		super(iBlockID);
+		this.setCreativeTab(CreativeTabs.tabBlock);
 	}
+
 	
 	@Override
     public void updateTick( World world, int i, int j, int k, Random rand )
@@ -16,16 +18,16 @@ public abstract class SCBlockFarmlandBase extends FCBlockFarmland{
 		//turn loose if tall grass has grown
 		int iTimeOfDay = (int)( world.worldInfo.getWorldTime() % 24000L );
 		
-        if ( iTimeOfDay > 14000 && iTimeOfDay < 22000 ) //night
-        {
-    		if ( rand.nextFloat() <= 0.5F )
-    		{
-    			if( world.getBlockId(i, j + 1, k ) == SCDefs.shortPlant.blockID && world.getBlockMetadata(i, j, k) == SCBlockShortPlant.TALLGRASS )
-    			{
-    				setLooseDirt(world, i, j, k);
-    			}
-    		}
-        }
+//        if ( iTimeOfDay > 14000 && iTimeOfDay < 22000 ) //night
+//        {
+//    		if ( rand.nextFloat() <= 0.5F )
+//    		{
+//    			if( world.getBlockId(i, j + 1, k ) == Block.tallGrass.blockID )
+//    			{
+//    				setLooseDirt(world, i, j, k);
+//    			}
+//    		}
+//        }
 		
 		//hydration from super super
 		if ( HasIrrigatingBlocks( world, i, j, k ) || world.IsRainingAtPos( i, j + 1, k ) )
@@ -57,27 +59,48 @@ public abstract class SCBlockFarmlandBase extends FCBlockFarmland{
     public void onEntityCollidedWithBlock( World world, int i, int j, int k, Entity entity )
     {
 		//From FCBlockFarmland
-		if ( !world.isRemote && !IsFertilized( world, i, j, k ) &&
-			entity.isEntityAlive() && entity instanceof EntityItem )
+		if ( !world.isRemote &&	entity.isEntityAlive() && entity instanceof EntityItem )
 		{
 			EntityItem entityItem = (EntityItem)entity;
 			ItemStack stack = entityItem.getEntityItem();			
 			
-			if ( stack.itemID == Item.dyePowder.itemID && stack.getItemDamage() == 15 ) // bone meal
+			if (!IsFertilized( world, i, j, k ))
 			{
-				stack.stackSize--;
-				
-				if ( stack.stackSize <= 0 )
+				if ( stack.itemID == Item.dyePowder.itemID && stack.getItemDamage() == 15  // bone meal
+						&& !IsFertilized(world, i, j, k)
+						&& !IsDunged(world, i, j, k)) 
 				{
-					entityItem.setDead();
+					stack.stackSize--;
+					
+					if ( stack.stackSize <= 0 )
+					{
+						entityItem.setDead();
+					}
+					
+					SetFertilized( world, i, j, k );
+	            	
+		            world.playSoundEffect( i + 0.5D, j + 0.5D, k + 0.5D, "random.pop", 0.25F, 
+	            		( ( world.rand.nextFloat() - world.rand.nextFloat() ) * 0.7F + 1F ) * 2F );
 				}
-				
-				SetFertilized( world, i, j, k );
-            	
-	            world.playSoundEffect( i + 0.5D, j + 0.5D, k + 0.5D, "random.pop", 0.25F, 
-            		( ( world.rand.nextFloat() - world.rand.nextFloat() ) * 0.7F + 1F ) * 2F );
+				else if ( stack.itemID == FCBetterThanWolves.fcItemDung.itemID
+						&& !IsFertilized(world, i, j, k)
+						&& !IsDunged(world, i, j, k)) 
+				{
+					stack.stackSize--;
+					
+					if ( stack.stackSize <= 0 )
+					{
+						entityItem.setDead();
+					}
+					
+					SetDung(world, i, j, k);
+	            	
+		            world.playSoundEffect( i + 0.5D, j + 0.5D, k + 0.5D, "random.pop", 0.25F, 
+	            		( ( world.rand.nextFloat() - world.rand.nextFloat() ) * 0.7F + 1F ) * 2F );
+				}
 			}
-			else if ( stack.itemID == FCBetterThanWolves.fcItemDung.itemID)
+
+			if ( stack.itemID == SCDefs.hay.itemID)
 			{
 				stack.stackSize--;
 				
@@ -86,7 +109,7 @@ public abstract class SCBlockFarmlandBase extends FCBlockFarmland{
 					entityItem.setDead();
 				}
 				
-				SetDung(world, i, j, k);
+				SetHay(world, i, j, k);
             	
 	            world.playSoundEffect( i + 0.5D, j + 0.5D, k + 0.5D, "random.pop", 0.25F, 
             		( ( world.rand.nextFloat() - world.rand.nextFloat() ) * 0.7F + 1F ) * 2F );
@@ -115,9 +138,55 @@ public abstract class SCBlockFarmlandBase extends FCBlockFarmland{
         		( ( world.rand.nextFloat() - world.rand.nextFloat() ) * 0.7F + 1F ) * 2F );
             return true;
 		}
+		
+		//always be able to apply hay, but it removes the other fertilizers
+		if ( stack != null && stack.itemID == SCDefs.hay.itemID )
+//				&& !IsFertilized(world, i, j, k)
+//				&& !IsDunged(world, i, j, k));
+		{
+			stack.stackSize--;
+			
+			SetHay( world, i, j, k );
+        	
+            world.playSoundEffect( i + 0.5D, j + 0.5D, k + 0.5D, "random.pop", 0.25F, 
+        		( ( world.rand.nextFloat() - world.rand.nextFloat() ) * 0.7F + 1F ) * 2F );
+            return true;
+		}
 		else return false;
 	}
 	
+	
+    protected boolean DoesBlockAbovePreventSoilReversion( World world, int i, int j, int k )
+    {
+    	// this approach sucks, but given this is a deprecated functionality that won't
+    	// apply to additional block types, just leave it alone.
+    	
+        int iBlockAboveID = world.getBlockId( i, j + 1, k );
+        Block blockAbove = Block.blocksList[iBlockAboveID];
+        
+        if (blockAbove instanceof FCBlockPlants)
+        {
+        	return true;
+        }
+        
+        if ( 
+        	iBlockAboveID == Block.grass.blockID || 
+        	
+        	iBlockAboveID == Block.crops.blockID || 
+        	iBlockAboveID == Block.melonStem.blockID || 
+        	iBlockAboveID == Block.pumpkinStem.blockID || 
+        	iBlockAboveID == Block.potato.blockID || 
+        	iBlockAboveID == Block.carrot.blockID ||
+        	iBlockAboveID == Block.grass.blockID)
+        {
+            return true;
+        }
+        
+        return false;
+    }
+	
+	protected abstract void SetHay(World world, int i, int j, int k);
+
 	protected abstract void SetDung(World world, int i, int j, int k);
 
 	public void UpdateWeedGrowth( World world, int i, int j, int k, Random rand )
@@ -187,8 +256,8 @@ public abstract class SCBlockFarmlandBase extends FCBlockFarmland{
 			        	{
 			        		SetWeedsGrowthLevel( world, i, j, k, 0 );
 	
-			        		world.setBlockAndMetadataWithNotify( i, j + 1, k, SCDefs.shortPlant.blockID, SCBlockShortPlant.TALLGRASS );
-//			        		world.setBlockAndMetadataWithNotify( i, j + 1, k, Block.tallGrass.blockID, 1 );
+//			        		world.setBlockAndMetadataWithNotify( i, j + 1, k, SCDefs.shortPlant.blockID, SCBlockShortPlant.TALLGRASS );
+			        		world.setBlockAndMetadataWithNotify( i, j + 1, k, Block.tallGrass.blockID, 1 );
 			        	}
 			        	else if ( iWeedsLevel % 2 == 1 )
 			        	{
@@ -278,7 +347,7 @@ public abstract class SCBlockFarmlandBase extends FCBlockFarmland{
     	
     	if ( world.getBlockId( i, j + 1, k ) != Block.tallGrass.blockID )
     	{
-    		setLooseDirt(world, i, j, k);    		
+    		setLooseDirt(world, i, j, k);
     	}
 
 	}

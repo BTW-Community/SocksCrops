@@ -4,42 +4,36 @@ import java.util.List;
 
 public class SCItemRocks extends FCItemPlacesAsBlock {
 	
-	private final String[] field_82804_b;
-	private Block block;
+	public static String[] rockTypes = new String[]{
+			"smallRock", "largeRock",
+			"smallRockMossy", "largeRockMossy"
+			
+		};
+	public String[] rockTextures;
+	private Block placedBlock;
 	
-	public SCItemRocks(int par1, Block par2Block, String name, String[] par3ArrayOfStr) {
+	public SCItemRocks(int par1, Block placedBlock, String name, String[] rockTextures) {
 		super(par1);
-		this.block = par2Block;
-		this.field_82804_b = par3ArrayOfStr;
+		this.placedBlock = placedBlock;
+		this.rockTextures = rockTextures;
 		this.setUnlocalizedName(name);
 		this.setCreativeTab(CreativeTabs.tabDecorations);
 		this.setHasSubtypes(true);
 	}
-	
 
     private Icon stoneMedium;
     private Icon stoneSmall;
-    private Icon sandstoneMedium;
-    private Icon sandstoneSmall;
     
     private Icon mossMedium;
     private Icon mossSmall;
     
     @Override
     public void registerIcons(IconRegister register) {
-    	stoneMedium = register.registerIcon("SCItemRocks_stoneMedium");
-    	stoneSmall = register.registerIcon("SCItemRocks_stoneSmall");
-    	sandstoneMedium = register.registerIcon("SCItemRocks_sandstoneMedium");
-    	sandstoneSmall = register.registerIcon("SCItemRocks_sandstoneSmall");
+    	stoneSmall = register.registerIcon(this.rockTextures[0]);
+    	stoneMedium = register.registerIcon(this.rockTextures[1]);
     	
-    	mossMedium = register.registerIcon("SCItemRocksOverlay_mossMedium");
-    	mossSmall = register.registerIcon("SCItemRocksOverlay_mossSmall");
-    	
-    	if (block == SCDefs.rocksSandstone)
-    	{
-    		stoneMedium = sandstoneMedium;
-    		stoneSmall = sandstoneSmall;
-    	}
+    	mossMedium = register.registerIcon("SCItemRocksMedium_mossOverlay");
+    	mossSmall = register.registerIcon("SCItemRocksSmall_mossOverlay");
     }
     
     
@@ -92,12 +86,12 @@ public class SCItemRocks extends FCItemPlacesAsBlock {
     {
         int var2 = par1ItemStack.getItemDamage();
 
-        if (var2 < 0 || var2 >= this.field_82804_b.length)
-        {
-            var2 = 0;
-        }
+//        if (var2 < 0 || var2 >= this.rockTypes.length)
+//        {
+//            var2 = 0;
+//        }
 
-        return super.getUnlocalizedName() + "." + this.field_82804_b[var2];
+        return super.getUnlocalizedName() + "." + this.rockTypes[var2];
     }
     
 }

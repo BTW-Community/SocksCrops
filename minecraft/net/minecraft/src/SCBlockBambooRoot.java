@@ -8,9 +8,23 @@ public class SCBlockBambooRoot extends BlockFlower {
 		super(par1, Material.wood);
 		setTickRandomly(true);
 		setUnlocalizedName("SCBlockBambooRoot");
-		setHardness(0.75F);
+		setHardness(4.5F);
+		SetAxesEffectiveOn();
 		setStepSound(soundWoodFootstep);
 	}
+	
+    @Override
+    public int GetHarvestToolLevel( IBlockAccess blockAccess, int i, int j, int k )
+    {
+    	
+    	return 3;
+    }
+    
+    @Override
+    public int GetEfficientToolLevel( IBlockAccess blockAccess, int i, int j, int k )
+    {
+    	return 1;
+    }
 	
     private float getGrowthChance()
     {
@@ -201,8 +215,8 @@ public class SCBlockBambooRoot extends BlockFlower {
     @Override
     public void registerIcons( IconRegister register )
     {
-		stalk = register.registerIcon( "SCBlockBambooStalk" );
-		blockIcon = register.registerIcon( "SCBlockBambooRoot_display" );
+		blockIcon = stalk = register.registerIcon( "SCBlockBambooStalk" );
+		//blockIcon = register.registerIcon( "SCBlockBambooRoot_display" );
 		m_IconRoots = register.registerIcon( "SCBlockBambooRoot" );
 		smallLeaves = register.registerIcon( "SCBlockBambooLeavesSmall" );
 		m_IconTop = register.registerIcon( "SCBlockBambooRoot_top" );
@@ -245,14 +259,14 @@ public class SCBlockBambooRoot extends BlockFlower {
     	
     	if (meta != 0)
     	{
-    		SCUtilsRender.RenderCrossedSquaresWithTexture(renderer, this, i, j, k, m_IconRoots, true);
+    		SCUtilsRender.RenderCrossedSquaresWithTextureAndOffset(renderer, this, i, j, k, m_IconRoots, true);
     	}    	
     	
     	int blockAbove = blockAccess.getBlockId(i, j+1, k);   	
     	
     	
     	if (blockAbove != SCDefs.bambooStalk.blockID) {
-    		SCUtilsRender.RenderCrossedSquaresWithTexture(renderer, this, i, j, k, smallLeaves, true);
+    		SCUtilsRender.RenderCrossedSquaresWithTextureAndOffset(renderer, this, i, j, k, smallLeaves, true);
     	}
 
     	return true;

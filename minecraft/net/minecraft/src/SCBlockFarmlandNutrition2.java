@@ -35,6 +35,13 @@ public class SCBlockFarmlandNutrition2 extends SCBlockFarmlandBase {
 	    	
 	    	world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.farmlandNutrition2Dung.blockID, iTargetBlockMetadata );
 	}
+	
+	@Override
+	protected void SetHay(World world, int i, int j, int k) {
+		int iTargetBlockMetadata = world.getBlockMetadata( i, j, k );
+    	
+    	world.setBlockAndMetadataWithNotify( i, j, k, SCDefs.farmlandNutrition2Hay.blockID, iTargetBlockMetadata );
+	}
 
 	@Override
 	public boolean DropComponentItemsOnBadBreak( World world, int i, int j, int k, int iMetadata, float fChanceOfDrop )

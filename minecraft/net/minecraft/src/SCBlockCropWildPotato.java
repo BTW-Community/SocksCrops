@@ -11,7 +11,7 @@ public class SCBlockCropWildPotato extends FCBlockCropsDailyGrowth {
 
 	@Override
 	protected int GetCropItemID() {
-		return SCDefs.wildPotato.itemID;
+		return SCDefs.sweetPotato.itemID;
 	}
 
 	@Override

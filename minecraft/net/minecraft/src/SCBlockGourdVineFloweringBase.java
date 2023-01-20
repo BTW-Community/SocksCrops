@@ -10,7 +10,7 @@ public abstract class SCBlockGourdVineFloweringBase extends SCBlockGourdVine {
 	protected int stemBlock;
 
 	protected SCBlockGourdVineFloweringBase(int iBlockID, int vineBlock, int stemBlock, int convertedBlockID) {
-		super(iBlockID, vineBlock, stemBlock, convertedBlockID, texVine, texConnector);
+		super(iBlockID, vineBlock, stemBlock, convertedBlockID, 0, texVine, texConnector);
 
 		this.vineBlock = vineBlock;
 		this.convertedBlockID = convertedBlockID;
@@ -22,7 +22,7 @@ public abstract class SCBlockGourdVineFloweringBase extends SCBlockGourdVine {
     }
 	
 	protected float GetFruitGrowthChance() {
-		return 0.75F;
+		return 0.25F;
 	}
 	
 	@Override
@@ -30,7 +30,7 @@ public abstract class SCBlockGourdVineFloweringBase extends SCBlockGourdVine {
     {
 		if (!this.canBlockStay(world, i, j, k))
 		{
-			world.setBlockAndMetadata(i, j, k, convertedBlockID, world.getBlockMetadata(i, j, k));
+			world.setBlockAndMetadataWithNotify(i, j, k, convertedBlockID, world.getBlockMetadata(i, j, k));
 		}
 		else
 		{
@@ -43,12 +43,12 @@ public abstract class SCBlockGourdVineFloweringBase extends SCBlockGourdVine {
 						this.attemptToGrow(world, i, j, k, rand);
 					}
 				}
-				else
-				{
-					//set mature
-					int dir = this.getDirection(world.getBlockMetadata(i, j, k));
-					world.setBlockAndMetadata(i, j, k, vineBlock, dir + 12);
-				}
+//				else
+//				{
+//					//set mature
+//					int dir = this.getDirection(world.getBlockMetadata(i, j, k));
+//					world.setBlockAndMetadata(i, j, k, vineBlock, dir + 12);
+//				}
 				
 			}
 
@@ -62,16 +62,18 @@ public abstract class SCBlockGourdVineFloweringBase extends SCBlockGourdVine {
 		
 		if (rand.nextFloat() <= this.GetFruitGrowthChance())
 		{
-			this.growFruit(world, i, j, k, rand);
-			
-			//set mature
-			int dir = this.getDirection(world.getBlockMetadata(i, j, k));
-			world.setBlockAndMetadata(i, j, k, this.blockID, dir + 12);
+			if (this.growFruit(world, i, j, k, rand))
+			{
+				
+				//set mature
+				int dir = this.getDirection(world.getBlockMetadata(i, j, k));
+				world.setBlockAndMetadataWithNotify(i, j, k, this.blockID, dir + 12);
+			}
 		}
 
 	}
 
-	protected abstract void growFruit(World world, int i, int j, int k, Random random);
+	protected abstract boolean growFruit(World world, int i, int j, int k, Random random);
 	
 	
 	protected boolean CanGrowFruitAt( World world, int i, int j, int k )
@@ -142,10 +144,10 @@ public abstract class SCBlockGourdVineFloweringBase extends SCBlockGourdVine {
 	
 	private Icon getBlockTextureSecondPass(IBlockAccess blockAccess, int i, int j, int k, int side) {
 
-		return getOverlayIcon();
+		return getOverlayIcon(blockAccess.getBlockMetadata(i, j, k));
 	}
 	
-	protected abstract Icon getOverlayIcon();
+	protected abstract Icon getOverlayIcon(int meta);
 
 	
 	@Override

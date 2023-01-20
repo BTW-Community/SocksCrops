@@ -41,13 +41,19 @@ public class SCBlockBerryBush extends SCBlockBushBase {
 	}
 	
 	private Icon[] bushIcon = new Icon[6];
-	
+    private Icon[] snowOverlay = new Icon[6];
+    
     @Override
     public void registerIcons( IconRegister register )
-    {
+    {    	
     	for (int i = 0; i < bushIcon.length; i++) {
-    		blockIcon = bushIcon[i] = register.registerIcon( textureName + "_" + i );
+    		bushIcon[i] = register.registerIcon( textureName + "_" + i );
 		}
+    	
+    	for (int i = 0; i < snowOverlay.length; i++)
+    	{
+    		snowOverlay[i] = register.registerIcon("SCBlockBushOverlay_snow_" + i);
+    	}
     }
     
     public Icon getIcon(int side, int meta)
@@ -55,8 +61,41 @@ public class SCBlockBerryBush extends SCBlockBushBase {
     	return bushIcon[meta];
     }
     
+	//----------- Client Side Functionality -----------//
+
+
+    @Override
+    public boolean RenderBlock( RenderBlocks renderer, int i, int j, int k )
+    {
+    	int meta = renderer.blockAccess.getBlockMetadata(i, j, k);
+    	
+    	renderer.setRenderBounds( GetBlockBoundsFromPoolBasedOnState( 
+    		renderer.blockAccess, i, j, k ) );
+        
+    	SCUtilsRender.renderCrossedSquaresWithTexture(renderer, this, i, j, k, bushIcon[meta], false);
+    	
+    	FCBetterThanWolves.fcBlockWeeds.RenderWeeds( this, renderer, i, j, k );
+		
+		return true;
+    } 
+    
+    @Override
+    public void RenderBlockSecondPass(RenderBlocks renderer, int i, int j, int k, boolean bFirstPassResult) {
+    	
+    	int meta = renderer.blockAccess.getBlockMetadata(i, j, k);
+
+    	if (renderer.blockAccess.getBlockId(i, j + 1, k) == Block.snow.blockID)
+    	{
+        	renderer.setRenderBounds( GetBlockBoundsFromPoolBasedOnState( 
+            		renderer.blockAccess, i, j, k ) );
+            
+            SCUtilsRender.renderCrossedSquaresWithTexture(renderer, this, i, j, k, snowOverlay[meta], false);
+    	}
+    }
+    
     @Override
     public boolean DoesItemRenderAsBlock(int iItemDamage) {
     	return false;
     }
+    
 }

@@ -183,15 +183,15 @@ public class SCBlockMelonHarvested extends SCBlockGourdHarvested {
 	
 		if (meta == 0)
 		{
-			return GetGourdBounds(6, 6, 6);
+			return GetGourdBounds(10, 10, 10);
 		}
 		else if (meta == 1)
 		{
-			return GetGourdBounds(8, 8, 8);
+			return GetGourdBounds(12, 12, 12);
 		}
 		else if (meta == 2)
 		{
-			return GetGourdBounds(12, 12, 12);
+			return GetGourdBounds(14, 14, 14);
 		}
 		else if (meta == 3)
 		{
@@ -200,19 +200,19 @@ public class SCBlockMelonHarvested extends SCBlockGourdHarvested {
 		
 		else if (meta == 4 || meta == 8 )
 		{
-			return GetGourdBounds(4, 4, 4);
+			return GetGourdBounds(6, 6, 6);
 		}
 		else if (meta == 5 || meta == 9)
 		{
-			return GetGourdBounds(6, 6, 6);
+			return GetGourdBounds(8, 8, 8);
 		}
 		else if (meta == 6 || meta == 10)
 		{
-			return GetGourdBounds(8, 8, 8);
+			return GetGourdBounds(10, 10, 10);
 		}
 		else if (meta == 7 || meta == 11)
 		{
-			return GetGourdBounds(10, 10, 10);
+			return GetGourdBounds(12, 12, 12);
 		}
 		else return GetGourdBounds(16, 16, 16);
 	
