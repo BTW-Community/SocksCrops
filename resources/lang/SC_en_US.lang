@@ -510,8 +510,8 @@ item.SCItemBambooWeave.name=Bamboo Weave
 #Fish
 item.SCItemFishFilet_deefried.name=Deep Fried Fish Filet
 
-item.SCItem_filetRaw.name=Raw Fish Filet
-item.SCItem_filetCooked.name=Cooked Fish Filet
+item.SCItemFish_filetRaw.name=Raw Fish Filet
+item.SCItemFish_filetCooked.name=Cooked Fish Filet
 
 item.SCItemFishCod.name=Raw Cod
 item.SCItemFishCod_cooked.name=Cooked Cod
@@ -686,6 +686,12 @@ item.SCItemRice.name=Rice
 item.SCItemRice_bundle.name=Rice Bundle
 item.SCItemRice_cooked.name=Cooked Rice
 
+# Misc
 item.SCItemCuttings.name=Cuttings
-
 item.SCItemBowlWater.name=Bowl of Water
+item.SCItemBowlMilk.name=Bowl of Milk
+
+item.SCItemButter.name=Butter
+item.SCItemButterPiece.name=Piece of Butter
+
+item.SCItemSalt.name=Salt

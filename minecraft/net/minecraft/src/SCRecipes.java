@@ -105,9 +105,44 @@ public class SCRecipes extends SCRecipeHelper {
 		addRiceRecipes();
 		
 		addChickenFeedRecipes();
+		
+		addMiscFoodRecipes();
+		
 	}
 
-
+	private static void addMiscFoodRecipes()
+	{
+		FCRecipes.addKilnRecipe(new ItemStack[] {
+				new ItemStack(Item.bucketEmpty),
+				new ItemStack(SCDefs.salt)
+				
+		}, FCBetterThanWolves.fcBlockBucketWater);
+		
+		FCRecipes.AddShapelessRecipe(new ItemStack(SCDefs.butter), new ItemStack[] {
+				new ItemStack(SCDefs.butterPiece),
+				new ItemStack(SCDefs.butterPiece),
+				new ItemStack(SCDefs.butterPiece),
+				new ItemStack(SCDefs.butterPiece),
+				new ItemStack(SCDefs.butterPiece),
+				new ItemStack(SCDefs.butterPiece),
+				new ItemStack(SCDefs.butterPiece),
+				new ItemStack(SCDefs.butterPiece),
+				new ItemStack(SCDefs.butterPiece),
+		});
+		
+		FCRecipes.AddShapelessRecipe(new ItemStack(SCDefs.bowlMilk, 3), new ItemStack[] {
+				new ItemStack(Item.bucketMilk),
+				new ItemStack(Item.bowlEmpty),
+				new ItemStack(Item.bowlEmpty),
+				new ItemStack(Item.bowlEmpty),
+		});
+		
+		FCRecipes.AddShapelessRecipe(new ItemStack(SCDefs.bowlMilkProgressive, 1, 
+				SCItemBowlMilkProgressive.milkMaxDamage - 1), new ItemStack[] {
+				new ItemStack(SCDefs.bowlMilk)
+		});
+	}
+	
 	//----------- Tools	-----------//
 	private static void addKnifeRecipes()
 	{
@@ -271,11 +306,8 @@ public class SCRecipes extends SCRecipeHelper {
 				
 				//Adds Recipes from empty to full
 				
-				for (int count = 1; count <= 8; count++)
-				{
-					//woodType, inputCrate, item, outputCrate
-					fillCrateRecipes(woodType, SCBlockCrate.EMPTY, item, type, count);
-				}
+				//woodType, inputCrate, item, outputCrate
+				fillCrateRecipes(woodType, SCBlockCrate.EMPTY, item, type);
 
 				//Adds Recipes to empty the whole crate
 				//woodType, inputCrate, item
@@ -304,16 +336,16 @@ public class SCRecipes extends SCRecipeHelper {
 	private static void addHedgesRecipes()
 	{
 		//TREES
-//		for (int type = SCBlockHedges.OAK; type <= SCBlockHedges.JUNGLE; type++)
-//		{
-//			FCRecipes.AddRecipe( new ItemStack (SCDefs.hedges, 2, type),
-//					new Object[] {
-//							"L",
-//							"W",
-//							'L', new ItemStack( Block.leaves, 1, type ),
-//							'W', new ItemStack( Block.wood, 1, type ),
-//					});
-//		}
+		for (int type = SCBlockHedges.OAK; type <= SCBlockHedges.JUNGLE; type++)
+		{
+			FCRecipes.AddRecipe( new ItemStack (SCDefs.hedges, 2, type),
+					new Object[] {
+							"L",
+							"W",
+							'L', new ItemStack( Block.leaves, 1, type ),
+							'W', new ItemStack( Block.wood, 1, type ),
+					});
+		}
 		
 		//BLOOD TREE
 		FCRecipes.AddRecipe( new ItemStack (SCDefs.hedges, 2, SCBlockHedges.BLOOD),
@@ -419,20 +451,20 @@ public class SCRecipes extends SCRecipeHelper {
 		//FRUIT
 		for (int type = SCBlockLeafCarpet.APPLE; type <= SCBlockLeafCarpet.OLIVE; type++)
 		{
-			FCRecipes.AddRecipe( new ItemStack (SCDefs.leafCarpet, 2, type),
+			FCRecipes.AddRecipe( new ItemStack (SCDefs.leafCarpet, 2, type - 5),
 					new Object[] {
 							"LLL",
-							'L', new ItemStack( SCDefs.fruitLeaves, 1, type ),
+							'L', new ItemStack( SCDefs.fruitLeaves, 1, type - 5),
 					});
 		}
 		
 		//FLOWERING FRUIT
 		for (int type = SCBlockLeafCarpet.FLOWER_APPLE; type <= SCBlockLeafCarpet.FLOWER_OLIVE; type++)
 		{
-			FCRecipes.AddRecipe( new ItemStack (SCDefs.leafCarpet, 2, type),
+			FCRecipes.AddRecipe( new ItemStack (SCDefs.leafCarpet, 2, type - 9),
 					new Object[] {
 							"LLL",
-							'L', new ItemStack( SCDefs.fruitLeavesFlowers, 1, type ),
+							'L', new ItemStack( SCDefs.fruitLeavesFlowers, 1, type - 9 ),
 					});
 		}
 		
@@ -742,13 +774,33 @@ public class SCRecipes extends SCRecipeHelper {
 		}
 		
 		//Filet
-		Item[] filet = { SCDefs.fishFiletRaw, SCDefs.codFiletRaw, SCDefs.salmonFiletRaw, SCDefs.tropicalFiletRaw };
+		Item[] filets = { SCDefs.fishFiletRaw, SCDefs.codFiletRaw, SCDefs.salmonFiletRaw, SCDefs.tropicalFiletRaw };
 		Item[] filetCooked = { SCDefs.fishFiletCooked, SCDefs.codFiletCooked, SCDefs.salmonFiletCooked, SCDefs.tropicalFiletCooked };
 		
 		for(int type = 0; type < fish.length; type++)
 		{
-			FurnaceRecipes.smelting().addSmelting( filet[type].itemID, new ItemStack( filetCooked[type] ), 0);
+			FurnaceRecipes.smelting().addSmelting( filets[type].itemID, new ItemStack( filetCooked[type] ), 0);
 		}
+		
+		//batter		
+		FCRecipes.AddCauldronRecipe(new ItemStack(SCDefs.batter), new ItemStack[] 
+			{				
+				new ItemStack(FCBetterThanWolves.fcItemFlour),
+				new ItemStack(FCBetterThanWolves.fcItemRawEgg),
+				new ItemStack(SCDefs.bowlWater),
+		});
+		
+		//deepfried
+		for (Item filet : filets)
+		{
+			FCRecipes.AddCauldronRecipe(new ItemStack(SCDefs.fishFiletDeepFried), new ItemStack[] 
+					{				
+						new ItemStack(filet),
+						new ItemStack(SCDefs.batter),
+			});
+		}
+		
+
 	}
 	
 	private static void addFishCuttingRecipes()
@@ -871,11 +923,12 @@ public class SCRecipes extends SCRecipeHelper {
 		//LETTUCE
 		addKnifeCuttingRecipes(new ItemStack(SCDefs.wildLettuce),
 				new ItemStack[] {
-					new ItemStack(SCDefs.wildLettuceHead),
+					new ItemStack(SCDefs.wildLettuceLeaf),
+					new ItemStack(SCDefs.wildLettuceLeaf),
 					new ItemStack(SCDefs.wildLettuceRoots)
 				});
 		
-		addSimpleKnifeCuttingRecipe(SCDefs.wildLettuceHead, SCDefs.wildLettuceLeaf, 2);
+		//addSimpleKnifeCuttingRecipe(SCDefs.wildLettuceHead, SCDefs.wildLettuceLeaf, 2);
 	}
 
 	private static void addSweetPotatoRecipes() {
@@ -1037,9 +1090,7 @@ public class SCRecipes extends SCRecipeHelper {
 		for (Item muffin : muffins)
 		{
 			FCRecipes.addKilnRecipe(new ItemStack(muffin, 4),
-					SCDefs.muffinRaw, new int[] {
-							type[index]
-							}
+					SCDefs.muffinRaw, type[index]
 			);
 			
 			FCRecipes.AddShapelessRecipe( new ItemStack( uncookedMuffin[index], 1 ), 

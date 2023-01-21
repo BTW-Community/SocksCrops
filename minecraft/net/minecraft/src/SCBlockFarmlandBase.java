@@ -11,7 +11,6 @@ public abstract class SCBlockFarmlandBase extends FCBlockFarmland{
 		this.setCreativeTab(CreativeTabs.tabBlock);
 	}
 
-	
 	@Override
     public void updateTick( World world, int i, int j, int k, Random rand )
     {

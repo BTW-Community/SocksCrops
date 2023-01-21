@@ -23,9 +23,9 @@ public class SCBlockSunflowerTopCrop extends SCBlockSunflowerBase {
         	
 	        if ( world.provider.dimensionId != 1 && !IsFullyGrown( world, i, j, k ) )
 	        {
-	        	AttemptToGrow( world, i, j, k, rand );
-	        	
 	        	setFlowerRotation(world, i, j, k);
+	        	
+	        	AttemptToGrow( world, i, j, k, rand );
 	        }
 	        
 	        
@@ -36,8 +36,9 @@ public class SCBlockSunflowerTopCrop extends SCBlockSunflowerBase {
 	{
 		int meta = world.getBlockMetadata(i, j, k);		
 		int rotation = updateRotationForTime(world); 
+		int growthLevel = damageToData(meta)[1];
 		
-		int newMeta = dataToDamage(rotation, GetGrowthLevel(meta));
+		int newMeta = dataToDamage(rotation, growthLevel);
 		
 		world.setBlockMetadataWithNotify(i, j, k, newMeta);
 	}
@@ -60,28 +61,12 @@ public class SCBlockSunflowerTopCrop extends SCBlockSunflowerBase {
     protected void IncrementGrowthLevel( World world, int i, int j, int k )
     {    	
     	int meta = world.getBlockMetadata(i, j, k);
-    	int rotation = damageToData(meta)[0];
+    	int rotation = updateRotationForTime(world);
     	int growthLevel = damageToData(meta)[1];
     	
     	int newMeta = dataToDamage(rotation, growthLevel + 1);
     	
     	world.setBlockMetadataWithNotify( i, j, k, newMeta);
-        
-        if ( IsFullyGrown( world, i, j, k ) )
-        {
-        	Block blockBelow = Block.blocksList[world.getBlockId( i, j - 1, k )];
-        	
-        	if ( blockBelow != null )
-        	{
-        		blockBelow.NotifyOfFullStagePlantGrowthOn( world, i, j - 1, k, this );
-        		
-//        		if (!isTopBlock())
-//            	{
-//        			int meta = updateRotationForTime(world); 
-//        			world.setBlockAndMetadata(i, j + 1, k, SCDefs.sunflowerTopCrop.blockID, meta);
-//            	}
-        	}        	
-        }
     }
     
 	@Override

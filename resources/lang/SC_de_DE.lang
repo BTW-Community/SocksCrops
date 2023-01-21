@@ -1,11 +1,175 @@
-# Tile Entities
-tile.SCBlockFishTrap.name=Fischfalle
-item.SCItemChoppingBoard_spruce.name=Schneidebrett
-tile.SCBlockComposter.name=Komposter
+### Blocks ###
+
+# ChoppingBoard
+tile.SCBlockChoppingBoard.oak.name=Schneidebrett aus Eichenholz
+tile.SCBlockChoppingBoard.spruce.name=Schneidebrett aus Kiefernholz
+tile.SCBlockChoppingBoard.birch.name=Schneidebrett aus Buchenholz
+tile.SCBlockChoppingBoard.jungle.name=Schneidebrett aus Tropenholz
+tile.SCBlockChoppingBoard.blood.name=Schneidebrett aus Blutholz
+tile.SCBlockChoppingBoard.bamboo.name=Schneidebrett aus Bambus
+tile.SCBlockChoppingBoard.strippedBamboo.name=Schneidebrett aus geschältem Bambuss
+
+# Storage Jar
 tile.SCBlockStorageJar.name=Vorratsglas
-scItemBlockStorageJar.contains=Enthält
-scItemBlockStorageJar.empty=Leer
-scItemBlockStorageJar.hasLabel=Etikettiert
+SCItemBlockStorageJar.contains=Enthält
+SCItemBlockStorageJar.empty=Leer
+SCItemBlockStorageJar.hasLabel=Etikettiert
+
+# SeedJar
+tile.SCBlockSeedJar.name=Vorratsglas
+SCItemBlockSeedJar.contains=Enthält
+SCItemBlockSeedJar.empty=Leer
+SCItemBlockSeedJar.hasLabel=Etikettiert
+
+# FishTrap
+tile.SCBlockFishTrap.name=Fischfalle
+
+# Composter
+tile.SCBlockComposter.name=Komposter
+
+# Compost
+tile.SCBlockCompost.name=Kompost
+
+# Crate
+tile.SCBlockCrate.oak.empty.name=Eichenholzkiste
+tile.SCBlockCrate.oak.wheat.name=Eichenholzkiste mit Weizen
+tile.SCBlockCrate.oak.hemp.name=Eichenholzkiste mit Hanf
+tile.SCBlockCrate.oak.potato.name=Eichenholzkiste mit Kartoffeln
+tile.SCBlockCrate.oak.carrot.name=Eichenholzkiste mit Karotten
+tile.SCBlockCrate.oak.fish.name=Eichenholzkiste mit Fisch
+tile.SCBlockCrate.oak.cod.name=Eichenholzkiste mit Kabeljau
+tile.SCBlockCrate.oak.salmon.name=Eichenholzkiste mit Lachs
+tile.SCBlockCrate.oak.tropical.name=Eichenholzkiste mit Anemonenfisch
+tile.SCBlockCrate.oak.puffer.name=Eichenholzkiste mit Kugelfisch
+tile.SCBlockCrate.oak.apple.name=Eichenholzkiste mit Äpfeln
+tile.SCBlockCrate.oak.cherry.name=Eichenholzkiste mit Kirschen
+tile.SCBlockCrate.oak.lemon.name=Eichenholzkiste mit Zitronen
+tile.SCBlockCrate.oak.olive.name=Eichenholzkiste mit Oliven
+tile.SCBlockCrate.oak.wildCarrot.name=Eichenholzkiste mit wilden Karroten
+tile.SCBlockCrate.oak.sweetPotato.name=Eichenholzkiste mit Süßkartoffeln
+tile.SCBlockCrate.oak.wildOnion.name=Eichenholzkiste mit roten Zwiebeln
+tile.SCBlockCrate.oak.wildLettuce.name=Eichenholzkiste mit rotem Kopfsalat
+tile.SCBlockCrate.oak.redGrapes.name=Eichenholzkiste mit roten Trauben
+tile.SCBlockCrate.oak.whiteGrapes.name=Eichenholzkiste mit weißen Trauben
+tile.SCBlockCrate.oak.tomato.name=Eichenholzkiste mit Tomaten
+tile.SCBlockCrate.oak.hops.name=Eichenholzkiste mit Hopfen
+tile.SCBlockCrate.oak.riceBundle.name=Eichenholzkiste mit Reis
+tile.SCBlockCrate.oak.sweetberry.name=Eichenholzkiste mit Süßbeeren
+tile.SCBlockCrate.oak.blueberry.name=Eichenholzkiste mit Heidelbeeren
+
+tile.SCBlockCrate.spruce.empty.name=Fichtenholzkiste
+tile.SCBlockCrate.spruce.wheat.name=Fichtenholzkiste mit Weizen
+tile.SCBlockCrate.spruce.hemp.name=Fichtenholzkiste mit Hanf
+tile.SCBlockCrate.spruce.potato.name=Fichtenholzkiste mit Kartoffeln
+tile.SCBlockCrate.spruce.carrot.name=Fichtenholzkiste mit Karotten
+tile.SCBlockCrate.spruce.fish.name=Fichtenholzkiste mit Fisch
+tile.SCBlockCrate.spruce.cod.name=Fichtenholzkiste mit Kabeljau
+tile.SCBlockCrate.spruce.salmon.name=Fichtenholzkiste mit Lachs
+tile.SCBlockCrate.spruce.tropical.name=Fichtenholzkiste mit Anemonenfisch
+tile.SCBlockCrate.spruce.puffer.name=Fichtenholzkiste mit Kugelfisch
+tile.SCBlockCrate.spruce.apple.name=Fichtenholzkiste mit Äpfeln
+tile.SCBlockCrate.spruce.cherry.name=Fichtenholzkiste mit Kirschen
+tile.SCBlockCrate.spruce.lemon.name=Fichtenholzkiste mit Zitronen
+tile.SCBlockCrate.spruce.olive.name=Fichtenholzkiste mit Oliven
+tile.SCBlockCrate.spruce.wildCarrot.name=Fichtenholzkiste mit wilden Karroten
+tile.SCBlockCrate.spruce.sweetPotato.name=Fichtenholzkiste mit Süßkartoffeln
+tile.SCBlockCrate.spruce.wildOnion.name=Fichtenholzkiste mit roten Zwiebeln
+tile.SCBlockCrate.spruce.wildLettuce.name=Fichtenholzkiste mit rotem Kopfsalat
+tile.SCBlockCrate.spruce.redGrapes.name=Fichtenholzkiste mit roten Trauben
+tile.SCBlockCrate.spruce.whiteGrapes.name=Fichtenholzkiste mit weißen Trauben
+tile.SCBlockCrate.spruce.tomato.name=Fichtenholzkiste mit Tomaten
+tile.SCBlockCrate.spruce.hops.name=Fichtenholzkiste mit Hopfen
+tile.SCBlockCrate.spruce.riceBundle.name=Fichtenholzkiste mit Reis
+tile.SCBlockCrate.spruce.sweetberry.name=Fichtenholzkiste mit Süßbeeren
+tile.SCBlockCrate.spruce.blueberry.name=Fichtenholzkiste mit Heidelbeeren
+
+tile.SCBlockCrate.birch.empty.name=Buchenholzkiste
+tile.SCBlockCrate.birch.wheat.name=Buchenholzkiste mit Weizen
+tile.SCBlockCrate.birch.hemp.name=Buchenholzkiste mit Hanf
+tile.SCBlockCrate.birch.potato.name=Buchenholzkiste mit Kartoffeln
+tile.SCBlockCrate.birch.carrot.name=Buchenholzkiste mit Karotten
+tile.SCBlockCrate.birch.fish.name=Buchenholzkiste mit Fisch
+tile.SCBlockCrate.birch.cod.name=Buchenholzkiste mit Kabeljau
+tile.SCBlockCrate.birch.salmon.name=Buchenholzkiste mit Lachs
+tile.SCBlockCrate.birch.tropical.name=Buchenholzkiste mit Anemonenfisch
+tile.SCBlockCrate.birch.puffer.name=Buchenholzkiste mit Kugelfisch
+tile.SCBlockCrate.birch.apple.name=Buchenholzkiste mit Äpfeln
+tile.SCBlockCrate.birch.cherry.name=Buchenholzkiste mit Kirschen
+tile.SCBlockCrate.birch.lemon.name=Buchenholzkiste mit Zitronen
+tile.SCBlockCrate.birch.olive.name=Buchenholzkiste mit Oliven
+tile.SCBlockCrate.birch.wildCarrot.name=Buchenholzkiste mit wilden Karroten
+tile.SCBlockCrate.birch.sweetPotato.name=Buchenholzkiste mit Süßkartoffeln
+tile.SCBlockCrate.birch.wildOnion.name=Buchenholzkiste mit roten Zwiebeln
+tile.SCBlockCrate.birch.wildLettuce.name=Buchenholzkiste mit rotem Kopfsalat
+tile.SCBlockCrate.birch.redGrapes.name=Buchenholzkiste mit roten Trauben
+tile.SCBlockCrate.birch.whiteGrapes.name=Buchenholzkiste mit weißen Trauben
+tile.SCBlockCrate.birch.tomato.name=Buchenholzkiste mit Tomaten
+tile.SCBlockCrate.birch.hops.name=Buchenholzkiste mit Hopfen
+tile.SCBlockCrate.birch.riceBundle.name=Buchenholzkiste mit Reis
+tile.SCBlockCrate.birch.sweetberry.name=Buchenholzkiste mit Süßbeeren
+tile.SCBlockCrate.birch.blueberry.name=Buchenholzkiste mit Heidelbeeren
+
+tile.SCBlockCrate.jungle.empty.name=Tropenholzkiste
+tile.SCBlockCrate.jungle.wheat.name=Tropenholzkiste mit Weizen
+tile.SCBlockCrate.jungle.hemp.name=Tropenholzkiste mit Hanf
+tile.SCBlockCrate.jungle.potato.name=Tropenholzkiste mit Kartoffeln
+tile.SCBlockCrate.jungle.carrot.name=Tropenholzkiste mit Karotten
+tile.SCBlockCrate.jungle.fish.name=Tropenholzkiste mit Fisch
+tile.SCBlockCrate.jungle.cod.name=Tropenholzkiste mit Kabeljau
+tile.SCBlockCrate.jungle.salmon.name=Tropenholzkiste mit Lachs
+tile.SCBlockCrate.jungle.tropical.name=Tropenholzkiste mit Anemonenfisch
+tile.SCBlockCrate.jungle.puffer.name=Tropenholzkiste mit Kugelfisch
+tile.SCBlockCrate.jungle.apple.name=Tropenholzkiste mit Äpfeln
+tile.SCBlockCrate.jungle.cherry.name=Tropenholzkiste mit Kirschen
+tile.SCBlockCrate.jungle.lemon.name=Tropenholzkiste mit Zitronen
+tile.SCBlockCrate.jungle.olive.name=Tropenholzkiste mit Oliven
+tile.SCBlockCrate.jungle.wildCarrot.name=Tropenholzkiste mit wilden Karroten
+tile.SCBlockCrate.jungle.sweetPotato.name=Tropenholzkiste mit Süßkartoffeln
+tile.SCBlockCrate.jungle.wildOnion.name=Tropenholzkiste mit roten Zwiebeln
+tile.SCBlockCrate.jungle.wildLettuce.name=Tropenholzkiste mit rotem Kopfsalat
+tile.SCBlockCrate.jungle.redGrapes.name=Tropenholzkiste mit roten Trauben
+tile.SCBlockCrate.jungle.whiteGrapes.name=Tropenholzkiste mit weißen Trauben
+tile.SCBlockCrate.jungle.tomato.name=Tropenholzkiste mit Tomaten
+tile.SCBlockCrate.jungle.hops.name=Tropenholzkiste mit Hopfen
+tile.SCBlockCrate.jungle.riceBundle.name=Tropenholzkiste mit Reis
+tile.SCBlockCrate.jungle.sweetberry.name=Tropenholzkiste mit Süßbeeren
+tile.SCBlockCrate.jungle.blueberry.name=Tropenholzkiste mit Heidelbeeren
+
+tile.SCBlockCrate.blood.empty.name=Blutholzkiste
+tile.SCBlockCrate.blood.wheat.name=Blutholzkiste mit Weizen
+tile.SCBlockCrate.blood.hemp.name=Blutholzkiste mit Hanf
+tile.SCBlockCrate.blood.potato.name=Blutholzkiste mit Kartoffeln
+tile.SCBlockCrate.blood.carrot.name=Blutholzkiste mit Karotten
+tile.SCBlockCrate.blood.fish.name=Blutholzkiste mit Fisch
+tile.SCBlockCrate.blood.cod.name=Blutholzkiste mit Kabeljau
+tile.SCBlockCrate.blood.salmon.name=Blutholzkiste mit Lachs
+tile.SCBlockCrate.blood.tropical.name=Blutholzkiste mit Anemonenfisch
+tile.SCBlockCrate.blood.puffer.name=Blutholzkiste mit Kugelfisch
+tile.SCBlockCrate.blood.apple.name=Blutholzkiste mit Äpfeln
+tile.SCBlockCrate.blood.cherry.name=Blutholzkiste mit Kirschen
+tile.SCBlockCrate.blood.lemon.name=Blutholzkiste mit Zitronen
+tile.SCBlockCrate.blood.olive.name=Blutholzkiste mit Oliven
+tile.SCBlockCrate.blood.wildCarrot.name=Blutholzkiste mit wilden Karroten
+tile.SCBlockCrate.blood.sweetPotato.name=Blutholzkiste mit Süßkartoffeln
+tile.SCBlockCrate.blood.wildOnion.name=Blutholzkiste mit roten Zwiebeln
+tile.SCBlockCrate.blood.wildLettuce.name=Blutholzkiste mit rotem Kopfsalat
+tile.SCBlockCrate.blood.redGrapes.name=Blutholzkiste mit roten Trauben
+tile.SCBlockCrate.blood.whiteGrapes.name=Blutholzkiste mit weißen Trauben
+tile.SCBlockCrate.blood.tomato.name=Blutholzkiste mit Tomaten
+tile.SCBlockCrate.blood.hops.name=Blutholzkiste mit Hopfen
+tile.SCBlockCrate.blood.riceBundle.name=Blutholzkiste mit Reis
+tile.SCBlockCrate.blood.sweetberry.name=Blutholzkiste mit Süßbeeren
+tile.SCBlockCrate.blood.blueberry.name=Blutholzkiste mit Heidelbeeren
+
+#Biome Grass
+tile.SCBlockBiomeGrass.plains.name=Ebenengrasblock
+tile.SCBlockBiomeGrass.desert.name=Wüstengrasblock
+tile.SCBlockBiomeGrass.xhills.name=Berggrasblock
+tile.SCBlockBiomeGrass.forest.name=Waldgrasblock
+tile.SCBlockBiomeGrass.taiga.name=Taigagrasblock
+tile.SCBlockBiomeGrass.swamp.name=Sumpfgrasblock
+tile.SCBlockBiomeGrass.jungle.name=Dschungelgrasblock
+tile.SCBlockBiomeGrass.mushroom.name=Pilzlandgrasblock
 
 # Grass
 tile.SCBlockGrassNutrition.grass0.name=Grasblock
@@ -30,12 +194,85 @@ tile.fcBlockDirtLoose.looseDirt2.name=Lockere Erde
 tile.fcBlockDirtLoose.looseDirt3.name=Lockere Erde
 
 # Farmland
+tile.fcBlockFarmlandNew.name=Alter Ackerboden
+
 tile.SCBlockFarmlandNutrition.name=Ackerboden
 tile.SCBlockFarmlandFertilized.name=Gedüngter Ackerboden
-tile.SCBlockFarmlandDung.name=Ackerboden Gülle
+tile.SCBlockFarmlandDung.name=Ackerboden mit Gülle
+tile.SCBlockFarmlandHay.name=Ackerboden mit Heu
 
-# Compostables
-tile.SCBlockCompost.name=Kompost
+# Hedges
+tile.SCBlockHedges.oak.name=Eichenhecke
+tile.SCBlockHedges.spruce.name=Kiefernhecke
+tile.SCBlockHedges.birch.name=Buchenhecke
+tile.SCBlockHedges.jungle.name=Tropenhecke
+tile.SCBlockHedges.blood.name=Bluthecke
+tile.SCBlockHedges.apple.name=Apfelbaumhecke
+tile.SCBlockHedges.cherry.name=Kirschbaumhecke
+tile.SCBlockHedges.lemon.name=Zitronenbaumhecke
+tile.SCBlockHedges.olive.name=Olivenbaumhecke
+tile.SCBlockHedges.flower_apple.name=Blühende Apfelbaumhecke
+tile.SCBlockHedges.flower_cherry.name=Blühende Kirschbaumhecke
+tile.SCBlockHedges.flower_lemon.name=Blühende Zitronenbaumhecke
+tile.SCBlockHedges.flower_olive.name=Blühende Olivenbaumhecke
+
+# Leaf Carpets
+tile.SCBlockLeafCarpet.oak.name=Eichenlaub Teppich
+tile.SCBlockLeafCarpet.spruce.name=Kiefernlaub Teppich
+tile.SCBlockLeafCarpet.birch.name=Buchenlaub Teppich
+tile.SCBlockLeafCarpet.jungle.name=Tropenlaub Teppich
+tile.SCBlockLeafCarpet.blood.name=Blutlaub Teppich
+tile.SCBlockLeafCarpet.apple.name=Apfelbaumlaub Teppich
+tile.SCBlockLeafCarpet.cherry.name=Kirschbaumlaub Teppich
+tile.SCBlockLeafCarpet.lemon.name=Zitronenbaumlaub Teppich
+tile.SCBlockLeafCarpet.olive.name=Olivenbaumlaub Teppich
+tile.SCBlockLeafCarpet.flower_apple.name=Blühender Apfelbaum Teppich
+tile.SCBlockLeafCarpet.flower_cherry.name=Blühender Kirschbaum Teppich
+tile.SCBlockLeafCarpet.flower_lemon.name=Blühender Zitronenbaum Teppich
+tile.SCBlockLeafCarpet.flower_olive.name=Blühender Olivenbaum Teppich
+
+# Ground Flowers
+tile.SCBlockGroundFlowers.daisyWhite.name=Weiße Gänseblümchen
+tile.SCBlockGroundFlowers.daisyBlue.name=Blaue Gänseblümchen
+tile.SCBlockGroundFlowers.daisyPurple.name=Violette Gänseblümchen
+tile.SCBlockGroundFlowers.daisyPink.name=Rosa Gänseblümchen
+
+# Double Tall Plants
+tile.SCBlockDoubleTallPlant.grass.name=Hohes Gras
+tile.SCBlockDoubleTallPlant.fern.name=Hohes Farn
+tile.SCBlockDoubleTallPlant.sunflower.name=Sonnenblume
+
+# Clover
+tile.SCBlockClover.clover.name=Klee
+tile.SCBlockClover.cloverPurple.name=Violett blühender Klee
+tile.SCBlockClover.cloverWhite.name=Weiß blühender Klee
+tile.SCBlockClover.cloverRed.name=Rot blühender Klee
+
+# Moss
+tile.SCBlockMoss.name=Moosblock
+tile.SCBlockMossCarpet.name=Moosteppich
+
+# Lily Rose
+tile.SCBlockLilyRose.pink.name=Rosa Seerose
+tile.SCBlockLilyRose.white.name=Weiße Seerose
+
+# Rocks
+item.SCItemRocks_stone.smallRock.name=Stein Kisel
+item.SCItemRocks_stone.largeRock.name=Stein Felsen
+item.SCItemRocks_stone.smallRockMossy.name=Bemooster Stein Kisel
+item.SCItemRocks_stone.largeRockMossy.name=Bemooster Stein Felsen
+
+item.SCItemRocks_sandstone.smallRock.name=Sandstein Kisel
+item.SCItemRocks_sandstone.largeRock.name=Sandstein Felsen
+item.SCItemRocks_sandstone.smallRockMossy.name=Bemooster Sandstein Kisel
+item.SCItemRocks_sandstone.largeRockMossy.name=Bemooster Sandstein Felsen
+
+#Logs
+tile.SCBlockHollowLog.oak.name=Hohles Eichenholz
+tile.SCBlockHollowLog.spruce.name=Hohles Kiefernholz
+tile.SCBlockHollowLog.birch.name=Hohles Birkenholz
+tile.SCBlockHollowLog.jungle.name=Hohles Tropenholz
+
 tile.SCBlockDamagedLog.tree_side.name=Beschädigtes Eichenholz
 tile.SCBlockDamagedLog.tree_spruce.name=Beschädigtes Kiefernholz
 tile.SCBlockDamagedLog.tree_birch.name=Beschädigtes Birkenholz
@@ -46,38 +283,26 @@ tile.SCBlockMossyLog.tree_spruce.name=Bemoostes Kiefernholz
 tile.SCBlockMossyLog.tree_birch.name=Bemoostes Birkenholz
 tile.SCBlockMossyLog.tree_jungle.name=Bemoostes Tropenholz
 
-tile.SCBlockHollowLog.oak.name=Hohles Eichenholz
-tile.SCBlockHollowLog.spruce.name=Hohles Kiefernholz
-tile.SCBlockHollowLog.birch.name=Hohles Birkenholz
-tile.SCBlockHollowLog.jungle.name=Hohles Tropenholz
+#Sideshrooms
+tile.SCBlockSideShroom.brown.name=Brauner Regalpilz
+tile.SCBlockSideShroom.white.name=Weißer Regalpilz
+tile.SCBlockSideShroom.red.name=Roter Regalpilz
+tile.SCBlockSideShroom.black.name=Schwarzer Regalpilz
 
-# Plants
-tile.SCBlockShortPlant.shortGrass.name=Kuzes Gras
-tile.SCBlockShortPlant.tallGrass.name=Langes Gras
+# Fences
+tile.fence.oak.name=Oak Fence
+tile.fence.spruce.name=Spruce Fence
+tile.fence.birch.name=Birch Fence
+tile.fence.jungle.name=Jungle Fence
+tile.fence.blood.name=Blood Fence
+tile.fence.bamboo.name=Bamboo Fence
+tile.fence.strippedBamboo.name=Stripped Bamboo Fence
 
-tile.SCBlockTallPlant.grass.name=Hohes Gras
-tile.SCBlockTallPlant.fern.name=Hohes Farn
+tile.netherFence.netherBrick.name=Nether Brick Fence
 
-tile.SCBlockClover.clover.name=Klee
-tile.SCBlockClover.cloverPurple.name=Lila Blühender Klee
-tile.SCBlockClover.cloverWhite.name=WeiÃŸer Blühender Klee
-tile.SCBlockClover.cloverRed.name=Roter Blühender Klee
-
-tile.SCBlockMoss.name=Moos
-tile.SCBlockMossCarpet.name=Moosteppich
-
-tile.SCBlockItemLilyFlower.name=BlÃ¼hende Seerose
-
-# Rocks
-item.SCItemRocksStone.smallRock.name=Stein Kisel
-item.SCItemRocksStone.largeRock.name=Stein Felsen
-item.SCItemRocksStone.smallRockMossy.name=Bemooster Stein Kisel
-item.SCItemRocksStone.largeRockMossy.name=Bemooster Stein Felsen
-
-item.SCItemRocksSandstone.smallRock.name=Sandstein Kisel
-item.SCItemRocksSandstone.largeRock.name=Sandstein Felsen
-item.SCItemRocksSandstone.smallRockMossy.name=Bemooster Sandstein Kisel
-item.SCItemRocksSandstone.largeRockMossy.name=Bemooster Sandstein Felsen
+# Grapes
+# Hops
+# Tomato
 
 # Pumpkins
 tile.SCBlockPumpkinHarvested.orange_0.name=Roher Kürbis
@@ -88,7 +313,7 @@ tile.SCBlockPumpkinHarvested.orange_3.name=Kürbis
 tile.SCBlockPumpkinHarvested.green_0.name=Roher Kürbis
 tile.SCBlockPumpkinHarvested.green_1.name=Roher Kürbis
 tile.SCBlockPumpkinHarvested.green_2.name=Roher Kürbis
-tile.SCBlockPumpkinHarvested.green_3.name=KÃ¼rbis
+tile.SCBlockPumpkinHarvested.green_3.name=Kürbis
 
 tile.SCBlockPumpkinHarvested.yellow_0.name=Roher Kürbis
 tile.SCBlockPumpkinHarvested.yellow_1.name=Roher Kürbis
@@ -100,40 +325,23 @@ tile.SCBlockPumpkinHarvested.white_1.name=Roher Kürbis
 tile.SCBlockPumpkinHarvested.white_2.name=Roher Kürbis
 tile.SCBlockPumpkinHarvested.white_3.name=Kürbis
 
-
 tile.SCBlockPumpkinCarved.orange.name=Geschnizter Kürbis
 tile.SCBlockPumpkinCarved.green.name=Geschnizter Kürbis
 tile.SCBlockPumpkinCarved.yellow.name=Geschnizter Kürbis
 tile.SCBlockPumpkinCarved.white.name=Geschnizter Kürbis
 
-
 tile.SCBlockPumpkinJack.orange.name=Kürbislaterne
 tile.SCBlockPumpkinJack.green.name=Kürbislaterne
-tile.SCBlockPumpkinJack.yellow.name=KKürbislaterne
+tile.SCBlockPumpkinJack.yellow.name=Kürbislaterne
 tile.SCBlockPumpkinJack.white.name=Kürbislaterne
 
-#Bushes
-tile.SCBlockBushSweetberry.sweet_0.name=Süßbeerenstrauch
-tile.SCBlockBushBlueberry.blue_0.name=Heidelbeerstrauch
-
-#Overrides
 tile.pumpkin.name=Alter Geschnizter Kürbis
-tile.litpumpkin.name=Alte Kürbislaterne
+tile.litpumpkin.name=Alter Kürbislaterne
 tile.fcBlockPumpkinFresh.name=Alter Kürbis
 
-#Pies
-tile.SCBlockPieCooked.pumpkin.name=Ofenfertiger Kürbiskuchen
-tile.SCBlockPieCooked.sweet.name=Ofenfertiger Süßbeerenkuchen
-tile.SCBlockPieCooked.blue.name=Ofenfertiger Heidelbeerkuchen
-tile.SCBlockPieRaw.sweet.name=Roher Süßbeerenkuchen
-tile.SCBlockPieRaw.blue.name=Roher Heidelbeerkuchen
-
-# Pumpkin Items
-item.SCItemPumpkinSlice.name=Rohes Kürbisstück
-item.SCItemPumpkinSlice_roasted.name=Geröstetes Kürbisstück
-item.SCItemPumpkinSlice_boiled.name=Gekochtes Kürbisstück
-
 # Melons
+tile.melon.name=Alte Melone
+
 tile.SCBlockMelonHarvested.water_0.name=Rohe Wassermelone
 tile.SCBlockMelonHarvested.water_1.name=Rohe Wassermelone
 tile.SCBlockMelonHarvested.water_2.name=Rohe Wassermelone
@@ -154,96 +362,336 @@ tile.SCBlockMelonCanaryHarvested.canary_1.name=Rohe Zuckermelone
 tile.SCBlockMelonCanaryHarvested.canary_2.name=Rohe Zuckermelone
 tile.SCBlockMelonCanaryHarvested.canary_3.name=Zuckermelone
 
-tile.melon.name=Alte Melone
-
 # Bamboo
-tile.SCBlockBambooShoot.name=Bambussprossen
-tile.SCBlockBambooRoot.nameBambuswurzel
-tile.SCBlockBambooRoot_display.name=Bambuswurzel
-tile.SCBlockBambooStalk.name=Bambusstiel
-tile.SCBlockBambooPacked.name=Verpackter Bambus
+tile.SCBlockBambooGrate.name=Bambus-Rost
 
+# Packed Blocks
+tile.SCBlockBambooPacked.bamboo.name=Verpackter Bambus
+tile.SCBlockBambooPacked.stripped.name=Verpackter geschälter Bambus
+
+tile.SCBlockSmallPacked.sugarcane.name=Verpacktes Zuckerrohr
+tile.SCBlockSmallPacked.shaft.name=Verpackte Stöcke
+
+# Bushes
+tile.SCBlockBushSweetberry.sweet_0.name=Süßbeerenstrauch
+tile.SCBlockBushBlueberry.blue_0.name=Heidelbeerstrauch
+
+# Fruit Trees
+tile.SCBlockFruitSapling.apple.name=Apfelbaumsetzling
+tile.SCBlockFruitSapling.cherry.name=Kirschbaumsetzling
+tile.SCBlockFruitSapling.lemon.name=Zitronenbaumsetzling
+tile.SCBlockFruitSapling.olive.name=Olivenbaumsetzling
+
+tile.SCBlockFruitSapling.appleMature.name=Ausgereifter Apfelbaumsetzling
+tile.SCBlockFruitSapling.cherryMature.name=Ausgereifter Kirschbaumsetzling
+tile.SCBlockFruitSapling.lemonMature.name=Ausgereifter Zitronenbaumsetzling
+tile.SCBlockFruitSapling.oliveMature.name=Ausgereifter Olivenbaumsetzling
+
+tile.SCBlockFruitLog.apple.name=Apfelholz
+tile.SCBlockFruitLog.cherry.name=Kirschholz
+tile.SCBlockFruitLog.lemon.name=Zitronenholz
+tile.SCBlockFruitLog.olive.name=Olivenholz
+
+tile.SCBlockFruitLeaves.apple.name=Apfelbaumlaub
+tile.SCBlockFruitLeaves.cherry.name=Kirschbaumlaub
+tile.SCBlockFruitLeaves.lemon.name=Zitronenbaumlaub
+tile.SCBlockFruitLeaves.olive.name=Olivenbaumlaub
+
+tile.SCBlockFruitLeavesFlower.apple.name=Blühendes Apfelbaumlaub
+tile.SCBlockFruitLeavesFlower.cherry.name=Blühendes Kirschbaumlaub
+tile.SCBlockFruitLeavesFlower.lemon.name=Blühendes Zitronenbaumlaub
+tile.SCBlockFruitLeavesFlower.olive.name=Blühendes Olivenbaumlaub
+
+tile.SCBlockFruitLogStack.apple.name=Apfelholzstapel
+tile.SCBlockFruitLogStack.cherry.name=Kirschholzstapel
+tile.SCBlockFruitLogStack.lemon.name=Zitronenholzstapel
+tile.SCBlockFruitLogStack.olive.name=Olivenholzstapel
+
+# Coconut
+tile.SCBlockCoconutSapling.coconut.name=Kokosnuss Schössling
+tile.SCBlockCoconutSapling.coconutMature.name=Ausgereifter Kokosnuss Schössling
+
+# Wild Crops
+tile.SCBlockWildCrop.carrot.name=Blühende Wildkarotte
+tile.SCBlockWildCrop.potato.name=Blühende Süßkartoffel
+tile.SCBlockWildCrop.onion.name=Blühende rote Zwiebel
+tile.SCBlockWildCrop.salad.name=Blühende roter Kopfsalat
+
+# Wild Carrot
+# Wild Potato
+# Wild Lettuce
+# Wild Onion
+
+# Pies
+tile.SCBlockPieRaw.sweet.name=Ofenfertiger Süßbeerenkuchen
+tile.SCBlockPieRaw.blue.name=Ofenfertiger Heidelbeerkuchen
+tile.SCBlockPieRaw.pumpkin.name=Ofenfertiger Kürbiskuchen
+
+tile.SCBlockPieRaw.apple.name=Ofenfertiger Apfelkuchen
+tile.SCBlockPieRaw.cherry.name=Ofenfertiger Kirschkuchen
+tile.SCBlockPieRaw.lemon.name=Ofenfertiger Zitronenkuchen
+
+tile.SCBlockPieCooked.sweet.name=Süßbeerenkuchen
+tile.SCBlockPieCooked.blue.name=Heidelbeerkuchen
+tile.SCBlockPieCooked.pumpkin.name=Kürbiskuchen
+
+tile.SCBlockPieCooked.apple.name=Apfelkuchen
+tile.SCBlockPieCooked.cherry.name=Kirschkuchen
+tile.SCBlockPieCooked.lemon.name=Zitronenkuchen
+
+# Cakes
+# Muffin
+tile.SCBlockMuffin.chocolate.name=Muffin mit Schokolade
+tile.SCBlockMuffin.sweetberry.name=Muffin mit Süßbeeren
+tile.SCBlockMuffin.blueberry.name=Muffin mit Heidelbeeren
+
+# Cookies
+# Burger
+# Sunflower
+# Rice
+
+### ITEMS ###
+
+# Knives
+item.SCItemKnife_stone.name=Küchenmesser aus Stein
+item.SCItemKnife_iron.name=Küchenmesser aus Eisen
+item.SCItemKnife_gold.name=Küchenmesser aus Gold
+item.SCItemKnife_diamond.name=Küchenmesser aus Diamand
+item.SCItemKnife_steel.name=Küchenmesser aus Stahl
+
+#Reeds
+item.fcItemReedRoots.name=Ausgereifte Zuckerrohrwurzel
+item.SCItemReedsRoot.name=Zuckerrohrwurzel
+
+#Moss
+item.SCItemMossBall.name=Moosball
+item.SCItemMossCarpet.name=Moosteppich
+
+# Cuttings
+item.SCItemHay.name=Heu
+
+#Biome Grass
+item.SCItemGrassSeeds.name=Grassamen
+
+# Grapes
+item.SCItemGrapeSeedsRed.name=Rote Traubenkerne
+item.SCItemGrapesRed.name=Rote Trauben
+item.SCItemGrapeSeedsWhite.name=Weiße Traubenkerne
+item.SCItemGrapesWhite.name=Weiße Trauben
+
+# Hops
+item.SCItemHops.name=Hopfen
+item.SCItemHopSeeds.name=Hopfensamen
+
+# Tomato
+item.SCItemTomatoSeeds.name=Tomatensamen
+item.SCItemTomato.name=Tomaten
+item.SCItemTomatoSlice.name=Tomatenscheibe
+
+# Pumpkin Items
+item.SCItemPumpkinSlice.name=Rohes Kürbisstück
+item.SCItemPumpkinSlice_roasted.name=Geröstetes Kürbisstück
+item.SCItemPumpkinSlice_boiled.name=Gekochtes Kürbisstück
 
 # Melon Items
 item.melon.name=Wassermelonenstück
-item.SCItemMelonYellowSlice.name=Zuckermelonenstück
-item.SCItemMelonWhiteSlice.name=Honigmelonenstück
-item.SCItemMelonGreenSlice.name=Cantaloup-Melonenstück
-
-# Pie Items
-item.SCItemCakeSlice.name=Kuchenstück
-item.SCItemPieRaw_crust.name=Kuchenboden
-item.SCItemPieSlice_pumpkin.name=Kürbiskuchenstück
-
-item.SCItemPieRaw_sweetberry.name=Ofenfertiger Süßbeerenkuchen
-item.SCItemPieRaw_blueberry.name=Ofenfertiger Heidelbeerkuchen
-
-item.SCItemPieCooked_sweetberry.name=Süßbeerenkuchen
-item.SCItemPieCooked_blueberry.name=Heidelbeerkuchen
-
-item.SCItemPieSlice_sweetberry.name=Süßbeerenkuchenstück
-item.SCItemPieSlice_blueberry.name=Heidelbeerkuchenstück
+item.SCItemMelonYellowSlice.name=Zuckermelonenscheibe
+item.SCItemMelonWhiteSlice.name=Honigmelonenscheibe
+item.SCItemMelonGreenSlice.name=Cantaloupe-Melonenscheibe
 
 # Bamboo Items
-item.SCItemBamboo.name=Bambus
+item.SCItemBamboo.name=Bambuss
+item.SCItemBambooStripped.name=Geschälter Bambuss
+item.SCItemBambooShoot.name=Bambussprossen
+item.SCItemBambooShootCooked.name=Gekochte Bambussprossen
 
-# Knives
-item.SCItemKnife_stone.name=Steinmesser
-item.SCItemKnife_iron.name=Eisenmesser
-item.SCItemKnife_diamond.name=Diamandmesser
+item.SCItemBambooProgressive.name=Bambuss Flechten
+item.SCItemBambooWeave.name=Bambussgeflecht
 
 #Fish
-item.SCItemFishSalmon_raw.name=Roher Lachs
-item.SCItemFishSalmon_cooked.name=Gekochter Lachs
-item.SCItemFishCod_raw.name=Roher Kabeljau
-item.SCItemFishCod_cooked.name=Gekochter Kabeljau
-item.SCItemFishTropical_raw.name=Roher Tropischer Fisch
-item.SCItemFishTropical_cooked.name=Gekochter Tropischer Fisch
+item.SCItemFishFilet_deefried.name=Frittiertes Fischfilet
 
-#Bushes
-item.SCItemBushSapling_sweetberry.name=Süßbeerenstrauchwurzeln
-item.SCItemBushSapling_blueberry.name=Blaubeerenstrauchwurzeln
+item.SCItemFish_filetRaw.name=Rohes Fischfilet
+item.SCItemFish_filetCooked.name=Gebratenes Fischfilet
 
+item.SCItemFishCod.name=Roher Kabeljau
+item.SCItemFishCod_cooked.name=Gebratener Kabeljau
+item.SCItemFishCod_filetRaw.name=Rohes Kabeljaufilet
+item.SCItemFishCod_filetCooked.name=Gebratenes Kabeljaufilet
+
+item.SCItemFishSalmon.name=Roher Lachs
+item.SCItemFishSalmon_cooked.name=Gebratener Lachs
+item.SCItemFishSalmon_filetRaw.name=Rohes Lachsfilet
+item.SCItemFishSalmon_filetCooked.name=Gebratenes Lachsfilet
+
+item.SCItemFishTropical.name=Roher Anemonenfisch
+item.SCItemFishTropical_cooked.name=Gebratener Anemonenfisch
+item.SCItemFishTropical_filetRaw.name=Rohes Anemonenfischfilet
+item.SCItemFishTropical_filetCooked.name=Gebratenes Anemonenfischfilet
+
+item.SCItemFishPuffer.name=Roher Kugelfisch
+item.SCItemFishPuffer_filetRaw.name=Rohes Kugelfischfilet
+
+#Berries
 item.SCItemSweetberry.name=Süßbeeren
 item.SCItemBlueberry.name=Blaubeeren
 
-item.SCItemFruitBowl_berries.name=Beeren-Obstschale
+item.SCItemBushSapling_sweetberry.name=Süßbeerenstrauchwurzeln
+item.SCItemBushSapling_blueberry.name=Blaubeerenstrauchwurzeln
+
+item.SCItemFruitBowl_berries.name=Obstschale mit Beeren
+
+#Fruits
+item.SCItemAppleSeeds.name=Apfelkerne
+item.SCItemApple_cut.name=Geschnittener Apfel
+
+item.SCItemCherry.name=Kirsche
+item.SCItemCherrySeeds.name=Kirschkern
+item.SCItemCherry_cut.name=Geschnittene Kirsche
+
+item.SCItemLemon.name=Zitrone
+item.SCItemLemonSeeds.name=Zitronenkerne
+item.SCItemLemon_cut.name=Geschnittene Zitrone
+
+item.SCItemOlive.name=Oliven
+item.SCItemOliveSeeds.name=Olivenkerne
+item.SCItemOlive_cut.name=Geschnittene Olive
+
+#Coconut
+item.SCItemCoconut.name=Kokosnuss
+item.SCItemCoconutSlice.name=Kokosnussstück
+item.SCItemCoconutDrink.name=Kokosnussgetränk
 
 #Wild Carrot
 item.SCItemWildCarrot.name=Wilde Karotte
 item.SCItemWildCarrotSeeds.name=Wilde Karottensamen
 item.SCItemWildCarrotRoot.name=Wilde Karottenwurzel
-item.SCItemWildCarrotCut.name=Wildes Karottengrün
-item.SCItemWildCarrotSapling.name=Wilde Karottensamen mit hoher Ausbeute 
-
-#Carrot
-item.SCItemCarrotRoot.name=Karottenwurzel
-item.SCItemCarrotCut.name=Karottengrün
+item.SCItemWildCarrotTop.name=Wildes Karottengrün
+item.SCItemWildCarrotCooked.name=Gekochte Wilde Karotte
 
 #Wild Potato
 item.SCItemWildPotato.name=Süßkartoffel
 item.SCItemWildPotatoCut.name=Süßkartoffelstück
 item.SCItemWildPotatoSapling.name=Süßkartoffelsetzling
 
-#Potato
-item.SCItemPotatoCut.name=Kartoffelstück
+#Wild Lettuce
+item.SCItemWildLettuceSeeds.name=Red Lettuce Seeds
+item.SCItemWildLettuceRoots.name=Red Lettuce Roots
+item.SCItemWildLettuce.name=Red Lettuce
+item.SCItemWildLettuceHead.name=Red Lettuce Head
+item.SCItemWildLettuceLeaf.name=Red Lettuce Leaf
 
-#Pots
-item.SCItemPot_flower.name=Blumentopf mit Erde
-item.SCItemPot_water.name=Blumentopf mit Wasser
-item.SCItemPot_empty.name=Leerer Blumentopf
+#Wild Onion
+item.SCItemWildOnionSeeds.name=Red Onion Seeds
+item.SCItemWildOnion.name=Red Onion
+item.SCItemWildOnionSlice.name=Red Onion Slice
+item.SCItemWildOnionRoots.name=Red Onion Roots
 
-#Burger
-item.SCItemBreadSlice.name=Brotscheibe
-item.SCItemBeefPatty_raw.name=Rohes Rindfleisch Patty
-item.SCItemBeefPatty_cooked.name=Gebratenes Rindfleisch Patty
-item.SCItemBurger.name=Hamburger
-item.SCItemBurger_egg.name=Hamburger mit Spiegelei
+# Pie Items
+item.SCItemPieRaw_crust.name=Kuchen Kruste
+item.SCItemPieSlice_pumpkin.name=Kürbiskuchenstück
 
-#Moss
-item.SCItemMossBall.name=Moosball
-item.SCItemMossCarpet.name=Moosteppich
+item.SCItemPieRaw_sweetberry.name=Ofenfertiger Süßbeerenkuchen
+item.SCItemPieRaw_blueberry.name=Ofenfertiger Heidelbeerkuchen
+item.SCItemPieRaw_apple.name=Ofenfertiger Apfelkuchen
+item.SCItemPieRaw_cherry.name=Ofenfertiger Kirschkuchen
+item.SCItemPieRaw_lemon.name=Ofenfertiger Zitronenkuchen
 
-#Reeds
-item.fcItemReedRoots.name=Reife Zuckerrohrwurzel
-item.SCItemReedsRoot.name=Zuckerrohrwurzel
+item.SCItemPie_sweetberry.name=Süßbeerenkuchen
+item.SCItemPie_blueberry.name=Heidelbeerkuchen
+item.SCItemPie_apple.name=Apfelkuchen
+item.SCItemPie_cherry.name=Kirschkuchen
+item.SCItemPie_lemon.name=Zitronenkuchen
+
+item.SCItemPieSlice_sweetberry.name=Süßbeerenkuchenstück
+item.SCItemPieSlice_blueberry.name=Heidelbeerkuchenstück
+item.SCItemPieSlice_apple.name=Apfelkuchenstück
+item.SCItemPieSlice_cherry.name=Kirschkuchenstück
+item.SCItemPieSlice_lemon.name=Zitronenkuchenstück
+
+# Cake Items
+item.SCItemCakeSlice.name=Kuchenstück
+
+item.SCItemCakeRaw_chocolate.name=Schokoladenkuchenteig
+item.SCItemCakeRaw_carrot.name=Karottenkuchenteig
+
+item.SCItemCake_chocolate.name=Schokoladenkuchen
+item.SCItemCake_carrot.name=arottenkuchen
+
+item.SCItemCakeSlice_chocolate.name=Schokoladenkuchenstück
+item.SCItemCakeSlice_carrot.name=arottenkuchenstück
+
+# Muffin
+item.SCItemMuffinRaw_chocolate.name=Muffinteig mit Schokolade 
+item.SCItemMuffinRaw_sweetberry.name=Muffinteig mit Süßbeeren
+item.SCItemMuffinRaw_blueberry.name=Muffinteig mit Heidelbeeren
+
+item.SCItemMuffinCooked_chocolate.name=Muffin mit Schokolade
+item.SCItemMuffinCooked_sweetberry.name=Muffin mit Süßbeeren
+item.SCItemMuffinCooked_blueberry.name=Muffin mit Heidelbeeren
+
+# Cookies
+item.SCItemCookieRaw_sweetberry.name=Keksteig mit Süßbeeren
+item.SCItemCookieRaw_blueberry.name=Keksteig mit Heidelbeeren
+
+item.SCItemCookie_sweetberry.name=Süßbeerenkeks
+item.SCItemCookie_blueberry.name=Heidelbeerkeks
+
+# Donuts
+item.SCItemDonut_sugar.name=Glasierter Donut
+item.SCItemDonut_chocolate.name=Schokoladen Donut
+
+# Toppings
+item.SCItemBeefPatty_raw.name=Rohes Rind Patty
+item.SCItemBeefPatty_cooked.name=Gebratenes Rind Patty
+
+item.SCItemBaconRaw.name=Roher Bacon
+item.SCItemBaconCooked.name=Gebratener  Bacon
+
+item.SCItemChickenDrumRaw.name=Rohe Hühnerkeule
+item.SCItemChickenDrumCooked.name=Gebratene Hühnerkeule
+
+# Sandwich
+item.SCItemBread_cut.name=Halber Brotlaib
+
+item.SCItemSandwich_top.name=Obere Sandwichbrothälfte
+item.SCItemSandwich_bottom.name=Untere Sandwichbrothälfte
+
+item.SCItemSandwich_unfinished.name=Unvollständiges Sandwich
+item.SCItemSandwich.name=Sandwich
+
+item.SCItemSandwich_blt.name=BLT
+
+# Burger
+item.SCItemBurgerDough.name=Burgerbrötchenteig
+
+item.SCItemBurgerBun_top.name=Obere Burgerbrötchenhälfte
+item.SCItemBurgerBun_bottom.name=Untere Burgerbrötchenhälfte
+
+item.SCItemBurger_hamburgerUnfinished.name=Unvollständiger Hamburger
+item.SCItemBurger_hamburger.name=Hamburger
+
+item.SCItemBurgerFish_unfinished.name=Unvollständiger Fischburger
+item.SCItemBurgerFish.name=Fischburger
+
+SCItemBurger.ingredients=Belegt mit
+SCItemBurger.bun=Burgerbrötchen
+
+# Sunflower
+item.SCItemSunflowerSeeds.name=Sonnenblumenkerne
+item.SCItemSunflower.name=Sonnenblume
+
+# Rice
+item.SCItemRice.name=Reis
+item.SCItemRice_bundle.name=Reisbündel
+item.SCItemRice_cooked.name=Gekochter Reis
+
+# Misc
+item.SCItemCuttings.name=Heu
+item.SCItemBowlWater.name=Schüssel mit Wasser
+item.SCItemBowlMilk.name=Schüssel mit Milch
+
+item.SCItemButter.name=Butter
+item.SCItemButterPiece.name=Butterstück
+
+item.SCItemSalt.name=Salz

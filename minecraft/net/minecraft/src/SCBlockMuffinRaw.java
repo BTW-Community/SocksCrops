@@ -125,4 +125,49 @@ public class SCBlockMuffinRaw extends SCBlockPastryBase {
 		
 		return true;
 	}
+	
+	@Override
+	public void RenderBlockAsItem(RenderBlocks renderer, int iItemDamage, float fBrightness) {
+		for (int i = 0; i < 4; i++)
+		{
+			switch (i) {
+			case 0:
+				centerX = 4/16F;
+				centerZ = 4/16F;
+				break;
+				
+			case 1:
+				centerX = 4/16F;
+				centerZ = 12/16F;
+				break;
+				
+			case 2:
+				centerX = 12/16F;
+				centerZ = 4/16F;
+				break;
+				
+			case 3:
+				centerX = 12/16F;
+				centerZ = 12/16F;
+				break;
+
+			}
+			
+			//Bottom
+			paperPass = true;
+			renderMuffin(renderer, iItemDamage, centerX, centerZ, width, 0, height);
+			paperPass = false;
+			
+			renderMuffin(renderer, iItemDamage, centerX, centerZ, widthTop, height, height*2);
+
+		}
+	}
+	
+	protected void renderMuffin(RenderBlocks renderer, int iItemDamage, float centerX, float centerZ, float width, float minY, float maxY) {
+		renderer.setRenderBounds(
+				centerX - width/2, minY, centerZ - width/2,
+				centerX + width/2, maxY, centerZ + width/2
+				);
+		FCClientUtilsRender.RenderInvBlockWithMetadata(renderer, this, -0.5F, -0.5F, -0.5F, iItemDamage);
+	}
 }

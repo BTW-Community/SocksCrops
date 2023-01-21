@@ -332,6 +332,7 @@ public class SCDefs {
 		id_boiledBambooShoot = 31034;
 	
 	private static int
+		id_batter = 31038,
 		id_fishFiletDeepFried = 31039,
 	
 		id_fishFiletRaw = 31040,
@@ -457,7 +458,14 @@ public class SCDefs {
 		id_fishburger = 31142;
 
 	public static int
-		id_bowlWater = 31150;
+		id_bowlWater = 31150,
+		id_bowlMilk = 31151,
+		id_bowlMilkProgressive = 31152,
+		
+		id_butter = 31153,
+		id_butterPiece = 31154,
+		
+		id_salt = 31155;
 	
 	// 31200
 	
@@ -816,6 +824,7 @@ public class SCDefs {
 	public static Item boiledBambooShoot;
 
 	//Fish
+	public static Item batter;
 	public static Item fishFiletDeepFried;
 
 	public static Item fishFiletRaw;
@@ -988,6 +997,13 @@ public class SCDefs {
 	
 	public static Item hay;
 	public static Item bowlWater;
+	public static Item bowlMilk;
+	public static Item bowlMilkProgressive;
+	
+	public static Item butter;
+	public static Item butterPiece;
+	
+	public static Item salt;
 	
 		
 	//----------- Definitions -----------//
@@ -1083,9 +1099,26 @@ public class SCDefs {
 		//Rice
 		addRiceDefs();
 		
+		//Butter
+		addMiscDefs();
+		
 		//Tile Entities
 		addTileEntityDefinitions();
 //		addPlanterDefinitions();
+	}
+
+	private static void addMiscDefs()
+	{
+		Item.bowlEmpty = Item.replaceItem(Item.bowlEmpty.itemID, SCItemBowlEmpty.class, SocksCropsAddon.instance);
+		bowlWater = new SCItemDrinkable(id_bowlWater - 256, Item.bowlEmpty , 0, 0, "SCItemBowlWater");
+				
+		bowlMilk = new SCItemDrinkable(id_bowlMilk - 256, Item.bowlEmpty, 2, 0.25F, "SCItemBowlMilk");
+		bowlMilkProgressive = new SCItemBowlMilkProgressive(id_bowlMilkProgressive - 256, "SCItemBowlMilk");
+		
+		butter = new Item(id_butter - 256).setUnlocalizedName("SCItemButter").setCreativeTab(CreativeTabs.tabFood);
+		butterPiece = new Item(id_butterPiece - 256).setUnlocalizedName("SCItemButterPiece").setCreativeTab(CreativeTabs.tabFood);
+	
+		salt = new Item(id_salt - 256).setUnlocalizedName("SCItemSalt").setCreativeTab(CreativeTabs.tabFood);;
 	}
 
 	public static void addTileEntityDefinitions()
@@ -1094,7 +1127,6 @@ public class SCDefs {
 		addTileEntityMapping();
 		addClientTileEntityRenderers();
 	}
-
 
 	private static void addWildCropsDefinitions()
 	{
@@ -1411,7 +1443,8 @@ public class SCDefs {
 		Item.itemsList[melonVineHanging.blockID] = new ItemBlock(id_melonVineHanging - 256);
 	}
 
-	private static void addSunflowerDefinitions() {
+	private static void addSunflowerDefinitions()
+	{
 		sunflowerTopCrop = new SCBlockSunflowerTopCrop(id_sunflowerTopCrop, "SCBlockFlowerSunflower_top");
 		sunflowerCrop = new SCBlockSunflowerCrop(id_sunflowerCrop, "SCBlockFlowerSunflower_bottom");	
 		
@@ -1421,9 +1454,6 @@ public class SCDefs {
 
 	private static void addRiceDefs()
 	{
-		Item.bowlEmpty = Item.replaceItem(Item.bowlEmpty.itemID, SCItemBowlEmpty.class, SocksCropsAddon.instance);
-		bowlWater = new SCItemDrinkable(id_bowlWater, Item.bowlEmpty , 0, 0, "SCItemBowlWater");
-		
 		riceCrop = new SCBlockCropRice(id_riceCrop);
 		Item.itemsList[riceCrop.blockID] = new ItemBlock(id_riceCrop - 256);
 		
@@ -1449,14 +1479,14 @@ public class SCDefs {
 	
 	private static void addFenceAndRopeDefs() {
 		
-		Block.fence = Block.replaceBlock(Block.fence.blockID, SCBlockFence.class, overrideDeco, SocksCropsAddon.instance, FCBetterThanWolves.fcMaterialPlanks);
+		Block.fence = Block.replaceBlock(Block.fence.blockID, SCBlockFence.class, new String[] { SCDecoIntegration.DECOADDON }, SocksCropsAddon.instance, FCBetterThanWolves.fcMaterialPlanks);
 		Item.itemsList[Block.fence.blockID] = new ItemMultiTextureTile(Block.fence.blockID - 256, Block.fence, SCBlockFence.types );
 
 		Block.netherFence = Block.replaceBlock(Block.netherFence.blockID, SCBlockNetherFence.class, SocksCropsAddon.instance, FCBetterThanWolves.fcMaterialNetherRock );
 		Item.itemsList[Block.netherFence.blockID] = new ItemMultiTextureTile(Block.netherFence.blockID - 256, Block.netherFence, SCBlockNetherFence.iconNames );
 		
 		fenceRope = new SCBlockFenceRope(id_fenceRope);
-		//Item.itemsList[fenceRope.blockID] = new ItemBlock(id_fenceRope - 256);	
+		//Item.itemsList[fenceRope.blockID] = new ItemBlock(id_fenceRope - 256);
 	}
 	
 	private static void addDirtReplacementDefs()
@@ -1724,6 +1754,8 @@ public class SCDefs {
 		
 	private static void addFishDefs()
 	{
+		batter = new Item(id_batter - 256).setUnlocalizedName("SCItemBatter").SetBuoyant().setCreativeTab(CreativeTabs.tabFood); ;
+		
 		fishFiletRaw = new SCItemFood(id_fishFiletRaw - 256, SCItemFood.rawFishFiletHungerHealed, SCItemFood.rawFishFiletSaturationModifier, false, "SCItemFish_filetRaw").SetStandardFoodPoisoningEffect();
 		fishFiletCooked = new SCItemFood(id_fishFiletCooked - 256, SCItemFood.cookedFishFiletHungerHealed, SCItemFood.cookedFishFiletSaturationModifier, false, "SCItemFish_filetCooked");
 		

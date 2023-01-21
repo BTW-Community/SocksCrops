@@ -180,26 +180,8 @@ public class SCRecipeHelper {
 		}
 	}
 
-	public static void fillCrateRecipes(int wood, int inputCrate, Item fruit, int outputCrate, int count)
+	public static void fillCrateRecipes(int wood, int inputCrate, Item fruit, int outputCrate)
 	{
-//		//Object the length of num items we want add + 1 for the input crate
-//		Object[] array = new Object[count + 1];
-//		
-//		//depending on how many we add, we add that many fruit to the object
-//		for (int i = 1; i <= count; i++)
-//		{
-//			array[i] = new ItemStack( fruit );		
-//		}
-//		
-//		//set the first object to the crate
-//		array[0] = new ItemStack( SCDefs.crate, 1, SCBlockCrate.dataToDamage(wood, count - 1, inputCrate));
-//		
-//		//finally we create the recipe with the object array from above
-//		FCRecipes.AddShapelessRecipe(
-//				new ItemStack (SCDefs.crate, 1, SCBlockCrate.dataToDamage(wood, 0, outputCrate)),
-//				array
-//				);
-
 		
 		FCRecipes.AddShapelessRecipe(new ItemStack (SCDefs.crate, 1, SCBlockCrate.dataToDamage(wood, 0, outputCrate)),
 				new Object[] {
@@ -377,7 +359,7 @@ public class SCRecipeHelper {
 			);
 		}
 	}
-		
+	
     /**
      * Note that choppingBoard recipe inputs are limited to stack sizes of 1 (which is enforced upon adding the recipe)
      * @param choppingOutput The cut items

@@ -149,7 +149,7 @@ public class SCRecipesSandwich extends SCRecipesBurger {
     						lettuce, bacon, tomato
     					})),
     			//hand
-    			new ItemStack(SCDefs.wildOnionSlice), 
+    			new ItemStack(SCDefs.tomatoSlice), 
     			//onBoard
     			new ItemStack(SCDefs.sandwichUnfinished, 1,  
     				setToppings(new String[] 
@@ -167,7 +167,7 @@ public class SCRecipesSandwich extends SCRecipesBurger {
 		    				lettuce, bacon, tomato 
 		    			})),
 		    	//hand
-		    	new ItemStack(SCDefs.burgerTop), 
+		    	new ItemStack(SCDefs.sandwichTop), 
 		    	//onBoard
 		    	new ItemStack(SCDefs.sandwichUnfinished, 1,  
 		    		setToppings(new String[] 
