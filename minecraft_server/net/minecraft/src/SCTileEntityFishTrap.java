@@ -85,7 +85,7 @@ public class SCTileEntityFishTrap extends TileEntity implements FCITileEntityDat
 		
 		BiomeGenBase biome = worldObj.getBiomeGenForCoords(xCoord, zCoord);
 		
-		if (biome == BiomeGenBase.ocean || biome == BiomeGenBase.frozenOcean || biome == BiomeGenBase.mushroomIslandShore) //TODO  || biome instanceof BiomeGenBeachBase
+		if (biome == BiomeGenBase.ocean || biome == BiomeGenBase.frozenOcean || biome instanceof BiomeGenBeach || biome == BiomeGenBase.mushroomIslandShore)  
 		{
 			FCUtilsRandomItemStack[] arr = new FCUtilsRandomItemStack[oceanLoot.size()];
 			setFishStack( FCUtilsRandomItemStack.GetRandomStack( worldObj.rand, oceanLoot.toArray(arr)) );
