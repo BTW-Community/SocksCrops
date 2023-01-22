@@ -1118,7 +1118,9 @@ public class SCDefs {
 		butter = new Item(id_butter - 256).setUnlocalizedName("SCItemButter").setCreativeTab(CreativeTabs.tabFood);
 		butterPiece = new Item(id_butterPiece - 256).setUnlocalizedName("SCItemButterPiece").setCreativeTab(CreativeTabs.tabFood);
 	
-		salt = new Item(id_salt - 256).setUnlocalizedName("SCItemSalt").setCreativeTab(CreativeTabs.tabFood);;
+		salt = new Item(id_salt - 256).setUnlocalizedName("SCItemSalt").setCreativeTab(CreativeTabs.tabFood);
+		
+		batter = new Item(id_batter - 256).setUnlocalizedName("SCItemBatter").SetBuoyant().setCreativeTab(CreativeTabs.tabFood);
 	}
 
 	public static void addTileEntityDefinitions()
@@ -1754,8 +1756,6 @@ public class SCDefs {
 		
 	private static void addFishDefs()
 	{
-		batter = new Item(id_batter - 256).setUnlocalizedName("SCItemBatter").SetBuoyant().setCreativeTab(CreativeTabs.tabFood); ;
-		
 		fishFiletRaw = new SCItemFood(id_fishFiletRaw - 256, SCItemFood.rawFishFiletHungerHealed, SCItemFood.rawFishFiletSaturationModifier, false, "SCItemFish_filetRaw").SetStandardFoodPoisoningEffect();
 		fishFiletCooked = new SCItemFood(id_fishFiletCooked - 256, SCItemFood.cookedFishFiletHungerHealed, SCItemFood.cookedFishFiletSaturationModifier, false, "SCItemFish_filetCooked");
 		

@@ -273,7 +273,7 @@ public class SCBlockDoubleTallGrass extends BlockFlower {
 		
 		if (side == 0)
 		{
-			return bottomIcon[meta];
+			return bottomIcon[meta&7];
 		}
 		
 		if (isTopBlock(meta))

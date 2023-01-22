@@ -12,3 +12,5 @@ minecraft/net/minecraft/src/EntityTrackerEntry.java
 minecraft/net/minecraft/src/ItemBlock.java
 minecraft/net/minecraft/src/GuiIngame.java
 minecraft/net/minecraft/src/FoodStats.java
+minecraft/net/minecraft/src/SuperBTWBlockBranchSlab.java
+minecraft_server/net/minecraft/src/DecoDefs.java
