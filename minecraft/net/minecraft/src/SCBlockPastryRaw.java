@@ -17,6 +17,12 @@ public class SCBlockPastryRaw extends SCBlockPastryBase {
 	}
 	
 	@Override
+	public int idPicked(World world, int i, int j, int k) {
+		
+		return SCDefs.burgerDough.itemID;
+	}
+	
+	@Override
 	public int idDropped(int meta, Random rand, int fortuneModifier)
 	{
 		if (meta == burgerBun || meta == burgerBunIAligned)

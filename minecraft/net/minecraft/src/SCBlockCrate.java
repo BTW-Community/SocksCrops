@@ -251,19 +251,17 @@ public class SCBlockCrate extends BlockContainer {
 		int damage = this.damageDropped(world, x, y, z);
 		
 		ItemStack heldStack = player.getCurrentEquippedItem();
-		Item item = heldStack.getItem();
 		
-		if (item != null)
+		if (player.capabilities.isCreativeMode) return;
+		
+		if (heldStack.getItem() != null && heldStack.getItem().canHarvestBlock(heldStack, world, this, x, y, z))
 		{
-			if (item.canHarvestBlock(heldStack, world, this, x, y, z))
-			{
-				this.dropBlockAsItem_do(world, x, y, z, new ItemStack(this.blockID, 1, damage));
-			}
-			else
-			{
-				DropComponentItemsOnBadBreak(world, x, y, z, meta, 1);
-			}
-		}		
+			this.dropBlockAsItem_do(world, x, y, z, new ItemStack(this.blockID, 1, damage));
+		}
+		else
+		{
+			DropComponentItemsOnBadBreak(world, x, y, z, meta, 1);
+		}	
 	}
 	
 	public int GetHarvestToolLevel(IBlockAccess blockAccess, int x, int y, int z)

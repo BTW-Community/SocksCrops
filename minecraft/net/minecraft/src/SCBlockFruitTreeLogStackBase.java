@@ -190,6 +190,11 @@ public class SCBlockFruitTreeLogStackBase extends Block {
 	}
 	
 	@Override
+	public boolean shouldSideBeRendered(IBlockAccess blockAccess, int iNeighborI, int iNeighborJ, int iNeighborK, int iSide) {
+		return true;
+	}
+	
+	@Override
 	public AxisAlignedBB GetBlockBoundsFromPoolBasedOnState(IBlockAccess blockAccess, int i, int j, int k)
 	{
 		int meta = blockAccess.getBlockMetadata(i, j, k);

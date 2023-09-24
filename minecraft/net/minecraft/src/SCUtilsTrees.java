@@ -312,7 +312,7 @@ public class SCUtilsTrees {
     }
 	
 	public static boolean generateFruitTree(World world, Random rand, int x, int y, int z, int logID, int logMetadata, int stumpID, int stumpMetadata, int leafID,
-            int leafMetadata, int baseHeight, float flowerChance)
+            int leafMetadata, int baseHeight, float flowerChance, int fruitType)
     {
         int treeHeight = rand.nextInt(3) + baseHeight;
         boolean shouldGrow = true;
@@ -357,6 +357,8 @@ public class SCUtilsTrees {
 //                    if (blockIDBelow == Block.grass.blockID) {
 //                        world.setBlockWithNotify(x, y - 1, z, Block.dirt.blockID);
 //                    }
+                	
+                	SCBlockFruitTreesStumpGrowing.removeGrowingTree(world, x, y, z, fruitType);
                     
                     byte canopyHeight = 3;
                     

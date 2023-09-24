@@ -57,6 +57,9 @@ public class SCItemBurgerFish extends SCItemBurgerBase {
 	@Override
 	public void registerBurgerIcons(IconRegister register) {
 		//fish
+		incompleteBurgerIcon[0] = register.registerIcon("SCItemBurgerFish_incomplete_2");
+		burgerIcon[0] = register.registerIcon("SCItemBurgerFish_2");
+		
 		incompleteBurgerIcon[2] = register.registerIcon("SCItemBurgerFish_incomplete_2");
 		burgerIcon[2] =  register.registerIcon("SCItemBurgerFish_2");
 			

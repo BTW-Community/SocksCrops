@@ -203,6 +203,8 @@ public class SCBlockMelonVineFlowering extends SCBlockGourdVineFloweringBase {
     @Override
     public void registerIcons( IconRegister register )
     {
+    	super.registerIcons(register);
+    	
     	blockIcon = plantIcon = register.registerIcon("SCBlockMelonVine_3");
     	
         for ( int i = 0; i < flowerIcons.length; i++ )

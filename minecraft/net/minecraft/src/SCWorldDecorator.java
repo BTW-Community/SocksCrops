@@ -11,7 +11,7 @@ public class SCWorldDecorator {
     	int xPos;
     	int yPos;
     	int zPos;
-    	
+
         //Tall Grass
         for (i = 0; i < 1; ++i)
         {
@@ -171,46 +171,52 @@ public class SCWorldDecorator {
 		}
     	
     	//Rice
-    	if ( random.nextInt(8) == 0 )
+    	if ( random.nextInt(32) == 0 )
 		{
             for (i = 0; i < 8; ++i)
             {
             	xPos = x + random.nextInt(16) + 8;
-            	zPos = z + random.nextInt(16) + 8;
-
-                for (yPos = random.nextInt(128); yPos > 0 && world.getBlockId(xPos, yPos - 1, zPos) == 0; --yPos)
-                {
-                    
-                }
-
-                (new SCWorldGenRice()).generate(world, random, xPos, yPos, zPos);
+				zPos = z + random.nextInt(16) + 8;
+				yPos = world.getHeightValue(xPos, zPos);
+				
+				new SCWorldGenRice().generate(world, random, xPos, yPos, zPos);
             }
 		}
     	
-    	for (i = 0; i < 2; i++)
+    	//Coconut
+    	if ( biome == BiomeGenBase.beachDesert)
         {
-            if ( random.nextInt(8) == 0 && biome == BiomeGenBase.beachDesert)
+            if (random.nextInt(12) == 0)
             {
                 xPos = x + random.nextInt(16) + 8;               
-                zPos = z + random.nextInt(16) + 8;
-                
+                zPos = z + random.nextInt(16) + 8;                
                 yPos = world.getHeightValue(xPos, zPos);
                 
                 new SCWorldGenPalmTreeSmall(false, true).generate(world, random, xPos, yPos, zPos);
             }
         }
     	
-        // Clover
-    	if ( random.nextInt(2) == 0 )
-		{
-			for (i = 0; i < 16; ++i)
-			{
-				xPos = x + random.nextInt(16) + 4;
-				yPos = random.nextInt(128);
-				zPos = z + random.nextInt(16) + 4;
-				(new SCWorldGenRocks(16)).generate(world, random, xPos, yPos, zPos);
-			}
-		}
+        // Rocks
+//    	if ( random.nextInt(2) == 0 )
+//		{
+//			for (i = 0; i < 16; ++i)
+//			{
+//				xPos = x + random.nextInt(16) + 4;
+//				yPos = random.nextInt(128);
+//				zPos = z + random.nextInt(16) + 4;
+//				new SCWorldGenRocks(16).generate(world, random, xPos, yPos, zPos);
+//			}
+//		}
     	
+        for (i = 0; i < 8; ++i)
+        {
+            if (random.nextInt(4) == 0)
+            {
+            	xPos = x + random.nextInt(16) + 8;
+            	yPos = random.nextInt(128);
+                zPos = z + random.nextInt(16) + 8;
+                new SCWorldGenRocks2().generate(world, random, xPos, yPos, zPos);
+            }
+        }
 	}
 }

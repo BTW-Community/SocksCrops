@@ -497,6 +497,8 @@ item.melon.name=Watermelon Slice
 item.SCItemMelonYellowSlice.name=Canary Slice
 item.SCItemMelonWhiteSlice.name=Honeydew Slice
 item.SCItemMelonGreenSlice.name=Cantaloupe Slice
+item.SCItemSeedMelon_domesticated.name=Domesticated Melon Seeds
+item.SCItemSeedPumpkin_domesticated.name=Domesticated Pumpkin Seeds
 
 # Bamboo Items
 item.SCItemBamboo.name=Bamboo
@@ -506,6 +508,9 @@ item.SCItemBambooShootCooked.name=Boiled Bamboo Shoot
 
 item.SCItemBambooProgressive.name=Bamboo Weaving
 item.SCItemBambooWeave.name=Bamboo Weave
+
+#Batter
+item.SCItemBatter.name=Batter
 
 #Fish
 item.SCItemFishFilet_deefried.name=Deep Fried Fish Filet
@@ -676,6 +681,11 @@ item.SCItemBurgerFish.name=Fishburger
 
 SCItemBurger.ingredients=Ingredients
 SCItemBurger.bun=Burger Bun
+
+# Salads
+item.SCItemSalad.name=Salad
+
+item.SCItemSalad_chickenCaesar.name=Chicken Caesar Salad
 
 # Sunflower
 item.SCItemSunflowerSeeds.name=Sunflower Seeds

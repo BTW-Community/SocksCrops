@@ -30,7 +30,7 @@ public class SCWorldGenRice extends WorldGenerator
         for (int var6 = 0; var6 < 10; ++var6)
         {
             int var7 = x + random.nextInt(8) - random.nextInt(8);
-            int var8 = y + random.nextInt(4) - random.nextInt(4);
+            int var8 = y;// + random.nextInt(4) - random.nextInt(4);
             int var9 = z + random.nextInt(8) - random.nextInt(8);
             
             if (par1World.isAirBlock(var7, var8, var9) && SCDefs.riceCrop.canPlaceBlockAt(par1World, var7, var8, var9))

@@ -10,7 +10,7 @@ public class SCBlockGourdVine extends BlockDirectional {
 	
 	int convertedBlockID;
 
-	protected SCBlockGourdVine(int iBlockID, int floweringBlock, int stemBlock, int convertedBlockID, int hangingVine, String texVine, String texConnector) {
+	protected SCBlockGourdVine(int iBlockID, int floweringBlock, int stemBlock, int convertedBlockID, int hangingVine, String texVine, String texConnector, String texLeaves) {
 		super( iBlockID, Material.plants );
 		
 		this.floweringBlock = floweringBlock;
@@ -20,6 +20,7 @@ public class SCBlockGourdVine extends BlockDirectional {
 		
 		this.texVine = texVine;
 		this.texConnector = texConnector;
+		this.texLeaves = texLeaves;
 		
 		this.setTickRandomly(true);
 		
@@ -377,36 +378,47 @@ public class SCBlockGourdVine extends BlockDirectional {
 	
 	public Icon[] vineIcons;
 	public Icon[] connectorIcons;
-	
+	public Icon[] blattIcons = new Icon[4];
+
 	public String texVine;
 	public String texConnector;
+	public String texLeaves;
 
+	public Icon dirt;
+	
     @Override
     public void registerIcons( IconRegister register )
     {
+    	dirt = register.registerIcon("dirt");
+    	
     	vineIcons = new Icon[4];
     	
     	if (this.texVine != null)
     	{
-            for ( int iTempIndex = 0; iTempIndex < vineIcons.length; iTempIndex++ )
+            for ( int i = 0; i < vineIcons.length; i++ )
             {
-            	vineIcons[iTempIndex] = register.registerIcon( this.texVine + iTempIndex );
+            	vineIcons[i] = register.registerIcon( this.texVine + i );
             }
     	}
-
-        
-        blockIcon = vineIcons[3]; // for block hit effects and item render
         
         connectorIcons = new Icon[4];
         
         if (this.texConnector != null)
         {
-            for ( int iTempIndex = 0; iTempIndex < connectorIcons.length; iTempIndex++ )
+            for ( int j = 0; j < connectorIcons.length; j++ )
             {
-            	connectorIcons[iTempIndex] = register.registerIcon( this.texConnector + iTempIndex );
+            	connectorIcons[j] = register.registerIcon( this.texConnector + j );
             }
+        }  
+        
+        blattIcons = new Icon[4];
+        
+        for ( int k = 0; k < blattIcons.length; k++ )
+        {
+        	blattIcons[k] = register.registerIcon( "SCBlockGourdLeaf_" + k );
         }
-   
+
+        blockIcon = vineIcons[3]; // for block hit effects and item render
     }
     
     /**
@@ -496,14 +508,64 @@ public class SCBlockGourdVine extends BlockDirectional {
     	
     	int iMetadata = r.blockAccess.getBlockMetadata( i, j, k );
     	
+    	this.renderGourdLeaf(r, i, j, k);
+    	
     	if (this.hasStemFacing(r, i, j, k))
     	{
     		this.renderVineConnector( r, i, j, k);
+    		
+    		
     		return true;
     	}
     	return true;
     }
     
+	protected void renderGourdLeaf(RenderBlocks r, int i, int j, int k) {
+		
+		int meta = r.blockAccess.getBlockMetadata(i, j, k);
+		int growthLevel = this.GetGrowthLevel(r.blockAccess, i, j, k);
+		
+		if (this instanceof SCBlockGourdVineFloweringBase)
+		{
+			growthLevel = 3;
+		}
+		
+		double height = (growthLevel/16D * 2) + (growthLevel-1)/16D ;
+		int rotation = getRotation(meta);
+		double angle = growthLevel/32D;		
+		
+		
+		
+		if (growthLevel > 0)
+		{
+			SCUtilsRender.renderGourdLeafWithTexturesAndRotation(r, this, i, j, k, 
+					blattIcons[growthLevel], rotation, height, angle);
+		}
+		
+		
+		
+	}
+
+	private int getRotation(int meta) {
+		int dir = getDirection(meta);
+		
+		switch (dir) {
+		default:
+		case 0:			
+			return 0;
+			
+		case 1:					
+			return 1;
+			
+		case 2:			
+			return 3;
+			
+		case 3:	
+			return 2;
+		}
+		
+	}
+
 	public boolean renderLeavesCrossedSquares(RenderBlocks r, int par2, int par3, int par4)
     {
     	IBlockAccess blockAccess = r.blockAccess;

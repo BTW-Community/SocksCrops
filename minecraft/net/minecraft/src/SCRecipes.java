@@ -16,7 +16,7 @@ public class SCRecipes extends SCRecipeHelper {
 		addFishtrapRecipes();
 		addCuttingBoardRecipes();
 		addComposterRecipes();
-		addCrateRecipes();
+		//addCrateRecipes();
 		
 		//Compost
 		//Compost Grass / Biome Grass
@@ -67,6 +67,7 @@ public class SCRecipes extends SCRecipeHelper {
 		
 		//Coconut
 		addCoconutCuttingRecipes();
+		addCoconutRecipes();
 		
 		//Crops
 		addWildCarrotRecipes();		
@@ -94,9 +95,13 @@ public class SCRecipes extends SCRecipeHelper {
 		SCRecipesBurger.addBurgerRecipes();
 		addBurgerCuttingRecipes();
 		addBurgerToppingsRecipes();
+		addBurgerDoughRecipes();
 		
 		//Sandwich
 		SCRecipesSandwich.addSandwichRecipes();
+		
+		//Salads
+		SCRecipesSalad.addSaladRecipes();
 		
 		//Sunflower
 		addSunflowerRecipes();
@@ -108,6 +113,47 @@ public class SCRecipes extends SCRecipeHelper {
 		
 		addMiscFoodRecipes();
 		
+		addHayRecipes();
+		
+	}
+
+	private static void addCoconutRecipes() {
+		FCRecipes.AddShapelessRecipe(new ItemStack (SCDefs.coconutDrink),
+				new Object[] {
+						new ItemStack( SCDefs.bambooStrippedItem, 1 ),
+						new ItemStack( SCDefs.coconut, 1 )
+				});
+	}
+
+	private static void addHayRecipes()
+	{
+		FCRecipes.AddShapelessRecipe(new ItemStack(SCDefs.strawBale), 
+				new ItemStack[]{
+					new ItemStack(FCBetterThanWolves.fcItemStraw),
+					new ItemStack(FCBetterThanWolves.fcItemStraw),
+					new ItemStack(FCBetterThanWolves.fcItemStraw),
+					new ItemStack(FCBetterThanWolves.fcItemStraw),
+					new ItemStack(FCBetterThanWolves.fcItemStraw),
+					new ItemStack(FCBetterThanWolves.fcItemStraw),
+					new ItemStack(FCBetterThanWolves.fcItemStraw),
+					new ItemStack(FCBetterThanWolves.fcItemStraw),
+					new ItemStack(FCBetterThanWolves.fcItemStraw),
+				});
+		
+		FCRecipes.AddShapelessRecipe(new ItemStack(SCDefs.hayBale), 
+				new ItemStack[]{
+					new ItemStack(SCDefs.hay),
+					new ItemStack(SCDefs.hay),
+					new ItemStack(SCDefs.hay),
+					new ItemStack(SCDefs.hay),
+					new ItemStack(SCDefs.hay),
+					new ItemStack(SCDefs.hay),
+					new ItemStack(SCDefs.hay),
+					new ItemStack(SCDefs.hay),
+					new ItemStack(SCDefs.hay),
+				});
+		
+	
 	}
 
 	private static void addMiscFoodRecipes()
@@ -790,21 +836,39 @@ public class SCRecipes extends SCRecipeHelper {
 			FurnaceRecipes.smelting().addSmelting( filets[type].itemID, new ItemStack( filetCooked[type] ), 0);
 		}
 		
-		//batter		
-		FCRecipes.AddCauldronRecipe(new ItemStack(SCDefs.batter), new ItemStack[] 
-			{				
-				new ItemStack(FCBetterThanWolves.fcItemFlour),
-				new ItemStack(FCBetterThanWolves.fcItemRawEgg),
-				new ItemStack(SCDefs.bowlWater),
+		//batter
+		//remove raw egg recipe
+		FCCraftingManagerCauldron.getInstance().RemoveRecipe( 
+	    		new ItemStack( FCBetterThanWolves.fcItemHardBoiledEgg ), 
+	    		new ItemStack[] {
+					new ItemStack( FCBetterThanWolves.fcItemRawEgg ) 
+		} );
+		
+		FCRecipes.AddCauldronRecipe(
+				new ItemStack[] {
+					new ItemStack(SCDefs.batter, 2)
+				},
+				new ItemStack[] {				
+					new ItemStack(FCBetterThanWolves.fcItemFlour, 2 ),
+					new ItemStack(FCBetterThanWolves.fcItemRawEgg ),
+					new ItemStack(SCDefs.salt)
 		});
+		
+		//re-add raw egg recipe
+		FCRecipes.AddCauldronRecipe( 
+	    		new ItemStack( FCBetterThanWolves.fcItemHardBoiledEgg ), 
+	    		new ItemStack[] {
+					new ItemStack( FCBetterThanWolves.fcItemRawEgg ) 
+			} );
+		
 		
 		//deepfried
 		for (Item filet : filets)
 		{
 			FCRecipes.AddCauldronRecipe(new ItemStack(SCDefs.fishFiletDeepFried), new ItemStack[] 
-					{				
-						new ItemStack(filet),
-						new ItemStack(SCDefs.batter),
+			{				
+				new ItemStack(filet),
+				new ItemStack(SCDefs.batter),
 			});
 		}
 		
@@ -1001,6 +1065,7 @@ public class SCRecipes extends SCRecipeHelper {
 		addPieRecipe(SCDefs.pumpkinSliceRaw, FCBetterThanWolves.fcItemPastryUncookedPumpkinPie, Item.pumpkinPie, FCBetterThanWolves.fcUnfiredPottery, FCBlockUnfiredPottery.m_iSubtypeUncookedPumpkinPie);
 
 		//FruitPies
+		addPieRecipe(SCDefs.pumpkinSliceRaw, FCBetterThanWolves.fcItemPastryUncookedPumpkinPie, Item.pumpkinPie, SCDefs.pieRaw, SCBlockPieRaw.PUMPKIN);
 		addPieRecipe(SCDefs.sweetberry, SCDefs.sweetberryPieRaw, SCDefs.sweetberryPieCooked, SCDefs.pieRaw, SCBlockPieRaw.SWEETBERRY);
 		addPieRecipe(SCDefs.blueberry, SCDefs.blueberryPieRaw, SCDefs.blueberryPieCooked, SCDefs.pieRaw, SCBlockPieRaw.BLUEBERRY);
 		
@@ -1205,6 +1270,26 @@ public class SCRecipes extends SCRecipeHelper {
 						new ItemStack(SCDefs.sandwichTop),
 						new ItemStack(SCDefs.sandwichBottom)
 				});
+	}
+	
+	private static void addBurgerDoughRecipes()
+	{
+		FCRecipes.AddShapelessRecipe( new ItemStack( SCDefs.burgerDough, 1 ), new Object[] {	    		
+	    		new ItemStack( FCBetterThanWolves.fcItemFlour ),
+	    		new ItemStack( FCBetterThanWolves.fcItemFlour ),
+	    		new ItemStack( FCBetterThanWolves.fcItemRawEgg ),
+	    		new ItemStack( FCBetterThanWolves.fcItemRawEgg )
+			} );
+		
+		FCRecipes.addKilnRecipe(new ItemStack[] {
+				new ItemStack(SCDefs.burgerBun, 2)
+				
+		}, SCDefs.pastryRaw, SCBlockPastryRaw.burgerBun);
+		
+		FCRecipes.addKilnRecipe(new ItemStack[] {
+				new ItemStack(SCDefs.burgerBun, 2)
+				
+		}, SCDefs.pastryRaw, SCBlockPastryRaw.burgerBunIAligned);
 	}
 		
 	

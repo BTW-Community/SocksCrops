@@ -6,7 +6,7 @@ public class SCDefs {
 	// SocksCrops: 2600 - 2999
 	
 	//Tile Entities
-	public static int
+	private static int
 		id_choppingBoard = 2600,
 		id_storageJar = 2601,
 		id_seedJar = 2602,
@@ -15,45 +15,45 @@ public class SCDefs {
 		id_composter = 2605,
 //		id_flowerPot = 2606,
 //		id_waterPot = 2607,
-		id_largeFlowerPot = 2608,
+//		id_largeFlowerPot = 2608,
 		id_ropeHangingItems = 2609,
 		id_crate = 2610;
 	
 	//Compost
-	public static int
+	private static int
 		id_compostBlock = 2620;
 		
 	//Compost Grass / Biome Grass
-	public static int
+	private static int
 		id_biomeGrassCompost = 2621,
 		id_biomeGrassDirt = 2622;
 		
 	//Dirts	
-	public static int
+	private static int
 		id_grassNutrition = 2623;
 //		id_dirtNutrition = 2524,
 //		id_dirtLooseNutrition = 2525;
 		
 	//Farmland	
-	public static int
+	private static int
 		id_farmlandNutrition0 = 2626,
 		id_farmlandNutrition1 = 2627,
 		id_farmlandNutrition2 = 2628,
 		id_farmlandNutrition3 = 2629;
 
-	public static int	
+	private static int	
 		id_farmlandNutrition0Fertilized = 2630,
 		id_farmlandNutrition1Fertilized = 2631,
 		id_farmlandNutrition2Fertilized = 2632,
 		id_farmlandNutrition3Fertilized = 2633;
 		
-	public static int	
+	private static int	
 		id_farmlandNutrition0Dung = 2634,
 		id_farmlandNutrition1Dung = 2635,
 		id_farmlandNutrition2Dung = 2636,
 		id_farmlandNutrition3Dung = 2637;
 		
-	public static int
+	private static int
 		id_farmlandNutrition0Hay = 2638,
 		id_farmlandNutrition1Hay = 2639,
 		id_farmlandNutrition2Hay = 2640,
@@ -71,14 +71,14 @@ public class SCDefs {
 //		id_farmlandNutrition2Hay = 2648,
 //		id_farmlandNutrition3Hay = 2649;
 	//Leaves stuff	
-	public static int
+	private static int
 		id_hedges = 2652,
 		id_hedgesDeco = 2653,
 		id_leafCarpet = 2654,
 		id_leafCarpetDeco = 2655;
 		
 	//Decorative plants
-	public static int	
+	private static int	
 		id_groundFlowers = 2656,
 		id_doubleTallGrass = 2657,
 		id_clover = 2658,
@@ -91,22 +91,22 @@ public class SCDefs {
 		id_rocksSandstone = 2665;
 		
 	//Logs	
-	public static int
+	private static int
 		id_hollowLog = 2666,
 		id_damagedLog = 2667,
 		id_mossyLog = 2668;
 		
 	//Sideshrooms
-	public static int
+	private static int
 		id_sideShroom = 2669;
 		
 	//Fence & Rope	
-	public static int
+	private static int
 		id_fence = 2670,
 		id_fenceRope = 2671;
 		
 	//Grapes Red
-	public static int
+	private static int
 		id_redGrapeCrop = 2672,
 		id_grapeStem = 2673,
 		id_redGrapeLeavesInactive = 2674,
@@ -115,7 +115,7 @@ public class SCDefs {
 		id_redGrapeBlock = 2677;
 		
 	//Grapes White
-	public static int
+	private static int
 		id_whiteGrapeCrop = 2678,
 		id_whiteGrapeStem = 2679,
 		id_whiteGrapeLeavesInactive = 2680,
@@ -124,24 +124,24 @@ public class SCDefs {
 		id_whiteGrapeBlock = 2683;
 		
 	//Hops
-	public static int 
+	private static int 
 		id_hopsCrop = 2690,
 		id_hopsVine = 2691,
 		id_hopsLeavesFlowers = 2692;
 		
 	//Tomato	
-	public static int
+	private static int
 		id_tomatoCrop = 2693,
 		id_tomatoCropFruits = 2694,
 		id_tomatoVine = 2695,
 		id_tomatoVineFruits = 2696;
 			
 	//Pumpkins	
-	public static int
+	private static int
 		id_gourdVineDead = 2700,
 		id_gourdVineDeadHanging = 2701;
 
-	public static int
+	private static int
 		id_pumpkinStem = 2702,
 		id_pumpkinVine = 2703,
 		id_pumpkinVineFlowering = 2704,
@@ -162,7 +162,7 @@ public class SCDefs {
 		id_pumpkinJack = 2716;
 
 	//Melons	
-	public static int
+	private static int
 		id_melonStem = 2720,
 		id_melonVine = 2721,
 		id_melonVineFlowering = 2722,
@@ -182,27 +182,27 @@ public class SCDefs {
 		id_melonCanaryHarvested = 2733;
 		
 	//Bamboo	
-	public static int
+	private static int
 		id_bambooShoot = 2740,
 		id_bambooRoot = 2741,
 		id_bambooStalk = 2742,
 		id_bambooGrate = 2743;
 
-	public static int
+	private static int
 		id_bambooPacked = 2748,
 		id_smallPacked = 2749;
 
 	//Bushes
-	public static int
+	private static int
 		id_sweetberryBush = 2750,
 		id_blueberryBush = 2751;
 
 	//Fruit Trees
-	public static int
+	private static int
 		id_fruitSeedCrop = 2760,
 		id_fruitTreeSapling = 2761;
 
-	public static int
+	private static int
 		id_fruitStump = 2762,
 		id_fruitLog = 2763,
 		id_fruitBranch = 2764,
@@ -210,7 +210,7 @@ public class SCDefs {
 		id_fruitLogCinders = 2766,
 		id_fruitLogSmoldering = 2767;
 
-	public static int
+	private static int
 		id_fruitLeaves = 2768,
 		id_fruitLeavesFlowers = 2769,
 		id_fruitLeavesApple = 2770,
@@ -218,78 +218,86 @@ public class SCDefs {
 		id_fruitLeavesLemon = 2772,
 		id_fruitLeavesOlive = 2773;
 
-	public static int
+	private static int
 		id_logStackApple = 2774,
 		id_logStackCherry = 2775,
 		id_logStackLemon = 2776,
 		id_logStackOlive = 2777;
 
 	//Coconut
-	public static int
+	private static int
 		id_coconutSapling = 2780,
 		id_coconutPlant = 2781,
 		id_coconutLeaves = 2782;
 
 	//Wild Flower Crop
-	public static int
+	private static int
 		id_wildCropFlower = 2785;
 
 	//Crops
-	public static int
+	private static int
 		id_wildCarrotCrop = 2786,
 		id_wildCarrotFlower = 2787;
 
-	public static int
+	private static int
 		id_wildPotatoCrop = 2788;
 
-	public static int
+	private static int
 		id_wildLettuceCrop = 2789,
 		id_wildLettuceFlower = 2790;
 
-	public static int
+	private static int
 		id_wildOnionCrop = 2791,
 		id_wildOnionFlower = 2792;
 
-	public static int
+	private static int
 		id_beetRootCrop = 2793,
 		id_beetRootFlower = 2794;
 
 	//Pies 
-	public static int
+	private static int
 		id_pieRaw = 2800,
 		id_pieCooked = 2801,
 		id_fruitPieRaw = 2802,
 		id_fruitPieCooked = 2803;
 
 	//Cakes
-	public static int
+	private static int
 		id_cakeRaw = 2810,
 		id_chocolateCake = 2811,
 		id_carrotCake = 2812;
 
 	//Muffin
-	public static int
+	private static int
 		id_muffinRaw = 2815;
 
 	//Cookie
-	public static int
+	private static int
 		id_cookieRaw = 2816;
 
 	//Burger Dough
-	public static int
+	private static int
 		id_pastryRaw = 2817;
 
 	//Sunflower
-	public static int
+	private static int
 		id_sunflowerCrop = 2820,
 		id_sunflowerTopCrop = 2821;
 
 	//Rice
-	public static int
+	private static int
 		id_riceCrop = 2822;
+	
+	private static int
+		id_dryingHay = 2825,
+		id_driedHay = 2826,
+		id_hayBale = 2827;
+	
+	private static int
+		id_strawBale = 3025; //copy of deco, ID overlap
 
 		
-	private static int maxBlockID = 2999;
+	private static int maxBlockID = 2899;
 	
 	//----------- ITEM ID's -----------//
 	// 31000 - 31299
@@ -321,7 +329,9 @@ public class SCDefs {
 		id_melonCantaloupeSlice = 31022,
 		id_pumpkinSliceRaw = 31023,
 		id_pumpkinSliceRoasted = 31024,
-		id_pumpkinSliceBoiled = 31025;
+		id_pumpkinSliceBoiled = 31025,
+		id_domesticatedMelonSeed = 31026,
+		id_domesticatedPumpkinSeed = 31027;
 	
 	//Bamboo
 	private static int
@@ -424,7 +434,7 @@ public class SCDefs {
 		id_donutChocolate = 31121;
 
 	//Patty	
-	public static int
+	private static int
 		id_chickenDrumRaw = 31124,
 		id_chickenDrumCooked = 31125,
 	
@@ -435,7 +445,7 @@ public class SCDefs {
 		id_beefPattyCooked = 31129;
 		
 	//Burger	
-	public static int
+	private static int
 		id_halfBread =31130,
 		
 		id_sandwichTop = 31131,
@@ -444,7 +454,7 @@ public class SCDefs {
 		id_sandwichUnfinished = 31133,
 		id_sandwich = 31134;
 		
-	public static int
+	private static int
 		id_burgerDough = 31135,
 		id_burgerBun = 31136,
 		
@@ -457,7 +467,10 @@ public class SCDefs {
 		id_fishburgerUnfinished = 31141,
 		id_fishburger = 31142;
 
-	public static int
+	private static int
+		id_salad = 31143;
+	
+	private static int
 		id_bowlWater = 31150,
 		id_bowlMilk = 31151,
 		id_bowlMilkProgressive = 31152,
@@ -668,7 +681,7 @@ public class SCDefs {
 	public static Block pumpkinCarved;
 	public static Block pumpkinJack;
 
-	//Melons
+	//Melons	
 	public static Block melonStem;
 	public static Block melonVine;
 	public static Block melonVineFlowering;
@@ -769,12 +782,9 @@ public class SCDefs {
 	
 	public static Block crate;
 	
-	public static Block storageBarrelWheat;
-	public static Block storageBarrelHemp;
-	public static Block storageBarrelCarrot;
-	public static Block storageBarrelPotato;
-	public static Block storageBarrelFish;
+	public static Block dryingHay, driedHay;
 
+	public static Block hayBale, strawBale;
 	
 	//----------- Items -----------//
 	
@@ -809,9 +819,11 @@ public class SCDefs {
 	public static Item tomatoSlice;
 
 	//Pumpkin & Melon
+	public static Item domesticatedPumpkinSeeds;
 	public static Item pumpkinSliceRaw;
 	public static Item pumpkinSliceRoasted;
 	public static Item pumpkinSliceBoiled;
+	public static Item domesticatedMelonSeeds;
 	public static Item melonCanarySlice;
 	public static Item melonHoneydewSlice;
 	public static Item melonCantaloupeSlice;
@@ -985,6 +997,9 @@ public class SCDefs {
 	public static Item fishburgerUnfinished;
 	public static Item fishburger;
 
+	//Salad
+	public static Item salad;
+	
 	//Sunflower
 	public static Item sunflower;
 	public static Item sunflowerSeeds;
@@ -1035,7 +1050,6 @@ public class SCDefs {
 		//Logs
 		addDecompostingDefs();		
 		
-		//Sideshrooms
 		//Fence & Rope
 		addFenceAndRopeDefs();
 		
@@ -1093,6 +1107,9 @@ public class SCDefs {
 		addBurgerDefs();
 		addMeatCuttingDefs();
 		
+		//Salad
+		addSaladDefs();
+		
 		//Sunflower
 		addSunflowerDefinitions();
 		
@@ -1100,14 +1117,38 @@ public class SCDefs {
 		addRiceDefs();
 		
 		//Butter
-		addMiscDefs();
+		addButterDefs();
+		
+		addHayDefs();
 		
 		//Tile Entities
 		addTileEntityDefinitions();
 //		addPlanterDefinitions();
 	}
 
-	private static void addMiscDefs()
+	
+
+	private static void addHayDefs()
+	{
+		hay = new SCItemHay(id_hay - 256);
+		
+		FCBetterThanWolves.fcItemStraw = Item.replaceItem(FCBetterThanWolves.fcItemStraw.itemID, SCItemStraw.class, SocksCropsAddon.instance);
+		
+		dryingHay = new SCBlockHayDrying(id_dryingHay, "SCBlockHayDrying");
+		Item.itemsList[dryingHay.blockID] = new ItemBlock(id_dryingHay - 256);
+		
+		driedHay = new SCBlockHayDried(id_driedHay, "SCBlockHayDried");
+		Item.itemsList[driedHay.blockID] = new ItemBlock(id_driedHay - 256);
+		
+		strawBale = new SCBlockStrawBale(id_strawBale, "SCBlockStrawBale");
+		Item.itemsList[strawBale.blockID] = new ItemBlock(id_strawBale - 256);
+		
+		hayBale = new SCBlockHayBale(id_hayBale, "SCBlockHayBale");
+		Item.itemsList[hayBale.blockID] = new ItemBlock(id_hayBale - 256);
+		
+	}
+
+	private static void addButterDefs()
 	{
 		Item.bowlEmpty = Item.replaceItem(Item.bowlEmpty.itemID, SCItemBowlEmpty.class, SocksCropsAddon.instance);
 		bowlWater = new SCItemDrinkable(id_bowlWater - 256, Item.bowlEmpty , 0, 0, "SCItemBowlWater");
@@ -1270,6 +1311,7 @@ public class SCDefs {
 	private static void addPumpkinDefs()
 	{
 		Item.pumpkinSeeds = Item.replaceItem(Item.pumpkinSeeds.itemID, SCItemSeedFood.class, SocksCropsAddon.instance, 1, 0F, id_pumpkinStem, 0, "seeds_pumpkin");
+		domesticatedPumpkinSeeds = ( new FCItemSeedFood( id_domesticatedPumpkinSeed, 1, 0F, Block.pumpkinStem.blockID ) ).SetAsBasicChickenFood().SetBellowsBlowDistance( 2 ).SetFilterableProperties( Item.m_iFilterable_Fine ).setUnlocalizedName( "SCItemSeedPumpkin_domesticated" );
 		
 		pumpkinSliceRaw = new Item ( id_pumpkinSliceRaw - 256).setUnlocalizedName("SCItemPumpkinSlice").SetBuoyant().setCreativeTab(CreativeTabs.tabFood);
 		pumpkinSliceRoasted = new SCItemFood(id_pumpkinSliceRoasted - 256, SCItemFood.pumpkinSliceHungerHealed, SCItemFood.pumpkinSliceSaturationModifier, false, "SCItemPumpkinSlice_roasted");
@@ -1337,7 +1379,7 @@ public class SCDefs {
 		
 		//Vine
 		pumpkinVine = new SCBlockGourdVine(id_pumpkinVine, id_pumpkinVineFlowering, id_pumpkinStem, id_gourdVineDead, id_pumpkinVineHanging,
-				"SCBlockPumpkinVine_", "SCBlockPumpkinVineConnector_");
+				"SCBlockPumpkinVine_", "SCBlockPumpkinVineConnector_", "SCBlockGourdLeaf_");
 		Item.itemsList[pumpkinVine.blockID] = new ItemBlock(id_pumpkinVine - 256);
 		
 		gourdVineDead = new SCBlockGourdVineDead(id_gourdVineDead, id_pumpkinVineFlowering, id_pumpkinStem);
@@ -1356,7 +1398,9 @@ public class SCDefs {
 //		Item.itemsList[pumpkinStem.blockID] = new ItemBlock(id_gourdStemDead - 256);
 		
 		pumpkinVineHanging = new SCBlockGourdVineDown(id_pumpkinVineHanging, id_pumpkinStem, id_pumpkinVine, id_gourdVineDeadHanging, id_pumpkinVineHanging,
-				"SCBlockPumpkinVineDownLeaves_bottom_", "SCBlockPumpkinVineDown_top_", "SCBlockPumpkinVineDown_bottom_");
+				"SCBlockPumpkinVine_", //"SCBlockPumpkinVineDownLeaves_bottom_",
+				"SCBlockPumpkinVineDown_top_",
+				"SCBlockPumpkinVineDown_bottom_");
 		Item.itemsList[pumpkinVineHanging.blockID] = new ItemBlock(id_pumpkinVineHanging - 256);
 		
 		gourdVineDeadHanging = new SCBlockGourdVineDownDead(id_gourdVineDeadHanging, id_pumpkinStem);
@@ -1367,7 +1411,8 @@ public class SCDefs {
 	{
 		
 		Item.melonSeeds = Item.replaceItem(Item.melonSeeds.itemID, FCItemSeeds.class, SocksCropsAddon.instance, id_melonStem).setUnlocalizedName( "seeds_melon" );
-
+		domesticatedMelonSeeds =( new FCItemSeeds( id_domesticatedMelonSeed - 256, Block.melonStem.blockID ) ).SetAsBasicChickenFood().setUnlocalizedName( "SCItemSeedMelon_domesticated" );
+		
 	    Item.melon = Item.replaceItem( Item.melon.itemID, SCItemMelonSlice.class, SocksCropsAddon.instance, "melon");	    	    
 	    melonCanarySlice = new SCItemMelonSlice( id_melonCanarySlice - 256, "SCItemMelonYellowSlice");
 	    melonHoneydewSlice = new SCItemMelonSlice( id_melonHoneydewSlice - 256, "SCItemMelonWhiteSlice");
@@ -1427,7 +1472,7 @@ public class SCDefs {
 		
 		//Vine
 		melonVine = new SCBlockGourdVine(id_melonVine, id_melonVineFlowering, id_melonStem, id_gourdVineDead, id_melonVineHanging,
-				"SCBlockMelonVine_", "SCBlockMelonVineConnector_");
+				"SCBlockMelonVine_", "SCBlockMelonVineConnector_", "SCBlockGourdLeaf_");
 		Item.itemsList[melonVine.blockID] = new ItemBlock(id_melonVine - 256);
 		
 		//Flower
@@ -1441,7 +1486,9 @@ public class SCDefs {
 		
 		//Hanging Vine
 		melonVineHanging = new SCBlockGourdVineDown(id_melonVineHanging, id_melonStem, id_melonVine, id_gourdVineDeadHanging, id_melonVineHanging,
-				"SCBlockMelonVineDownLeaves_bottom_", "SCBlockMelonVineDown_top_", "SCBlockMelonVineDown_bottom_");
+				"SCBlockPumpkinVine_", // "SCBlockMelonVineDownLeaves_bottom_",
+				"SCBlockMelonVineDown_top_",
+				"SCBlockMelonVineDown_bottom_");
 		Item.itemsList[melonVineHanging.blockID] = new ItemBlock(id_melonVineHanging - 256);
 	}
 
@@ -1462,8 +1509,6 @@ public class SCDefs {
 		riceBundle = new Item(id_riceBundle - 256).setCreativeTab(CreativeTabs.tabFood).setUnlocalizedName("SCItemRice_bundle").SetFilterableProperties( Item.m_iFilterable_Fine );;
 		rice = new SCItemRice(id_rice - 256);
 		riceCooked = new SCItemFoodBowl(id_riceCooked - 256, Item.bowlEmpty, SCItemFood.riceHungerHealed, SCItemFood.riceSaturationModifier, false, "SCItemRice_cooked");
-		
-		hay = new Item(id_hay - 256).setCreativeTab(CreativeTabs.tabMisc).setUnlocalizedName("SCItemCuttings");
 	}
 
 	private static void addToolDefs()
@@ -1942,7 +1987,11 @@ public class SCDefs {
 		baconCooked = new SCItemFood(id_baconCooked - 256, SCItemFood.baconCookedHungerHealed, SCItemFood.baconCookedSaturationModifier, true, "SCItemBaconCooked");
 		
 		chickenDrumRaw = new SCItemFoodRaw(id_chickenDrumRaw - 256, SCItemFood.chickenDrumRawHungerHealed, SCItemFood.chickenDrumRawSaturationModifier, true, "SCItemChickenDrumRaw");
-		chickenDrumCooked = new SCItemFood(id_chickenDrumCooked - 256, SCItemFood.chickenDrumCookedHungerHealed, SCItemFood.chickenDrumCookedHungerHealed, true, "SCItemChickenDrumCooked");
+		chickenDrumCooked = new SCItemFood(id_chickenDrumCooked - 256, SCItemFood.chickenDrumCookedHungerHealed, SCItemFood.chickenDrumCookedSaturationModifier, true, "SCItemChickenDrumCooked");
+	}
+	
+	private static void addSaladDefs() {
+		salad = new SCItemSalad(id_salad - 256, false, "SCItemSalad", true);
 	}
 	
 	private static void addBurgerDefs() {
@@ -2088,9 +2137,10 @@ public class SCDefs {
 		TileEntity.addMapping(SCTileEntitySeedJar.class, "SCSeedJar");
 		TileEntity.addMapping(SCTileEntityJar.class, "SCJar");
 		TileEntity.addMapping(SCTileEntityComposter.class, "SCComposter");
-		TileEntity.addMapping(SCTileEntityLargeFlowerPot.class, "SCTileEntityBigFlowerPot");
+//		TileEntity.addMapping(SCTileEntityLargeFlowerPot.class, "SCTileEntityBigFlowerPot");
 		TileEntity.addMapping(SCTileEntityRopeHangingItems.class, "SCTileEntityRopeHangingItems");
-		TileEntity.addMapping(SCTileEntityCrate.class, "SCTileEntityCrate");
+		//TileEntity.addMapping(SCTileEntityCrate.class, "SCTileEntityCrate");
+		TileEntity.addMapping(SCTileEntityHayDrying.class, "SCBlockHay");
 		
 //		TileEntity.addMapping(SCTileEntityFlowerPot.class, "SCFlowerPot");
 //		TileEntity.addMapping(SCTileEntityWaterPot.class, "SCWaterPot");		
@@ -2133,14 +2183,14 @@ public class SCDefs {
 		composter = new SCBlockComposter(id_composter);
 		Item.itemsList[composter.blockID] = new ItemBlock(composter.blockID - 256);
 
-		largeFlowerPot = new SCBlockLargeFlowerPot(id_largeFlowerPot);
-		Item.itemsList[largeFlowerPot.blockID] = new ItemBlock(id_largeFlowerPot - 256);
+//		largeFlowerPot = new SCBlockLargeFlowerPot(id_largeFlowerPot);
+//		Item.itemsList[largeFlowerPot.blockID] = new ItemBlock(id_largeFlowerPot - 256);
 		
 		ropeHangingItems = new SCBlockRopeHangingItems(id_ropeHangingItems);
 		Item.itemsList[ropeHangingItems.blockID] = new ItemBlock(id_ropeHangingItems - 256);
 
-		crate = new SCBlockCrate(id_crate, "SCBlockCrate");		
-		Item.itemsList[crate.blockID] = new SCItemBlockCrate(id_crate - 256, crate);
+		//crate = new SCBlockCrate(id_crate, "SCBlockCrate");		
+		//Item.itemsList[crate.blockID] = new SCItemBlockCrate(id_crate - 256, crate);
 		
 //		flowerPot = new SCBlockFlowerPot(id_flowerPot);
 //		Item.replaceItem(Item.flowerPot.itemID, SCItemFlowerPot.class, overrideDeco, SocksCropsAddon.instance);

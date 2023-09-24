@@ -74,6 +74,10 @@ public class SCItemSandwich extends SCItemBurgerBase {
 	
 	@Override
 	protected void registerBurgerIcons(IconRegister register) {
+		
+		incompleteBurgerIcon[0] = register.registerIcon("SCItemSandwich_incomplete_16");
+		burgerIcon[0] =  register.registerIcon("SCItemSandwich_16");		
+		
 		incompleteBurgerIcon[2] = register.registerIcon("SCItemSandwich_incomplete_2");
 //		burgerIcon[2] =  register.registerIcon("SCItemBurger_2"); //tasty Sandwich
 		

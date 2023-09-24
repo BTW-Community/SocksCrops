@@ -73,7 +73,7 @@ public class SCWorldGenRocks {
                 	
                 	if (isDesert) 
                 	{
-                    	if (rockY > 60) 
+                    	if (rockY > 55 && rockY < 63) 
                     	{
                 			world.setBlock(rockX, rockY, rockZ, SCDefs.rocksSandstone.blockID, type, 2);
                 			

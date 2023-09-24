@@ -12,6 +12,7 @@ public class SCBlockFishTrap extends BlockContainer {
 	protected SCBlockFishTrap(int blockID) {
 		super(blockID, Material.wood);
 		
+		setLightOpacity(1);
 		SetAxesEffectiveOn();
 		SetFireProperties( FCEnumFlammability.WICKER );
         SetBuoyant();

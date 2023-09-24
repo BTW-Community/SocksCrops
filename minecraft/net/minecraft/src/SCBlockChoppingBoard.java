@@ -105,6 +105,11 @@ public class SCBlockChoppingBoard extends BlockContainer {
 	}
 
 	@Override
+	public int idDropped(int par1, Random par2Random, int par3) {
+		return 0;
+	}
+	
+	@Override
     public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List) {
     	par3List.add(new ItemStack(par1, 1, 0));
     	par3List.add(new ItemStack(par1, 1, 1));
@@ -379,34 +384,38 @@ public class SCBlockChoppingBoard extends BlockContainer {
     /**
      * Drops the block items with a specified chance of dropping the specified items
      */
-    public void dropBlockAsItemWithChance(World world, int x, int y, int z, int par5, float par6, int par7)
-    {
-    	SCTileEntityChoppingBoard choppingBoard = (SCTileEntityChoppingBoard) world.getBlockTileEntity(x, y, z);
-    	
-        if (!world.isRemote)
-        {
-            int var8 = this.quantityDroppedWithBonus(par7, world.rand);
-
-            for (int var9 = 0; var9 < var8; ++var9)
-            {
-                if (world.rand.nextFloat() <= par6)
-                {
-                    int var10 = this.idDropped(par5, world.rand, par7);
-
-                    if (var10 > 0)
-                    {
-                        this.dropBlockAsItem_do(world, x, y, z, new ItemStack(var10, 1, choppingBoard.getWoodType()));
-                    }
-                }
-            }
-        }
-    }
+//	@Override
+//    public void dropBlockAsItemWithChance(World world, int x, int y, int z, int par5, float par6, int par7)
+//    {
+//    	SCTileEntityChoppingBoard choppingBoard = (SCTileEntityChoppingBoard) world.getBlockTileEntity(x, y, z);
+//    	
+//        if (!world.isRemote)
+//        {
+//            int var8 = this.quantityDroppedWithBonus(par7, world.rand);
+//
+//            for (int var9 = 0; var9 < var8; ++var9)
+//            {
+//                if (world.rand.nextFloat() <= par6)
+//                {
+//                    int var10 = this.idDropped(par5, world.rand, par7);
+//
+//                    if (var10 > 0)
+//                    {
+//                        this.dropBlockAsItem_do(world, x, y, z, new ItemStack(var10, 1, choppingBoard.getWoodType()));
+//                    }
+//                }
+//            }
+//        }
+//    }
 	
 	@Override
     public void breakBlock( World world, int i, int j, int k, int iBlockID, int iMetadata )
     {
         FCUtilsInventory.EjectInventoryContents( world, i, j, k, (IInventory)world.getBlockTileEntity( i, j, k ) );
-
+        
+        SCTileEntityChoppingBoard choppingBoard = (SCTileEntityChoppingBoard) world.getBlockTileEntity(i, j, k);
+        this.dropBlockAsItem_do(world, i, j, k, new ItemStack(SCDefs.choppingBoard, 1, choppingBoard.getWoodType()));
+        
         super.breakBlock( world, i, j, k, iBlockID, iMetadata );
     }
 	

@@ -30,7 +30,7 @@ public class SCBlockGourdVineDownDead extends SCBlockGourdVineDown {
     @Override
     public void registerIcons( IconRegister register )
     {
-//    	super.registerIcons(register);
+    	super.registerIcons(register);
     	
     	vineIcons = new Icon[4];
     	

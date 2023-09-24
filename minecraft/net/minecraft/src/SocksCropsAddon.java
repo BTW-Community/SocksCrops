@@ -27,6 +27,8 @@ public class SocksCropsAddon extends FCAddOn {
     	SCDefs.addDefinitions();
     	
     	SCRecipes.addRecipes();
+    	
+    	SCTrades.addTrades();
 	}
 	
 	@Override
@@ -34,7 +36,13 @@ public class SocksCropsAddon extends FCAddOn {
 		
 		SCWorldDecorator.decorateWorld(decorator, world, rand, x, z, biome);
 		
-		//debugRivers(world, x, y);
+		//debugRivers(world, x, z);
+	}
+	
+	@Override
+	public void addDesertWellLoot(ArrayList<FCUtilsRandomItemStack> basketLoot) {
+		// item ID, item damage, min stack size, max stack size, weight
+		basketLoot.add( new FCUtilsRandomItemStack(SCDefs.hopSeeds.itemID, 0, 1, 2, 10));
 	}
 	
 	@Override
@@ -42,7 +50,11 @@ public class SocksCropsAddon extends FCAddOn {
 		// item ID, item damage, min stack size, max stack size, weight
 		
 		//Grapes
-		chestLoot.add( new WeightedRandomChestContent( SCDefs.redGrapes.itemID, 0, 1, 2, 5 ) );
+		lootedChestLoot.add( new WeightedRandomChestContent( SCDefs.redGrapeSeeds.itemID, 0, 1, 1, 3 ) );
+		lootedChestLoot.add( new WeightedRandomChestContent( SCDefs.whiteGrapeSeeds.itemID, 0, 1, 1, 3 ) );
+		
+		chestLoot.add( new WeightedRandomChestContent( SCDefs.redGrapes.itemID, 0, 1, 2, 10 ) );
+		chestLoot.add( new WeightedRandomChestContent( SCDefs.whiteGrapes.itemID, 0, 1, 2, 10 ) );
 	}
 	
 	@Override
@@ -50,7 +62,9 @@ public class SocksCropsAddon extends FCAddOn {
 		// item ID, item damage, min stack size, max stack size, weight
 		
 		//Tomato
-		chestLoot.add( new WeightedRandomChestContent( SCDefs.tomatoSeeds.itemID, 0, 1, 2, 5 ) );
+		lootedChestLoot.add( new WeightedRandomChestContent( SCDefs.tomatoSeeds.itemID, 0, 1, 1, 3 ) );
+		
+		chestLoot.add( new WeightedRandomChestContent( SCDefs.tomato.itemID, 0, 1, 2, 10 ) );
 	}
 
     @Override
@@ -85,33 +99,39 @@ public class SocksCropsAddon extends FCAddOn {
 		        	BiomeGenBase currentBiome = world.getBiomeGenForCoords(xPos, zPos );
 		        	Block block = Block.blockLapis;
 		        	
-		            if ( currentBiome instanceof BiomeGenRiver ) 
-		            {
-		            	if ( currentBiome == BiomeGenBase.riverDesert )  block = Block.blockGold;
-		            	
-		            	if ( currentBiome == BiomeGenBase.riverExtremeHills )  block = Block.blockEmerald;
-		            	
-		            	if ( currentBiome == BiomeGenBase.riverForest )  block = Block.blockIron;
-		            	
-		            	if ( currentBiome == BiomeGenBase.frozenRiver)  block = Block.glass;
-		            	
-		            	if ( currentBiome == BiomeGenBase.riverSwamp)  block = Block.brick;
-		            	
-		            	if ( currentBiome == BiomeGenBase.riverTaiga )  block = Block.blockDiamond;
-		            	
-		            	if ( currentBiome == BiomeGenBase.riverJungle )  block = Block.blockRedstone;
-		            	
-		            	if ( currentBiome == BiomeGenBase.riverPlains )  block = Block.blockNetherQuartz;
-	
-		            	world.setBlock(xPos, 80, zPos, block.blockID, 0, 2);
-		            }
-		            
-		            else if ( currentBiome instanceof BiomeGenBeach ) 
-		            {
-		            	block = Block.whiteStone;
-		            	
-		            	world.setBlock(xPos, 80, zPos, block.blockID, 0, 2);
-		            }
+		        	if (currentBiome == BiomeGenBase.ocean) 
+		        	{
+		        		block = Block.glass;
+		        		
+		        		world.setBlock(xPos, 80, zPos, block.blockID, 0, 2);
+		        	}
+		        	
+//		            if ( currentBiome instanceof BiomeGenRiver ) 
+//		            {
+//		            	if ( currentBiome == BiomeGenBase.riverDesert )  block = Block.blockGold;
+//		            	
+//		            	if ( currentBiome == BiomeGenBase.riverExtremeHills )  block = Block.blockEmerald;
+//		            	
+//		            	if ( currentBiome == BiomeGenBase.riverForest )  block = Block.blockIron;
+//		            	
+//		            	if ( currentBiome == BiomeGenBase.frozenRiver)  block = Block.glass;
+//		            	
+//		            	if ( currentBiome == BiomeGenBase.riverSwamp)  block = Block.brick;
+//		            	
+//		            	if ( currentBiome == BiomeGenBase.riverTaiga )  block = Block.blockDiamond;
+//		            	
+//		            	if ( currentBiome == BiomeGenBase.riverJungle )  block = Block.blockRedstone;
+//		            	
+//		            	if ( currentBiome == BiomeGenBase.riverPlains )  block = Block.blockNetherQuartz;
+//	
+//		            	world.setBlock(xPos, 80, zPos, block.blockID, 0, 2);
+//		            }		            
+//		            else if ( currentBiome instanceof BiomeGenBeach ) 
+//		            {
+//		            	block = Block.whiteStone;
+//		            	
+//		            	world.setBlock(xPos, 80, zPos, block.blockID, 0, 2);
+//		            }
 	          }	   
 	    }
 	}

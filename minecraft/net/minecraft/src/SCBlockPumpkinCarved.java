@@ -24,6 +24,26 @@ public class SCBlockPumpkinCarved extends FCBlockPumpkinCarved {
     	setCreativeTab(CreativeTabs.tabBlock);
 	}
 	
+	@Override
+	public boolean isValidForArmorSlot(int armorType, ItemStack itemStack) {
+		
+		if (armorType == 0 && itemStack.getItemDamage() == 3) return true;
+		
+		return false;
+	}
+	
+	@Override
+	public String getBlurOverlay(ItemStack itemStack) {
+		
+		return "%blur%/misc/pumpkinblur.png";
+	}
+	
+	@Override
+	public boolean showBlurOverlayWithGuiDisabled(ItemStack itemStack) {
+		
+		return true;
+	}
+	
     @Override
     public int idDropped( int iMetadata, Random rand, int iFortuneModifier )
     {
@@ -189,6 +209,11 @@ public class SCBlockPumpkinCarved extends FCBlockPumpkinCarved {
     {
         return false;
     }
+	
+	@Override
+	public boolean shouldSideBeRendered(IBlockAccess blockAccess, int iNeighborI, int iNeighborJ, int iNeighborK, int iSide) {
+		return true;
+	}
 	
 	@Override
 	public boolean RenderBlock(RenderBlocks renderer, int i, int j, int k) {

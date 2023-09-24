@@ -10,7 +10,7 @@ public abstract class SCBlockGourdVineFloweringBase extends SCBlockGourdVine {
 	protected int stemBlock;
 
 	protected SCBlockGourdVineFloweringBase(int iBlockID, int vineBlock, int stemBlock, int convertedBlockID) {
-		super(iBlockID, vineBlock, stemBlock, convertedBlockID, 0, texVine, texConnector);
+		super(iBlockID, vineBlock, stemBlock, convertedBlockID, 0, texVine, texConnector, "SCBlockGourdLeaf_");
 
 		this.vineBlock = vineBlock;
 		this.convertedBlockID = convertedBlockID;

@@ -54,7 +54,7 @@ public class SCItemDrinkable extends Item
     @Override
     public ItemStack onEaten( ItemStack stack, World world, EntityPlayer player )
     {
-        super.onEaten( stack, world, player );
+    	--stack.stackSize;
 
         ItemStack bowlStack = new ItemStack( returnItem );
         

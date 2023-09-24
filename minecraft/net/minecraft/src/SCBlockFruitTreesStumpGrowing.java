@@ -92,7 +92,7 @@ public class SCBlockFruitTreesStumpGrowing extends SCBlockFruitTreesLogBase {
 		}
 	}
 	
-	private void removeBlocksAboveInCube(World world, int x, int y, int z, int blockID, int meta, int minX, int maxX, int minY, int maxY, int minZ, int maxZ )
+	private static void removeBlocksAboveInCube(World world, int x, int y, int z, int blockID, int meta, int minX, int maxX, int minY, int maxY, int minZ, int maxZ )
 	{			
 		for (int i = x + minX ; i <= x + maxX; i++)
 		{
@@ -143,10 +143,7 @@ public class SCBlockFruitTreesStumpGrowing extends SCBlockFruitTreesLogBase {
 		System.out.println("Growthstage: " + growthStage);
 		
 		if (random.nextFloat() <= getGrowthChance())
-		{
-			
-			
-			
+		{			
 			if (growthStage == 0) 
 			{
 				//Sapling already places a stump and leaf block above
@@ -215,14 +212,7 @@ public class SCBlockFruitTreesStumpGrowing extends SCBlockFruitTreesLogBase {
 					 hasValidBlocksAboveInRange(world, x, y, z, SCDefs.fruitLeaves.blockID, fruitType, 4, 4) ) 
 				{
 				
-					//remove this block
-					removeBlocksAboveInCube(world, x, y, z, SCDefs.fruitStump.blockID, fruitType,  0, 0, 0, 0, 0, 0);
-					
-					//remove the logs above
-					removeBlocksAboveInCube(world, x, y, z, SCDefs.fruitLog.blockID, fruitType,  0, 0, 1, 3, 0, 0);
-					
-					//remove all the leaves
-					removeBlocksAboveInCube(world, x, y, z, SCDefs.fruitLeaves.blockID, fruitType,  -1, 1, 2, 4, -1, 1);
+//					removeGrowingTree(world, x, y, z, fruitType);
 					
 					//growTree
 					growTree(world, x, y, z, random, fruitType);
@@ -231,11 +221,22 @@ public class SCBlockFruitTreesStumpGrowing extends SCBlockFruitTreesLogBase {
 		}		
 	}
 
+	public static void removeGrowingTree(World world, int x, int y, int z, int fruitType) {
+		//remove this block
+		removeBlocksAboveInCube(world, x, y, z, SCDefs.fruitStump.blockID, fruitType,  0, 0, 0, 0, 0, 0);
+		
+		//remove the logs above
+		removeBlocksAboveInCube(world, x, y, z, SCDefs.fruitLog.blockID, fruitType,  0, 0, 1, 3, 0, 0);
+		
+		//remove all the leaves
+		removeBlocksAboveInCube(world, x, y, z, SCDefs.fruitLeaves.blockID, fruitType,  -1, 1, 2, 4, -1, 1);
+	}
+
 	protected void incrementGrowth(World world, int x, int y, int z, int meta) {
 		world.setBlockMetadata(x, y, z, meta + 4);
 	}
 
-	private boolean growTree(World world, int i, int j, int k, Random random, int iTreeType) {
+	public boolean growTree(World world, int i, int j, int k, Random random, int iTreeType) {
 		//int iTreeType = world.getBlockMetadata(i, j, k) & 3;
         boolean bSuccess = false;
         
@@ -257,22 +258,22 @@ public class SCBlockFruitTreesStumpGrowing extends SCBlockFruitTreesLogBase {
 		if ( iTreeType == 1 ) // cherry
         {
 			bSuccess = SCUtilsTrees.generateFruitTree(world, random, i, j, k,
-					SCDefs.fruitLog.blockID, 1, SCDefs.fruitLog.blockID, 13, SCDefs.fruitLeavesCherry.blockID, 0, 4, 0.5F);
+					SCDefs.fruitLog.blockID, 1, SCDefs.fruitLog.blockID, 13, SCDefs.fruitLeavesCherry.blockID, 0, 4, 0.5F, iTreeType);
         } 
 		else if ( iTreeType == 2 ) // lemon
         {
 			bSuccess = SCUtilsTrees.generateFruitTree(world, random, i, j, k,
-					SCDefs.fruitLog.blockID, 2, SCDefs.fruitLog.blockID, 14, SCDefs.fruitLeavesLemon.blockID, 0, 4, 0.5F);
+					SCDefs.fruitLog.blockID, 2, SCDefs.fruitLog.blockID, 14, SCDefs.fruitLeavesLemon.blockID, 0, 4, 0.5F, iTreeType);
         } 
 		else if (iTreeType == 3) //olive
 		{
 			bSuccess = SCUtilsTrees.generateFruitTree(world, random, i, j, k,
-					SCDefs.fruitLog.blockID, 3, SCDefs.fruitLog.blockID, 15, SCDefs.fruitLeavesOlive.blockID, 0, 4, 0.5F);
+					SCDefs.fruitLog.blockID, 3, SCDefs.fruitLog.blockID, 15, SCDefs.fruitLeavesOlive.blockID, 0, 4, 0.5F, iTreeType);
 		}
 		else //apple
 		{
 			bSuccess = SCUtilsTrees.generateFruitTree(world, random, i, j, k,
-					SCDefs.fruitLog.blockID, 0, SCDefs.fruitLog.blockID, 12, SCDefs.fruitLeavesApple.blockID, 0, 4, 0.5F);
+					SCDefs.fruitLog.blockID, 0, SCDefs.fruitLog.blockID, 12, SCDefs.fruitLeavesApple.blockID, 0, 4, 0.5F, iTreeType);
 		}
         
 		return bSuccess;

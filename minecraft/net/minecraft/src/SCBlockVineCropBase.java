@@ -48,7 +48,7 @@ public abstract class SCBlockVineCropBase extends SCBlockCropsDailyGrowth {
     	super.onBlockActivated(world, i, j, k, player, iFacing, fXClick, fYClick, fZClick);
     	
     	ItemStack equippedItem = player.getCurrentEquippedItem();
-		
+    	
     	if (equippedItem == null || !(equippedItem.getItem() instanceof FCItemShears))
 		{
     		if (isFruitRipe(world, i, j, k))

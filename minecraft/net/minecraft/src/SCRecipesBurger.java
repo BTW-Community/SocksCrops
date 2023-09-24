@@ -40,7 +40,6 @@ public class SCRecipesBurger extends SCRecipes
 		}
 						
 		return contains[6] | contains[5] | contains [4] | contains[3] | contains[2] | contains[1] | contains[0];
-		
 	}
 	
 	public static int setBurgerContents(int salad, int patty, int cheese, int egg, int bacon, int tomato, int onion)

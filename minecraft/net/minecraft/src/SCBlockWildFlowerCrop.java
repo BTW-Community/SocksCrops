@@ -27,6 +27,12 @@ public class SCBlockWildFlowerCrop extends FCBlockFlowerBlossom {
 	}
 	
 	@Override
+	public int idPicked(World par1World, int par2, int par3, int par4) {
+		// TODO Auto-generated method stub
+		return super.idPicked(par1World, par2, par3, par4);
+	}
+	
+	@Override
 	public int idDropped(int meta, Random par2Random, int iFortuneModifier)
 	{		
 		if (meta == CARROT)

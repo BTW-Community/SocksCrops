@@ -163,6 +163,9 @@ public class SCItemFood extends FCItemFood {
 	static public final int sweetPotatoBoiledHungerHealed = 8;
 	static public final float sweetPotatoBoiledSaturationModifier = VEGS_SATURATION_MODIFIER;
 	
+	static public final int mushroomHungerHealed = 3;
+	static public final float mushroomSaturationModifier = VEGS_SATURATION_MODIFIER;
+	
 	public SCItemFood(int iItemID, int iHungerHealed, float fSaturationModifier, boolean bWolfMeat, String sItemName) {
 		super(iItemID, iHungerHealed, fSaturationModifier, bWolfMeat, sItemName);
 		

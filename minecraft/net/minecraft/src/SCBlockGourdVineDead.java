@@ -8,7 +8,7 @@ public class SCBlockGourdVineDead extends SCBlockGourdVine {
 	private static String texConnector;
 
 	protected SCBlockGourdVineDead(int iBlockID, int floweringBlock, int stemBlock) {
-		super(iBlockID, floweringBlock, stemBlock, 0, 0, texVine, texConnector);
+		super(iBlockID, floweringBlock, stemBlock, 0, 0, texVine, texConnector, "SCBlockGourdLeaf_");
 		
 		setHardness( 0F );
 	}
@@ -31,6 +31,8 @@ public class SCBlockGourdVineDead extends SCBlockGourdVine {
 	@Override
     public void registerIcons( IconRegister register )
     {
+		super.registerIcons(register);
+		
     	vineIcons = new Icon[4];
 
         for ( int iTempIndex = 0; iTempIndex < vineIcons.length; iTempIndex++ )

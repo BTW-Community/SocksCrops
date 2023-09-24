@@ -63,7 +63,7 @@ public class SCBlockDoubleTallGrass extends BlockFlower {
     		{
             	player.getHeldItem().damageItem(1, player);
             	
-    			if (world.rand.nextFloat() <= 1/16F)
+    			if (world.rand.nextFloat() <= 1/8F)
     			{
     				this.dropBlockAsItem_do(world, i, j, k, new ItemStack(SCDefs.grassSeeds));
     			}
@@ -72,7 +72,7 @@ public class SCBlockDoubleTallGrass extends BlockFlower {
     		{
             	player.getHeldItem().damageItem(1, player);
             	
-    			if (world.rand.nextFloat() <= 1/16F)
+    			if (world.rand.nextFloat() <= 1/8F)
     			{
     				this.dropBlockAsItem_do(world, i, j, k, new ItemStack(SCDefs.hay));
     			}

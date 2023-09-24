@@ -99,7 +99,7 @@ public abstract class SCBlockFarmlandBase extends FCBlockFarmland{
 				}
 			}
 
-			if ( stack.itemID == SCDefs.hay.itemID)
+			if ( stack.itemID == FCBetterThanWolves.fcItemStraw.itemID)
 			{
 				stack.stackSize--;
 				

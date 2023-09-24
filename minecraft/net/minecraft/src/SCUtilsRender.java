@@ -1736,4 +1736,125 @@ public class SCUtilsRender {
         tess.addVertexWithUV(var22, y + 0.0D, var26, maxU, maxV);
         tess.addVertexWithUV(var22, y + (double)scale, var26  + 1, maxU, minV);
     }
+    
+    public static void renderGourdLeafWithTexturesAndRotation( RenderBlocks renderBlocks, Block block, int i, int j, int k, Icon icon, int rotate, double height, double angle)
+    {
+    	if (renderBlocks.hasOverrideBlockTexture())
+        {
+    		icon = renderBlocks.GetOverrideTexture();
+        }
+         renderYPosWithRotationHeightAngle(renderBlocks, block, i, j, k, icon, rotate, height, angle);
+	}
+    
+    private static void renderYPosWithRotationHeightAngle(RenderBlocks render, Block block, double x, double y, double z, Icon icon, int rotate, double height, double angle)
+    {
+        Tessellator var9 = Tessellator.instance;
+
+        double renderMinX = 0D;
+        double renderMaxX = 1D;
+        double renderMinY = 0D;
+        double renderMaxY = 1D;
+        double renderMinZ = 0D;
+        double renderMaxZ = 1D;
+        
+        double minU = (double)icon.getInterpolatedU(renderMinX * 16.0D);
+        double maxU = (double)icon.getInterpolatedU(renderMaxX * 16.0D);
+        double minV = (double)icon.getInterpolatedV(renderMinZ * 16.0D);
+        double maxV = (double)icon.getInterpolatedV(renderMaxZ * 16.0D);
+
+        if (renderMinX < 0.0D || renderMaxX > 1.0D)
+        {
+            minU = (double)icon.getMinU();
+            maxU = (double)icon.getMaxU();
+        }
+
+        if (renderMinZ < 0.0D || renderMaxZ > 1.0D)
+        {
+            minV = (double)icon.getMinV();
+            maxV = (double)icon.getMaxV();
+        }
+
+        double newMinU = maxU;
+        double newMaxU = minU;
+        double newMinV = minV;
+        double newMaxV = maxV;
+        
+        double shiftUp=angle;
+        double shiftDown=-angle;
+
+        double minX = x + renderMinX;
+        double maxX = x + renderMaxX;
+        double yPos = y + height;
+        double minZ = z + renderMinZ;
+        double maxZ = z + renderMaxZ;
+        
+        double yPos1 = yPos + shiftDown;
+        double yPos2 = yPos + shiftUp;
+        double yPos3 = yPos + shiftUp;
+        double yPos4 = yPos + shiftDown;
+        
+        if (rotate == 1)
+        {
+            minU = (double)icon.getInterpolatedU(renderMinZ * 16.0D);
+            minV = (double)icon.getInterpolatedV(16.0D - renderMaxX * 16.0D);
+            maxU = (double)icon.getInterpolatedU(renderMaxZ * 16.0D);
+            maxV = (double)icon.getInterpolatedV(16.0D - renderMinX * 16.0D);
+            newMinV = minV;
+            newMaxV = maxV;
+            newMinU = minU;
+            newMaxU = maxU;
+            minV = maxV;
+            maxV = newMinV;
+            
+            
+            yPos1 = yPos + shiftUp;
+            yPos2 = yPos + shiftUp;
+            yPos3 = yPos + shiftDown;
+            yPos4 = yPos + shiftDown;
+        }
+        else if (rotate == 2)
+        {
+            minU = (double)icon.getInterpolatedU(16.0D - renderMaxZ * 16.0D);
+            minV = (double)icon.getInterpolatedV(renderMinX * 16.0D);
+            maxU = (double)icon.getInterpolatedU(16.0D - renderMinZ * 16.0D);
+            maxV = (double)icon.getInterpolatedV(renderMaxX * 16.0D);
+            newMinU = maxU;
+            newMaxU = minU;
+            minU = maxU;
+            maxU = newMaxU;
+            newMinV = maxV;
+            newMaxV = minV;
+            
+            
+            yPos1 = yPos + shiftDown;
+            yPos2 = yPos + shiftDown;
+            yPos3 = yPos + shiftUp;
+            yPos4 = yPos + shiftUp;
+            
+        }
+        else if (rotate == 3)
+        {
+            minU = (double)icon.getInterpolatedU(16.0D - renderMinX * 16.0D);
+            maxU = (double)icon.getInterpolatedU(16.0D - renderMaxX * 16.0D);
+            minV = (double)icon.getInterpolatedV(16.0D - renderMinZ * 16.0D);
+            maxV = (double)icon.getInterpolatedV(16.0D - renderMaxZ * 16.0D);
+            newMinU = maxU;
+            newMaxU = minU;
+            newMinV = minV;
+            newMaxV = maxV;
+            
+            yPos1 = yPos + shiftUp;
+            yPos2 = yPos + shiftDown;
+            yPos3 = yPos + shiftDown;
+            yPos4 = yPos + shiftUp;         
+            
+           
+        }
+
+        var9.addVertexWithUV(maxX, yPos1, maxZ, maxU, maxV);
+        var9.addVertexWithUV(maxX, yPos2, minZ, newMinU, newMinV);
+        var9.addVertexWithUV(minX, yPos3, minZ, minU, minV);
+        var9.addVertexWithUV(minX, yPos4, maxZ, newMaxU, newMaxV);
+    }
+    
 }

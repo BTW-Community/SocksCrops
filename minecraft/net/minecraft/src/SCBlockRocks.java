@@ -70,7 +70,7 @@ public class SCBlockRocks extends Block {
     	h = (h^(h >> 13))*1274126177;
        return h^(h >> 16);
 	}
-
+	
 	@Override
     public boolean canPlaceBlockAt( World world, int i, int j, int k )
     {
@@ -311,8 +311,7 @@ public class SCBlockRocks extends Block {
 
 		return textureIcon;
 	}
-	
-	
+		
 	@Override
 	public boolean RenderBlock(RenderBlocks renderer, int i, int j, int k) {
 		hasSnowOnTop = IsSnowCoveringTopSurface(renderer.blockAccess, i, j, k);

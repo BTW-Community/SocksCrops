@@ -7,7 +7,7 @@ public class SCBlockGourdVineDown extends SCBlockGourdVine {
 	private int vineBlock;
 	
 	protected SCBlockGourdVineDown(int iBlockID, int stemBlock, int vineBlock, int convertedBlock, int hangingVine, String leavesTex, String topTex, String bottomTex) {
-		super(iBlockID, 0, stemBlock, convertedBlock, hangingVine, null, null);
+		super(iBlockID, 0, stemBlock, convertedBlock, hangingVine, null, null, "SCBlockGourdLeaf_");
 		
 		this.vineBlock = vineBlock;
 		
@@ -213,7 +213,7 @@ public class SCBlockGourdVineDown extends SCBlockGourdVine {
     @Override
     public void registerIcons( IconRegister register )
     {
-//    	super.registerIcons(register);
+    	super.registerIcons(register);
     	
     	vineIcons = new Icon[4];
     	
@@ -244,14 +244,16 @@ public class SCBlockGourdVineDown extends SCBlockGourdVine {
     @Override
     public boolean RenderBlock(RenderBlocks r, int i, int j, int k) {
     	int meta = r.blockAccess.getBlockMetadata( i, j, k );
-    	if (GetGrowthLevel(meta) > 0)
+    	if (GetGrowthLevel(meta) > 1)
     	{
     		r.renderCrossedSquares(this, i, j, k);
+    		this.renderGourdLeaf(r, i, j, k);
     	}
 
     	if (this.hasStemFacing(r, i, j, k, 1))
     	{
-        	this.renderVineConnector( r, i, j, k);        	     
+        	this.renderVineConnector( r, i, j, k);    
+        	
     	}
     	return true;
     }

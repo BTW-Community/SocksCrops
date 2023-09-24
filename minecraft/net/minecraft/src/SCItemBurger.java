@@ -61,11 +61,13 @@ public class SCItemBurger extends SCItemBurgerBase {
 			list.add(new ItemStack(id, 1, 123));
 		}
 	}
-
-
+	
 	@Override
 	protected void registerBurgerIcons(IconRegister register) {
 		//burger
+		incompleteBurgerIcon[0] = register.registerIcon("SCItemBurger_incomplete_2");
+		burgerIcon[0] = register.registerIcon("SCItemBurger_2");
+		
 		incompleteBurgerIcon[1] = register.registerIcon("SCItemBurger_incomplete_1");
 
 		incompleteBurgerIcon[2] = register.registerIcon("SCItemBurger_incomplete_2");
