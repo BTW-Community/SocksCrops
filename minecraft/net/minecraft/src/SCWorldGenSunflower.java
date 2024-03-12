@@ -9,26 +9,20 @@ public class SCWorldGenSunflower extends WorldGenerator
     private int tallGrassID;
     private int tallGrassMetadata;
 	private int times;
+	
+	private static ArrayList<Integer> validBiomeList;
 
-    public SCWorldGenSunflower(int times, int id, int meta)
+    public SCWorldGenSunflower(int times, int id, int meta, ArrayList<Integer> validBiomeList)
     {
         this.tallGrassID = id;
         this.tallGrassMetadata = meta;
         this.times = times;
+        
+        this.validBiomeList = validBiomeList;
     }
     
-	private static ArrayList<BiomeGenBase> validBiomeList = new ArrayList();
-	
-	public static boolean isBiomeValid(BiomeGenBase biome) {
-		return validBiomeList.contains(biome);
-	}
-	
-	public static void addBiomeToGenerator(BiomeGenBase biome) {
-		validBiomeList.add(biome);
-	}
-	
-	static {
-		SCWorldGenSunflower.addBiomeToGenerator(BiomeGenBase.plains);
+	public static boolean isBiomeValid(int biomeID) {
+		return validBiomeList.contains(biomeID);
 	}
 
     public boolean generate(World par1World, Random par2Random, int par3, int par4, int par5)
@@ -41,7 +35,7 @@ public class SCWorldGenSunflower extends WorldGenerator
 
         	BiomeGenBase currentBiome = par1World.getBiomeGenForCoords( var8, var10 );
         	
-            boolean isValidBiome = isBiomeValid(currentBiome);
+            boolean isValidBiome = isBiomeValid(currentBiome.biomeID);
            
             if (var9 < 60)
             	return false;

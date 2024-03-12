@@ -8,27 +8,19 @@ public class SCWorldGenClover extends WorldGenerator
     /** The ID of the plant block used in this plant generator. */
     private int plantBlockId;
     private int plantMeta;
-
-    public SCWorldGenClover(int par1, int meta)
+    
+	private static ArrayList<Integer> validBiomeList = new ArrayList();
+	
+    public SCWorldGenClover(int par1, int meta, ArrayList<Integer> validBiomeList)
     {
         this.plantBlockId = par1;
         this.plantMeta = meta;
+        
+        this.validBiomeList = validBiomeList;
     }
     
-	private static ArrayList<BiomeGenBase> validBiomeList = new ArrayList();
-	
-	public static boolean isBiomeValid(BiomeGenBase biome) {
-		return validBiomeList.contains(biome);
-	}
-	
-	public static void addBiomeToGenerator(BiomeGenBase biome) {
-		validBiomeList.add(biome);
-	}
-	
-	static {
-		SCWorldGenClover.addBiomeToGenerator(BiomeGenBase.forest);
-		SCWorldGenClover.addBiomeToGenerator(BiomeGenBase.forestHills);
-		SCWorldGenClover.addBiomeToGenerator(BiomeGenBase.plains);
+	public static boolean isBiomeValid(int biomeID) {
+		return validBiomeList.contains(biomeID);
 	}
 
     public boolean generate(World world, Random random, int x, int y, int z)
@@ -42,7 +34,7 @@ public class SCWorldGenClover extends WorldGenerator
             
         	BiomeGenBase currentBiome = world.getBiomeGenForCoords( x, z );
         	
-            boolean isValidBiome = isBiomeValid(currentBiome);
+            boolean isValidBiome = isBiomeValid(currentBiome.biomeID);
         	
             
             if ( !isValidBiome )

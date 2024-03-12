@@ -4,10 +4,10 @@ package net.minecraft.src;
 
 public class SCItemDrinkable extends Item
 {
-	private int m_iHungerHealed;
-	private float m_fSaturationModifier;
+	protected int m_iHungerHealed;
+	protected float m_fSaturationModifier;
 	
-	private Item returnItem;
+	protected Item returnItem;
 	
     public SCItemDrinkable( int iItemID, Item returnItem, int iHungerHealed, float fSaturationModifier, String name )
     {

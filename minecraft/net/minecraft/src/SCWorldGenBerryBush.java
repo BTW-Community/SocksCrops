@@ -7,35 +7,18 @@ public class SCWorldGenBerryBush {
 	
     /** The ID of the plant block used in this plant generator. */
     private Block plantBlock;
+	
+	private static ArrayList<Integer> validBiomeList;
 
-    public SCWorldGenBerryBush(Block par1)
+    public SCWorldGenBerryBush(Block par1, ArrayList<Integer> validBiomeList)
     {
         this.plantBlock = par1;
+        this.validBiomeList = validBiomeList;
     }
-	
-	private static ArrayList<BiomeGenBase> validForestBiome = new ArrayList();
-	private static ArrayList<BiomeGenBase> validTaigaBiome = new ArrayList();
-	
-	public static boolean isForestBiome(BiomeGenBase biome) {
-		return validForestBiome.contains(biome);
-	}
-	
-	public static boolean isTagiaBiome(BiomeGenBase biome) {
-		return validTaigaBiome.contains(biome);
-	}
-	
-	public static boolean isBiomeValid(BiomeGenBase biome)
-	{
-		return isForestBiome(biome) || isTagiaBiome(biome);
-	}
-	
-	static {
-		validForestBiome.add(BiomeGenBase.forest);
-		validForestBiome.add(BiomeGenBase.forestHills);
 		
-		validTaigaBiome.add(BiomeGenBase.taiga);
-		validTaigaBiome.add(BiomeGenBase.taigaHills);
-		validTaigaBiome.add(BiomeGenBase.icePlains);
+	public static boolean isBiomeValid(int biomeID)
+	{
+		return validBiomeList.contains(biomeID);
 	}
 	
 	private void debug(boolean boo, int plantX, int plantY, int plantZ)
@@ -55,7 +38,7 @@ public class SCWorldGenBerryBush {
     {
     	BiomeGenBase currentBiome = par1World.getBiomeGenForCoords( x, z );
     	
-        boolean isValidBiome = isBiomeValid(currentBiome);
+        boolean isValidBiome = isBiomeValid(currentBiome.biomeID);
         
         for (int var6 = 0; var6 < 4; ++var6)
         {
@@ -77,29 +60,23 @@ public class SCWorldGenBerryBush {
                 Block berryBush = this.plantBlock;
                 
                 if (berryBush.canBlockStay(par1World, plantX, plantY, plantZ)) {
-                    if ( isForestBiome(currentBiome))
-                    {
-                    	if ( berryBush == SCDefs.blueberryBush)
-                    	{
-                    		par1World.setBlock(plantX, plantY, plantZ, this.plantBlock.blockID, newMeta, 2);
-                    		
-                    		debug(false, plantX, plantY, plantZ);
-                    	}
-                    }
-                    else if ( isTagiaBiome(currentBiome))
-                    {
-                    	if ( berryBush == SCDefs.sweetberryBush)
-                    	{
-                    		par1World.setBlock(plantX, plantY, plantZ, this.plantBlock.blockID, newMeta, 2);
-                    		
-                    		if (hasSnow == 1)
-                    		{
-                    			par1World.setBlock(plantX, plantY + 1, plantZ, Block.snow.blockID, 0, 2);
-                    		}
-                    		
-                    		debug(false, plantX, plantY, plantZ);
-                    	}
-                    }
+                	if ( berryBush == SCDefs.blueberryBush)
+                	{
+                		par1World.setBlock(plantX, plantY, plantZ, this.plantBlock.blockID, newMeta, 2);
+                		
+                		debug(false, plantX, plantY, plantZ);
+                	}
+                    else if ( berryBush == SCDefs.sweetberryBush)
+                	{
+                		par1World.setBlock(plantX, plantY, plantZ, this.plantBlock.blockID, newMeta, 2);
+                		
+                		if (hasSnow == 1)
+                		{
+                			par1World.setBlock(plantX, plantY + 1, plantZ, Block.snow.blockID, 0, 2);
+                		}
+                		
+                		debug(false, plantX, plantY, plantZ);
+                	}
                 }
 
 

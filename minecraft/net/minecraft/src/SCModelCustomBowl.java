@@ -6,6 +6,8 @@
 package net.minecraft.src;
 
 public class SCModelCustomBowl extends ModelBase {
+	private final ModelRenderer tomato;
+	private final ModelRenderer berries;
 	private final ModelRenderer fish;
 	private final ModelRenderer chicken;
 	private final ModelRenderer mushroom;
@@ -16,22 +18,13 @@ public class SCModelCustomBowl extends ModelBase {
 	public SCModelCustomBowl() {
 		textureWidth = 32;
 		textureHeight = 32;
-
-		fish = new ModelRenderer(this);
-		fish.setRotationPoint(0.0F, 0.0F, 0.0F);
-		this.fish.setTextureOffset(12, 26).addBox(-3.0F, -3.0F, -3.0F, 6, 1, 6, 0.0F);
-
-		chicken = new ModelRenderer(this);
-		chicken.setRotationPoint(0.0F, 0.0F, 0.0F);
-		this.chicken.setTextureOffset(6, 26).addBox(-3.0F, -3.0F, -3.0F, 6, 1, 6, 0.0F);
-
-		mushroom = new ModelRenderer(this);
-		mushroom.setRotationPoint(0.0F, 0.0F, 0.0F);
-		this.mushroom.setTextureOffset(0, 26).addBox(-3.0F, -3.0F, -3.0F, 6, 1, 6, 0.0F);
-
-		stew = new ModelRenderer(this);
-		stew.setRotationPoint(0.0F, 0.0F, 0.0F);
-		this.stew.setTextureOffset(-6, 26).addBox(-3.0F, -3.0F, -3.0F, 6, 1, 6, 0.0F);
+		
+		addNewContents(tomato = new ModelRenderer(this), 44, 6);
+		addNewContents(berries = new ModelRenderer(this), 32, 6);
+		addNewContents(fish = new ModelRenderer(this), 50, 0);
+		addNewContents(chicken = new ModelRenderer(this), 44, 0);
+		addNewContents(mushroom = new ModelRenderer(this), 38, 0);
+		addNewContents(stew = new ModelRenderer(this), 32, 0);
 
 		bowl = new ModelRenderer(this);
 		bowl.setRotationPoint(0.0F, 0.0F, 0.0F);
@@ -46,6 +39,11 @@ public class SCModelCustomBowl extends ModelBase {
 		this.cube_r1.setTextureOffset(0, 0).addBox(-4.0F, -1.5F, -4.0F, 1, 3, 8, 0.0F);
 		this.cube_r1.setTextureOffset(0, 0).addBox(3.0F, -1.5F, -4.0F, 1, 3, 8, 0.0F);
 	}
+	
+	private void addNewContents(ModelRenderer renderer, int x, int y ) {
+		renderer.setRotationPoint(0.0F, 0.0F, 0.0F);
+		renderer.setTextureOffset(x, y).addBox(-3.0F, -3.0F, -3.0F, 6, 0, 6, 0.0F);
+	}
 
 	/**
 	* Sets the models various rotation angles then renders the model.
@@ -55,6 +53,16 @@ public class SCModelCustomBowl extends ModelBase {
 		this.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
 		
 		bowl.render(f5);
+		
+		if ( f == SCDefs.sweetBlueBerryBowl.itemID)
+		{
+			berries.render(f5);
+		}
+		
+		if ( f == SCDefs.tomatoSoup.itemID)
+		{
+			tomato.render(f5);
+		}
 		
 		if ( f == Item.bowlSoup.itemID)
 		{

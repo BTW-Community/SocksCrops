@@ -1,21 +1,11 @@
 package net.minecraft.src;
 
-public class SCBlockPlanterDirt extends FCBlockPlanterSoil {
+import org.lwjgl.opengl.GL11;
 
-	protected SCBlockPlanterDirt(int iBlockID) {
-		super(iBlockID);
-		
-		SetBlockMaterial(Material.ground);
-		
-		setHardness( 0.5F );
-		
-		SetPicksEffectiveOn( true );
-		SetHoesEffectiveOn( true );
-		setTickRandomly(true);
-		
-		setUnlocalizedName( "SCBlockPlanterDirt" );
-		
-		setCreativeTab(CreativeTabs.tabDecorations);
+public class SCBlockPlanterDirt extends SCBlockPlanterBase {
+
+	protected SCBlockPlanterDirt(int iBlockID, String unlocalisedName) {
+		super(iBlockID, unlocalisedName);
 	}
 	
 	@Override
@@ -39,4 +29,50 @@ public class SCBlockPlanterDirt extends FCBlockPlanterSoil {
     	return true;
     }
 
+	@Override
+	protected Icon getContentsTexture(int meta) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected Icon getGrassTexture(int meta) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected int getNutritionLevel(int meta) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	protected boolean isHydrated(int meta) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	protected void renderOverlay(RenderBlocks renderer, int i, int j, int k) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	protected void renderOverlayItem(RenderBlocks renderer, int iItemDamage, float brightness) {
+
+	}
+
+	@Override
+	protected boolean isFertilized(int meta) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	protected void setFertilized(World world, int x, int y, int z) {
+		// TODO Auto-generated method stub
+		
+	}
 }

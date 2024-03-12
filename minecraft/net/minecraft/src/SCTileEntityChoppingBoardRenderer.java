@@ -135,7 +135,7 @@ public class SCTileEntityChoppingBoardRenderer extends TileEntitySpecialRenderer
         			
         			scale = scale * 0.75F;
     			}
-    			else if (item == Item.bowlEmpty || item == Item.bowlSoup || item == FCBetterThanWolves.fcItemFishSoup || item == FCBetterThanWolves.fcItemChickenSoup || item == FCBetterThanWolves.fcItemHeartyStew)
+    			else if (item == Item.bowlEmpty || item == SCDefs.sweetBlueBerryBowl || item == SCDefs.tomatoSoup || item == Item.bowlSoup || item == FCBetterThanWolves.fcItemFishSoup || item == FCBetterThanWolves.fcItemChickenSoup || item == FCBetterThanWolves.fcItemHeartyStew)
     			{
         			model = new SCModelCustomBowl();
         			this.bindTextureByName("/scmodtex/choppingBoard/bowl.png");

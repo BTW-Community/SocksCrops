@@ -8,28 +8,24 @@ public class SCWorldGenWildCrops {
 	private int count;
 	private Block plant;
 	private int type;
-	
-    public SCWorldGenWildCrops(int count, Block plant, int type) {
+
+    public SCWorldGenWildCrops(int count, Block plant, int type, ArrayList<Integer> validBiomeList) {
     	this.count = count;
     	this.plant = plant;
     	this.type = type;
+    	this.validBiomeList = validBiomeList;
     }
 	
-	private static ArrayList<BiomeGenBase> validBiome = new ArrayList();
+	private static ArrayList<Integer> validBiomeList = new ArrayList();
 	
-	public static boolean isValidBiome(BiomeGenBase biome) {
-		return validBiome.contains(biome);
+	public static boolean isValidBiome(int biome) {
+		return validBiomeList.contains(biome);
 	}
 
-	static {
-		validBiome.add(BiomeGenBase.plains);
-		validBiome.add(BiomeGenBase.extremeHills);
-	}
-	
 	public boolean generate(World world, Random rand, int x, int y, int z)
     {
     	BiomeGenBase currentBiome = world.getBiomeGenForCoords( x, z );
-        boolean isValidBiome = isValidBiome(currentBiome);
+        boolean isValidBiome = isValidBiome(currentBiome.biomeID);
     	
         for (int var6 = 0; var6 < count; ++var6)
         {
@@ -48,12 +44,12 @@ public class SCWorldGenWildCrops {
                 if (plant.canBlockStay(world, plantX, plantY, plantZ) && plantY > 60)
                 {  
                 	//Plains
-                    if (type != SCBlockWildFlowerCrop.POTATO && currentBiome == BiomeGenBase.plains)
+                    if (type != SCBlockWildFlowerCrop.POTATO )
                     {                    	
                     	world.setBlock(plantX, plantY, plantZ, plant.blockID, type, 2);
                     }
                     //XHills
-                    else if (type == SCBlockWildFlowerCrop.POTATO && plantY < 83 && currentBiome == BiomeGenBase.extremeHills )
+                    else if (type == SCBlockWildFlowerCrop.POTATO && plantY < 83  )
                     {
                     	
                     	world.setBlock(plantX, plantY, plantZ, plant.blockID, type, 2);

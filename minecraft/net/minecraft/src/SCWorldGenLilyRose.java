@@ -6,26 +6,22 @@ import java.util.Random;
 public class SCWorldGenLilyRose extends WorldGenerator
 {
 	
-	private static ArrayList<BiomeGenBase> validBiomeList = new ArrayList();
-	
-	public static boolean isBiomeValid(BiomeGenBase biome) {
-		return validBiomeList.contains(biome);
-	}
-	
-	public static void addBiomeToGenerator(BiomeGenBase biome) {
-		validBiomeList.add(biome);
-	}
-	
-	static {
-		SCWorldGenLilyRose.addBiomeToGenerator(BiomeGenBase.swampland);
+	private static ArrayList<Integer> validBiomeList = new ArrayList();
+    
+	public SCWorldGenLilyRose(ArrayList<Integer> validBiomeList)
+    {
+        this.validBiomeList = validBiomeList;
+    }
+    
+	public static boolean isBiomeValid(int biomeID) {
+		return validBiomeList.contains(biomeID);
 	}
 	
     public boolean generate(World par1World, Random par2Random, int x, int y, int z)
-    {
-    	
+    {    	
     	BiomeGenBase currentBiome = par1World.getBiomeGenForCoords( x, z );
     	
-        boolean isValidBiome = isBiomeValid(currentBiome);
+        boolean isValidBiome = isBiomeValid(currentBiome.biomeID);
     	
         for (int var6 = 0; var6 < 10; ++var6)
         {

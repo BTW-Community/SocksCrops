@@ -187,7 +187,7 @@ public class SCBlockDoubleTallGrass extends BlockFlower {
 		else return false;
 	}
 	
-	protected int setTopBlock(int meta)
+	public static int setTopBlock(int meta)
 	{
 		return meta + 8;
 	}

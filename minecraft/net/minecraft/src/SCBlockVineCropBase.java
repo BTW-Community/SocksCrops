@@ -21,6 +21,12 @@ public abstract class SCBlockVineCropBase extends SCBlockCropsDailyGrowth {
 		
 	}
 	
+	 @Override
+	    public boolean canBlockStay( World world, int i, int j, int k )
+	    {
+	        return CanGrowOnBlock( world, i, j - 1, k ) || Block.blocksList[world.getBlockId(i, j-1, k)] instanceof SCBlockVineCropBase; 
+	    }
+	
     protected boolean UpdateIfBlockStays( World world, int i, int j, int k ) 
     {
         if ( !canBlockStay( world, i, j, k ) )

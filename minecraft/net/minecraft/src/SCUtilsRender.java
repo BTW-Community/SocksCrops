@@ -1,5 +1,7 @@
 package net.minecraft.src;
 
+import java.awt.Color;
+
 import org.lwjgl.opengl.GL11;
 
 public class SCUtilsRender {
@@ -24,6 +26,47 @@ public class SCUtilsRender {
         
         return (r / 9 & 255) << 16 | (g / 9 & 255) << 8 | b / 9 & 255;
 	}
+	
+	private static int color( float h, float s, float b) {
+
+		int biomeColor = 0;
+		int red = 0;
+		int green = 0;
+		int blue = 0;
+		
+		for (int var8 = -1; var8 <= 1; ++var8)
+	        {
+	        	for (int var9 = -1; var9 <= 1; ++var9)
+	            {
+//	                int var10 = blockAccess.getBiomeGenForCoords(i + var9, k + var8).getBiomeGrassColor();
+	        		int var10 = -7226023; //Plains
+	                
+	                red += (var10 & 16711680) >> 16;
+	                green += (var10 & 65280) >> 8;
+	                blue += var10 & 255;
+	            }
+	        }
+
+		float[] hsb = Color.RGBtoHSB(red/9, green/9, blue/9, null);
+
+		 // Step 2: Modify Hue
+      hsb[0] = (hsb[0] + h) % 1.0f;
+      if (hsb[0] < 0) {
+          hsb[0] += 1.0f;
+      }
+
+      // Step 3: Modify Saturation
+      hsb[1] = Math.max(0.0f, Math.min(1.0f, hsb[1] * s));
+
+      // Step 4: Modify Brightness
+      hsb[2] = Math.max(0.0f, Math.min(1.0f, hsb[2] * b));
+
+      
+		int rgb = Color.HSBtoRGB(hsb[0], hsb[1], hsb[2]);
+		
+		return rgb;
+	}
+	
 	
     /**
      * Utility function to draw crossed swuares
@@ -433,7 +476,11 @@ public class SCUtilsRender {
 		
 	}
 	
-	public static void renderPlanterContentsAsItem(RenderBlocks renderer, Block block, int iItemDamage, float brightness, int nutritionLevel, Icon topGrass, Icon topGrassSparseDirt, Icon topGrassSparse) {
+	public static void renderPlanterContentsAsItem(
+			RenderBlocks renderer, Block block,
+			int iItemDamage, float brightness, int nutritionLevel,
+			Icon contents, Icon grass, Icon topRing ) 
+	{
 		Tessellator tess = Tessellator.instance;
 //        boolean isBlock = block.blockID == SCDefs.planterGrass.blockID;//TODO: uncomment when adding new planters
 
@@ -450,14 +497,34 @@ public class SCUtilsRender {
         GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
         GL11.glTranslatef(-0.5F, -0.5001F, -0.5F);
         
+        switch (nutritionLevel) {
+		case 0:
+			var14 = color(1.0f , 1.0f , 1.0f);
+		case 1:
+			var14 = color(0.9f , 0.75f , 1.0f);
+		case 2:
+			var14 = color(0.85f , 0.5f , 1.0f);
+		case 3:
+			var14 = color(0.8f , 0.25f , 1.0f);
+
+		default:
+			var14 = 0x000;
+		}		
+//        if (nutritionLevel == 2) var14 = color(200, -25, 0);
+//        else if (nutritionLevel == 1)  var14 = color(350, -50, 0);
+//        else if (nutritionLevel == 0)  var14 = color(500, -200, 0);
+//        else var14 = color(0, 0, 0);
         
-        if (nutritionLevel == 2) var14 = color(200, -25, 0);
-        else if (nutritionLevel == 1)  var14 = color(350, -50, 0);
-        else if (nutritionLevel == 0)  var14 = color(500, -200, 0);
-        else var14 = color(0, 0, 0);
-        
-        if (iItemDamage <= 3)
+        if (grass != null)
         {
+        	if (iItemDamage > 3)
+        	{
+        		tess.startDrawingQuads();
+                tess.setNormal(0.0F, 1.0F, 0.0F);
+                renderer.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, contents);
+                tess.draw();
+        	}
+        	
             var8 = (float)(var14 >> 16 & 255) / 255.0F;
             var9 = (float)(var14 >> 8 & 255) / 255.0F;
             float var10 = (float)(var14 & 255) / 255.0F;
@@ -465,26 +532,21 @@ public class SCUtilsRender {
             
             tess.startDrawingQuads();
             tess.setNormal(0.0F, 1.0F, 0.0F);
-            renderer.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, topGrass);
+            renderer.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, grass);
             tess.draw();
         }
         else
         {
             tess.startDrawingQuads();
             tess.setNormal(0.0F, 1.0F, 0.0F);
-            renderer.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, topGrassSparseDirt);
-            tess.draw();
-            
-            var8 = (float)(var14 >> 16 & 255) / 255.0F;
-            var9 = (float)(var14 >> 8 & 255) / 255.0F;
-            float var10 = (float)(var14 & 255) / 255.0F;
-            GL11.glColor4f(var8 * brightness, var9 * brightness, var10 * brightness, 1.0F);
-            
-            tess.startDrawingQuads();
-            tess.setNormal(0.0F, 1.0F, 0.0F);
-            renderer.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, topGrassSparse);
+            renderer.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, contents);
             tess.draw();
         }
+        
+        tess.startDrawingQuads();
+        tess.setNormal(0.0F, 1.0F, 0.0F);
+        renderer.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, topRing);
+        tess.draw();
 	}
 	
 	public static void renderBiomeGrassAsItem(RenderBlocks renderer, Block block, int iItemDamage, float brightness, int type, 
@@ -952,7 +1014,7 @@ public class SCUtilsRender {
 			double x, double y, double z, float yHeight, int facing, int slot)
 	{
 
-		renderCrossedSquaresBigFlowerPot(render, block, meta, x, y, z,yHeight, facing, false);
+		renderCrossedSquaresBigFlowerPot(render, block, meta, x, y, z, yHeight, facing, false);
 
 		boolean isTopBlock = block.blockID == SCDefs.doubleTallGrass.blockID;
 		

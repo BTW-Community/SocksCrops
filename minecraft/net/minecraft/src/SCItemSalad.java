@@ -30,8 +30,8 @@ public class SCItemSalad extends SCItemSaladBase {
 	@Override
 	protected void registerBurgerIcons(IconRegister register) {
 		
-		incompleteBurgerIcon[1] = register.registerIcon("SCItemSalad_incomplete_1");
-		incompleteBurgerIcon[3] = register.registerIcon("SCItemSalad_incomplete_3");
+		incompleteBurgerIcon[1] = register.registerIcon("SCItemSalad_1");
+		incompleteBurgerIcon[3] = register.registerIcon("SCItemSalad_3");
 		
 		burgerIcon[19] =  register.registerIcon("SCItemSalad_19");		
 

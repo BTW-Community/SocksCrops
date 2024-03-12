@@ -59,7 +59,7 @@ public class SCBlockFenceRope extends FCBlockStakeString implements SCIRope {
 		if (player.isUsingSpecialKey() )
 		{
 			System.out.println("special");
-			if (equippedItem != null && equippedItem.getItem() instanceof FCItemArmor)
+			if (equippedItem != null && equippedItem.getItem() instanceof FCItemArmor || (SCCraftingManagerRopeDrying.instance.getRecipe( equippedItem ) != null && equippedItem.isItemEqual(SCCraftingManagerRopeDrying.instance.getRecipe( equippedItem ).getInput())))
 			{
 				world.setBlockAndMetadata(i, j, k, SCDefs.ropeHangingItems.blockID, world.getBlockMetadata(i, j, k));
 				
@@ -443,31 +443,31 @@ public class SCBlockFenceRope extends FCBlockStakeString implements SCIRope {
 //	public static boolean HasStemBelow(IBlockAccess blockAccess, int i, int j, int k) {
 //		int blockBelow = blockAccess.getBlockId(i, j - 1, k);
 //
-//		if (blockBelow == SCDefs.redGrapeStem.blockID) {
+//		if (blockBelow == SCDefs.grapeStem.blockID) {
 //			return true;
 //		}
 //		return false;
 //	}
-	
-	public static boolean HasRopeBelow(IBlockAccess blockAccess, int i, int j, int k) {
-		int blockBelow = blockAccess.getBlockId(i, j - 1, k);
-		int metaBelow = blockAccess.getBlockMetadata(i, j - 1, k);
-		
-		if (blockBelow == SCDefs.fenceRope.blockID ) { // || blockBelow == SCDefs.hopsLeaves.blockID  ) { TODO
-			return true;
-		}
-		return false;
-	}
-
-	public static boolean HasRopeAbove(IBlockAccess blockAccess, int i, int j, int k) {
-		int blockAbove = blockAccess.getBlockId(i, j + 1, k);
-		int metaAbove = blockAccess.getBlockMetadata(i, j + 1, k);
-		int meta = blockAccess.getBlockMetadata(i, j, k);
-
-		if (blockAbove == SCDefs.fenceRope.blockID ) { // || blockAbove == SCDefs.hopsLeaves.blockID) { TODO
-			return true;
-		}
-		return false;
-	}
+//	
+//	public static boolean HasRopeBelow(IBlockAccess blockAccess, int i, int j, int k) {
+//		int blockBelow = blockAccess.getBlockId(i, j - 1, k);
+//		int metaBelow = blockAccess.getBlockMetadata(i, j - 1, k);
+//		
+//		if (blockBelow == SCDefs.fenceRope.blockID || Block.blocksList[blockBelow] instanceof SCBlockHopsVine) {
+//			return true;
+//		}
+//		return false;
+//	}
+//
+//	public static boolean HasRopeAbove(IBlockAccess blockAccess, int i, int j, int k) {
+//		int blockAbove = blockAccess.getBlockId(i, j + 1, k);
+//		int metaAbove = blockAccess.getBlockMetadata(i, j + 1, k);
+//		int meta = blockAccess.getBlockMetadata(i, j, k);
+//
+//		if (blockAbove == SCDefs.fenceRope.blockID || Block.blocksList[blockAbove] instanceof SCBlockHopsVine) {
+//			return true;
+//		}
+//		return false;
+//	}
 
 }

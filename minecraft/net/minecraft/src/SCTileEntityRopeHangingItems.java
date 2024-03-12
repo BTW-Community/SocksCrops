@@ -5,7 +5,113 @@ public class SCTileEntityRopeHangingItems extends TileEntity implements FCITileE
 	private ItemStack storageStack;
 	
 	private int[] itemRotation = { 0 };
+	
+	private final int timeToCook = ( 10 * 60 ); //( 10 * 60 * 20 );    
+	private int cookCounter = 0;
+	private final int m_iRainCookDecay = 10;
+	
+	private boolean isDrying;
+	
+	public SCTileEntityRopeHangingItems() {
+		isDrying = false;
+	}
+	
+	@Override
+    public void updateEntity()
+    {
+		super.updateEntity();   
 		
+		System.out.println("isDrying: " + isDrying);
+		
+		if (SCCraftingManagerRopeDrying.instance.getRecipe( storageStack ) != null)
+		{
+			UpdateCooking();
+		}
+		
+    	if ( worldObj.isRemote )
+    	{    
+    		if ( isDrying && worldObj.rand.nextInt( 20 ) == 0)
+    		{
+				if (SCCraftingManagerRopeDrying.instance.getRecipe( storageStack ) != null && storageStack.isItemEqual(SCCraftingManagerRopeDrying.instance.getRecipe( storageStack ).getInput())) 
+				{
+	                double xPos = xCoord + 0.25F + worldObj.rand.nextFloat() * 0.5F;
+	                double yPos = yCoord + 0.5F + worldObj.rand.nextFloat() * 0.25F;
+	                double zPos = zCoord + 0.25F + worldObj.rand.nextFloat() * 0.5F;
+	                
+	                worldObj.spawnParticle( "fcwhitesmoke", xPos, yPos, zPos, 0.0D, 0.0D, 0.0D );
+	            }
+    		}
+    	}
+    }
+	
+	public void UpdateCooking()
+    {
+		boolean newDrying;
+    	int blockMaxNaturalLight = worldObj.GetBlockNaturalLightValueMaximum( xCoord, yCoord, zCoord );
+    	int blockCurrentNaturalLight = blockMaxNaturalLight - worldObj.skylightSubtracted;
+    	
+    	newDrying = blockCurrentNaturalLight >= 15;
+    	
+    	int blockAboveID = worldObj.getBlockId( xCoord, yCoord + 1, zCoord );
+    	Block blockAbove = Block.blocksList[blockAboveID];
+    	
+    	if ( blockAbove != null && blockAbove.IsGroundCover( ) )
+    	{
+    		newDrying = false;
+    	}
+    	
+    	if ( newDrying != isDrying )
+    	{			
+    		isDrying = newDrying;
+		
+    		worldObj.markBlockForUpdate( xCoord, yCoord, zCoord );
+    	}
+
+    	if ( isDrying )
+    	{
+    		cookCounter++;
+    		
+    		if ( cookCounter >= timeToCook )
+    		{
+    			//ropeBlock.OnFinishedCooking( worldObj, xCoord, yCoord, zCoord );
+    			
+    			this.setStorageStack( SCCraftingManagerRopeDrying.instance.getRecipe( storageStack ).getOutput() );
+    			isDrying = false;
+    			
+    			return;
+    		}
+    	}
+    	else
+    	{
+    		if ( IsRainingOnBrick( worldObj, xCoord, yCoord, zCoord ) )
+    		{
+    			cookCounter -= m_iRainCookDecay;
+    			
+    			if ( cookCounter < 0 )
+    			{
+    				cookCounter = 0;
+    			}
+    		}    		
+    	}
+    }
+    
+    public boolean IsRainingOnBrick( World world, int i, int j, int k )
+    {
+    	return world.isRaining() && world.IsRainingAtPos( i, j, k );
+    }
+    
+    private int ComputeCookLevel()
+    {
+    	if ( cookCounter > 0 )
+		{
+			int iCookLevel= (int)( ( (float)cookCounter / (float)timeToCook ) * 7F ) + 1;
+			
+			return MathHelper.clamp_int( iCookLevel, 0, 7 );
+		}
+    	
+    	return 0;
+    }
+	
 	public ItemStack getStorageStack() {
 		return storageStack;
 	}
@@ -44,7 +150,15 @@ public class SCTileEntityRopeHangingItems extends TileEntity implements FCITileE
         	storageStack = ItemStack.loadItemStackFromNBT( storageTag );
         }
         
-        this.itemRotation = tag.getIntArray("Rot");       
+        if( tag.hasKey( "Rot" ) )
+        {
+        	this.itemRotation = tag.getIntArray("Rot");  
+        }
+        	
+        if( tag.hasKey( "cookCounter" ) )
+        {
+        	cookCounter = tag.getInteger( "cookCounter" );
+        }
 
     }
 	
@@ -64,6 +178,7 @@ public class SCTileEntityRopeHangingItems extends TileEntity implements FCITileE
         
         
         tag.setIntArray("Rot", this.itemRotation);
+        tag.setInteger( "cookCounter", cookCounter );
         
         // force a visual update for the block since the above variables affect it
         
@@ -87,6 +202,7 @@ public class SCTileEntityRopeHangingItems extends TileEntity implements FCITileE
         
         
     	tag.setIntArray("Rot", this.itemRotation);
+    	tag.setInteger( "cookCounter", cookCounter );
         
         return new Packet132TileEntityData( xCoord, yCoord, zCoord, 1, tag );
     }
@@ -104,7 +220,15 @@ public class SCTileEntityRopeHangingItems extends TileEntity implements FCITileE
         	storageStack = ItemStack.loadItemStackFromNBT( storageTag );
         }
         
-        this.itemRotation = tag.getIntArray("Rot");
+        if( tag.hasKey( "Rot" ) )
+        {
+        	this.itemRotation = tag.getIntArray("Rot");  
+        }
+        	
+        if( tag.hasKey( "cookCounter" ) )
+        {
+        	cookCounter = tag.getInteger( "cookCounter" );
+        }
         
         // force a visual update for the block since the above variables affect it
         

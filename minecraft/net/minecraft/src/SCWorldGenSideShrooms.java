@@ -6,30 +6,24 @@ import java.util.Random;
 public class SCWorldGenSideShrooms extends WorldGenerator
 {
 	
-	private static ArrayList<BiomeGenBase> validBiomeList = new ArrayList();
+	private static ArrayList<Integer> validBiomeList = new ArrayList();
 	
-	public static boolean isBiomeValid(BiomeGenBase biome) {
+	public static boolean isBiomeValid(int biome) {
 		return validBiomeList.contains(biome);
 	}
-	
-	public static void addBiomeToGenerator(BiomeGenBase biome) {
-		validBiomeList.add(biome);
-	}
-	
-	static {
-		SCWorldGenSideShrooms.addBiomeToGenerator(BiomeGenBase.forest);
-		SCWorldGenSideShrooms.addBiomeToGenerator(BiomeGenBase.forestHills);
 		
-		addBiomeToGenerator(BiomeGenBase.taiga);
-		addBiomeToGenerator(BiomeGenBase.taigaHills);
-	}
+    public SCWorldGenSideShrooms(ArrayList<Integer> validBiomeList)
+    {
+        this.validBiomeList = validBiomeList;
+    }
+	
 	
     public boolean generate(World par1World, Random par2Random, int x, int y, int z)
     {
     	
     	BiomeGenBase currentBiome = par1World.getBiomeGenForCoords( x, z );
     	
-        boolean isValidBiome = isBiomeValid(currentBiome);
+        boolean isValidBiome = isBiomeValid(currentBiome.biomeID);
     	
         for (int var6 = 0; var6 < 4; ++var6)
         {
@@ -66,22 +60,22 @@ public class SCWorldGenSideShrooms extends WorldGenerator
                 {
                 	par1World.setBlockAndMetadata(xPos, yPos, zPos - 1, SCDefs.sideShroom.blockID, 0 + type);
                 	
-                	System.out.println("Success at: x = " + xPos + " y = " + yPos + " z = " + zPos);
+                	//System.out.println("Success at: x = " + xPos + " y = " + yPos + " z = " + zPos);
                 }
                 else if ( dir == 2 && par1World.getBlockId(xPos, yPos, zPos + 1) == 0)
                 {
                 	par1World.setBlockAndMetadata(xPos, yPos, zPos + 1, SCDefs.sideShroom.blockID, 2 + type);
-                	System.out.println("Success at: x = " + xPos + " y = " + yPos + " z = " + zPos);
+                	//System.out.println("Success at: x = " + xPos + " y = " + yPos + " z = " + zPos);
                 }
                 else if ( dir == 1 && par1World.getBlockId(xPos + 1, yPos, zPos) == 0)
                 {
                 	par1World.setBlockAndMetadata(xPos + 1,yPos, zPos, SCDefs.sideShroom.blockID, 1 + type);
-                	System.out.println("Success at: x = " + xPos + " y = " + yPos + " z = " + zPos);
+                	//System.out.println("Success at: x = " + xPos + " y = " + yPos + " z = " + zPos);
                 }
                 else if ( dir == 3 && par1World.getBlockId(xPos - 1, yPos, zPos) == 0)
                 {
                 	par1World.setBlockAndMetadata(xPos - 1,yPos, zPos, SCDefs.sideShroom.blockID, 3 + type);
-                	System.out.println("Success at: x = " + xPos + " y = " + yPos + " z = " + zPos);
+                	//System.out.println("Success at: x = " + xPos + " y = " + yPos + " z = " + zPos);
                 }
             }
         }

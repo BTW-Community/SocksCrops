@@ -341,15 +341,11 @@ public class SCTileEntityFishTrap extends TileEntity implements FCITileEntityDat
 	}
 	
 	private boolean checkForBite()
-    {
-		
-		
+    {		
     	if ( isBaited )
     	{
-	        int iBiteOdds = 100; // previously 1500 
-//	        int iBiteOdds = 4000 - waterSpots * 15; //max waterspots is 124, min is 50 atm
-	        
-	        
+//	        int iBiteOdds = 100; // previously 1500 
+	        int iBiteOdds = 4000 - waterSpots * 15; //max waterspots is 124, min is 50 atm	        
 	        
 	        int iTimeOfDay = (int)( worldObj.worldInfo.getWorldTime() % 24000L );
 	        

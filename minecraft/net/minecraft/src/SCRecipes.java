@@ -16,6 +16,10 @@ public class SCRecipes extends SCRecipeHelper {
 		addFishtrapRecipes();
 		addCuttingBoardRecipes();
 		addComposterRecipes();
+		addMixerRecipes();
+		addJuicerRecipes();
+		addPanCookingRecipes();
+		addRopeDryingRecipes();
 		//addCrateRecipes();
 		
 		//Compost
@@ -113,7 +117,348 @@ public class SCRecipes extends SCRecipeHelper {
 		
 		addMiscFoodRecipes();
 		
+		addSoupRecipes();
+		
 		addHayRecipes();
+		
+	}
+	
+	private static void addRopeDryingRecipes() {
+		addRopeDryingRecipe(new ItemStack (SCDefs.redRaisins), new ItemStack (SCDefs.redGrapes));
+		addRopeDryingRecipe(new ItemStack (SCDefs.whiteRaisins), new ItemStack (SCDefs.whiteGrapes));
+	}
+
+	private static void addPanCookingRecipes() {
+		
+		FCRecipes.AddRecipe( new ItemStack (SCDefs.pan),
+				new Object[] {
+						"IBI",  
+						"III",  
+						'I', new ItemStack( Item.ingotIron ),
+						'B', new ItemStack( Item.bone )
+				}
+		);
+		// Burned meat
+		Item[][] meats = {			
+			{Item.beefCooked, Item.beefRaw},
+			{FCBetterThanWolves.fcItemCookedMysteryMeat, FCBetterThanWolves.fcItemRawMysteryMeat},
+			{Item.porkCooked, Item.porkRaw},
+			{FCBetterThanWolves.fcItemWolfCooked, FCBetterThanWolves.fcItemWolfRaw},
+			{Item.chickenCooked, Item.chickenRaw},
+			{Item.fishCooked, Item.fishRaw},
+			{SCDefs.codCooked, SCDefs.cod},
+			{SCDefs.salmonCooked, SCDefs.salmon},
+			{SCDefs.tropicalCooked, SCDefs.tropical},
+			{FCBetterThanWolves.fcItemBeastLiverCooked, FCBetterThanWolves.fcItemBeastLiverRaw},
+		};
+		
+		for (Item[] meat : meats)
+		{
+			addPanCookingRecipe(
+					new ItemStack(meat[0]),
+					new ItemStack(FCBetterThanWolves.fcItemMeatBurned),
+					new ItemStack(meat[1])
+					);
+		}
+		
+		//Burned food
+		Item[][] foods = {
+				//{SCDefs.beefPattyCooked, SCDefs.beefPattyRaw},
+				//{SCDefs.baconCooked, SCDefs.baconRaw},
+				//{SCDefs.chickenBreastCooked, SCDefs.chickenBreastRaw},
+				//{SCDefs.chickenDrumCooked, SCDefs.chickenDrumRaw},
+				{FCBetterThanWolves.fcItemFriedEgg, FCBetterThanWolves.fcItemRawEgg},
+				{FCBetterThanWolves.fcItemCookedScrambledEggs, FCBetterThanWolves.fcItemRawScrambledEggs},
+				{FCBetterThanWolves.fcItemCookedMushroomOmelet, FCBetterThanWolves.fcItemRawMushroomOmelet},
+				{FCBetterThanWolves.fcItemCookedCarrot, Item.carrot},
+				//{SCDefs.wildCarrotCooked, SCDefs.wildCarrot},
+		};
+		
+		for (int i=0; i < foods.length; i++)
+		{
+			addPanCookingRecipe(
+					new ItemStack(foods[i][0]),
+					new ItemStack(SCDefs.burnedFood),
+					new ItemStack(foods[i][1])
+					);
+		}
+	}
+
+	private static void addSoupRecipes() {
+		
+		Item[] carrots = {SCDefs.wildCarrotCooked, FCBetterThanWolves.fcItemCookedCarrot};
+		
+		for (Item carrot : carrots)
+		{
+			FCRecipes.AddCauldronRecipe( 
+		    		new ItemStack( SCDefs.tomatoSoup, 3 ), 
+		    		new ItemStack[] {
+						new ItemStack( SCDefs.tomato, 3), 
+						new ItemStack( SCDefs.wildOnion ), 
+						new ItemStack( carrot ),
+						new ItemStack( Item.bowlEmpty, 3 )
+			} );
+			
+			FCRecipes.AddCauldronRecipe( 
+		    		new ItemStack( SCDefs.tomatoSoup, 3 ), 
+		    		new ItemStack[] {
+						new ItemStack( SCDefs.tomatoSlice, 6), 
+						new ItemStack( SCDefs.wildOnion ), 
+						new ItemStack( carrot ),
+						new ItemStack( Item.bowlEmpty, 3 )
+			} );
+		}
+	}
+	
+	private static void addJuicerRecipes() {
+		AddJuicerRecipe( new ItemStack( SCDefs.liquidBlocks[SCUtilsLiquids.APPLE_JUICE]),
+				new ItemStack( Item.appleRed), 4
+		);
+		
+		AddJuicerRecipe( new ItemStack( SCDefs.liquidBlocks[SCUtilsLiquids.CHERRY_JUICE]),
+				new ItemStack( SCDefs.cherry), 8
+		);
+	}
+
+
+	private static void addMixerRecipes() {		
+		
+		//--- CRAFTING ---//
+		//Whisk
+		FCRecipes.AddRecipe( new ItemStack (SCDefs.whisk),
+				new Object[] {
+						" I ",  
+						"BBB",  
+						"BBB",  
+						'I', new ItemStack( Item.ingotIron ),
+						'B', new ItemStack( Block.fenceIron )
+				}
+		);
+		
+		//Mixer
+		FCRecipes.AddRecipe( new ItemStack (SCDefs.mixer ),
+				new Object[] {
+						"SSS",  
+						"GGG",  
+						"SWS",  
+						'S', new ItemStack( FCBetterThanWolves.fcBlockWoodSidingItemStubID, 1, ignoreMetadata ),
+						'G', new ItemStack( FCBetterThanWolves.fcItemGear, 1, ignoreMetadata ),
+						'W', new ItemStack( SCDefs.whisk )
+				}
+		);
+	
+		//--- MIXING ---//
+		//No Heat Mixing Recipes
+		addMixerDyeRecipes();		
+		addMixerSeedsRecipes();		
+		addMixerPastryRecipes();		
+		addMixerLiquidsRecipes();
+		
+		addMixerFireRecipes();
+		addMixerStokedRecipes();
+	}
+
+	private static void addMixerFireRecipes() {
+//		AddMixerRecipeFire(new ItemStack(FCBetterThanWolves.fcItemBreadDough), new ItemStack[] {
+//				new ItemStack(FCBetterThanWolves.fcItemFlour, 3),
+//				//LIQUID
+//				new ItemStack(Block.waterStill) 
+//			});		
+	}
+	
+	private static void addMixerStokedRecipes() {
+//		AddMixerRecipeStoked(new ItemStack(FCBetterThanWolves.fcItemBreadDough), new ItemStack[] {
+//				new ItemStack(FCBetterThanWolves.fcItemFlour, 3),
+//				//LIQUID
+//				new ItemStack(Block.waterStill) 
+//			});
+	}
+	
+	protected static void addMixerLiquidsRecipes() {
+		AddMixerRecipe( new ItemStack( SCDefs.liquidBlocks[SCUtilsLiquids.COCONUT_MILK], 3 ), new ItemStack[] {
+	            new ItemStack( SCDefs.coconutSlice, 8 ),
+	            //LIQUID
+				new ItemStack( Block.waterStill, 3 )
+		});
+	}
+
+	protected static void addMixerPastryRecipes() {
+		AddMixerRecipe( new ItemStack( FCBetterThanWolves.fcItemPastryUncookedCake, 1 ), new ItemStack[] {
+            new ItemStack( Item.sugar, 3 ),
+            new ItemStack( FCBetterThanWolves.fcItemFlour, 3 ),
+            new ItemStack( FCBetterThanWolves.fcItemRawEgg ),
+            //LIQUID
+			new ItemStack( FCBetterThanWolves.fcBlockMilk)
+		});
+		
+		AddMixerRecipe(new ItemStack(FCBetterThanWolves.fcItemBreadDough), new ItemStack[] {
+			new ItemStack(FCBetterThanWolves.fcItemFlour, 3),
+			//LIQUID
+			new ItemStack(Block.waterStill)
+		});
+		
+		AddMixerRecipe(new ItemStack(SCDefs.pieCrust), new ItemStack[] {
+			new ItemStack( FCBetterThanWolves.fcItemRawEgg ),
+    		new ItemStack( FCBetterThanWolves.fcItemFlour, 3)
+		});
+		
+		AddMixerRecipe(new ItemStack(FCBetterThanWolves.fcItemPastryUncookedCookies), new ItemStack[] {
+			new ItemStack(FCBetterThanWolves.fcItemChocolate),
+    		new ItemStack( FCBetterThanWolves.fcItemFlour, 4)
+
+		});
+		
+		AddMixerRecipe(new ItemStack(SCDefs.burgerDough), new ItemStack[] {
+			new ItemStack(FCBetterThanWolves.fcItemFlour, 2),
+			new ItemStack( FCBetterThanWolves.fcItemRawEgg, 2 )
+		});
+		
+		AddMixerRecipe(new ItemStack(SCDefs.cookieSweetberryRaw), new ItemStack[] {				
+			new ItemStack( SCDefs.sweetberry ),
+			new ItemStack( Item.sugar ),
+			new ItemStack( FCBetterThanWolves.fcItemRawEgg ),				
+			new ItemStack( FCBetterThanWolves.fcItemFlour, 3)
+		});
+		
+		AddMixerRecipe(new ItemStack(SCDefs.cookieBlueberryRaw), new ItemStack[] {				
+			new ItemStack( SCDefs.blueberry),
+			new ItemStack( Item.sugar ),
+			new ItemStack( FCBetterThanWolves.fcItemRawEgg ),				
+			new ItemStack( FCBetterThanWolves.fcItemFlour, 3)
+		});
+		
+		Item[] ingredients = { FCBetterThanWolves.fcItemChocolate, SCDefs.sweetberry, SCDefs.blueberry };
+		Item[] uncookedMuffin = { SCDefs.itemMuffinRawChocolate, SCDefs.itemMuffinRawSweetberry, SCDefs.itemMuffinRawBlueberry };
+		
+		for(int i=0; i < uncookedMuffin.length; i++)
+		{
+			AddMixerRecipe( new ItemStack( uncookedMuffin[i], 1 ), new ItemStack[] {
+					new ItemStack( ingredients[i] ), 
+		            new ItemStack( Item.sugar ), 
+		            new ItemStack( FCBetterThanWolves.fcItemFlour, 2), 
+		            new ItemStack( FCBetterThanWolves.fcItemRawEgg ),
+		            //LIQUID
+					new ItemStack( FCBetterThanWolves.fcBlockMilk)
+		    });
+		}		
+		
+	}
+
+	protected static void addMixerSeedsRecipes() {
+		//BTW/Vanilla
+		Item[] seeds = {
+				Item.melonSeeds,
+				Item.pumpkinSeeds,
+				FCBetterThanWolves.fcItemHempSeeds,
+				FCBetterThanWolves.fcItemCarrotSeeds,
+				FCBetterThanWolves.fcItemWheatSeeds,				
+				//SC
+				SCDefs.appleSeeds,
+				SCDefs.cherrySeeds,
+				SCDefs.lemonSeeds,
+				SCDefs.oliveSeeds,
+				
+				SCDefs.domesticatedMelonSeeds,
+				SCDefs.domesticatedPumpkinSeeds,
+				
+				SCDefs.grassSeeds,
+				SCDefs.hopSeeds,				
+				SCDefs.tomatoSeeds,
+				SCDefs.sunflowerSeeds,
+				
+				SCDefs.redGrapeSeeds,
+				SCDefs.whiteGrapeSeeds,
+				
+				SCDefs.wildCarrotSeeds,
+				SCDefs.wildLettuceSeeds,
+				SCDefs.wildOnionSeeds,
+				
+				SCDefs.rice
+		};
+		
+		for(Item seed : seeds)
+		{
+			AddMixerRecipe(new ItemStack(FCBetterThanWolves.fcItemChickenFeed), new ItemStack[] {
+				new ItemStack(Item.dyePowder, 1, 15), //Bonemeal
+				new ItemStack(seed)
+			});
+		}
+	}
+
+	protected static void addMixerDyeRecipes() {
+		int BLACK = 0;
+		int RED = 1;
+		int GREEN = 2;
+		int BROWN = 3;
+		int BLUE = 4;
+		int PURPLE = 5;
+		int CYAN = 6;
+		int SILVER = 7;
+		int GRAY = 8;
+		int PINK = 9;
+		int LIME = 10;
+		int YELLOW = 11;
+		int LIGHTBLUE = 12;
+		int MAGENTA = 13;
+		int ORANGE = 14;
+		int WHITE = 15;
+		
+		AddMixerRecipe(new ItemStack(Item.dyePowder, 2, PINK), new ItemStack[] {
+				new ItemStack(Item.dyePowder, 1, WHITE),			
+				new ItemStack(Item.dyePowder, 1, RED),			
+			});
+		
+		AddMixerRecipe(new ItemStack(Item.dyePowder, 2, LIME), new ItemStack[] {
+				new ItemStack(Item.dyePowder, 1, WHITE),			
+				new ItemStack(Item.dyePowder, 1, GREEN),			
+			});
+		
+		AddMixerRecipe(new ItemStack(Item.dyePowder, 2, CYAN), new ItemStack[] {
+				new ItemStack(Item.dyePowder, 1, BLUE),			
+				new ItemStack(Item.dyePowder, 1, GREEN),			
+			});
+		
+		AddMixerRecipe(new ItemStack(Item.dyePowder, 2, PURPLE), new ItemStack[] {
+				new ItemStack(Item.dyePowder, 1, BLUE),			
+				new ItemStack(Item.dyePowder, 1, RED),			
+			});
+		
+		AddMixerRecipe(new ItemStack(Item.dyePowder, 2, LIGHTBLUE), new ItemStack[] {
+				new ItemStack(Item.dyePowder, 1, WHITE),			
+				new ItemStack(Item.dyePowder, 1, BLUE),			
+			});
+		
+		AddMixerRecipe(new ItemStack(Item.dyePowder, 2, SILVER), new ItemStack[] {
+				new ItemStack(Item.dyePowder, 1, WHITE),			
+				new ItemStack(Item.dyePowder, 1, GRAY),			
+			});
+		
+		AddMixerRecipe(new ItemStack(Item.dyePowder, 3, SILVER), new ItemStack[] {
+				new ItemStack(Item.dyePowder, 2, WHITE),			
+				new ItemStack(Item.dyePowder, 1, BLACK),			
+			});
+		
+		AddMixerRecipe(new ItemStack(Item.dyePowder, 2, GRAY), new ItemStack[] {
+				new ItemStack(Item.dyePowder, 1, WHITE),			
+				new ItemStack(Item.dyePowder, 1, BLACK),	
+			});
+		
+		AddMixerRecipe(new ItemStack(Item.dyePowder, 3, MAGENTA), new ItemStack[] {
+				new ItemStack(Item.dyePowder, 1, PINK),			
+				new ItemStack(Item.dyePowder, 1, RED),
+				new ItemStack(Item.dyePowder, 1, BLUE),	
+			});
+		
+		AddMixerRecipe(new ItemStack(Item.dyePowder, 4, MAGENTA), new ItemStack[] {
+				new ItemStack(Item.dyePowder, 1, WHITE),			
+				new ItemStack(Item.dyePowder, 2, RED),
+				new ItemStack(Item.dyePowder, 1, BLUE),	
+			});
+		
+		AddMixerRecipe(new ItemStack(Item.dyePowder, 2, ORANGE), new ItemStack[] {		
+				new ItemStack(Item.dyePowder, 1, RED),
+				new ItemStack(Item.dyePowder, 1, YELLOW),	
+			});
 		
 	}
 
@@ -384,20 +729,20 @@ public class SCRecipes extends SCRecipeHelper {
 		//TREES
 		for (int type = SCBlockHedges.OAK; type <= SCBlockHedges.JUNGLE; type++)
 		{
-			FCRecipes.AddRecipe( new ItemStack (SCDefs.hedges, 2, type),
+			FCRecipes.AddRecipe( new ItemStack (SCDefs.hedges, 3, type),
 					new Object[] {
-							"L",
-							"W",
+							"LLL",
+							"LWL",
 							'L', new ItemStack( Block.leaves, 1, type ),
 							'W', new ItemStack( Block.wood, 1, type ),
 					});
 		}
 		
 		//BLOOD TREE
-		FCRecipes.AddRecipe( new ItemStack (SCDefs.hedges, 2, SCBlockHedges.BLOOD),
+		FCRecipes.AddRecipe( new ItemStack (SCDefs.hedges, 3, SCBlockHedges.BLOOD),
 				new Object[] {
-						"L",
-						"W",
+						"LLL",
+						"LWL",
 						'L', new ItemStack( FCBetterThanWolves.fcBlockBloodLeaves, 1),
 						'W', new ItemStack( FCBetterThanWolves.fcBloodWood, 1),
 				});
@@ -405,10 +750,10 @@ public class SCRecipes extends SCRecipeHelper {
 		//FRUIT
 		for (int type = SCBlockHedges.APPLE; type <= SCBlockHedges.OLIVE; type++)
 		{
-			FCRecipes.AddRecipe( new ItemStack (SCDefs.hedges, 2, type),
+			FCRecipes.AddRecipe( new ItemStack (SCDefs.hedges, 3, type),
 					new Object[] {
-							"L",
-							"W",
+							"LLL",
+							"LWL",
 							'L', new ItemStack( SCDefs.fruitLeaves, 1, type - 5 ),
 							'W', new ItemStack( SCDefs.fruitLog, 1, type - 5 ), //-5 meta Adjustment
 					});
@@ -417,10 +762,10 @@ public class SCRecipes extends SCRecipeHelper {
 		//FLOWERING FRUIT
 		for (int type = SCBlockHedges.FLOWER_APPLE; type <= SCBlockHedges.FLOWER_OLIVE; type++)
 		{
-			FCRecipes.AddRecipe( new ItemStack (SCDefs.hedges, 2, type),
+			FCRecipes.AddRecipe( new ItemStack (SCDefs.hedges, 3, type),
 					new Object[] {
-							"L",
-							"W",
+							"LLL",
+							"LWL",
 							'L', new ItemStack( SCDefs.fruitLeavesFlowers, 1, type - 9),
 							'W', new ItemStack( SCDefs.fruitLog, 1, type - 9), //-9 meta adjustment
 					});
@@ -430,44 +775,44 @@ public class SCRecipes extends SCRecipeHelper {
 		if ( SCDecoIntegration.isDecoInstalled() )
 		{
 			//CHERRY
-			FCRecipes.AddRecipe( new ItemStack (SCDefs.hedges, 2, SCBlockHedges.CHERRY),
+			FCRecipes.AddRecipe( new ItemStack (SCDefs.hedges, 3, SCBlockHedges.CHERRY),
 					new Object[] {
-							"L",
-							"W",
+							"LLL",
+							"LWL",
 							'L', new ItemStack( SCDecoIntegration.cherryLeaves, 1),
 							'W', new ItemStack( SCDefs.fruitLog, 1, SCBlockHedges.CHERRY ),
 					});
 			
 			//ACACIA
-			FCRecipes.AddRecipe( new ItemStack (SCDefs.hedgesDeco, 2, SCBlockHedgesDeco.ACACIA),
+			FCRecipes.AddRecipe( new ItemStack (SCDefs.hedgesDeco, 3, SCBlockHedgesDeco.ACACIA),
 					new Object[] {
-							"L",
-							"W",
+							"LLL",
+							"LWL",
 							'L', new ItemStack( SCDecoIntegration.acaciaLeaves, 1),
 							'W', new ItemStack( SCDecoIntegration.acaciaLog, 1, 0),
 					});
 			
 			//AUTUMN
-			FCRecipes.AddRecipe( new ItemStack (SCDefs.hedgesDeco, 2, SCBlockHedgesDeco.AUTUMN_RED),
+			FCRecipes.AddRecipe( new ItemStack (SCDefs.hedgesDeco, 3, SCBlockHedgesDeco.AUTUMN_RED),
 					new Object[] {
-							"L",
-							"W",
+							"LLL",
+							"LWL",
 							'L', new ItemStack( SCDecoIntegration.autumnLeaves, 1, 0),
 							'W', new ItemStack( Block.wood, 1, 0),
 					});
 			
-			FCRecipes.AddRecipe( new ItemStack (SCDefs.hedgesDeco, 2, SCBlockHedgesDeco.AUTUMN_ORANGE),
+			FCRecipes.AddRecipe( new ItemStack (SCDefs.hedgesDeco, 3, SCBlockHedgesDeco.AUTUMN_ORANGE),
 					new Object[] {
-							"L",
-							"W",
+							"LLL",
+							"LWL",
 							'L', new ItemStack( SCDecoIntegration.autumnLeaves, 1, 1),
 							'W', new ItemStack( Block.wood, 1, 0),
 					});
 			
-			FCRecipes.AddRecipe( new ItemStack (SCDefs.hedgesDeco, 2, SCBlockHedgesDeco.AUTUMN_YELLOW),
+			FCRecipes.AddRecipe( new ItemStack (SCDefs.hedgesDeco, 3, SCBlockHedgesDeco.AUTUMN_YELLOW),
 					new Object[] {
-							"L",
-							"W",
+							"LLL",
+							"LWL",
 							'L', new ItemStack( SCDecoIntegration.autumnLeaves, 1, 2),
 							'W', new ItemStack( Block.wood, 1, 0),
 					});
@@ -480,7 +825,7 @@ public class SCRecipes extends SCRecipeHelper {
 		//TREES
 		for (int type = SCBlockLeafCarpet.OAK; type <= SCBlockLeafCarpet.JUNGLE; type++)
 		{
-			FCRecipes.AddRecipe( new ItemStack (SCDefs.leafCarpet, 2, type),
+			FCRecipes.AddRecipe( new ItemStack (SCDefs.leafCarpet, 3, type),
 					new Object[] {
 							"LLL",
 							'L', new ItemStack( Block.leaves, 1, type ),
@@ -488,7 +833,7 @@ public class SCRecipes extends SCRecipeHelper {
 		}
 		
 		//BLOOD TREE
-		FCRecipes.AddRecipe( new ItemStack (SCDefs.leafCarpet, 2, SCBlockLeafCarpet.BLOOD),
+		FCRecipes.AddRecipe( new ItemStack (SCDefs.leafCarpet, 3, SCBlockLeafCarpet.BLOOD),
 				new Object[] {
 						"LLL",
 						'L', new ItemStack( FCBetterThanWolves.fcBlockBloodLeaves, 1),
@@ -497,7 +842,7 @@ public class SCRecipes extends SCRecipeHelper {
 		//FRUIT
 		for (int type = SCBlockLeafCarpet.APPLE; type <= SCBlockLeafCarpet.OLIVE; type++)
 		{
-			FCRecipes.AddRecipe( new ItemStack (SCDefs.leafCarpet, 2, type - 5),
+			FCRecipes.AddRecipe( new ItemStack (SCDefs.leafCarpet, 3, type - 5),
 					new Object[] {
 							"LLL",
 							'L', new ItemStack( SCDefs.fruitLeaves, 1, type - 5),
@@ -507,7 +852,7 @@ public class SCRecipes extends SCRecipeHelper {
 		//FLOWERING FRUIT
 		for (int type = SCBlockLeafCarpet.FLOWER_APPLE; type <= SCBlockLeafCarpet.FLOWER_OLIVE; type++)
 		{
-			FCRecipes.AddRecipe( new ItemStack (SCDefs.leafCarpet, 2, type - 9),
+			FCRecipes.AddRecipe( new ItemStack (SCDefs.leafCarpet, 3, type - 9),
 					new Object[] {
 							"LLL",
 							'L', new ItemStack( SCDefs.fruitLeavesFlowers, 1, type - 9 ),
@@ -518,26 +863,26 @@ public class SCRecipes extends SCRecipeHelper {
 		if (SCDecoIntegration.isDecoInstalled())
 		{
 			//ACACIA
-			FCRecipes.AddRecipe( new ItemStack (SCDefs.leafCarpetDeco, 2, SCBlockLeafCarpetDeco.ACACIA),
+			FCRecipes.AddRecipe( new ItemStack (SCDefs.leafCarpetDeco, 3, SCBlockLeafCarpetDeco.ACACIA),
 					new Object[] {
 							"LLL",
 							'L', new ItemStack( SCDecoIntegration.acaciaLeaves, 1 ),
 					});
 			
 			//AUTUMN
-			FCRecipes.AddRecipe( new ItemStack (SCDefs.leafCarpetDeco, 2, SCBlockLeafCarpetDeco.AUTUMN_RED),
+			FCRecipes.AddRecipe( new ItemStack (SCDefs.leafCarpetDeco, 3, SCBlockLeafCarpetDeco.AUTUMN_RED),
 					new Object[] {
 							"LLL",
 							'L', new ItemStack( SCDecoIntegration.autumnLeaves, 1, 0),
 					});
 			
-			FCRecipes.AddRecipe( new ItemStack (SCDefs.leafCarpetDeco, 2, SCBlockLeafCarpetDeco.AUTUMN_ORANGE),
+			FCRecipes.AddRecipe( new ItemStack (SCDefs.leafCarpetDeco, 3, SCBlockLeafCarpetDeco.AUTUMN_ORANGE),
 					new Object[] {
 							"LLL",
 							'L', new ItemStack( SCDecoIntegration.autumnLeaves, 1, 1),
 					});
 			
-			FCRecipes.AddRecipe( new ItemStack (SCDefs.leafCarpetDeco, 2, SCBlockLeafCarpetDeco.AUTUMN_YELLOW),
+			FCRecipes.AddRecipe( new ItemStack (SCDefs.leafCarpetDeco, 3, SCBlockLeafCarpetDeco.AUTUMN_YELLOW),
 					new Object[] {
 							"LLL",
 							'L', new ItemStack( SCDecoIntegration.autumnLeaves, 1, 2),
@@ -837,7 +1182,7 @@ public class SCRecipes extends SCRecipeHelper {
 		}
 		
 		//batter
-		//remove raw egg recipe
+		//remove raw egg recipe, readded below
 		FCCraftingManagerCauldron.getInstance().RemoveRecipe( 
 	    		new ItemStack( FCBetterThanWolves.fcItemHardBoiledEgg ), 
 	    		new ItemStack[] {
@@ -1154,7 +1499,7 @@ public class SCRecipes extends SCRecipeHelper {
 	private static void addMuffinRecipes()
 	{
 		Item[] muffins = { SCDefs.itemMuffinChocolate, SCDefs.itemMuffinSweetberry, SCDefs.itemMuffinBlueberry };
-		Item[] indgredients = { FCBetterThanWolves.fcItemChocolate, SCDefs.sweetberry, SCDefs.blueberry };
+		Item[] ingredients = { FCBetterThanWolves.fcItemChocolate, SCDefs.sweetberry, SCDefs.blueberry };
 		Item[] uncookedMuffin = { SCDefs.itemMuffinRawChocolate, SCDefs.itemMuffinRawSweetberry, SCDefs.itemMuffinRawBlueberry };
 		int[] type = { SCBlockMuffinRaw.CHOCOLATE, SCBlockMuffinRaw.SWEETBERRY, SCBlockMuffinRaw.BLUEBERRY};
 		
@@ -1168,7 +1513,7 @@ public class SCRecipes extends SCRecipeHelper {
 			
 			FCRecipes.AddShapelessRecipe( new ItemStack( uncookedMuffin[index], 1 ), 
 					new Object[] {
-					new ItemStack( indgredients[index] ), 
+					new ItemStack( ingredients[index] ), 
 					
 					new ItemStack( Item.bucketMilk ),
 					new ItemStack( Item.sugar ),
@@ -1246,7 +1591,12 @@ public class SCRecipes extends SCRecipeHelper {
 		//Toppings	
 		addSimpleKnifeCuttingRecipe(Item.porkRaw, SCDefs.baconRaw, 3);
 		addSimpleKnifeCuttingRecipe(Item.beefRaw, SCDefs.beefPattyRaw, 2);
-		addSimpleKnifeCuttingRecipe(Item.chickenRaw, SCDefs.chickenDrumRaw, 2);
+		
+//		addKnifeCuttingRecipes(new ItemStack(Item.chickenRaw),
+//				new ItemStack[] {
+//						new ItemStack(SCDefs.chickenDrumRaw),
+//						new ItemStack(SCDefs.chickenBreastRaw)
+//				});
 		
 		FurnaceRecipes.smelting().addSmelting( SCDefs.baconRaw.itemID, new ItemStack( SCDefs.baconCooked ), 0 );
 		FurnaceRecipes.smelting().addSmelting( SCDefs.beefPattyRaw.itemID, new ItemStack( SCDefs.beefPattyCooked ), 0 );
@@ -1315,7 +1665,7 @@ public class SCRecipes extends SCRecipeHelper {
 	    		new ItemStack( SCDefs.riceCooked, 1 ),
 	    		new ItemStack[] {
 	    			new ItemStack( SCDefs.rice, 2),
-					new ItemStack( SCDefs.bowlWater, 1 )
+					new ItemStack( Item.bowlEmpty, 1 )
 			} );
 		
 		//Bundle to Rice

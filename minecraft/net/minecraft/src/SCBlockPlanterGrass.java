@@ -1,5 +1,6 @@
 package net.minecraft.src;
 
+import java.awt.Color;
 import java.util.List;
 import java.util.Random;
 
@@ -13,10 +14,8 @@ public class SCBlockPlanterGrass extends SCBlockPlanterBase {
 	public static final float GROWTH_CHANCE = 0.8F;
 	public static final int SELF_GROWTH_CHANCE = 12;
 	
-	protected SCBlockPlanterGrass(int iBlockID) {
-		super(iBlockID);
-
-		setUnlocalizedName("SCBlockPlanterGrass");
+	protected SCBlockPlanterGrass(int iBlockID, String unlocalisedName) {
+		super(iBlockID, unlocalisedName);
 	}
 	
 	@Override
@@ -32,16 +31,8 @@ public class SCBlockPlanterGrass extends SCBlockPlanterBase {
 	}
 	
 	@Override
-	public void updateTick(World world, int x, int y, int z, Random rand) {
-		if (FCBlockGrass.canGrassSpreadFromLocation(world, x, y, z)) {
-			if (rand.nextFloat() <= GROWTH_CHANCE) {
-				checkForGrassSpreadFromLocation(world, x, y, z);
-			}
-
-			if (isSparse(world, x, y, z) && rand.nextInt(SELF_GROWTH_CHANCE) == 0) {
-				world.setBlockAndMetadata(x, y, z, this.blockID, 0);
-			}
-		}
+	public void updateTick(World world, int x, int y, int z, Random random) {
+		int meta = world.getBlockMetadata(x, y, z);
 		
 		//Turn Grass to Dirt
 		Block blockAbove = Block.blocksList[world.getBlockId(x, y + 1, z)];
@@ -52,19 +43,82 @@ public class SCBlockPlanterGrass extends SCBlockPlanterBase {
 			
 			if (isFullBlock)
 			{
-//				world.setBlockAndMetadata(x, y, z, SCDefs.planterDirt.blockID, 0); //TODO: uncomment when adding new planters
+				world.setBlockAndMetadata(x, y, z, SCDefs.planterFarmland.blockID, getNutritionLevel(meta));
 			}
 		}
+		
+		//Grass Spread
+		if (FCBlockGrass.canGrassSpreadFromLocation(world, x, y, z)) {
+			if (random.nextFloat() <= GROWTH_CHANCE) {
+				checkForGrassSpreadFromLocation(world, x, y, z);
+			}
+		}
+		
+		//Grass Growth
+		if (isSparse(world, x, y, z) && random.nextInt(SELF_GROWTH_CHANCE) == 0) {
+			world.setBlockAndMetadata(x, y, z, this.blockID, meta - 4);
+		}
+		
+		//Nutrition loss
+		if (!isSparse(world, x,y,z) && getNutritionLevel(meta) > 0 && random.nextInt(SELF_GROWTH_CHANCE) == 0)
+		{
+			world.setBlockAndMetadata(x, y, z, this.blockID, meta - 1);
+		}
+		
+		//grow plants
+		if(!isSparse(world, x,y,z) && getNutritionLevel(meta) == 0)
+		{
+			growPlants(world, x,y,z, random);
+		}		
 	}
 	
+	private void growPlants(World world, int i, int j, int k, Random random) {
+		if ( world.isAirBlock( i, j + 1, k ) )
+    	{
+        	// grass planters with nothing in them will eventually sprout flowers or tall grass
+    		  
+    		if ( world.getBlockLightValue(i, j + 1, k) >= 8 )
+    		{
+
+	    		if ( random.nextInt( 12 ) == 0 )
+	    		{		    		
+	    			int iPlantType = random.nextInt( 3 );
+	    			
+	    			if ( iPlantType == 0 )
+	    			{
+	    				world.setBlockAndMetadataWithNotify( i, j + 1, k, Block.tallGrass.blockID, 1 );
+	    			}
+	    			else if ( iPlantType == 1 )
+	    			{
+	    				world.setBlockAndMetadataWithNotify( i, j + 1, k, Block.tallGrass.blockID, 2 );
+	    			}
+	    			else
+	    			{
+	    				if (world.isAirBlock( i, j + 2, k ) )
+	    				{
+	    					if (random.nextInt( 2 ) == 0)
+	    					{
+	    						world.setBlockAndMetadataWithNotify( i, j + 1, k, SCDefs.doubleTallGrass.blockID, SCBlockDoubleTallGrass.FERN);
+		    					world.setBlockAndMetadataWithNotify( i, j + 2, k, SCDefs.doubleTallGrass.blockID, SCBlockDoubleTallGrass.setTopBlock(SCBlockDoubleTallGrass.FERN));
+	    					}
+	    					else {
+	    						world.setBlockAndMetadataWithNotify( i, j + 1, k, SCDefs.doubleTallGrass.blockID, SCBlockDoubleTallGrass.GRASS);
+		    					world.setBlockAndMetadataWithNotify( i, j + 2, k, SCDefs.doubleTallGrass.blockID, SCBlockDoubleTallGrass.setTopBlock(SCBlockDoubleTallGrass.GRASS));
+	    					}
+	    				}
+	    			}
+	    		}
+    		}
+    	}		
+	}
+
 	public static void checkForGrassSpreadFromLocation(World world, int x, int y, int z) {
 		if (world.provider.dimensionId != 1 && !FCBlockGroundCover.IsGroundCoverRestingOnBlock(world, x, y, z)) {
-			// check for grass spread
-
+			// check for grass nearby
 			int i = x + world.rand.nextInt(3) - 1;
 			int j = y + world.rand.nextInt(4) - 2;
 			int k = z + world.rand.nextInt(3) - 1;
-
+			
 			Block targetBlock = Block.blocksList[world.getBlockId(i, j, k)];
 
 			if (targetBlock != null) {
@@ -90,9 +144,13 @@ public class SCBlockPlanterGrass extends SCBlockPlanterBase {
 	private boolean isSparse(World world, int x, int y, int z) {
 		return isSparse(world.getBlockMetadata(x, y, z));
 	}
+		
+	private boolean isSparse(int meta) {
+		return meta > 3;
+	}
 	
 	public void setSparse(World world, int x, int y, int z) {
-		world.setBlockMetadataWithNotify(x, y, z, 7);
+		//TODO:
 	}
 
 
@@ -116,13 +174,28 @@ public class SCBlockPlanterGrass extends SCBlockPlanterBase {
 		return getNutritionLevel(meta);
 	}
 	
-    private int getNutritionLevel( int meta)
+	protected int getNutritionLevel( int meta)
     {    	
-    	if ((meta & 3) == 0 ) return 3;
-    	else if ((meta & 3) == 1 ) return 2;
-    	else if ((meta & 3) == 2 ) return 1;
-
-    	else return 0;
+    	return meta & 3;
+	}
+    
+    private int getGrowthLevel( int meta)
+    {
+    	if (meta > 11) return 0;
+    	else if (meta > 7) return 1;
+    	else if (meta > 3) return 2;
+    	else return 3;
+    }
+    
+	@Override
+    public boolean CanWildVegetationGrowOnBlock( World world, int i, int j, int k )
+    {
+		return true;
+    }
+	
+	@Override
+	public boolean CanSaplingsGrowOnBlock(World world, int i, int j, int k) {
+		return true;
 	}
 	
 	@Override
@@ -135,62 +208,61 @@ public class SCBlockPlanterGrass extends SCBlockPlanterBase {
 			return 16777215;
 		}
 		else {
-			if (getNutritionLevel(meta) == 2)
-			{
-				return color(blockAccess, x, y, z, 200 , -25 , 0);
-			}
-			else if (getNutritionLevel(meta) == 1)
-			{
-				return color(blockAccess, x, y, z, 350 , -50 , 0);
-			}
-			else if (getNutritionLevel(meta) == 0)
-			{
-				return color(blockAccess, x, y, z, 500 , -200 , 0);
-			}
-			else return color(blockAccess, x, y, z, 0 , 0 , 0);
+			
+			return getGrassColor(blockAccess, x,y,z);
+			
+//			switch (getNutritionLevel(meta)) {
+//			case 0:
+//				return color(blockAccess, x, y, z, 1.0f , 1.0f , 1.0f);
+//			case 1:
+//				return color(blockAccess, x, y, z, 0.9f , 0.75f , 1.0f);
+//			case 2:
+//				return color(blockAccess, x, y, z, 0.85f , 0.5f , 1.0f);
+//			case 3:
+//				return color(blockAccess, x, y, z, 0.8f , 0.25f , 1.0f);
+//
+//			default:
+//				return 0x000;
+//			}			
 		}
 		
 		
 	}
+	
+//	private int color( IBlockAccess blockAccess, int i, int j, int k, int r, int g, int b, int h) {
+//		
+//		
+//		Color color = new Color(color(blockAccess, i, j, k, r, g, b));
+//		int red = color.getRed();
+//		int green = color.getGreen();
+//		int blue = color.getBlue();
+//		float[] hsb = color.RGBtoHSB(red, green, blue, null);
+//		
+//		float hue = hsb[0];
+//		float sat = hsb[1];
+//		float bri = hsb[2];		
+//		
+//		return color(blockAccess, i, j, k, r, g, b);
+//	}
+	
 
 	
-	private int color( IBlockAccess blockAccess, int i, int j, int k, int r, int g, int b) {
-        for (int var8 = -1; var8 <= 1; ++var8)
-        {
-        	for (int var9 = -1; var9 <= 1; ++var9)
-            {
-                int var10 = blockAccess.getBiomeGenForCoords(i + var9, k + var8).getBiomeGrassColor();
-                
-                r += (var10 & 16711680) >> 16;
-                g += (var10 & 65280) >> 8;
-                b += var10 & 255;
-            }
-        }
-        
-        return (r / 9 & 255) << 16 | (g / 9 & 255) << 8 | b / 9 & 255;
-	}
+	
 	
 	//------------ Client Side Functionality ----------//
     
-    private Icon topGrass;
-    private Icon topGrassSparse;
-	private Icon topGrassSparseDirt;
-    
-    private Icon planter;
-    
-    
+    private Icon[] topGrass = new Icon[2];
+	private Icon dirt;
+	
 	@Override
     public void registerIcons( IconRegister register )
     {
 		super.registerIcons( register );
+			
+		topGrass[0] = register.registerIcon("fcBlockGrassSparse");
+		topGrass[1] = register.registerIcon( "grass_top" );
 		
-		topGrass = register.registerIcon( "grass_top" );
-		
-		topGrassSparse = register.registerIcon("fcBlockGrassSparse");
-		topGrassSparseDirt = register.registerIcon("fcBlockGrassSparseDirt");
-		
-		planter = register.registerIcon("SCBlockPlanter_topRing");
-		
+		dirt = register.registerIcon("fcBlockGrassSparseDirt");	
     }
 	
 	@Override
@@ -199,75 +271,120 @@ public class SCBlockPlanterGrass extends SCBlockPlanterBase {
         list.add(new ItemStack(blockID, 1, 1));
         list.add(new ItemStack(blockID, 1, 2));
         list.add(new ItemStack(blockID, 1, 3));
-        list.add(new ItemStack(blockID, 1, 8));
-        list.add(new ItemStack(blockID, 1, 9));
-        list.add(new ItemStack(blockID, 1, 10));
-        list.add(new ItemStack(blockID, 1, 11));
+        list.add(new ItemStack(blockID, 1, 4));
+        list.add(new ItemStack(blockID, 1, 5));
+        list.add(new ItemStack(blockID, 1, 6));
+        list.add(new ItemStack(blockID, 1, 7));
     }
-	
-	private boolean grassPass = false;
-	private boolean dirtPass = false;
+
+	protected boolean grassPass = false;
+		
+	@Override
+	protected void renderOverlay(RenderBlocks renderer, int i, int j, int k) {
+		if (getGrassTexture(renderer.blockAccess.getBlockMetadata(i, j, k)) != null)
+		{
+			grassPass = true;
+			renderer.setOverrideBlockTexture(getGrassTexture(renderer.blockAccess.getBlockMetadata(i, j, k)));
+			renderer.setRenderBounds(0,0.998,0,1,1,1);
+	    	renderer.renderStandardBlock(this, i, j, k);
+	    	renderer.clearOverrideBlockTexture();
+	    	grassPass = false;
+	    }
+	}
 	
 	@Override
-    public Icon getIcon( int iSide, int iMetadata )
-    {
-		if ( iSide == 1  )
-		{		
-			if (grassPass)
-			{
-				if (isSparse(iMetadata))
-				{
-					return topGrassSparse;
-				}
-				else
-				{
-					return topGrass;
-				}
-			}
-			else if (dirtPass)
-			{
-				return topGrassSparseDirt;
-			}
-			else return planter;
-		}        
-    	
-        return blockIcon;
-    }
+	protected void renderOverlayItem(RenderBlocks renderer, int iItemDamage, float brightness) {
+		Icon overlay = getGrassTexture(iItemDamage);
+		int var14 = getGrassColor(iItemDamage);
+		
+		float var8 = (float)(var14 >> 16 & 255) / 255.0F;
+		float var9 = (float)(var14 >> 8 & 255) / 255.0F;
+        float var10 = (float)(var14 & 255) / 255.0F;
+        GL11.glColor4f(var8 * brightness, var9 * brightness, var10 * brightness, 1.0F);
+		
+    	renderer.setOverrideBlockTexture(overlay);
+		renderer.setRenderBounds(0,0.998,0,1,1,1);
+		FCClientUtilsRender.RenderInvBlockWithMetadata( renderer, this, -0.5F, -0.5F, -0.5F, iItemDamage );    
+    	renderer.clearOverrideBlockTexture();
+	}
 	
-    private boolean isSparse(int meta) {
-		return meta > 7;
+//	@Override
+//    public Icon getIcon( int iSide, int iMetadata )
+//    {
+//		if ( iSide == 1  )
+//		{		
+//			if (grassPass)
+//			{
+//				return topGrass[getGrowthLevel(iMetadata)];
+//			}
+//			else if (dirtPass)
+//			{
+//				return dirt;
+//			}
+//			else return planter;
+//		}        
+//    	
+//        return blockIcon;
+//    }
+
+
+//	@Override
+//    public boolean RenderBlock( RenderBlocks renderer, int x, int y, int z )
+//    {    	
+//    	dirtPass = true;    	
+//    	renderer.setRenderBounds(0,0.99999,0,1,1,1);
+//    	renderer.renderStandardBlock(this, x, y, z);    	
+//    	dirtPass = false;
+//    	
+//    	grassPass = true;    	
+//    	renderer.setRenderBounds(0,0.99999F,0,1,1,1);
+//    	renderer.renderStandardBlock(this, x, y, z);    	
+//    	grassPass = false;
+//    	
+//    	return true;
+//    }
+//    
+//    @Override
+//    public void RenderBlockSecondPass(RenderBlocks renderer, int x, int y, int z, boolean bFirstPassResult) {
+//    	RenderFilledPlanterBlock( renderer, x, y, z );
+//    }
+    
+//    @Override
+//    public void RenderBlockAsItem(RenderBlocks renderer, int iItemDamage, float brightness) {
+//    	RenderFilledPlanterInvBlock( renderer, this, iItemDamage );
+//    	
+//    	int nutritionLevel = getNutritionLevel(iItemDamage);
+//    	
+//    	SCUtilsRender.renderPlanterContentsAsItem(renderer, this, iItemDamage, brightness, nutritionLevel, topGrass[3], dirt, topGrass[getGrowthLevel(iItemDamage)]);    	
+//    	
+//    }
+
+	@Override
+	protected Icon getContentsTexture(int meta) {
+		return dirt;
 	}
 
 	@Override
-    public boolean RenderBlock( RenderBlocks renderer, int x, int y, int z )
-    {    	
-    	dirtPass = true;    	
-    	renderer.setRenderBounds(0,0.99999,0,1,1,1);
-    	renderer.renderStandardBlock(this, x, y, z);    	
-    	dirtPass = false;
-    	
-    	grassPass = true;    	
-    	renderer.setRenderBounds(0,0.99999F,0,1,1,1);
-    	renderer.renderStandardBlock(this, x, y, z);    	
-    	grassPass = false;
-    	
-    	return true;
-    }
-    
-    @Override
-    public void RenderBlockSecondPass(RenderBlocks renderer, int x, int y, int z, boolean bFirstPassResult) {
-    	RenderFilledPlanterBlock( renderer, x, y, z );
-    }
-    
-    @Override
-    public void RenderBlockAsItem(RenderBlocks renderer, int iItemDamage, float brightness) {
-    	RenderFilledPlanterInvBlock( renderer, this, iItemDamage );
-    	
-    	int nutritionLevel = getNutritionLevel(iItemDamage);
-    	
-    	SCUtilsRender.renderPlanterContentsAsItem(renderer, this, iItemDamage, brightness, nutritionLevel, topGrass, topGrassSparseDirt, topGrassSparse);    	
-    	
-    }
+	protected Icon getGrassTexture(int meta) {
+		return topGrass[getGrowthLevel(meta)&1];
+	}
+
+	@Override
+	protected boolean isHydrated(int meta) {
+		return false;
+	}
+
+	@Override
+	protected boolean isFertilized(int meta) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	protected void setFertilized(World world, int x, int y, int z) {
+		// TODO Auto-generated method stub
+		
+	}
 
 	
     

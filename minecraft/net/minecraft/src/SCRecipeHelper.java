@@ -375,4 +375,86 @@ public class SCRecipeHelper {
     {
     	SCCraftingManagerBurgerFilter.instance.addRecipe(output, heldStack, onBoardStack, ejects);
     }
+    
+	//--- MIXER ---//
+    
+    public static void AddMixerRecipe( ItemStack outputStack, ItemStack inputStacks[], float timeToMixMultiplier )
+    {
+    	SCCraftingManagerMixerNormal.getInstance().AddRecipe( outputStack, inputStacks, false, timeToMixMultiplier );
+	}
+    
+    public static void AddMixerRecipe( ItemStack outputStack, ItemStack inputStacks[] )
+    {
+    	SCCraftingManagerMixerNormal.getInstance().AddRecipe( outputStack, inputStacks );
+	}
+    
+    public static void AddMixerRecipe( ItemStack outputStacks[], ItemStack inputStacks[] )
+    {
+    	SCCraftingManagerMixerNormal.getInstance().AddRecipe( outputStacks, inputStacks );
+	}
+    
+    public static void AddMixerRecipeFire( ItemStack outputStack, ItemStack inputStacks[], float timeToMixMultiplier )
+    {
+    	SCCraftingManagerMixerFire.getInstance().AddRecipe( outputStack, inputStacks, false, timeToMixMultiplier );
+	}
+    
+    public static void AddMixerRecipeFire( ItemStack outputStack, ItemStack inputStacks[] )
+    {
+    	SCCraftingManagerMixerFire.getInstance().AddRecipe( outputStack, inputStacks );
+	}
+    
+    public static void AddMixerRecipeFire( ItemStack outputStacks[], ItemStack inputStacks[] )
+    {
+    	SCCraftingManagerMixerFire.getInstance().AddRecipe( outputStacks, inputStacks );
+	}
+    
+    public static void AddMixerRecipeStoked( ItemStack outputStack, ItemStack inputStacks[], float timeToMixMultiplier )
+    {
+    	SCCraftingManagerMixerStoked.getInstance().AddRecipe( outputStack, inputStacks, false, timeToMixMultiplier );
+	}
+    
+    public static void AddMixerRecipeStoked( ItemStack outputStack, ItemStack inputStacks[] )
+    {
+    	SCCraftingManagerMixerStoked.getInstance().AddRecipe( outputStack, inputStacks );
+	}
+    
+    public static void AddMixerRecipeStoked( ItemStack outputStacks[], ItemStack inputStacks[] )
+    {
+    	SCCraftingManagerMixerStoked.getInstance().AddRecipe( outputStacks, inputStacks );
+	}
+    
+    //--- JUICER ---//
+    
+//    public static void AddJuicerRecipe( ItemStack outputStack, ItemStack inputStacks[], int amount)
+//    {
+//    	SCCraftingManagerJuicer.getInstance().AddRecipe( outputStack, inputStacks, false, amount);
+//	}
+    
+    public static void AddJuicerRecipe( ItemStack outputStack, ItemStack inputStack, int amount )
+    {
+    	SCCraftingManagerJuicer.getInstance().AddRecipe( outputStack, inputStack, false, amount);
+	}
+    
+//    public static void AddJuicerRecipe( ItemStack outputStacks[], ItemStack inputStacks[], int amount )
+//    {
+//    	SCCraftingManagerJuicer.getInstance().AddRecipe( outputStacks, inputStacks, false, amount );
+//	}
+    
+    /**
+	 * Note that pan recipe inputs are limited to stack sizes of 1 (which is
+	 * enforced upon adding the recipe)
+	 * 
+	 * @param output         The cooked item
+	 * @param burnedResult	 The burned item
+	 * @param input          The raw item that should be cooked
+	 */
+	public static void addPanCookingRecipe(ItemStack output, ItemStack burnedResult, ItemStack input)
+	{
+		SCCraftingManagerPanCooking.instance.addRecipe(output, burnedResult, input);
+	}
+	
+	public static void addRopeDryingRecipe(ItemStack output, ItemStack input)
+	{
+		SCCraftingManagerRopeDrying.instance.addRecipe(output, input);
+	}
 }

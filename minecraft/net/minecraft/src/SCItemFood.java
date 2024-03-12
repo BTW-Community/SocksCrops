@@ -133,8 +133,11 @@ public class SCItemFood extends FCItemFood {
 	static public final int sunflowerSeedsRoastedHungerHealed = 3;
 	static public final float sunflowerSeedsRoastedSaturationModifier = VEGS_SATURATION_MODIFIER;
 	
-	static public final int grapesHungerHealed = 6;
+	static public final int grapesHungerHealed = 4;
 	static public final float grapesSaturationModifier = VEGS_SATURATION_MODIFIER;
+	
+	static public final int raisinsHungerHealed = 6;
+	static public final float raisinsSaturationModifier = VEGS_SATURATION_MODIFIER;
 	
 	static public final int tomatoHungerHealed = 4;
 	static public final float tomatoSaturationModifier = VEGS_SATURATION_MODIFIER;

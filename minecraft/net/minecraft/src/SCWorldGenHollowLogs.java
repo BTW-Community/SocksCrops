@@ -7,31 +7,27 @@ public class SCWorldGenHollowLogs {
 
     public SCWorldGenHollowLogs() {}
 	
-	private static ArrayList<BiomeGenBase> validBiome = new ArrayList();
+	private static ArrayList<Integer> validBiomeList = new ArrayList();
 	
-	public static boolean isValidBiome(BiomeGenBase biome) {
-		return validBiome.contains(biome);
+	public static boolean isValidBiome(int biomeID) {
+		return validBiomeList.contains(biomeID);
 	}
+	
+	private int woodType;
 
-	static {
-		validBiome.add(BiomeGenBase.forest);
-		validBiome.add(BiomeGenBase.forestHills);
-		validBiome.add(BiomeGenBase.riverForest);
-		validBiome.add(BiomeGenBase.taiga);
-		validBiome.add(BiomeGenBase.taigaHills);
-		validBiome.add(BiomeGenBase.riverTaiga);
-		validBiome.add(BiomeGenBase.jungle);
-		validBiome.add(BiomeGenBase.jungleHills);
-		validBiome.add(BiomeGenBase.riverJungle);
-		
-	}
+    public SCWorldGenHollowLogs(int type, ArrayList<Integer> validBiomeList)
+    {
+    	this.woodType = type;
+        this.validBiomeList = validBiomeList;
+    }
+	
 	
 	public boolean generate(World world, Random rand, int x, int y, int z)
     { 
 		
     	BiomeGenBase currentBiome = world.getBiomeGenForCoords( x, z );
     	
-        boolean isValidBiome = isValidBiome(currentBiome);
+        boolean isValidBiome = isValidBiome(currentBiome.biomeID);
         
         int plantX = x + rand.nextInt(4) - rand.nextInt(4);
         int plantY = y + rand.nextInt(4) - rand.nextInt(4);
@@ -51,27 +47,29 @@ public class SCWorldGenHollowLogs {
         }
         Block hollowLog = SCDefs.hollowLog;
 
-        int type = setType(currentBiome);
+        //int type = setType(currentBiome);
 
         if ( hasEnoughSpaceAround(world, plantX, plantY, plantZ) && plantY > 60)
-        {                                
-        	if ( currentBiome == BiomeGenBase.forest || currentBiome == BiomeGenBase.forestHills || currentBiome == BiomeGenBase.riverForest)
+        {   
+        	if ( woodType == oak)
             {
         		if (oakOrBirch > 0)
         		{
-        			type = oak;
+        			woodType = oak;
         		}
-        		else type = birch;
+        		else woodType = birch;
         		
-        		world.setBlock(plantX, plantY, plantZ, hollowLog.blockID, dir + type, 2);
+        		world.setBlock(plantX, plantY, plantZ, hollowLog.blockID, dir + woodType, 2);
         		
-        		placeLogs(world, plantX, plantY, plantZ, hollowLog, dir, type, placeMoss);
+        		placeLogs(world, plantX, plantY, plantZ, hollowLog, dir, woodType, placeMoss);
             }
         	else 
         	{
-        		world.setBlock(plantX, plantY, plantZ, hollowLog.blockID, dir + type, 2);
-        		placeLogs(world, plantX, plantY, plantZ, hollowLog, dir, type, placeMoss);
-        	}
+        		world.setBlock(plantX, plantY, plantZ, hollowLog.blockID, dir + woodType, 2);
+        		placeLogs(world, plantX, plantY, plantZ, hollowLog, dir, woodType, placeMoss);
+        	}      	
+        	
+        	
         	
 			if (world.isAirBlock(plantX + 1, plantY, plantZ))
 			{
@@ -141,22 +139,10 @@ public class SCWorldGenHollowLogs {
 		
 	}
 
-	int oak = 0;
-    int spruce = 1;
-    int birch = 2;
-    int jungle = 3;
-	
-	private int setType(BiomeGenBase currentBiome) {
-		if (currentBiome == BiomeGenBase.taiga || currentBiome == BiomeGenBase.taigaHills || currentBiome == BiomeGenBase.riverTaiga)
-		{
-			return spruce;
-		}
-		else if (currentBiome == BiomeGenBase.jungle || currentBiome == BiomeGenBase.jungleHills || currentBiome == BiomeGenBase.riverJungle)
-		{
-			return jungle;
-		}
-		else return oak;
-	}
+	public static int oak = 0;
+	public static int spruce = 1;
+	public static int birch = 2;
+	public static int jungle = 3;
 
 	private boolean hasEnoughSpaceAround(World world, int x, int y, int z)
 	{

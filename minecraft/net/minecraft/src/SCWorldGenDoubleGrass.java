@@ -9,31 +9,22 @@ public class SCWorldGenDoubleGrass extends WorldGenerator
     private int tallGrassID;
     private int tallGrassMetadata;
 	private int times;
+	
+	private static ArrayList<Integer> biomes;
 
-    public SCWorldGenDoubleGrass(int times, int id, int meta)
+    public SCWorldGenDoubleGrass(int times, int id, int meta, ArrayList<Integer> biomes)
     {
         this.tallGrassID = id;
         this.tallGrassMetadata = meta;
         this.times = times;
+        
+        this.biomes = biomes;
     }
     
 	private static ArrayList<BiomeGenBase> validBiomeList = new ArrayList();
 	
-	public static boolean isBiomeValid(BiomeGenBase biome) {
-		return validBiomeList.contains(biome);
-	}
-	
-	public static void addBiomeToGenerator(BiomeGenBase biome) {
-		validBiomeList.add(biome);
-	}
-	
-	static {
-		SCWorldGenDoubleGrass.addBiomeToGenerator(BiomeGenBase.taiga);
-		SCWorldGenDoubleGrass.addBiomeToGenerator(BiomeGenBase.taigaHills);
-		SCWorldGenDoubleGrass.addBiomeToGenerator(BiomeGenBase.forest);
-		SCWorldGenDoubleGrass.addBiomeToGenerator(BiomeGenBase.forestHills);
-		SCWorldGenDoubleGrass.addBiomeToGenerator(BiomeGenBase.jungle);
-		SCWorldGenDoubleGrass.addBiomeToGenerator(BiomeGenBase.jungleHills);
+	public static boolean isBiomeValid(int biomeID) {
+		return biomes.contains(biomeID);
 	}
 
     public boolean generate(World par1World, Random par2Random, int par3, int par4, int par5)
@@ -54,7 +45,7 @@ public class SCWorldGenDoubleGrass extends WorldGenerator
 
         	BiomeGenBase currentBiome = par1World.getBiomeGenForCoords( var8, var10 );
         	
-            boolean isValidBiome = isBiomeValid(currentBiome);
+            boolean isValidBiome = isBiomeValid(currentBiome.biomeID);
         	
             
             if ( !isValidBiome )

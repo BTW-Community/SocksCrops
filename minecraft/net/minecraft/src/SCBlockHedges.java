@@ -19,33 +19,30 @@ public class SCBlockHedges extends Block {
 		return meta;
 	}
 		
+	
+	@Override
+	public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int i, int j, int k) {
+		
+		return new AxisAlignedBB(
+    			center - leavesWidth/2, 0, center - leavesWidth/2,
+    			center + leavesWidth/2, 1D, center + leavesWidth/2
+    			).offset(i,j,k);
+	}
+	
 	@Override
 	public AxisAlignedBB GetBlockBoundsFromPoolBasedOnState(IBlockAccess blockAccess, int i, int j, int k) {
-
-    	boolean connectW = false;
-    	boolean connectE = false;    	
-    	boolean connectN = false;    	
-    	boolean connectS = false;    	
-    	
-		if (CanConnectToBlockToFacing(blockAccess, i, j, k, NORTH)) connectN = true;
-		if (CanConnectToBlockToFacing(blockAccess, i, j, k, SOUTH)) connectS = true;
-		if (CanConnectToBlockToFacing(blockAccess, i, j, k, WEST)) connectW = true;
-		if (CanConnectToBlockToFacing(blockAccess, i, j, k, EAST)) connectE = true;
-		
-		AxisAlignedBB box = new AxisAlignedBB(
-    			center - leavesWidth/2, 0, center - leavesWidth/2,
-    			center + leavesWidth/2, leavesHeight, center + leavesWidth/2
-    			);
-		
-		return box;
+		return new AxisAlignedBB(
+    			center - 2/16D, 0, center - 2/16D,
+    			center + 2/16D, 1D, center + 2/16D
+    			);	
 	}
 	
 	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k) {
-		return 	new AxisAlignedBB(
-    			center - leavesWidth/2, 0, center - leavesWidth/2,
-    			center + leavesWidth/2, leavesHeight + 0.5F, center + leavesWidth/2
-    			).offset(i, j, k);
+		return new AxisAlignedBB(
+    			center - 1/16D, 0, center - 2/16D,
+    			center + 1/16D, 1.5D, center + 2/16D
+    			).offset(i,j,k);
 	}
 	
 	@Override
@@ -166,7 +163,7 @@ public class SCBlockHedges extends Block {
     {
 		// getBlocksMovement() is misnamed and returns true if the block *doesn't* block movement
     	
-        return false;
+        return true;
     }
     
 	@Override

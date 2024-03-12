@@ -33,6 +33,8 @@ public class SCBlockLargeFlowerPot extends SCBlockLargeFlowerPotBase {
         if (!FCUtilsWorld.DoesBlockHaveCenterHardpointToFacing(world, x, y - 1, z, 1))
         {
             this.dropBlockAsItem(world, x, y, z, world.getBlockMetadata(x, y, z), 0);
+            FCUtilsInventory.EjectInventoryContents( world, x, y, z, (IInventory)world.getBlockTileEntity(x, y, z) );
+
             world.setBlockToAir(x, y, z);
         }
     }
@@ -51,8 +53,8 @@ public class SCBlockLargeFlowerPot extends SCBlockLargeFlowerPotBase {
      */
     public int getDamageValue(World world, int x, int y, int z)
     {
-    	SCTileEntityLargeFlowerPot potTile = (SCTileEntityLargeFlowerPot) world.getBlockTileEntity(x, y, z);
-    	int blockInPotMeta = potTile.getStoredBlockMetadata();
+    	//SCTileEntityLargeFlowerPot potTile = (SCTileEntityLargeFlowerPot) world.getBlockTileEntity(x, y, z);
+    	//int blockInPotMeta = potTile.getStoredBlockMetadata();
         return 0;
     }
 
@@ -61,21 +63,21 @@ public class SCBlockLargeFlowerPot extends SCBlockLargeFlowerPotBase {
      */
     public void breakBlock(World world, int x, int y, int z, int var5, int var6)
     {
-    	SCTileEntityLargeFlowerPot potTile = (SCTileEntityLargeFlowerPot) world.getBlockTileEntity(x, y, z);
     	
-    	for(int slot = 0; slot < 3; slot++)
-    	{
-        	int blockInPotID = potTile != null ? potTile.getStoredBlockIDInSlot(slot) : 0;
-
-            if (blockInPotID != 0)
-            {
-            	int blockInPotMeta = potTile.getStoredBlockMetadataInSlot(slot);
-                FCUtilsItem.EjectSingleItemWithRandomOffset(world, x, y, z, blockInPotID, blockInPotMeta);
-            }
-    	}
+    	FCUtilsInventory.EjectInventoryContents( world, x, y, z, (IInventory)world.getBlockTileEntity(x, y, z) );
     	
-
-        
+//    	SCTileEntityLargeFlowerPot potTile = (SCTileEntityLargeFlowerPot) world.getBlockTileEntity(x, y, z);
+//    	for(int slot = 0; slot < 3; slot++)
+//    	{
+//        	int blockInPotID = potTile != null ? potTile.getStoredBlockIDInSlot(slot) : 0;
+//
+//            if (blockInPotID != 0)
+//            {
+//            	int blockInPotMeta = potTile.getStoredBlockMetadataInSlot(slot);
+//                FCUtilsItem.EjectSingleItemWithRandomOffset(world, x, y, z, blockInPotID, blockInPotMeta);
+//            }
+//    	}
+//    	
         super.breakBlock(world, x, y, z, var5, var6);
     }
 
@@ -116,50 +118,51 @@ public class SCBlockLargeFlowerPot extends SCBlockLargeFlowerPotBase {
 		}
 		
     	//Empty hand retrieves item
-    	if (handItemStack == null && potTile.hasItemInSlot(slot) ) {
-    	
-    		int storedID = potTile.getStoredBlockIDInSlot(slot);
-    		int storedMeta = potTile.getStoredBlockMetadataInSlot(slot);
-    		
-    		ItemStack stack = new ItemStack(storedID, 1, storedMeta);
-    		
-    		if (!world.isRemote)
-    		{
-    			//FCUtilsItem.EjectStackFromBlockTowardsFacing(world, x, y, z, stack, 1);
-    			world.playAuxSFX(FCBetterThanWolves.m_iItemCollectionPopSoundAuxFXID, x, y, z, 0);
-    		}
-    		
-    		potTile.setStoredBlockIDInSlot(slot, 0);
-    		potTile.setStoredBlockMetadataInSlot(slot, 0);
-    		
-    		potTile.setItemInSlot(slot, false);
-    		
-	   		world.markBlockForRenderUpdate(x, y, z);
-    		
-    		return true;
- 
+		//Problems with ejecting the items from the pot
+//    	if (handItemStack == null && potTile.hasItemInSlot(slot) ) {
+//    	
+//    		int storedID = potTile.getStoredBlockIDInSlot(slot);
+//    		int storedMeta = potTile.getStoredBlockMetadataInSlot(slot);
+//    		
+//    		ItemStack stack = new ItemStack(storedID, 1, storedMeta);
+//    		
+//    		FCUtilsItem.GivePlayerStackOrEjectFromTowardsFacing(player, stack, x, y, z, iFacing);
+//    		if (!world.isRemote) world.playAuxSFX(FCBetterThanWolves.m_iItemCollectionPopSoundAuxFXID, x, y, z, 0);
+//
+//    		potTile.setStoredBlockIDInSlot(slot, 0);
+//    		potTile.setStoredBlockMetadataInSlot(slot, 0);
+//    		
+//    		potTile.setItemInSlot(slot, false);
+//    		
+//	   		world.markBlockForRenderUpdate(x, y, z);
+//    		
+//    		return true;
+// 
+//    	}
+		
+    	//If pot already has an item do nothing
+    	if (potTile.getStackInSlot(slot) != null) {
+    		return false;
     	}
 
-
-    	if (handItemStack != null && !potTile.hasItemInSlot(slot))
+    	if (handItemStack != null)
     	{
         	int heldID = handItemStack.getItem().itemID;
         	int heldDamage = handItemStack.getItemDamage();
-        	//If pot already has an item do nothing
-        	if (potTile.hasItemInSlot(slot)) {
-        		return false;
-        	}
+
         	//If item is placeable within the pot, place it
-        	else if (potTile.isValidItemForPot(heldID, heldDamage) || heldID == FCBetterThanWolves.fcItemMushroomBrown.itemID || heldID == FCBetterThanWolves.fcItemMushroomRed.itemID) {
-//        		potTile.placeItemInPot(heldID, heldDamage);
+        	if (potTile.isValidItemForPot(heldID, heldDamage)) {
         		
-        		potTile.placeItemInPotInSlot(heldID, heldDamage, slot);
+        		potTile.setInventorySlotContents(slot, handItemStack);
         		
         		//Decrements stack, unless in creative
-        		if (!player.capabilities.isCreativeMode && --handItemStack.stackSize <= 0)
+//        		if (!player.capabilities.isCreativeMode && --handItemStack.stackSize <= 0)
+        		if (--handItemStack.stackSize <= 0)
                 {
         			player.inventory.setInventorySlotContents(player.inventory.currentItem, (ItemStack)null);
                 }
+        		
+        		world.markBlockForRenderUpdate(x, y, z);
         		
         		return true;
         	}
@@ -179,10 +182,7 @@ public class SCBlockLargeFlowerPot extends SCBlockLargeFlowerPotBase {
     }
     
     //CLIENT ONLY
-    
-
-
-    
+        
     @Override
     public AxisAlignedBB GetBlockBoundsFromPoolBasedOnState(IBlockAccess blockAccess, int i, int j, int k) {
     	int meta = blockAccess.getBlockMetadata(i, j, k);
@@ -276,21 +276,21 @@ public class SCBlockLargeFlowerPot extends SCBlockLargeFlowerPotBase {
 		
         for (int slot = 0; slot < 3; slot++)
         {
-        	int storedBlockID = potTile.getStoredBlockIDInSlot(slot);
-        	int storedBlockMetadata = potTile.getStoredBlockMetadataInSlot(slot);
+        	//int storedBlockID = potTile.getStoredBlockIDInSlot(slot);
+        	//int storedBlockMetadata = potTile.getStoredBlockMetadataInSlot(slot);
         	tess.setColorOpaque_F(1.0F, 1.0F, 1.0F);
         	
-        	if (storedBlockID != 0)
+        	if (potTile.getStackInSlot(slot) != null)
         	{
             	//Cactus renders differently than everything else
-            	if (storedBlockID == Block.cactus.blockID) 
+            	if (potTile.getStackInSlot(slot).itemID == Block.cactus.blockID) 
             	{
             		renderCactus(render, x, y, z, meta, slot);
             	}
             	//Renders other blocks as crossed squares. Double checks validity
-            	else if (potTile.isValidItemForPot(storedBlockID, storedBlockMetadata))
+            	else if (potTile.isValidItemForPot(potTile.getStackInSlot(slot).itemID, 0))
             	{
-            		renderFlowers(render, meta, potTile, slot, storedBlockID, storedBlockMetadata);
+            		renderFlowers(render, meta, potTile, slot, potTile.getStackInSlot(slot).itemID, potTile.getStackInSlot(slot).getItemDamage());
             	}
         	}        	
 
@@ -446,8 +446,23 @@ public class SCBlockLargeFlowerPot extends SCBlockLargeFlowerPotBase {
 
 	private void renderFlowers(RenderBlocks render, int meta, SCTileEntityLargeFlowerPot potTile, int slot, int storedBlockID, int storedBlockMetadata)
 	{
-		Block storedBlock = Block.blocksList[storedBlockID];
-
+		Block storedBlock;
+			
+		if (storedBlockID == FCBetterThanWolves.fcItemMushroomRed.itemID)
+		{
+			storedBlock = Block.mushroomRed;
+		}
+		else if (storedBlockID == FCBetterThanWolves.fcItemMushroomBrown.itemID)
+		{
+			storedBlock = Block.mushroomBrown;
+		}
+		else {
+			storedBlock = Block.blocksList[storedBlockID];
+		}
+		
+//		System.out.println("id: " + storedBlockID);
+//		System.out.println("storedBlock: " + storedBlock);
+				
 		double xPos = potTile.xCoord;
 		double yPos = potTile.yCoord + 4/16D;
 		double zPos = potTile.zCoord;

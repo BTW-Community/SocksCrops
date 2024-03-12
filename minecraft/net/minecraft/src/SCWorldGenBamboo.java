@@ -7,27 +7,22 @@ import java.util.Random;
 
 public class SCWorldGenBamboo extends WorldGenerator
 {
-	private static ArrayList<BiomeGenBase> validBiomeList = new ArrayList();
+	private static ArrayList<Integer> validBiomeList = new ArrayList();
 	
-	public static boolean isBiomeValid(BiomeGenBase biome) {
-		return validBiomeList.contains(biome);
+	public static boolean isBiomeValid(int biomeID) {
+		return validBiomeList.contains(biomeID);
 	}
-	
-	public static void addBiomeToGenerator(BiomeGenBase biome) {
-		validBiomeList.add(biome);
-	}
-	
-	static {
-//		SCWorldGenBamboo.addBiomeToGenerator(BiomeGenBase.jungle);
-		SCWorldGenBamboo.addBiomeToGenerator(BiomeGenBase.jungleHills);
-//		SCWorldGenBamboo.addBiomeToGenerator(BiomeGenBase.plains); //debug
-	}
+
+    public SCWorldGenBamboo(ArrayList<Integer> validBiomeList)
+    {
+        this.validBiomeList = validBiomeList;
+    }
 	
 	public boolean generate(World world, Random random, int x, int y, int z)
     {
     	BiomeGenBase currentBiome = world.getBiomeGenForCoords( x, z );
     	
-        boolean isValidBiome = isBiomeValid(currentBiome);
+        boolean isValidBiome = isBiomeValid(currentBiome.biomeID);
         
 //        System.out.println("Bamboo start");
         

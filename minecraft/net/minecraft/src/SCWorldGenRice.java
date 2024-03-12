@@ -6,26 +6,23 @@ import java.util.Random;
 public class SCWorldGenRice extends WorldGenerator
 {
 	
-	private static ArrayList<BiomeGenBase> validBiomeList = new ArrayList();
+	private static ArrayList<Integer> validBiomeList = new ArrayList();
 	
-	public static boolean isBiomeValid(BiomeGenBase biome) {
-		return validBiomeList.contains(biome);
+	public static boolean isBiomeValid(int biomeID) {
+		return validBiomeList.contains(biomeID);
 	}
 	
-	public static void addBiomeToGenerator(BiomeGenBase biome) {
-		validBiomeList.add(biome);
-	}
-	
-	static {
-		SCWorldGenRice.addBiomeToGenerator(BiomeGenBase.riverDesert);
-	}
+    public SCWorldGenRice(ArrayList<Integer> validBiomeList)
+    {
+        this.validBiomeList = validBiomeList;
+    }
 	
     public boolean generate(World par1World, Random random, int x, int y, int z)
     {
     	
     	BiomeGenBase currentBiome = par1World.getBiomeGenForCoords( x, z );
     	
-        boolean isValidBiome = isBiomeValid(currentBiome);
+        boolean isValidBiome = isBiomeValid(currentBiome.biomeID);
     	
         for (int var6 = 0; var6 < 10; ++var6)
         {

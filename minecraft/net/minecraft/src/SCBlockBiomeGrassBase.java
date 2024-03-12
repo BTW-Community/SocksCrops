@@ -3,6 +3,9 @@ package net.minecraft.src;
 import java.util.List;
 import java.util.Random;
 
+import betterterrain.biome.BTABiome;
+import betterterrain.biome.BTABiomeConfiguration;
+
 public abstract class SCBlockBiomeGrassBase extends Block {
 
 	public static final int SPREAD_LIGHT_LEVEL = 9; // 7 previously, 4 vanilla
@@ -34,6 +37,7 @@ public abstract class SCBlockBiomeGrassBase extends Block {
 		setStepSound(soundGrassFootstep);
 
 		setCreativeTab(CreativeTabs.tabBlock);
+
 	}
 
 	@Override
@@ -178,17 +182,17 @@ public abstract class SCBlockBiomeGrassBase extends Block {
 
 	public abstract int getTypeForIcons(int meta);
 
-
+	
 	public static int getBiomeColor(int meta) {
-		int plains = -7226023;
-		int desert = -4212907;
-		int xHills = -7686519;
-		int forest = -8798118;
-		int taiga = -8211053;
-		int swamp = 6056270;
-		int jungle = -11285961;
-		int mushroom = -11155137;
-
+		int plains = SCBiomeGrassColors.plains; //-7226023;
+		int desert = SCBiomeGrassColors.desert; //-4212907;
+		int xHills = SCBiomeGrassColors.extremeHills; //-7686519;
+		int forest = SCBiomeGrassColors.forest; //-8798118;
+		int taiga = SCBiomeGrassColors.taiga; //-8211053;
+		int swamp = SCBiomeGrassColors.swampland; //6056270;
+		int jungle = SCBiomeGrassColors.jungle; // -11285961;
+		int mushroom = SCBiomeGrassColors.mushroomIsland; //-11155137;		
+		
 		switch (meta & 7) {
 		default:
 		case PLAINS:
@@ -206,7 +210,7 @@ public abstract class SCBlockBiomeGrassBase extends Block {
 		case JUNGLE:
 			return jungle;
 		case MUSHROOM:
-			return mushroom;
+			return mushroom;	
 
 		}
 	}
@@ -219,15 +223,14 @@ public abstract class SCBlockBiomeGrassBase extends Block {
 
 		// Grass color values
 
-		boolean isPlains = currentBiome == BiomeGenBase.plains;
-		boolean isDesert = currentBiome == BiomeGenBase.desert || currentBiome == BiomeGenBase.desertHills;
-		boolean isXHills = currentBiome == BiomeGenBase.extremeHills || currentBiome == BiomeGenBase.extremeHillsEdge;
-		boolean isForest = currentBiome == BiomeGenBase.forest || currentBiome == BiomeGenBase.forestHills;
-		boolean isTaiga = currentBiome == BiomeGenBase.taiga || currentBiome == BiomeGenBase.taigaHills;
-		boolean isSwamp = currentBiome == BiomeGenBase.swampland;
-		boolean isJungle = currentBiome == BiomeGenBase.jungle || currentBiome == BiomeGenBase.jungleHills;
-		boolean isMushroom = currentBiome == BiomeGenBase.mushroomIsland
-				|| currentBiome == BiomeGenBase.mushroomIslandShore;
+		boolean isPlains = currentBiome.biomeID == BiomeGenBase.plains.biomeID;
+		boolean isDesert = currentBiome.biomeID == BiomeGenBase.desert.biomeID || currentBiome.biomeID == BiomeGenBase.desertHills.biomeID;
+		boolean isXHills = currentBiome.biomeID == BiomeGenBase.extremeHills.biomeID || currentBiome.biomeID == BiomeGenBase.extremeHillsEdge.biomeID;
+		boolean isForest = currentBiome.biomeID == BiomeGenBase.forest.biomeID || currentBiome.biomeID == BiomeGenBase.forestHills.biomeID;
+		boolean isTaiga = currentBiome.biomeID == BiomeGenBase.taiga.biomeID || currentBiome.biomeID == BiomeGenBase.taigaHills.biomeID || currentBiome.biomeID == BiomeGenBase.icePlains.biomeID || currentBiome.biomeID == BiomeGenBase.iceMountains.biomeID;
+		boolean isSwamp = currentBiome.biomeID == BiomeGenBase.swampland.biomeID;
+		boolean isJungle = currentBiome.biomeID == BiomeGenBase.jungle.biomeID || currentBiome.biomeID == BiomeGenBase.jungleHills.biomeID;
+		boolean isMushroom = currentBiome.biomeID == BiomeGenBase.mushroomIsland.biomeID || currentBiome.biomeID == BiomeGenBase.mushroomIslandShore.biomeID;
 
 		// System.out.println(grassColor);
 
