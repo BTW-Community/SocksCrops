@@ -1,0 +1,15 @@
+accessWidener v1 named
+
+extendable method net/minecraft/src/BiomeGenBase setMinMaxHeight Lnet/minecraft/src/BiomeGenBase;setMinMaxHeight(FF)Lnet/minecraft/src/BiomeGenBase;
+extendable method net/minecraft/src/BiomeGenBase setTemperatureRainfall Lnet/minecraft/src/BiomeGenBase;setTemperatureRainfall(FF)Lnet/minecraft/src/BiomeGenBase;
+extendable method net/minecraft/src/WorldGenDesertWells initContentsArray Lnet/minecraft/src/WorldGenDesertWells;initContentsArray()V
+extendable method net/minecraft/src/ComponentScatteredFeatureSwampHut initContentsArray Lnet/minecraft/src/ComponentScatteredFeatureSwampHut;initContentsArray()V
+extendable method net/minecraft/src/StructureMineshaftPieces func_78816_a Lnet/minecraft/src/StructureMineshaftPieces;func_78816_a()[Lnet/minecraft/src/WeightedRandomChestContent;
+extendable method net/minecraft/src/StructureStrongholdPieces getStrongholdStones Lnet/minecraft/src/StructureStrongholdPieces;getStrongholdStones()Lnet/minecraft/src/StructureStrongholdStones;
+extendable method net/minecraft/src/WorldGenDungeons pickMobSpawner Lnet/minecraft/src/WorldGenDungeons;pickMobSpawner(Ljava/util/Random;)Ljava/lang/String;
+extendable method btw/block/blocks/FarmlandBlock setWeedsGrowthLevel Lbtw/block/blocks/FarmlandBlock;setWeedsGrowthLevel(Lnet/minecraft/src/World;IIII)V
+extendable class net/minecraft/src/ComponentScatteredFeature
+extendable class net/minecraft/src/StructureScatteredFeatureStones
+extendable class net/minecraft/src/ComponentScatteredFeaturePieces2
+extendable class net/minecraft/src/ComponentVillage
+extendable class net/minecraft/src/ComponentStronghold

@@ -1,0 +1,35 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "btw.community.sockthing.sockscrops.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "BiomeGenBeachMixin",
+    "BiomeGenRiverMixin",
+    "BlockMixin",
+    "BlockTallGrassMixin",
+    "BonusBasketGeneratorMixin",
+    "ComponentMineshaftCorridorMixin",
+    "ComponentScatteredFeatureDesertPyramidMixin",
+    "ComponentScatteredFeatureJunglePyramidMixin",
+    "ComponentScatteredFeatureSwampHutMixin",
+    "ComponentStrongholdChestCorridorMixin",
+    "ComponentStrongholdLibraryMixin",
+    "ComponentStrongholdRoomCrossingMixin",
+    "ComponentVillageHouse2Mixin",
+    "DirtBlockMixin",
+    "FarmlandBlockMixin",
+    "GenLayerRiverMixMixin",
+    "GenLayerShoreMixin",
+    "GrassBlockMixin",
+    "LooseDirtBlockMixin",
+    "WeedsBlockMixin",
+    "WorldGenDesertWellsMixin",
+    "WorldGenDungeonsMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

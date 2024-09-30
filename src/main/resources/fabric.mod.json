@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "sockscrops",
+  "version": "${version}",
+  "name": "Sock's Crops Addon",
+  "description": "This BTW Add-on features plenty of new crops and foods!",
+  "authors": [
+    "Sockthing"
+  ],
+  "contact": {
+    "homepage": "https://github.com/BTW-Community/SocksCrops",
+    "sources": "https://github.com/BTW-Community/SocksCrops"
+  },
+  "license": "CC BY-NC-SA 4.0",
+  "icon": "assets/modid/icon.png",
+  "environment": "*",
+  "entrypoints": {
+  },
+  "mixins": [
+    "sockscrops.mixins.json"
+  ],
+  "accessWidener": "sockscrops.accesswidener",
+  "depends": {
+    "fabricloader": ">=0.7.4"
+  },
+  "suggests": {
+    "flamingo": "*"
+  }
+}
