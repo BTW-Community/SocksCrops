@@ -1,6 +1,6 @@
 package btw.community.sockthing.sockscrops.mixin;
 
-import btw.community.sockthing.sockscrops.utils.BiomeUtils;
+import btw.community.sockthing.sockscrops.world.BiomeIDs;
 import net.minecraft.src.BiomeGenBase;
 import net.minecraft.src.GenLayer;
 import net.minecraft.src.GenLayerShore;
@@ -62,15 +62,15 @@ public abstract class GenLayerShoreMixin extends GenLayer {
 
                         if (!BiomeGenBase.biomeList[neighbor1].getEnableSnow() && !BiomeGenBase.biomeList[neighbor2].getEnableSnow() && !BiomeGenBase.biomeList[neighbor3].getEnableSnow() && !BiomeGenBase.biomeList[neighbor4].getEnableSnow()) {
                             if (currentBiome == BiomeGenBase.plains.biomeID) {
-                                intCache[var8 + var7 * xSize] = BiomeUtils.BEACH_PLAINS_ID;
+                                intCache[var8 + var7 * xSize] = BiomeIDs.BEACH_PLAINS_ID;
                             } else if (currentBiome == BiomeGenBase.desert.biomeID || currentBiome == BiomeGenBase.desertHills.biomeID) {
-                                intCache[var8 + var7 * xSize] = BiomeUtils.BEACH_DESERT_ID;
+                                intCache[var8 + var7 * xSize] = BiomeIDs.BEACH_DESERT_ID;
                             } else if (currentBiome == BiomeGenBase.forest.biomeID || currentBiome == BiomeGenBase.forestHills.biomeID) {
-                                intCache[var8 + var7 * xSize] = BiomeUtils.BEACH_FOREST_ID;
+                                intCache[var8 + var7 * xSize] = BiomeIDs.BEACH_FOREST_ID;
                             } else if (currentBiome == BiomeGenBase.taiga.biomeID || currentBiome == BiomeGenBase.taigaHills.biomeID) {
-                                intCache[var8 + var7 * xSize] = BiomeUtils.BEACH_TAIGA_ID;
+                                intCache[var8 + var7 * xSize] = BiomeIDs.BEACH_TAIGA_ID;
                             } else if (currentBiome == BiomeGenBase.jungle.biomeID || currentBiome == BiomeGenBase.jungleHills.biomeID) {
-                                intCache[var8 + var7 * xSize] = BiomeUtils.BEACH_JUNGLE_ID;
+                                intCache[var8 + var7 * xSize] = BiomeIDs.BEACH_JUNGLE_ID;
                             } else intCache[var8 + var7 * xSize] = BiomeGenBase.beach.biomeID;
                         } else {
                             intCache[var8 + var7 * xSize] = BiomeGenBase.beach.biomeID;

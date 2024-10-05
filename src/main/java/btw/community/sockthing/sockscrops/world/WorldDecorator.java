@@ -2,7 +2,6 @@ package btw.community.sockthing.sockscrops.world;
 
 import btw.community.sockthing.sockscrops.block.SCBlocks;
 import btw.community.sockthing.sockscrops.block.blocks.DoubleTallGrassBlock;
-import btw.community.sockthing.sockscrops.utils.BiomeUtils;
 import btw.world.biome.BiomeDecoratorBase;
 import net.minecraft.src.*;
 
@@ -11,15 +10,15 @@ import java.util.Random;
 public class WorldDecorator {
 
     private static final int[] DOUBLE_GRASS_BIOMES = {
-            BiomeUtils.RIVER_PLAINS_ID,
-            BiomeUtils.RIVER_FOREST_ID,
-            BiomeUtils.RIVER_TAIGA_ID,
-            BiomeUtils.RIVER_JUNGLE_ID,
+            BiomeIDs.RIVER_PLAINS_ID,
+            BiomeIDs.RIVER_FOREST_ID,
+            BiomeIDs.RIVER_TAIGA_ID,
+            BiomeIDs.RIVER_JUNGLE_ID,
     };
 
     private static final int[] DOUBLE_FERN_BIOMES = {
-            BiomeUtils.RIVER_TAIGA_ID,
-            BiomeUtils.RIVER_JUNGLE_ID,
+            BiomeIDs.RIVER_TAIGA_ID,
+            BiomeIDs.RIVER_JUNGLE_ID,
     };
 
 
@@ -76,35 +75,35 @@ public class WorldDecorator {
                 }
 
                 if (currentBiome instanceof BiomeGenRiver) {
-                    if (currentBiome.biomeID == BiomeUtils.RIVER_DESERT_ID) block = Block.blockGold;
+                    if (currentBiome.biomeID == BiomeIDs.RIVER_DESERT_ID) block = Block.blockGold;
 
-                    if (currentBiome.biomeID == BiomeUtils.RIVER_XHILLS_ID) block = Block.blockEmerald;
+                    if (currentBiome.biomeID == BiomeIDs.RIVER_XHILLS_ID) block = Block.blockEmerald;
 
-                    if (currentBiome.biomeID == BiomeUtils.RIVER_FOREST_ID) block = Block.blockIron;
+                    if (currentBiome.biomeID == BiomeIDs.RIVER_FOREST_ID) block = Block.blockIron;
 
                     if (currentBiome.biomeID == BiomeGenBase.frozenRiver.biomeID) block = Block.glass;
 
-                    if (currentBiome.biomeID == BiomeUtils.RIVER_SWAMP_ID) block = Block.brick;
+                    if (currentBiome.biomeID == BiomeIDs.RIVER_SWAMP_ID) block = Block.brick;
 
-                    if (currentBiome.biomeID == BiomeUtils.RIVER_TAIGA_ID) block = Block.blockDiamond;
+                    if (currentBiome.biomeID == BiomeIDs.RIVER_TAIGA_ID) block = Block.blockDiamond;
 
-                    if (currentBiome.biomeID == BiomeUtils.RIVER_JUNGLE_ID) block = Block.blockRedstone;
+                    if (currentBiome.biomeID == BiomeIDs.RIVER_JUNGLE_ID) block = Block.blockRedstone;
 
-                    if (currentBiome.biomeID == BiomeUtils.RIVER_PLAINS_ID) block = Block.blockNetherQuartz;
+                    if (currentBiome.biomeID == BiomeIDs.RIVER_PLAINS_ID) block = Block.blockNetherQuartz;
 
                     world.setBlock(xPos, 80, zPos, block.blockID, 0, 2);
                 } else if (currentBiome instanceof BiomeGenBeach) {
                     block = Block.whiteStone;
 
-                    if (currentBiome.biomeID == BiomeUtils.BEACH_DESERT_ID) block = Block.blockGold;
+                    if (currentBiome.biomeID == BiomeIDs.BEACH_DESERT_ID) block = Block.blockGold;
 
-                    if (currentBiome.biomeID == BiomeUtils.BEACH_FOREST_ID) block = Block.blockIron;
+                    if (currentBiome.biomeID == BiomeIDs.BEACH_FOREST_ID) block = Block.blockIron;
 
-                    if (currentBiome.biomeID == BiomeUtils.BEACH_TAIGA_ID) block = Block.blockDiamond;
+                    if (currentBiome.biomeID == BiomeIDs.BEACH_TAIGA_ID) block = Block.blockDiamond;
 
-                    if (currentBiome.biomeID == BiomeUtils.BEACH_JUNGLE_ID) block = Block.blockRedstone;
+                    if (currentBiome.biomeID == BiomeIDs.BEACH_JUNGLE_ID) block = Block.blockRedstone;
 
-                    if (currentBiome.biomeID == BiomeUtils.BEACH_PLAINS_ID) block = Block.blockNetherQuartz;
+                    if (currentBiome.biomeID == BiomeIDs.BEACH_PLAINS_ID) block = Block.blockNetherQuartz;
 
                     world.setBlock(xPos, 79, zPos, block.blockID, 0, 2);
                 }

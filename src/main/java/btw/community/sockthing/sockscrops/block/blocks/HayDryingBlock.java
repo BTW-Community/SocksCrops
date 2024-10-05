@@ -5,6 +5,8 @@ import btw.community.sockthing.sockscrops.block.SCBlocks;
 import btw.community.sockthing.sockscrops.block.tileentities.HayDryingTileEntity;
 import btw.community.sockthing.sockscrops.item.SCItems;
 import btw.world.util.WorldUtils;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.src.*;
 
 import java.util.Random;
@@ -37,61 +39,61 @@ public class HayDryingBlock extends BlockContainer {
     }
 
     @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k) {
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
         return null;
     }
 
     @Override
-    public boolean canPlaceBlockAt(World world, int i, int j, int k) {
+    public boolean canPlaceBlockAt(World world, int x, int y, int z) {
         // don't allow drying bricks on leaves as it makes for really lame drying racks in trees
 
-        return WorldUtils.doesBlockHaveLargeCenterHardpointToFacing(world, i, j - 1, k, 1, true) &&
-                world.getBlockId(i, j - 1, k) != Block.leaves.blockID;
+        return WorldUtils.doesBlockHaveLargeCenterHardpointToFacing(world, x, y - 1, z, 1, true) &&
+                world.getBlockId(x, y - 1, z) != Block.leaves.blockID;
     }
 
     @Override
-    public void onNeighborBlockChange(World world, int i, int j, int k, int iBlockID) {
-        if (!WorldUtils.doesBlockHaveLargeCenterHardpointToFacing(world, i, j - 1, k, 1, true)) {
-            dropBlockAsItem(world, i, j, k, world.getBlockMetadata(i, j, k), 0);
-            world.setBlockWithNotify(i, j, k, 0);
+    public void onNeighborBlockChange(World world, int x, int y, int z, int iBlockID) {
+        if (!WorldUtils.doesBlockHaveLargeCenterHardpointToFacing(world, x, y - 1, z, 1, true)) {
+            dropBlockAsItem(world, x, y, z, world.getBlockMetadata(x, y, z), 0);
+            world.setBlockWithNotify(x, y, z, 0);
         }
     }
 
     @Override
-    public boolean canGroundCoverRestOnBlock(World world, int i, int j, int k) {
-        return world.doesBlockHaveSolidTopSurface(i, j - 1, k);
+    public boolean canGroundCoverRestOnBlock(World world, int x, int y, int z) {
+        return world.doesBlockHaveSolidTopSurface(x, y - 1, z);
     }
 
     @Override
-    public float groundCoverRestingOnVisualOffset(IBlockAccess blockAccess, int i, int j, int k) {
+    public float groundCoverRestingOnVisualOffset(IBlockAccess blockAccess, int x, int y, int z) {
         return -14 / 16F;
     }
 
     //------------- Class Specific Methods ------------//
 
-    public void onFinishedCooking(World world, int i, int j, int k) {
-        world.setBlockAndMetadataWithNotify(i, j, k, SCBlocks.driedHay.blockID, 0);
+    public void onFinishedDrying(World world, int x, int y, int z) {
+        world.setBlockAndMetadataWithNotify(x, y, z, SCBlocks.driedHay.blockID, 0);
     }
 
-    public void setCookLevel(World world, int i, int j, int k, int iCookLevel) {
-        int iMetadata = setCookLevel(world.getBlockMetadata(i, j, k), iCookLevel);
+    public void setDryLevel(World world, int x, int y, int z, int dryLevel) {
+        int iMetadata = setDryLevel(world.getBlockMetadata(x, y, z), dryLevel);
 
-        world.setBlockMetadataWithNotify(i, j, k, iMetadata);
+        world.setBlockMetadataWithNotify(x, y, z, iMetadata);
     }
 
-    public int setCookLevel(int iMetadata, int iCookLevel) {
+    public int setDryLevel(int iMetadata, int dryLevel) {
         iMetadata &= 1; // filter out old state
 
-        iMetadata |= iCookLevel << 1;
+        iMetadata |= dryLevel << 1;
 
         return iMetadata;
     }
 
-    public int getCookLevel(IBlockAccess blockAccess, int i, int j, int k) {
-        return getCookLevel(blockAccess.getBlockMetadata(i, j, k));
+    public int getDryLevel(IBlockAccess blockAccess, int x, int y, int z) {
+        return getDryLevel(blockAccess.getBlockMetadata(x, y, z));
     }
 
-    public int getCookLevel(int iMetadata) {
+    public int getDryLevel(int iMetadata) {
         return iMetadata >> 1;
     }
 
@@ -108,11 +110,12 @@ public class HayDryingBlock extends BlockContainer {
     //------------- Client ------------//
 
     @Override
+    @Environment(EnvType.CLIENT)
     public int colorMultiplier(IBlockAccess blockAccess, int x, int y, int z) {
-        int cookLevel = getCookLevel(blockAccess, x, y, z);
+        int dryLevel = getDryLevel(blockAccess, x, y, z);
 
-        if (cookLevel < 8) {
-            switch (cookLevel) {
+        if (dryLevel < 8) {
+            switch (dryLevel) {
                 case 0:
                     return 0xaeff99;
                 case 1:
@@ -136,16 +139,20 @@ public class HayDryingBlock extends BlockContainer {
         } else return 0xffffff;
     }
 
+    @Environment(EnvType.CLIENT)
     private Icon sideIcon;
+    @Environment(EnvType.CLIENT)
     private Icon topIcon;
 
     @Override
-    public void registerIcons(IconRegister iconRegister) {
-        topIcon = iconRegister.registerIcon("straw_bale_top");
-        sideIcon = iconRegister.registerIcon("straw_bale_side");
+    @Environment(EnvType.CLIENT)
+    public void registerIcons(IconRegister register) {
+        topIcon = register.registerIcon("straw_bale_top");
+        sideIcon = register.registerIcon("straw_bale_side");
     }
 
     @Override
+    @Environment(EnvType.CLIENT)
     public Icon getIcon(int side, int meta) {
         if (side < 2) {
             return topIcon;
@@ -154,26 +161,28 @@ public class HayDryingBlock extends BlockContainer {
     }
 
     @Override
-    public boolean shouldSideBeRendered(IBlockAccess blockAccess, int iNeighborI, int iNeighborJ, int iNeighborK, int iSide) {
-        if (iSide == 0) {
+    @Environment(EnvType.CLIENT)
+    public boolean shouldSideBeRendered(IBlockAccess blockAccess, int neighborX, int neighborY, int neighborZ, int side) {
+        if (side == 0) {
             return RenderUtils.shouldRenderNeighborFullFaceSide(blockAccess,
-                    iNeighborI, iNeighborJ, iNeighborK, iSide);
+                    neighborX, neighborY, neighborZ, side);
         }
 
         return true;
     }
 
     @Override
-    public boolean renderBlock(RenderBlocks renderBlocks, int i, int j, int k) {
-        IBlockAccess blockAccess = renderBlocks.blockAccess;
+    @Environment(EnvType.CLIENT)
+    public boolean renderBlock(RenderBlocks renderer, int x, int y, int z) {
+        IBlockAccess blockAccess = renderer.blockAccess;
 
-        if (blockAccess.getBlockId(i, j - 1, k) != 0) {
+        if (blockAccess.getBlockId(x, y - 1, z) != 0) {
             float fHeight = 2 / 16F;
 
-            renderBlocks.setRenderBounds(0F, 0F, 0F,
+            renderer.setRenderBounds(0F, 0F, 0F,
                     1F, fHeight, 1F);
 
-            RenderUtils.renderStandardBlockWithTexture(renderBlocks, this, i, j, k, blockIcon);
+            RenderUtils.renderStandardBlockWithTexture(renderer, this, x, y, z, blockIcon);
         }
 
         return true;

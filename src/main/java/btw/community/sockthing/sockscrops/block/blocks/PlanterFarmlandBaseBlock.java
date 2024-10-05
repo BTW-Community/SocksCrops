@@ -12,8 +12,8 @@ import java.util.Random;
 
 public abstract class PlanterFarmlandBaseBlock extends PlanterBaseBlock {
 
-    public PlanterFarmlandBaseBlock(int iBlockID, String name) {
-        super(iBlockID, name);
+    public PlanterFarmlandBaseBlock(int blockID, String name) {
+        super(blockID, name);
     }
 
     @Override

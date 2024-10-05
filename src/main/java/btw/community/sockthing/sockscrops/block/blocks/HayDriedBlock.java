@@ -27,7 +27,7 @@ public class HayDriedBlock extends Block {
     }
 
     @Override
-    public int idDropped(int iMetadata, Random random, int fortuneModifier) {
+    public int idDropped(int metadata, Random random, int fortuneModifier) {
         return BTWItems.straw.itemID;
     }
 
@@ -81,9 +81,9 @@ public class HayDriedBlock extends Block {
 
     @Override
     @Environment(EnvType.CLIENT)
-    public void registerIcons(IconRegister iconRegister) {
-        topIcon = iconRegister.registerIcon("straw_bale_top");
-        sideIcon = iconRegister.registerIcon("straw_bale_side");
+    public void registerIcons(IconRegister register) {
+        topIcon = register.registerIcon("straw_bale_top");
+        sideIcon = register.registerIcon("straw_bale_side");
     }
 
     @Override
@@ -97,10 +97,10 @@ public class HayDriedBlock extends Block {
 
     @Override
     @Environment(EnvType.CLIENT)
-    public boolean shouldSideBeRendered(IBlockAccess blockAccess, int iNeighborI, int iNeighborJ, int iNeighborK, int iSide) {
-        if (iSide == 0) {
+    public boolean shouldSideBeRendered(IBlockAccess blockAccess, int neighborX, int neighborY, int neighborZ, int side) {
+        if (side == 0) {
             return RenderUtils.shouldRenderNeighborFullFaceSide(blockAccess,
-                    iNeighborI, iNeighborJ, iNeighborK, iSide);
+                    neighborX, neighborY, neighborZ, side);
         }
 
         return true;
@@ -108,16 +108,16 @@ public class HayDriedBlock extends Block {
 
     @Override
     @Environment(EnvType.CLIENT)
-    public boolean renderBlock(RenderBlocks renderBlocks, int x, int y, int z) {
-        IBlockAccess blockAccess = renderBlocks.blockAccess;
+    public boolean renderBlock(RenderBlocks renderer, int x, int y, int z) {
+        IBlockAccess blockAccess = renderer.blockAccess;
 
         if (blockAccess.getBlockId(x, y - 1, z) != 0) {
             float fHeight = 2 / 16F;
 
-            renderBlocks.setRenderBounds(0F, 0F, 0F,
+            renderer.setRenderBounds(0F, 0F, 0F,
                     1F, fHeight, 1F);
 
-            RenderUtils.renderStandardBlockWithTexture(renderBlocks, this, x, y, z, blockIcon);
+            RenderUtils.renderStandardBlockWithTexture(renderer, this, x, y, z, blockIcon);
         }
 
         return true;

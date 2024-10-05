@@ -11,33 +11,33 @@ public class KnifeItem extends ToolItem {
     }
 
     @Override
-    public float getStrVsBlock(ItemStack toolItemStack, World world, Block block, int i, int j, int k) {
-        int iToolLevel = toolMaterial.getHarvestLevel();
-        int iBlockToolLevel = block.getEfficientToolLevel(world, i, j, k);
+    public float getStrVsBlock(ItemStack toolStack, World world, Block block, int x, int y, int z) {
+        int toolLevel = toolMaterial.getHarvestLevel();
+        int blockToolLevel = block.getEfficientToolLevel(world, x, y, z);
 
-        if (iBlockToolLevel > iToolLevel) {
+        if (blockToolLevel > toolLevel) {
             return 1.0F;
         }
 
-        return super.getStrVsBlock(toolItemStack, world, block, i, j, k);
+        return super.getStrVsBlock(toolStack, world, block, x, y, z);
     }
 
     @Override
-    public boolean isEfficientVsBlock(ItemStack stack, World world, Block block, int i, int j, int k) {
-        int iToolLevel = toolMaterial.getHarvestLevel();
-        int iBlockToolLevel = block.getEfficientToolLevel(world, i, j, k);
+    public boolean isEfficientVsBlock(ItemStack toolStack, World world, Block block, int x, int y, int z) {
+        int toolLevel = toolMaterial.getHarvestLevel();
+        int blockToolLevel = block.getEfficientToolLevel(world, x, y, z);
 
-        if (iBlockToolLevel > iToolLevel) {
+        if (blockToolLevel > toolLevel) {
             return false;
         }
 
-        if (block.getIsProblemToRemove(stack, world, i, j, k)) {
+        if (block.getIsProblemToRemove(toolStack, world, x, y, z)) {
             // stumps and such
 
             return false;
         }
 
-        return super.isEfficientVsBlock(stack, world, block, i, j, k);
+        return super.isEfficientVsBlock(toolStack, world, block, x, y, z);
     }
 
     @Override
@@ -68,7 +68,7 @@ public class KnifeItem extends ToolItem {
     }
 
     @Override
-    public boolean canToolStickInBlock(ItemStack stack, Block block, World world, int i, int j, int k) {
+    public boolean canToolStickInBlock(ItemStack stack, Block block, World world, int x, int y, int z) {
         return block.areShovelsEffectiveOn();
     }
 

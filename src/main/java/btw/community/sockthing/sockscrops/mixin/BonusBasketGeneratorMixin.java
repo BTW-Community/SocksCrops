@@ -26,20 +26,20 @@ public abstract class BonusBasketGeneratorMixin extends WorldGenerator {
     }
 
     @Override
-    public boolean generate(World world, Random rand, int i, int j, int k) {
-        int iTempBlockID = world.getBlockId(i, j, k);
+    public boolean generate(World world, Random rand, int x, int y, int z) {
+        int iTempBlockID = world.getBlockId(x, y, z);
 
-        while (j > 1 && (iTempBlockID == 0 || iTempBlockID == Block.leaves.blockID)) {
-            j--;
-            iTempBlockID = world.getBlockId(i, j, k);
+        while (y > 1 && (iTempBlockID == 0 || iTempBlockID == Block.leaves.blockID)) {
+            y--;
+            iTempBlockID = world.getBlockId(x, y, z);
         }
 
-        ++j;
+        ++y;
 
         for (int iTempCount = 0; iTempCount < 4; iTempCount++) {
-            int iTempI = i + rand.nextInt(4) - rand.nextInt(4);
-            int iTempJ = j + rand.nextInt(3) - rand.nextInt(3);
-            int iTempK = k + rand.nextInt(4) - rand.nextInt(4);
+            int iTempI = x + rand.nextInt(4) - rand.nextInt(4);
+            int iTempJ = y + rand.nextInt(3) - rand.nextInt(3);
+            int iTempK = z + rand.nextInt(4) - rand.nextInt(4);
 
             if (world.isAirBlock(iTempI, iTempJ, iTempK) && world.doesBlockHaveSolidTopSurface(iTempI, iTempJ - 1, iTempK)) {
                 world.setBlock(iTempI, iTempJ, iTempK, BTWBlocks.wickerBasket.blockID, world.rand.nextInt(4) | 4, 2);

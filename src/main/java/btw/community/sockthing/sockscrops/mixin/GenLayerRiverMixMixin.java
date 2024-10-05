@@ -1,6 +1,6 @@
 package btw.community.sockthing.sockscrops.mixin;
 
-import btw.community.sockthing.sockscrops.utils.BiomeUtils;
+import btw.community.sockthing.sockscrops.world.BiomeIDs;
 import net.minecraft.src.*;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -58,23 +58,23 @@ public abstract class GenLayerRiverMixMixin extends GenLayer {
         if (BiomeGenBase.biomeList[baseBiome] instanceof BiomeGenRiver) {
             riverBiome = baseBiome;
         } else if (baseBiome == BiomeGenBase.desert.biomeID || baseBiome == BiomeGenBase.desertHills.biomeID) {
-            riverBiome = BiomeUtils.RIVER_DESERT_ID;
+            riverBiome = BiomeIDs.RIVER_DESERT_ID;
         } else if (baseBiome == BiomeGenBase.forest.biomeID || baseBiome == BiomeGenBase.forestHills.biomeID) {
-            riverBiome = BiomeUtils.RIVER_FOREST_ID;
+            riverBiome = BiomeIDs.RIVER_FOREST_ID;
         } else if (baseBiome == BiomeGenBase.extremeHills.biomeID || baseBiome == BiomeGenBase.extremeHillsEdge.biomeID) {
-            riverBiome = BiomeUtils.RIVER_XHILLS_ID;
+            riverBiome = BiomeIDs.RIVER_XHILLS_ID;
         } else if (baseBiome == BiomeGenBase.jungle.biomeID || baseBiome == BiomeGenBase.jungleHills.biomeID) {
-            riverBiome = BiomeUtils.RIVER_JUNGLE_ID;
+            riverBiome = BiomeIDs.RIVER_JUNGLE_ID;
         } else if (baseBiome == BiomeGenBase.swampland.biomeID) {
-            riverBiome = BiomeUtils.RIVER_SWAMP_ID;
+            riverBiome = BiomeIDs.RIVER_SWAMP_ID;
         } else if (BiomeGenBase.biomeList[baseBiome].getEnableSnow()) {
             if (baseBiome == BiomeGenBase.taiga.biomeID || baseBiome == BiomeGenBase.taigaHills.biomeID) {
-                riverBiome = BiomeUtils.RIVER_TAIGA_ID;
+                riverBiome = BiomeIDs.RIVER_TAIGA_ID;
             } else riverBiome = BiomeGenBase.frozenRiver.biomeID;
         } else if (baseBiome == BiomeGenBase.plains.biomeID) {
-            riverBiome = BiomeUtils.RIVER_PLAINS_ID;
+            riverBiome = BiomeIDs.RIVER_PLAINS_ID;
         } else if (baseBiome == BiomeGenBase.mushroomIsland.biomeID || baseBiome == BiomeGenBase.mushroomIslandShore.biomeID) {
-            riverBiome = BiomeUtils.RIVER_MUSHROOM_ISLAND_ID;
+            riverBiome = BiomeIDs.RIVER_MUSHROOM_ISLAND_ID;
         } else {
             riverBiome = BiomeGenBase.river.biomeID;
         }

@@ -1,6 +1,6 @@
-package btw.community.sockthing.sockscrops.utils;
+package btw.community.sockthing.sockscrops.world;
 
-public class BiomeUtils {
+public class BiomeIDs {
 
     // Rivers
     public static final int RIVER_PLAINS_ID = 23;

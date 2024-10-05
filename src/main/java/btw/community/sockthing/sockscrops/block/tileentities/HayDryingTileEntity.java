@@ -40,10 +40,9 @@ public class HayDryingTileEntity extends TileEntity implements TileEntityDataPac
     public void updateEntity() {
         super.updateEntity();
 
-        rapidBlockUpdates(); //TODO: DEBUG! REMOVE!
 
         if (!worldObj.isRemote) {
-            UpdateCooking();
+            updateDrying();
         } else {
             if (isDrying) {
                 if (worldObj.rand.nextInt(20) == 0) {
@@ -52,26 +51,6 @@ public class HayDryingTileEntity extends TileEntity implements TileEntityDataPac
                     double zPos = zCoord + 0.25F + worldObj.rand.nextFloat() * 0.5F;
 
                     worldObj.spawnParticle("fcwhitesmoke", xPos, yPos, zPos, 0.0D, 0.0D, 0.0D);
-                }
-            }
-        }
-    }
-
-    public void rapidBlockUpdates() {
-        int sizeXZ = 8;
-        int sizeY = 8;
-
-        for (int iTempI = xCoord - sizeXZ; iTempI <= xCoord + sizeXZ; iTempI++) {
-            for (int iTempJ = yCoord - sizeY; iTempJ <= yCoord + sizeY; iTempJ++) {
-                for (int iTempK = zCoord - sizeXZ; iTempK <= zCoord + sizeXZ; iTempK++) {
-                    int blockID = worldObj.getBlockId(iTempI, iTempJ, iTempK);
-                    if (blockID == 0) {
-                        if (worldObj.rand.nextInt(200) == 0) {
-                            worldObj.spawnParticle("reddust", iTempI + 0.5D, iTempJ + 0.5D, iTempK + 0.5D, 0, 0, 0);
-                        }
-                    } else if (!worldObj.isUpdateScheduledForBlock(iTempI, iTempJ, iTempK, blockID)) {
-                        worldObj.scheduleBlockUpdate(iTempI, iTempJ, iTempK, blockID, 10);
-                    }
                 }
             }
         }
@@ -86,7 +65,7 @@ public class HayDryingTileEntity extends TileEntity implements TileEntityDataPac
         return new Packet132TileEntityData(xCoord, yCoord, zCoord, 1, tag);
     }
 
-    //------------- FCITileEntityDataPacketHandler ------------//
+    //------------- TileEntityDataPacketHandler ------------//
 
     @Override
     public void readNBTFromPacket(NBTTagCompound tag) {
@@ -99,7 +78,7 @@ public class HayDryingTileEntity extends TileEntity implements TileEntityDataPac
 
     //------------- Class Specific Methods ------------//
 
-    public void UpdateCooking() {
+    public void updateDrying() {
         boolean newDrying;
         int blockMaxNaturalLight = worldObj.getBlockNaturalLightValueMaximum(xCoord, yCoord, zCoord);
         int blockCurrentNaturalLight = blockMaxNaturalLight - worldObj.skylightSubtracted;
@@ -125,7 +104,7 @@ public class HayDryingTileEntity extends TileEntity implements TileEntityDataPac
             dryCounter++;
 
             if (dryCounter >= TIME_TO_DRY) {
-                hayBlock.onFinishedCooking(worldObj, xCoord, yCoord, zCoord);
+                hayBlock.onFinishedDrying(worldObj, xCoord, yCoord, zCoord);
 
                 return;
             }
@@ -139,19 +118,19 @@ public class HayDryingTileEntity extends TileEntity implements TileEntityDataPac
             }
         }
 
-        int displayedDryLevel = hayBlock.getCookLevel(worldObj, xCoord, yCoord, zCoord);
-        int currentDryLevel = ComputeCookLevel();
+        int displayedDryLevel = hayBlock.getDryLevel(worldObj, xCoord, yCoord, zCoord);
+        int currentDryLevel = computeDryLevel();
 
         if (displayedDryLevel != currentDryLevel) {
-            hayBlock.setCookLevel(worldObj, xCoord, yCoord, zCoord, currentDryLevel);
+            hayBlock.setDryLevel(worldObj, xCoord, yCoord, zCoord, currentDryLevel);
         }
     }
 
-    public boolean isRainingOnBrick(World world, int i, int j, int k) {
-        return world.isRaining() && world.isRainingAtPos(i, j, k);
+    public boolean isRainingOnBrick(World world, int x, int y, int z) {
+        return world.isRaining() && world.isRainingAtPos(x, y, z);
     }
 
-    private int ComputeCookLevel() {
+    private int computeDryLevel() {
         if (dryCounter > 0) {
             int dryLevel = (int) (((float) dryCounter / (float) TIME_TO_DRY) * 7F) + 1;
 

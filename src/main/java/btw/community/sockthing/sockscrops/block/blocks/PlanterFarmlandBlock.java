@@ -6,8 +6,8 @@ import net.minecraft.src.Icon;
 
 public class PlanterFarmlandBlock extends PlanterFarmlandBaseBlock {
 
-    public PlanterFarmlandBlock(int iBlockID, String name) {
-        super(iBlockID, name);
+    public PlanterFarmlandBlock(int blockID, String name) {
+        super(blockID, name);
     }
 
     //------------- Client ------------//

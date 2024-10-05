@@ -15,16 +15,12 @@ public abstract class PlanterBaseBlock extends PlanterBlockBase {
     public PlanterBaseBlock(int blockID, String name) {
         super(blockID);
 
-        setBlockMaterial(Material.ground);
-
         setHardness(0.5F);
-
         setPicksEffectiveOn(true);
         setHoesEffectiveOn(true);
         setTickRandomly(true);
 
         setCreativeTab(CreativeTabs.tabDecorations);
-
         setUnlocalizedName(name);
     }
 
