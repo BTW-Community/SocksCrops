@@ -1,4 +1,4 @@
-package btw.community.sockthing.sockscrops.mixin;
+package btw.community.sockthing.sockscrops.mixins;
 
 import btw.block.blocks.GrassBlock;
 import net.minecraft.src.BlockGrass;

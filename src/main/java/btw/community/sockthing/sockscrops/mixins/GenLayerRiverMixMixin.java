@@ -1,4 +1,4 @@
-package btw.community.sockthing.sockscrops.mixin;
+package btw.community.sockthing.sockscrops.mixins;
 
 import btw.community.sockthing.sockscrops.world.BiomeIDs;
 import net.minecraft.src.*;

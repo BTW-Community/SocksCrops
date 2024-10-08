@@ -1,4 +1,4 @@
-package btw.community.sockthing.sockscrops.mixin;
+package btw.community.sockthing.sockscrops.mixins;
 
 import btw.community.sockthing.sockscrops.block.SCBlocks;
 import btw.community.sockthing.sockscrops.block.blocks.PlanterBaseBlock;

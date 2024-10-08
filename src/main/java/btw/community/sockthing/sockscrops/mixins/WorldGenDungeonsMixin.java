@@ -1,4 +1,4 @@
-package btw.community.sockthing.sockscrops.mixin;
+package btw.community.sockthing.sockscrops.mixins;
 
 import btw.block.BTWBlocks;
 import btw.community.sockthing.sockscrops.world.LootHandler;

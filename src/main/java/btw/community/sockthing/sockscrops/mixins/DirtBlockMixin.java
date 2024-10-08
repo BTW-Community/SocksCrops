@@ -1,9 +1,9 @@
-package btw.community.sockthing.sockscrops.mixin;
+package btw.community.sockthing.sockscrops.mixins;
 
 import btw.block.BTWBlocks;
-import btw.block.blocks.FallingFullBlock;
+import btw.block.blocks.DirtBlock;
+import btw.block.blocks.FullBlock;
 import btw.block.blocks.GrassBlock;
-import btw.block.blocks.LooseDirtBlock;
 import btw.community.sockthing.sockscrops.block.SCBlocks;
 import btw.community.sockthing.sockscrops.block.blocks.GrassNutritionBlock;
 import btw.community.sockthing.sockscrops.utils.NutritionUtils;
@@ -19,11 +19,31 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.List;
 
-@Mixin(LooseDirtBlock.class)
-public abstract class LooseDirtBlockMixin extends FallingFullBlock {
+@Mixin(DirtBlock.class)
+public abstract class DirtBlockMixin extends FullBlock {
 
-    public LooseDirtBlockMixin(int iBlockID, Material material) {
+    public DirtBlockMixin(int iBlockID, Material material) {
         super(iBlockID, material);
+    }
+
+    @Override
+    public void notifyOfFullStagePlantGrowthOn(World world, int i, int j, int k, Block plantBlock) {
+        int meta = world.getBlockMetadata(i, j, k);
+
+        if (meta < 3) {
+            // revert back to soil
+            world.setBlockAndMetadataWithNotify(i, j, k, this.blockID, meta + 1);
+        }
+    }
+
+    @Override
+    public float getPlantGrowthOnMultiplier(World world, int x, int y, int z, Block plantBlock) {
+        return NutritionUtils.getNutritionMultiplier(world.getBlockMetadata(x, y, z));
+    }
+
+    @Override
+    public int damageDropped(int metadata) {
+        return metadata & 3;
     }
 
     @Inject(method = "dropComponentItemsOnBadBreak", at = @At(value = "HEAD"), cancellable = true)
@@ -57,30 +77,31 @@ public abstract class LooseDirtBlockMixin extends FallingFullBlock {
         cir.setReturnValue(true);
     }
 
+    @Inject(method = "onNeighborDirtDugWithImproperTool", at = @At(value = "HEAD"), cancellable = true)
+    public void onNeighborDirtDugWithImproperTool(World world, int x, int y, int z, int iToFacing, CallbackInfo ci) {
+        int metadata = world.getBlockMetadata(x, y, z);
+        world.setBlockAndMetadataWithNotify(x, y, z, BTWBlocks.looseDirt.blockID, metadata);
+
+        ci.cancel();
+    }
+
     @Inject(method = "onVegetationAboveGrazed",
             at = @At(
                     value = "INVOKE",
-                    target = "Lbtw/block/blocks/LooseDirtBlock;notifyNeighborsBlockDisrupted(Lnet/minecraft/src/World;III)V",
+                    target = "Lbtw/block/blocks/DirtBlock;notifyNeighborsBlockDisrupted(Lnet/minecraft/src/World;III)V",
                     ordinal = 0,
                     shift = At.Shift.BEFORE
             ),
             cancellable = true)
     public void onVegetationAboveGrazed(World world, int x, int y, int z, EntityAnimal animal, CallbackInfo ci) {
-        int nutritionLevel = world.getBlockMetadata(x, y, z);
-        world.setBlockAndMetadataWithNotify(x, y, z, BTWBlocks.looseDirt.blockID, nutritionLevel);
+        int metadata = world.getBlockMetadata(x, y, z);
+        world.setBlockAndMetadataWithNotify(x, y, z, BTWBlocks.looseDirt.blockID, metadata);
     }
 
     @Inject(method = "convertBlock", at = @At(value = "HEAD"), cancellable = true)
     public void convertBlock(ItemStack stack, World world, int x, int y, int z, int iFromSide, CallbackInfoReturnable<Boolean> cir) {
-        int nutritionLevel = world.getBlockMetadata(x, y, z);
-
-        if (nutritionLevel == NutritionUtils.FULL_NUTRITION_LEVEL)
-            world.setBlockAndMetadataWithNotify(x, y, z, SCBlocks.farmlandFullNutrition.blockID, 0);
-        else if (nutritionLevel == NutritionUtils.REDUCED_NUTRITION_LEVEL)
-            world.setBlockAndMetadataWithNotify(x, y, z, SCBlocks.farmlandReducedNutrition.blockID, 0);
-        else if (nutritionLevel == NutritionUtils.LOW_NUTRITION_LEVEL)
-            world.setBlockAndMetadataWithNotify(x, y, z, SCBlocks.farmlandLowNutrition.blockID, 0);
-        else world.setBlockAndMetadataWithNotify(x, y, z, SCBlocks.farmlandDepletedNutrition.blockID, 0);
+        int metadata = world.getBlockMetadata(x, y, z);
+        world.setBlockAndMetadataWithNotify(x, y, z, BTWBlocks.looseDirt.blockID, metadata);
 
         if (!world.isRemote) {
             world.playAuxSFX(2001, x, y, z, blockID); // block break FX
@@ -99,10 +120,10 @@ public abstract class LooseDirtBlockMixin extends FallingFullBlock {
     public void registerIcons(IconRegister register) {
         super.registerIcons(register);
 
-        blockIcon = register.registerIcon(NutritionUtils.LOOSE_DIRT_TEXTURE_NAMES[NutritionUtils.FULL_NUTRITION_LEVEL]);
+        blockIcon = register.registerIcon(NutritionUtils.DIRT_TEXTURE_NAMES[NutritionUtils.FULL_NUTRITION_LEVEL]);
 
         for (int i = 0; i < nutritionIcons.length; i++) {
-            nutritionIcons[i] = register.registerIcon(NutritionUtils.LOOSE_DIRT_TEXTURE_NAMES[i]);
+            nutritionIcons[i] = register.registerIcon(NutritionUtils.DIRT_TEXTURE_NAMES[i]);
         }
     }
 
