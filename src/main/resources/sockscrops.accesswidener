@@ -8,8 +8,10 @@ extendable method net/minecraft/src/StructureMineshaftPieces func_78816_a Lnet/m
 extendable method net/minecraft/src/StructureStrongholdPieces getStrongholdStones Lnet/minecraft/src/StructureStrongholdPieces;getStrongholdStones()Lnet/minecraft/src/StructureStrongholdStones;
 extendable method net/minecraft/src/WorldGenDungeons pickMobSpawner Lnet/minecraft/src/WorldGenDungeons;pickMobSpawner(Ljava/util/Random;)Ljava/lang/String;
 extendable method btw/block/blocks/FarmlandBlock setWeedsGrowthLevel Lbtw/block/blocks/FarmlandBlock;setWeedsGrowthLevel(Lnet/minecraft/src/World;IIII)V
+extendable method net/minecraft/src/GuiIngame renderModSpecificPlayerSightEffects Lnet/minecraft/src/GuiIngame;renderModSpecificPlayerSightEffects()V
 extendable class net/minecraft/src/ComponentScatteredFeature
 extendable class net/minecraft/src/StructureScatteredFeatureStones
 extendable class net/minecraft/src/ComponentScatteredFeaturePieces2
 extendable class net/minecraft/src/ComponentVillage
 extendable class net/minecraft/src/ComponentStronghold
+extendable class net/minecraft/src/SlotArmor

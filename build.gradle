@@ -68,6 +68,10 @@ dependencies {
     }
 }
 
+loom {
+    accessWidener = file("src/main/resources/sockscrops.accesswidener")
+}
+
 configurations {
     btwCompileClasspath.extendsFrom implementation, modImplementation
 }

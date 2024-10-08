@@ -22,7 +22,10 @@
     "GenLayerRiverMixMixin",
     "GenLayerShoreMixin",
     "GrassBlockMixin",
+    "GuiIngameMixin",
+    "ItemMixin",
     "LooseDirtBlockMixin",
+    "SlotArmorMixin",
     "WeedsBlockMixin",
     "WorldGenDesertWellsMixin",
     "WorldGenDungeonsMixin"

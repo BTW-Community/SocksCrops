@@ -22,3 +22,5 @@ src/btw/**
 .idea/jarRepositories.xml
 
 **/run/
+
+/release
