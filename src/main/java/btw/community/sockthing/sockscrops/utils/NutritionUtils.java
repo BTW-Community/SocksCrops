@@ -81,6 +81,6 @@ public class NutritionUtils {
         return world.getBlockId(i, j, k) == Block.tallGrass.blockID
                 || world.getBlockId(i, j, k) == Block.plantRed.blockID
                 || world.getBlockId(i, j, k) == Block.plantYellow.blockID
-                || world.getBlockId(i, j, k) == SCBlocks.doubleTallGrass.blockID;
+                || world.getBlockId(i, j, k) == SCBlocks.doubleTallPlant.blockID;
     }
 }

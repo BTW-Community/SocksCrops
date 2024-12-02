@@ -4,8 +4,8 @@ import btw.crafting.util.FurnaceBurnTime;
 import btw.item.items.PlaceAsBlockItem;
 import net.minecraft.src.CreativeTabs;
 
-public class SCItemCuttings extends PlaceAsBlockItem {
-    public SCItemCuttings(int itemID, int blockToPlace, String name) {
+public class CuttingsItem extends PlaceAsBlockItem {
+    public CuttingsItem(int itemID, int blockToPlace, String name) {
         super(itemID, blockToPlace);
 
         setBuoyant();

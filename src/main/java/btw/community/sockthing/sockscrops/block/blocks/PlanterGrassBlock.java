@@ -26,6 +26,8 @@ public class PlanterGrassBlock extends PlanterBaseBlock {
         super(blockID, name);
     }
 
+
+
     protected float getPlantGrowthChance(int metadata) {
         int nutritionLevel = NutritionUtils.getPlanterNutritionLevel(metadata);
         switch (nutritionLevel) {
@@ -198,16 +200,19 @@ public class PlanterGrassBlock extends PlanterBaseBlock {
                     } else world.setBlockWithNotify(x, y + 1, z, Block.plantYellow.blockID);
                 } else if (plantType < 8) {
                     if (rand.nextInt(4) == 0) {
-                        world.setBlockAndMetadataWithNotify(x, y + 1, z, Block.tallGrass.blockID, 2); //Fern
+                        if (rand.nextInt(4) == 0) {
+                            world.setBlockAndMetadataWithNotify(x, y + 1, z, SCBlocks.shortGrass.blockID, 1); //Short Grass
+                        }
+                        else world.setBlockAndMetadataWithNotify(x, y + 1, z, Block.tallGrass.blockID, 2); //Fern
                     } else world.setBlockAndMetadataWithNotify(x, y + 1, z, Block.tallGrass.blockID, 1); //Grass
                 } else {
                     if (world.isAirBlock(x, y + 2, z)) {
                         if (rand.nextInt(2) == 0) {
-                            world.setBlockAndMetadataWithNotify(x, y + 1, z, SCBlocks.doubleTallGrass.blockID, DoubleTallGrassBlock.FERN);
-                            world.setBlockAndMetadataWithNotify(x, y + 2, z, SCBlocks.doubleTallGrass.blockID, DoubleTallGrassBlock.setTopBlock(DoubleTallGrassBlock.FERN));
+                            world.setBlockAndMetadataWithNotify(x, y + 1, z, SCBlocks.doubleTallPlant.blockID, DoubleTallPlantBlock.FERN);
+                            world.setBlockAndMetadataWithNotify(x, y + 2, z, SCBlocks.doubleTallPlant.blockID, DoubleTallPlantBlock.setTopBlock(DoubleTallPlantBlock.FERN));
                         } else {
-                            world.setBlockAndMetadataWithNotify(x, y + 1, z, SCBlocks.doubleTallGrass.blockID, DoubleTallGrassBlock.GRASS);
-                            world.setBlockAndMetadataWithNotify(x, y + 2, z, SCBlocks.doubleTallGrass.blockID, DoubleTallGrassBlock.setTopBlock(DoubleTallGrassBlock.GRASS));
+                            world.setBlockAndMetadataWithNotify(x, y + 1, z, SCBlocks.doubleTallPlant.blockID, DoubleTallPlantBlock.GRASS);
+                            world.setBlockAndMetadataWithNotify(x, y + 2, z, SCBlocks.doubleTallPlant.blockID, DoubleTallPlantBlock.setTopBlock(DoubleTallPlantBlock.GRASS));
                         }
                     }
                 }
