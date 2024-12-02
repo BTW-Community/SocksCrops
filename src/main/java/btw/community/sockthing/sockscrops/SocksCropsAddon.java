@@ -52,5 +52,17 @@ public class SocksCropsAddon extends BTWAddon {
         return instance;
     }
 
+    public static boolean isDecoInstalled() {
+        return AddonHandler.isModInstalled("Deco Addon");
+    }
+
+    public static boolean isBTAInstalled() {
+        return AddonHandler.isModInstalled("Better Terrain");
+    }
+
+    public static boolean isBBInstalled() {
+        return AddonHandler.isModInstalled("Better Biomes");
+    }
+
 
 }

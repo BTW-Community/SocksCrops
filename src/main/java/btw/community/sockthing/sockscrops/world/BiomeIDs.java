@@ -18,4 +18,8 @@ public class BiomeIDs {
     public static final int BEACH_FOREST_ID = 33;
     public static final int BEACH_TAIGA_ID = 34;
     public static final int BEACH_JUNGLE_ID = 35;
+
+
+
+
 }

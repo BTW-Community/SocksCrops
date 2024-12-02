@@ -6,15 +6,28 @@ import btw.community.sockthing.sockscrops.block.blocks.*;
 import btw.community.sockthing.sockscrops.interfaces.BlockInterface;
 import net.minecraft.src.Block;
 import net.minecraft.src.ItemStack;
+import net.minecraft.src.Material;
 import net.minecraft.src.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import static net.minecraft.src.Block.blocksList;
 
 @Mixin(Block.class)
 public abstract class BlockMixin implements BlockInterface {
 
+    @Inject(method = "<init>", at = @At(value = "TAIL"))
+    public void init(int par1, Material par2Material, CallbackInfo ci) {
+
+        if (blocksList[par1] == null)
+        {
+            replaceableByLeavesLookup[par1] = this.canBeReplacedByLeaves(par1);
+        }
+
+    }
 
     /**
      * Used to allow Blocks to be placed in a specific armorSlot
@@ -49,7 +62,7 @@ public abstract class BlockMixin implements BlockInterface {
         int farmlandID =
                 world.getBlockId(x, y, z);
 
-        Block farmland = Block.blocksList[farmlandID];
+        Block farmland = blocksList[farmlandID];
 
         if (farmland instanceof FarmlandFullNutritionBlock) {
             world.setBlockAndMetadataWithNotify(x, y, z, BTWBlocks.looseDirt.blockID, 0);

@@ -109,11 +109,6 @@ public abstract class BaleBlock extends Block {
     }
 
     @Override
-    public boolean canToolsStickInBlock(IBlockAccess blockAccess, int x, int y, int u) {
-        return false;
-    }
-
-    @Override
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLiving player, ItemStack stack) {/*
 		int var7 = FCUtilsMisc.ConvertPlacingEntityOrientationToBlockFacing(var5);
 		if(var7<2)var7=0;

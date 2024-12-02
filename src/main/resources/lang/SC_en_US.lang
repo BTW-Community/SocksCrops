@@ -1,12 +1,12 @@
 ### Blocks ###
 # Grass
-tile.scBlockGrassNutrition.grass_reduced.name=Reduced Nutrition Grass Block
-tile.scBlockGrassNutrition.grass_low.name=Low Nutrition Grass Block
-tile.scBlockGrassNutrition.grass_depleted.name=Depleted Nutrition Grass Block
+tile.grassNutrition.grass_reduced.name=Reduced Nutrition Grass Block
+tile.grassNutrition.grass_low.name=Low Nutrition Grass Block
+tile.grassNutrition.grass_depleted.name=Depleted Nutrition Grass Block
 
-tile.scBlockGrassNutrition.grass_sparse_reduced.name=Sparse Reduced Nutrition Grass Block
-tile.scBlockGrassNutrition.grass_sparse_low.name=Sparse Low Nutrition Grass Block
-tile.scBlockGrassNutrition.grass_sparse_depleted.name=Sparse Depleted Nutrition Grass Block
+tile.grassNutrition.grass_sparse_reduced.name=Sparse Reduced Nutrition Grass Block
+tile.grassNutrition.grass_sparse_low.name=Sparse Low Nutrition Grass Block
+tile.grassNutrition.grass_sparse_depleted.name=Sparse Depleted Nutrition Grass Block
 
 # Dirt
 tile.dirt.dirt.name=Dirt
@@ -23,63 +23,121 @@ tile.fcBlockDirtLoose.dirt_loose_depleted.name=Depleted Nutrition Loose Dirt
 # Farmland
 tile.fcBlockFarmlandNew.name=Old Farmland
 
-tile.scBlockFarmlandNutrition_full.name=Farmland
-tile.scBlockFarmlandNutrition_reduced.name=Farmland with Reduced Nutrition
-tile.scBlockFarmlandNutrition_low.name=Farmland with Low Nutrition
-tile.scBlockFarmlandNutrition_depleted.name=Farmland with Depleted Nutrition
+tile.farmlandNutrition_full.name=Farmland
+tile.farmlandNutrition_reduced.name=Farmland with Reduced Nutrition
+tile.farmlandNutrition_low.name=Farmland with Low Nutrition
+tile.farmlandNutrition_depleted.name=Farmland with Depleted Nutrition
 
-tile.scBlockFarmlandFertilizedNutrition_full.name=Fertilized Farmland
-tile.scBlockFarmlandFertilizedNutrition_reduced.name=Fertilized Farmland with Reduced Nutrition
-tile.scBlockFarmlandFertilizedNutrition_low.name=Fertilized Farmland with Low Nutrition
-tile.scBlockFarmlandFertilizedNutrition_depleted.name=Fertilized Farmland with Depleted Nutrition
+tile.farmlandFertilizedNutrition_full.name=Fertilized Farmland
+tile.farmlandFertilizedNutrition_reduced.name=Fertilized Farmland with Reduced Nutrition
+tile.farmlandFertilizedNutrition_low.name=Fertilized Farmland with Low Nutrition
+tile.farmlandFertilizedNutrition_depleted.name=Fertilized Farmland with Depleted Nutrition
 
-tile.scBlockFarmlandDungedNutrition_full.name=Manured Farmland
-tile.scBlockFarmlandDungedNutrition_reduced.name=Manured Farmland with Reduced Nutrition
-tile.scBlockFarmlandDungedNutrition_low.name=Manured Farmland with Low Nutrition
-tile.scBlockFarmlandDungedNutrition_depleted.name=Manured Farmland with Depleted Nutrition
+tile.farmlandDungNutrition_full.name=Manured Farmland
+tile.farmlandDungNutrition_reduced.name=Manured Farmland with Reduced Nutrition
+tile.farmlandDungNutrition_low.name=Manured Farmland with Low Nutrition
+tile.farmlandDungNutrition_depleted.name=Manured Farmland with Depleted Nutrition
 
-tile.scBlockFarmlandMulchNutrition_full.name=Mulched Farmland
-tile.scBlockFarmlandMulchNutrition_reduced.name=Mulched Farmland with Reduced Nutrition
-tile.scBlockFarmlandMulchNutrition_low.name=Mulched Farmland with Low Nutrition
-tile.scBlockFarmlandMulchNutrition_depleted.name=Mulched Farmland with Depleted Nutrition
+tile.farmlandMulchNutrition_full.name=Mulched Farmland
+tile.farmlandMulchNutrition_reduced.name=Mulched Farmland with Reduced Nutrition
+tile.farmlandMulchNutrition_low.name=Mulched Farmland with Low Nutrition
+tile.farmlandMulchNutrition_depleted.name=Mulched Farmland with Depleted Nutrition
 
 # Planter
 tile.fcBlockPlanterSoil.name=Old Planter With Soil
 
-tile.scBlockPlanter_grass.full.name=Grass Planter
-tile.scBlockPlanter_grass.reduced.name=Grass Planter with Reduced Nutrition
-tile.scBlockPlanter_grass.low.name=Grass Planter with Low Nutrition
-tile.scBlockPlanter_grass.depleted.name=Grass Planter with Depleted Nutrition
+tile.planter_grass.full.name=Grass Planter
+tile.planter_grass.reduced.name=Grass Planter with Reduced Nutrition
+tile.planter_grass.low.name=Grass Planter with Low Nutrition
+tile.planter_grass.depleted.name=Grass Planter with Depleted Nutrition
 
-tile.scBlockPlanter_grass.sparse_full.name=Sparse Grass Planter
-tile.scBlockPlanter_grass.sparse_reduced.name=Sparse Grass Planter with Reduced Nutrition
-tile.scBlockPlanter_grass.sparse_low.name=Sparse Grass Planter with Low Nutrition
-tile.scBlockPlanter_grass.sparse_depleted.name=Sparse Grass Planter with Depleted Nutrition
+tile.planter_grass.sparse_full.name=Sparse Grass Planter
+tile.planter_grass.sparse_reduced.name=Sparse Grass Planter with Reduced Nutrition
+tile.planter_grass.sparse_low.name=Sparse Grass Planter with Low Nutrition
+tile.planter_grass.sparse_depleted.name=Sparse Grass Planter with Depleted Nutrition
 
-tile.scBlockPlanter_farmland.full.name=Farmland Planter
-tile.scBlockPlanter_farmland.reduced.name=Farmland Planter with Reduced Nutrition
-tile.scBlockPlanter_farmland.low.name=Farmland Planter with Low Nutrition
-tile.scBlockPlanter_farmland.depleted.name=Farmland Planter with Depleted Nutrition
+tile.planter_farmland.full.name=Farmland Planter
+tile.planter_farmland.reduced.name=Farmland Planter with Reduced Nutrition
+tile.planter_farmland.low.name=Farmland Planter with Low Nutrition
+tile.planter_farmland.depleted.name=Farmland Planter with Depleted Nutrition
 
-tile.scBlockPlanter_farmland_fertilized.full.name=Fertilized Farmland Planter
-tile.scBlockPlanter_farmland_fertilized.reduced.name=Fertilized Farmland Planter with Reduced Nutrition
-tile.scBlockPlanter_farmland_fertilized.low.name=Fertilized Farmland Planter with Low Nutrition
-tile.scBlockPlanter_farmland_fertilized.depleted.name=Fertilized Farmland Planter with Depleted Nutrition
+tile.planter_farmland_fertilized.full.name=Fertilized Farmland Planter
+tile.planter_farmland_fertilized.reduced.name=Fertilized Farmland Planter with Reduced Nutrition
+tile.planter_farmland_fertilized.low.name=Fertilized Farmland Planter with Low Nutrition
+tile.planter_farmland_fertilized.depleted.name=Fertilized Farmland Planter with Depleted Nutrition
 
-tile.scBlockPlanter_farmland_dung.full.name=Manured Farmland Planter
-tile.scBlockPlanter_farmland_dung.reduced.name=Manured Farmland Planter with Reduced Nutrition
-tile.scBlockPlanter_farmland_dung.low.name=Manured Farmland Planter with Low Nutrition
-tile.scBlockPlanter_farmland_dung.depleted.name=Manured Farmland Planter with Depleted Nutrition
+tile.planter_farmland_dung.full.name=Manured Farmland Planter
+tile.planter_farmland_dung.reduced.name=Manured Farmland Planter with Reduced Nutrition
+tile.planter_farmland_dung.low.name=Manured Farmland Planter with Low Nutrition
+tile.planter_farmland_dung.depleted.name=Manured Farmland Planter with Depleted Nutrition
 
 # Plants
-tile.scBlockDoubleTallPlant.grass.name=Double Tall Grass
-tile.scBlockDoubleTallPlant.fern.name=Double Tall Fern
+tile.tall_plant.grass.name=Double Tall Grass
+tile.tall_plant.fern.name=Double Tall Fern
+
+tile.tall_flower.sunflower.name=Sunflower
+
+tile.short_grass.grass.name=Short Grass
+
+tile.waterPlantTall.cattail.name=Cattail
+tile.waterPlantTall.grass.name=Tall Water Grass
+
+tile.waterPlantShort.tall_grass.name=Water Grass
+tile.waterPlantShort.short_grass.name=Short Water Grass
+
+tile.clover.name=Clover
+tile.clover_purple.name=Purple Clover
+tile.clover_white.name=White Clover
+tile.clover_red.name=Red Clover
+
+tile.sideshroom.white.name=White Sideshroom
+tile.sideshroom.black.name=Black Sideshroom
+tile.sideshroom.brown.name=Brown Sideshroom
+tile.sideshroom.red.name=Red Sideshroom
+
+tile.moss_block.name=Moss Block
+
+tile.hollow_log.oak.name=Hollow Oak Log
+tile.hollow_log.birch.name=Hollow Birch Log
+tile.hollow_log.spruce.name=Hollow Spruce Log
+tile.hollow_log.jungle.name=Hollow Jungle Log
+
+tile.hollow_log.blood.name=Hollow Bloodwood Log
+
+tile.hollow_log.darkOak.name=Hollow Dark Oak Log
+tile.hollow_log.acacia.name=Hollow Acacia Log
+tile.hollow_log.mahogany.name=Hollow Mahogany Log
+tile.hollow_log.mangrove.name=Hollow Mangrove Log
+
+tile.hollow_log.hazel.name=Hollow Hazel Log
+tile.hollow_log.fir.name=Hollow Fir Log
+tile.hollow_log.aspen.name=Hollow Aspen Log
+tile.hollow_log.willow.name=Hollow Willow Log
+
+tile.hollow_log.cherry.name=Hollow Cherry Log
+tile.hollow_log.redwood.name=Hollow Redwood Log
+
+tile.lilyRose.pink.name=Pink Lily Rose
+tile.lilyRose.white.name=White Lily Rose
+
+# Berries
+tile.sweetberry.name=Sweetberry Bush
+tile.blueberry.name=Blueberry Bush
 
 # Hay
-tile.scBlockHay_drying.name=Drying Hay
-tile.scBlockHay_dried.name=Hay
-tile.scBlockBale_hay.name=Hay Bale
-tile.scBlockBale_straw.name=Straw Bale
+tile.hay_drying.name=Drying Hay
+tile.hay_dried.name=Hay
+tile.bale_hay.name=Hay Bale
+tile.bale_straw.name=Straw Bale
+
+# Packed Blocks
+tile.packed.sugarcane.name=Packed Sugarcane
+tile.packed.shafts.name=Packed Shafts
+
+#Vanilla Override
+tile.flower.flower.name=Yellow Flower
+tile.flower.dandilion.name=Yellow Flower
+
 
 ### Item ###
 # Tools
@@ -88,4 +146,21 @@ item.gold_knife.name=Gold Knife
 item.diamond_knife.name=Diamond Knife
 item.steel_knife.name=Steel Knife
 
+# Berries
+item.sweetberry.name=Sweetberry
+item.sweetberry_roots.name=Sweetberry Roots
+
+item.blueberry.name=Blueberry
+item.blueberry_roots.name=Blueberry Roots
+
+item.fruit_bowl_berries.name=Sugared Berry Bowl
+
+item.moss_carpet.name=Moss Carpet
+item.moss_ball.name=Moss Ball
+# Plants
 item.cuttings_item.name=Cuttings
+item.sunflower.name=Sunflower
+item.sunflower_seeds.name=Sunflower Seeds
+
+item.flowerPot.name=Flowerpot
+item.large_flowerpot.name=Large Flowerpot

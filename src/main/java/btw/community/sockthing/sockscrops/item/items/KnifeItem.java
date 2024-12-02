@@ -1,14 +1,26 @@
 package btw.community.sockthing.sockscrops.item.items;
 
+import btw.block.BTWBlocks;
 import btw.item.items.ToolItem;
 import net.minecraft.src.*;
 
 public class KnifeItem extends ToolItem {
 
+    private int weaponDamage;
+
     public KnifeItem(int itemID, EnumToolMaterial material, String name) {
-        super(itemID, 3, material);
+        super(itemID, 2, material);
+
+//        weaponDamage = toolMaterial.getDamageVsEntity();
+
         setUnlocalizedName(name);
     }
+
+//    @Override
+//    public int getDamageVsEntity( Entity entity )
+//    {
+//        return weaponDamage;
+//    }
 
     @Override
     public float getStrVsBlock(ItemStack toolStack, World world, Block block, int x, int y, int z) {
@@ -36,6 +48,8 @@ public class KnifeItem extends ToolItem {
 
             return false;
         }
+
+        if ( block.blockID == Block.web.blockID || block.blockID == BTWBlocks.web.blockID) return true;
 
         return super.isEfficientVsBlock(toolStack, world, block, x, y, z);
     }
@@ -69,7 +83,7 @@ public class KnifeItem extends ToolItem {
 
     @Override
     public boolean canToolStickInBlock(ItemStack stack, Block block, World world, int x, int y, int z) {
-        return block.areShovelsEffectiveOn();
+        return block.areShovelsEffectiveOn() || block.areAxesEffectiveOn();
     }
 
     private static void PlayChopSoundOnPlayer(EntityPlayer player) {
@@ -85,6 +99,23 @@ public class KnifeItem extends ToolItem {
         // note: the playSound function for player both plays the sound locally on the client, and plays it remotely on the server without it being sent again to the same player
 
         player.playSound("random.break", 0.8F, 0.8F + player.worldObj.rand.nextFloat() * 0.4F);
+    }
+
+    @Override
+    public float getVisualVerticalOffsetAsBlock()
+    {
+        return 11/16F;
+    }
+
+    @Override
+    public float getBlockBoundingBoxHeight()
+    {
+        return 10/16F;
+    }
+
+    public float getBlockBoundingBoxWidth()
+    {
+        return 12/16F;
     }
 
 

@@ -1,5 +1,6 @@
-package btw.community.sockthing.sockscrops.world;
+package btw.community.sockthing.sockscrops.world.generators;
 
+import btw.community.sockthing.sockscrops.block.blocks.DoubleTallPlantBlock;
 import net.minecraft.src.BiomeGenBase;
 import net.minecraft.src.Block;
 import net.minecraft.src.World;
@@ -11,16 +12,18 @@ public class DoubleGrassWorldGen extends WorldGenerator {
     /**
      * Stores ID for WorldGenTallGrass
      */
-    private final int tallGrassID;
-    private final int tallGrassMetadata;
+    private int tallGrassID;
+    private int tallGrassMetadata;
     private final int times;
 
     private static int[] biomes;
+    private final float fernChance;
 
-    public DoubleGrassWorldGen(int times, int id, int meta, int[] biomes) {
+    public DoubleGrassWorldGen(int times, int id, int meta, int[] biomes, float fernChance) {
         this.tallGrassID = id;
         this.tallGrassMetadata = meta;
         this.times = times;
+        this.fernChance = fernChance;
 
         DoubleGrassWorldGen.biomes = biomes;
     }
@@ -55,12 +58,13 @@ public class DoubleGrassWorldGen extends WorldGenerator {
                 continue;
             }
 
-            if (var9 < 50 || var9 > 70) {
-                continue;
-            }
-
-            if (par1World.isAirBlock(var8, var9, var10) && par1World.isAirBlock(var8, var9 + 1, var10)
+            if ((par1World.getBlockId(var8, var9, var10) == Block.snow.blockID && par1World.isAirBlock(var8, var9+1, var10)) || par1World.getBlockId(var8, var9 - 1, var10) != this.tallGrassID &&  par1World.isAirBlock(var8, var9, var10) && par1World.isAirBlock(var8, var9 + 1, var10)
                     && Block.blocksList[this.tallGrassID].canBlockStay(par1World, var8, var9, var10)) {
+
+                if (par2Random.nextFloat() < this.fernChance){
+                    this.tallGrassMetadata = DoubleTallPlantBlock.FERN;
+                }
+
                 par1World.setBlock(var8, var9, var10, this.tallGrassID, this.tallGrassMetadata, 2);
                 par1World.setBlock(var8, var9 + 1, var10, this.tallGrassID, this.tallGrassMetadata + 8, 2);
 

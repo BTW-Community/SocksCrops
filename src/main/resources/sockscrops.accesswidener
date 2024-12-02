@@ -9,6 +9,12 @@ extendable method net/minecraft/src/StructureStrongholdPieces getStrongholdStone
 extendable method net/minecraft/src/WorldGenDungeons pickMobSpawner Lnet/minecraft/src/WorldGenDungeons;pickMobSpawner(Ljava/util/Random;)Ljava/lang/String;
 extendable method btw/block/blocks/FarmlandBlock setWeedsGrowthLevel Lbtw/block/blocks/FarmlandBlock;setWeedsGrowthLevel(Lnet/minecraft/src/World;IIII)V
 extendable method net/minecraft/src/GuiIngame renderModSpecificPlayerSightEffects Lnet/minecraft/src/GuiIngame;renderModSpecificPlayerSightEffects()V
+accessible field net/minecraft/src/RenderBlocks uvRotateEast Lnet/minecraft/src/RenderBlocks;uvRotateEast:I
+accessible field net/minecraft/src/RenderBlocks uvRotateWest Lnet/minecraft/src/RenderBlocks;uvRotateWest:I
+accessible field net/minecraft/src/RenderBlocks uvRotateSouth Lnet/minecraft/src/RenderBlocks;uvRotateSouth:I
+accessible field net/minecraft/src/RenderBlocks uvRotateNorth Lnet/minecraft/src/RenderBlocks;uvRotateNorth:I
+accessible field net/minecraft/src/RenderBlocks uvRotateTop Lnet/minecraft/src/RenderBlocks;uvRotateTop:I
+accessible field net/minecraft/src/RenderBlocks uvRotateBottom Lnet/minecraft/src/RenderBlocks;uvRotateBottom:I
 extendable class net/minecraft/src/ComponentScatteredFeature
 extendable class net/minecraft/src/StructureScatteredFeatureStones
 extendable class net/minecraft/src/ComponentScatteredFeaturePieces2
