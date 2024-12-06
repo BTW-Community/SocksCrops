@@ -36,20 +36,21 @@ public abstract class GuiIngameMixin extends Gui {
         GuiIngame thisObject = (GuiIngame)(Object)this;
         if (this.mc.gameSettings.thirdPersonView == 0 && itemStack != null )
         {
-            Item item = itemStack.getItem();
-            Block block = Block.blocksList[itemStack.itemID];
 
-            if ( ((ItemInterface)item).isValidForArmorSlot(0, itemStack) )
+            if ( !(itemStack.getItem() instanceof ItemBlock))
             {
-                if (((ItemInterface)item).getBlurOverlay(itemStack) != null )
+                Item item = itemStack.getItem();
+
+                if (((ItemInterface)item).isValidForArmorSlot(0, itemStack) && ((ItemInterface)item).getBlurOverlay(itemStack) != null )
                 {
                     this.renderPumpkinBlur(scaledWidth, scaledHeight, ((ItemInterface)item).getBlurOverlay(itemStack));
                 }
 
             }
-            else if (((BlockInterface)block).isValidForArmorSlot(0, itemStack))
+            else if ( Block.blocksList[itemStack.itemID] != null )
             {
-                if ( ((BlockInterface)block).getBlurOverlay(itemStack) != null )
+                Block block = Block.blocksList[itemStack.itemID];
+                if (((BlockInterface)block).isValidForArmorSlot(0, itemStack) && ((BlockInterface)block).getBlurOverlay(itemStack) != null )
                 {
                     this.renderPumpkinBlur(scaledWidth, scaledHeight, ((BlockInterface)block).getBlurOverlay(itemStack));
                 }

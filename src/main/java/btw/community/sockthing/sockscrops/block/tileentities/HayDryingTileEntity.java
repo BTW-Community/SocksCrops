@@ -56,6 +56,7 @@ public class HayDryingTileEntity extends TileEntity implements TileEntityDataPac
         }
 
 
+        /*
         int sizeXZ=8;
         int sizeY=8;
 
@@ -81,6 +82,7 @@ public class HayDryingTileEntity extends TileEntity implements TileEntityDataPac
                 }
             }
         }
+        */
     }
 
     @Override

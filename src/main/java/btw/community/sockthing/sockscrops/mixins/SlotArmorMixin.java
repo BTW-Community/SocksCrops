@@ -42,17 +42,24 @@ public abstract class SlotArmorMixin extends Slot {
                     return this.armorType == 0;
                 }
                 else {
-                    Item item = Item.itemsList[itemID];
-                    Block block = Block.blocksList[itemID];
 
-
-                    if ( ((ItemInterface)item).isValidForArmorSlot(this.armorType, itemStack) )
+                    if ( !(itemStack.getItem() instanceof ItemBlock))
                     {
-                        return ((ItemInterface)item).isValidForArmorSlot(this.armorType, itemStack);
+                        Item item = itemStack.getItem();
+
+                        if (((ItemInterface)item).isValidForArmorSlot(0, itemStack) )
+                        {
+                            return ((ItemInterface)item).isValidForArmorSlot(this.armorType, itemStack);
+                        }
+
                     }
-                    else if (  ((BlockInterface)block).isValidForArmorSlot(this.armorType, itemStack) )
+                    else if ( Block.blocksList[itemStack.itemID] != null )
                     {
-                        return  ((BlockInterface)block).isValidForArmorSlot(this.armorType, itemStack);
+                        Block block = Block.blocksList[itemStack.itemID];
+                        if (((BlockInterface)block).isValidForArmorSlot(0, itemStack) )
+                        {
+                            return  ((BlockInterface)block).isValidForArmorSlot(this.armorType, itemStack);
+                        }
                     }
 
                     return false;
