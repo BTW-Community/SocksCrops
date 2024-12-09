@@ -1,5 +1,6 @@
 package btw.community.sockthing.sockscrops.mixins;
 
+import btw.community.sockthing.sockscrops.block.tileentities.DecoBlockIDs;
 import btw.community.sockthing.sockscrops.interfaces.BlockInterface;
 import btw.community.sockthing.sockscrops.interfaces.ItemInterface;
 import net.minecraft.client.Minecraft;
@@ -16,6 +17,24 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 public abstract class GuiIngameMixin extends Gui {
 
     @Shadow private Minecraft mc;
+
+    private boolean shouldRenderGameOverlay(ItemStack itemStack) {
+        if (itemStack.itemID == DecoBlockIDs.CARVED_PUMPKIN_ID)
+            return true;
+
+        return false;
+    }
+
+    private String getBlurOverlay(ItemStack itemStack) {
+
+        if (itemStack.itemID == DecoBlockIDs.CARVED_PUMPKIN_ID)
+        {
+            return "%blur%/misc/pumpkinblur.png";
+        }
+
+        return null;
+    }
+
 
     @Inject(method = "renderGameOverlay",
             at = @At(
@@ -37,32 +56,38 @@ public abstract class GuiIngameMixin extends Gui {
         if (this.mc.gameSettings.thirdPersonView == 0 && itemStack != null )
         {
 
-            if ( !(itemStack.getItem() instanceof ItemBlock))
-            {
-                Item item = itemStack.getItem();
-
-                if (((ItemInterface)item).isValidForArmorSlot(0, itemStack) && ((ItemInterface)item).getBlurOverlay(itemStack) != null )
-                {
-                    this.renderPumpkinBlur(scaledWidth, scaledHeight, ((ItemInterface)item).getBlurOverlay(itemStack));
-                }
-
+            if (shouldRenderGameOverlay(itemStack)){
+                this.renderPumpkinBlur(scaledWidth, scaledHeight, getBlurOverlay(itemStack));
             }
-            else if ( Block.blocksList[itemStack.itemID] != null )
-            {
-                Block block = Block.blocksList[itemStack.itemID];
-                if (((BlockInterface)block).isValidForArmorSlot(0, itemStack) && ((BlockInterface)block).getBlurOverlay(itemStack) != null )
+            else {
+                if ( !(itemStack.getItem() instanceof ItemBlock))
                 {
-                    this.renderPumpkinBlur(scaledWidth, scaledHeight, ((BlockInterface)block).getBlurOverlay(itemStack));
+                    Item item = itemStack.getItem();
+
+                    if (((ItemInterface)item).isValidForArmorSlot(0, itemStack) && ((ItemInterface)item).getBlurOverlay(itemStack) != null )
+                    {
+                        this.renderPumpkinBlur(scaledWidth, scaledHeight, ((BlockInterface)item).getBlurOverlay(itemStack));
+                    }
+
                 }
-            }
-            else
-            {
-                // FCMOD: Added (client only)
-                thisObject.renderModSpecificPlayerSightEffects();
-                // END FCMOD
+                else if ( Block.blocksList[itemStack.itemID] != null )
+                {
+                    Block block = Block.blocksList[itemStack.itemID];
+                    if (((BlockInterface)block).isValidForArmorSlot(0, itemStack) && ((BlockInterface)block).getBlurOverlay(itemStack) != null )
+                    {
+                        this.renderPumpkinBlur(scaledWidth, scaledHeight, ((BlockInterface)block).getBlurOverlay(itemStack));
+                    }
+                }
+                else
+                {
+                    // FCMOD: Added (client only)
+                    thisObject.renderModSpecificPlayerSightEffects();
+                    // END FCMOD
+                }
             }
         }
     }
+
 
     @Inject(method = "renderGameOverlayWithGuiDisabled",
             at = @At(
