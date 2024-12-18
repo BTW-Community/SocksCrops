@@ -2,6 +2,7 @@ package btw.community.sockthing.sockscrops.mixins;
 
 import btw.community.sockthing.sockscrops.block.SCBlockIDs;
 import btw.community.sockthing.sockscrops.block.SCBlocks;
+import btw.community.sockthing.sockscrops.block.blocks.BambooRootBlock;
 import btw.community.sockthing.sockscrops.utils.WorldGenUtils;
 import net.minecraft.src.Block;
 import net.minecraft.src.World;
@@ -24,6 +25,7 @@ public abstract class WorldGenShrubMixin extends WorldGenerator {
     private int redirectGetBlockIdForLeafPlacement(World par1World, int var11, int var8, int var13) {
         // Instead of checking Block.opaqueCubeLookup, use the WorldGenUtils method
         if (par1World.getBlockId(var11, var8, var13) == SCBlocks.hollowLog.blockID) return Block.wood.blockID;
+        if (Block.blocksList[par1World.getBlockId(var11, var8, var13)] instanceof BambooRootBlock) return Block.wood.blockID;
 
         if (WorldGenUtils.canLeavesBePlaced(par1World, var11, var8, var13)) {
 

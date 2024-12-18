@@ -5,6 +5,7 @@ import btw.client.render.util.RenderUtils;
 import btw.community.sockthing.sockscrops.block.SCBlocks;
 import btw.community.sockthing.sockscrops.utils.NutritionUtils;
 import btw.community.sockthing.sockscrops.utils.SCRenderUtils;
+import btw.item.BTWItems;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.src.*;
@@ -27,10 +28,6 @@ public abstract class PlanterBaseBlock extends PlanterBlockBase {
     //------------- Abstract ------------//
 
     protected abstract boolean isHydrated(int metadata);
-
-    protected abstract boolean isFertilized(int metadata);
-
-    protected abstract void setFertilized(World world, int x, int y, int z);
 
     /**
      * Used to render the content textures like dirt or farmland.

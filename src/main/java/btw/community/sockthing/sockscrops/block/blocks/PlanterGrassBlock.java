@@ -26,7 +26,10 @@ public class PlanterGrassBlock extends PlanterBaseBlock {
         super(blockID, name);
     }
 
-
+    @Override
+    protected boolean isHydrated(int metadata) {
+        return false;
+    }
 
     protected float getPlantGrowthChance(int metadata) {
         int nutritionLevel = NutritionUtils.getPlanterNutritionLevel(metadata);
@@ -220,21 +223,6 @@ public class PlanterGrassBlock extends PlanterBaseBlock {
         }
     }
 
-    //------------ Abstract Methods ----------//
-
-    @Override
-    protected boolean isHydrated(int metadata) {
-        return false;
-    }
-
-    @Override
-    protected boolean isFertilized(int metadata) {
-        return false;
-    }
-
-    @Override
-    protected void setFertilized(World world, int x, int y, int z) {
-    }
 
     //------------ Client ----------//
 

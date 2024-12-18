@@ -23,6 +23,14 @@ public class SCFoodItem extends FoodItem {
     public static final float BERRY_SATURATION_MODIFIER = SWEET_SATURATION_MODIFIER;
     static public final int BERRY_BOWL_HUNGER_HEALED = 8;
     static public final float BERRY_BOWL_SATURATION_MODIFIER = SWEET_SATURATION_MODIFIER * 2;
+    static public final int BAMBOO_SHOOT_HUNGER_HEALED = 4;
+    static public final float BAMBOO_SHOOT_SATURATION_MODIFIER = VEGS_SATURATION_MODIFIER;
+
+    static public final int RAW_FISH_HUNGER_HEALED = 9;
+    static public final float RAW_FISH_SATURATION_MODIFIER = PROTEIN_SATURATION_MODIFIER;
+
+    static public final int COOKED_FISH_HUNGER_HEALED = 12;
+    static public final float COOKED_FISH_SATURATION_MODIFIER = PROTEIN_SATURATION_MODIFIER;
 
 
     public SCFoodItem(int iItemID, int iHungerHealed, float fSaturationModifier, boolean bWolfMeat, String sItemName) {

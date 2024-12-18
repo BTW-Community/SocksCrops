@@ -1,11 +1,11 @@
 package btw.community.sockthing.sockscrops.item;
 
-import btw.community.sockthing.sockscrops.SocksCropsAddon;
 import btw.community.sockthing.sockscrops.block.SCBlockIDs;
-import btw.community.sockthing.sockscrops.block.SCBlocks;
 import btw.community.sockthing.sockscrops.block.blocks.DoubleTallPlantBlock;
+import btw.community.sockthing.sockscrops.item.items.BambooProgressiveItem;
 import btw.community.sockthing.sockscrops.item.items.KnifeItem;
 import btw.community.sockthing.sockscrops.item.items.CuttingsItem;
+import btw.crafting.util.FurnaceBurnTime;
 import btw.item.BTWItems;
 import btw.item.items.PlaceAsBlockItem;
 import btw.item.items.SeedItem;
@@ -29,11 +29,27 @@ public class SCItems {
     public static Item sunflower;
     public static Item sunflowerSeeds;
 
+    public static Item bamboo;
+    public static Item bambooProgressiveItem;
+    public static Item bambooWeave;
+    public static Item strippedBamboo;
+    public static Item boiledBambooShoot;
+
     public static Item mossBall;
     public static Item flowerPot;
     public static Item largeFlowerpot;
 
     public static Item berryBowl;
+
+    public static Item cod;
+    public static Item codCooked;
+    public static Item salmon;
+    public static Item salmonCooked;
+
+    public static Item tropicalFish;
+    public static Item tropicalFishCooked;
+
+    public static Item pufferFish;
 
     public static void initItems() {
         initKnives();
@@ -42,6 +58,63 @@ public class SCItems {
         initSunflower();
         initMoss();
         initFlowerpot();
+        initBamboo();
+        initFish();
+    }
+
+    private static void initFish() {
+        cod = new SCFoodItem(SCItemIDs.COD_ID - 256, SCFoodItem.RAW_FISH_HUNGER_HEALED, SCFoodItem.RAW_FISH_SATURATION_MODIFIER, false,
+                "cod").setStandardFoodPoisoningEffect();
+
+        codCooked = new SCFoodItem(SCItemIDs.COD_COOKED_ID - 256, SCFoodItem.COOKED_FISH_HUNGER_HEALED,
+                SCFoodItem.COOKED_FISH_SATURATION_MODIFIER, false, "cod_cooked");
+
+        salmon = new SCFoodItem(SCItemIDs.SALMON_ID - 256, SCFoodItem.RAW_FISH_HUNGER_HEALED, SCFoodItem.RAW_FISH_SATURATION_MODIFIER, false,
+                "salmon").setStandardFoodPoisoningEffect();
+
+        salmonCooked = new SCFoodItem(SCItemIDs.SALMON_COOKED_ID - 256, SCFoodItem.COOKED_FISH_HUNGER_HEALED,
+                SCFoodItem.COOKED_FISH_SATURATION_MODIFIER, false, "cod_cooked");
+
+        tropicalFish = new SCFoodItem(SCItemIDs.TROPICAL_FISH_ID - 256, SCFoodItem.RAW_FISH_HUNGER_HEALED,
+                SCFoodItem.RAW_FISH_SATURATION_MODIFIER, false, "tropical_fish").setStandardFoodPoisoningEffect();
+
+        tropicalFishCooked = new SCFoodItem(SCItemIDs.TROPICAL_FISH_COOKED_ID - 256, SCFoodItem.COOKED_FISH_HUNGER_HEALED,
+                SCFoodItem.COOKED_FISH_SATURATION_MODIFIER, false, "tropical_fish_cooked");
+
+        pufferFish = new Item(SCItemIDs.PUFFER_FISH_ID - 256).setUnlocalizedName("puffer_fish");
+
+    }
+
+    private static void initBamboo() {
+        bamboo = new Item(SCItemIDs.BAMBOO_ID - 256)
+                .setBuoyant()
+                .setfurnaceburntime( FurnaceBurnTime.KINDLING ) // this also allows the item to be valid fuel
+                .setIncineratedInCrucible()
+                .setFilterableProperties( Item.FILTERABLE_NARROW )
+                .setCreativeTab(CreativeTabs.tabMaterials)
+                .setUnlocalizedName("bamboo");
+
+        strippedBamboo = new Item(SCItemIDs.STRIPPED_BAMBOO_ID - 256)
+                .setBuoyant()
+                .setfurnaceburntime( FurnaceBurnTime.KINDLING ) // this also allows the item to be valid fuel
+                .setIncineratedInCrucible()
+                .setFilterableProperties( Item.FILTERABLE_NARROW )
+                .setCreativeTab(CreativeTabs.tabMaterials)
+                .setUnlocalizedName("stripped_bamboo");
+
+        bambooProgressiveItem = new BambooProgressiveItem(SCItemIDs.BAMBOO_PROGRESSIVE_ID - 256, "bamboo_progressive");
+
+        bambooWeave = new Item(SCItemIDs.BAMBOO_WEAVE_ID - 256)
+                .setBuoyant()
+                .setBellowsBlowDistance( 2 )
+                .setfurnaceburntime( FurnaceBurnTime.WICKER_PIECE ) // this also allows the item to be valid fuel
+                .setIncineratedInCrucible()
+                .setFilterableProperties( Item.FILTERABLE_THIN )
+                .setCreativeTab(CreativeTabs.tabMaterials)
+                .setUnlocalizedName("bamboo_weave");
+
+        boiledBambooShoot = new SCFoodItem(SCItemIDs.BOILED_BAMBOO_ID - 256, SCFoodItem.BAMBOO_SHOOT_HUNGER_HEALED,
+                SCFoodItem.BAMBOO_SHOOT_SATURATION_MODIFIER, false, "bamboo_shoot_cooked");
     }
 
     private static void initFlowerpot() {
@@ -97,8 +170,8 @@ public class SCItems {
 
     private static void initHay() {
         //BTW Overide
-        BTWItems.straw = new PlaceAsBlockItem(BTWItems.straw.itemID - 256, SCBlocks.driedHay.blockID, 0, "fcItemStraw");
+        BTWItems.straw = new PlaceAsBlockItem(BTWItems.straw.itemID - 256, SCBlockIDs.DRIED_HAY_ID, 0, "fcItemStraw");
 
-        cuttings = new CuttingsItem(SCItemIDs.CUTTINGS_ID - 256, SCBlocks.dryingHay.blockID, "cuttings_item");
+        cuttings = new CuttingsItem(SCItemIDs.CUTTINGS_ID - 256, SCBlockIDs.DRYING_HAY_ID, "cuttings_item");
     }
 }

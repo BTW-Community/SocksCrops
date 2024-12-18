@@ -12,12 +12,12 @@ import net.minecraft.src.*;
 import java.util.Random;
 
 public class FlowerpotBlock extends BlockContainer {
-    public FlowerpotBlock(int id) {
+    public FlowerpotBlock(int id, String name) {
         super(id, Material.circuits);
         this.initBlockBounds(0.3125D, 0.0D, 0.3125D, 0.6875D, 0.375D, 0.6875D);
         this.setHardness(0.0F);
         this.setStepSound(soundPowderFootstep);
-        this.setUnlocalizedName("flowerPot");
+        this.setUnlocalizedName(name);
     }
 
     @Override

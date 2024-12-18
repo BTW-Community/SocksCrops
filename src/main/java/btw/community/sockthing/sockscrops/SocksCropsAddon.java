@@ -14,6 +14,7 @@ import java.util.Random;
 
 public class SocksCropsAddon extends BTWAddon {
     private static SocksCropsAddon instance;
+    private static boolean isDecoInstalled;
 
     public SocksCropsAddon() {
         super("@NAME@", "@VERSION@", "@PREFIX@");
@@ -22,14 +23,16 @@ public class SocksCropsAddon extends BTWAddon {
     @Override
     public void preInitialize() {
         registerConfigProperties();
+        isDecoInstalled = AddonHandler.isModInstalled("Deco Addon");
     }
 
     @Override
     public void initialize() {
         AddonHandler.logMessage(this.getName() + " Version " + this.getVersionString() + " Initializing...");
 
-        SCBlocks.initBlocks();
         SCItems.initItems();
+        SCBlocks.initBlocks();
+
 
         SCRecipes.initRecipes();
     }
@@ -53,7 +56,7 @@ public class SocksCropsAddon extends BTWAddon {
     }
 
     public static boolean isDecoInstalled() {
-        return AddonHandler.isModInstalled("Deco Addon");
+        return isDecoInstalled;
     }
 
     public static boolean isBTAInstalled() {

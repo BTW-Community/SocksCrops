@@ -57,12 +57,21 @@ public class SCBlockIDs {
     public static final int TALL_WATER_PLANT_ID = 2660;
     public static final int FLOWER_LILY_ID = 2661;
 
+    //----------- Bamboo  -----------//
+    public static final int BAMBOO_SHOOT_ID = 2662;
+    public static final int BAMBOO_ROOT_ID = 2663;
+    public static final int BAMBOO_STALK_ID = 2664;
+    public static final int STRIPPED_BAMBOO_ROOT_ID = 2665;
+    public static final int STRIPPED_BAMBOO_STALK_ID = 2666;
+
+    //----------- Misc  -----------//
     public static final int WICKER_GROWN_ID = 2680;
     public static final int GRATE_GROWN_ID = 2681;
     public static final int SLATS_GROWN_ID = 2682;
     public static final int IRON_BARS_GROWN_ID = 2683;
     public static final int WROUGHT_BARS_GROWN_ID = 2684;
 
+    //----------- Moss  -----------//
     public static final int MOSS_CARPET_ID = 2690;
     public static final int MOSS_BLOCK_ID = 2691;
 
@@ -82,13 +91,17 @@ public class SCBlockIDs {
     public static final int SUNFLOWER_CROP_TOP_ID = 2706;
 
     //----------- Hay  -----------//
-    public static final int DRYING_HAY_ID = 2800;
-    public static final int DRIED_HAY_ID = 2801;
-    public static final int HAY_BALE_ID = 2802;
-    public static final int SMALL_PACKED_BLOCK_ID = 2803;
+    public static final int DRIED_HAY_ID = 2800;
+    public static final int HAY_BALE_ID = 2801;
+    public static final int SMALL_PACKED_BLOCK_ID = 2802;
+    public static final int ROPE_ID = 2804;
 
-    public static final int LARGE_FLOWERPOT_ID = 2805;
-    public static final int FLOWERPOT_ID = 2806;
+    //----------- TileEntities  -----------//
+    public static final int DRYING_HAY_ID = 2850;
+    public static final int LARGE_FLOWERPOT_ID = 2851;
+    public static final int FLOWERPOT_ID = 2852;
+    public static final int FISH_TRAP_ID = 2853;
+    public static final int ROPE_HANGING_ITEMS_ID = 2854;
 
     //----------- Deco Overlap  -----------//
     public static final int STRAW_BALE_ID = 3025;

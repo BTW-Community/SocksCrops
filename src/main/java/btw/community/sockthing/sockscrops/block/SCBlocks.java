@@ -1,17 +1,17 @@
 package btw.community.sockthing.sockscrops.block;
 
 import btw.block.BTWBlocks;
+import btw.block.blocks.PaneBlock;
 import btw.community.sockthing.sockscrops.SocksCropsAddon;
 import btw.community.sockthing.sockscrops.block.blocks.*;
-import btw.community.sockthing.sockscrops.block.tileentities.FlowerPotTileEntity;
-import btw.community.sockthing.sockscrops.block.tileentities.HayDryingTileEntity;
-import btw.community.sockthing.sockscrops.block.tileentities.LargeFlowerPotTileEntity;
+import btw.community.sockthing.sockscrops.block.renderer.FishTrapRenderer;
+import btw.community.sockthing.sockscrops.block.renderer.RopeHangingItemsRenderer;
+import btw.community.sockthing.sockscrops.block.tileentities.*;
 import btw.community.sockthing.sockscrops.item.SCItemIDs;
 import btw.community.sockthing.sockscrops.item.items.DoubleTallWaterPlantItem;
 import btw.community.sockthing.sockscrops.item.items.FlowerLilyItem;
 import btw.community.sockthing.sockscrops.item.items.SideShroomItemBlock;
 import btw.community.sockthing.sockscrops.item.items.WaterPlantItem;
-import btw.community.sockthing.sockscrops.mixins.PlaceAsBlockItemAccessor;
 import btw.community.sockthing.sockscrops.utils.NutritionUtils;
 import btw.item.items.PlaceAsBlockItem;
 import net.minecraft.src.*;
@@ -103,12 +103,23 @@ public class SCBlocks {
     public static Block largeFlowerpot;
     public static Block flowerPot;
 
-
+    public static Block bambooShoot;
+    public static Block bambooRoot;
+    public static Block bambooStalk;
+    public static Block strippedBambooRoot;
+    public static Block strippedBambooStalk;
+    public static Block bambooGrate;
+    public static Block fishTrap;
+    public static Block rope;
+    public static Block ropeHangingItems;
 
     public static void initBlocks() {
         initVanillaOverrides();
 
+        initTileEntities();
         initTileEnityMapping();
+        initTileEntityRenderers();
+
         initPlantBlocks();
         initCropBlocks();
         initBushBlocks();
@@ -118,7 +129,8 @@ public class SCBlocks {
         initMossBlocks();
         initHollowLogs();
         initGrownPanes();
-        initFlowerPots();
+        initBambooBlocks();
+        initRope();
     }
 
     private static void initNutritionBlocks() {
@@ -145,10 +157,32 @@ public class SCBlocks {
 
     }
 
+    private static void initTileEntities() {
+        largeFlowerpot = new LargeFlowerpotBlock(SCBlockIDs.LARGE_FLOWERPOT_ID, "large_flowerpot");
+        flowerPot = new FlowerpotBlock(SCBlockIDs.FLOWERPOT_ID, "flowerPot");
+
+        fishTrap = new FishTrapBlock(SCBlockIDs.FISH_TRAP_ID, "fish_trap");
+        Item.itemsList[fishTrap.blockID] = new ItemBlock(SCBlockIDs.FISH_TRAP_ID - 256).setMaxStackSize(1);
+    }
+
     private static void initTileEnityMapping() {
         TileEntity.addMapping(HayDryingTileEntity.class, "SCHayDrying");
         TileEntity.addMapping(LargeFlowerPotTileEntity.class, "SCLargeFlowerpot");
         TileEntity.addMapping(FlowerPotTileEntity.class, "SCFlowerPot");
+        TileEntity.addMapping(FishTrapTileEntity.class, "SCFishTrap");
+        TileEntity.addMapping(RopeHangingItemsTileEntity.class, "SCRopeHangingItems");
+    }
+
+    private static void initTileEntityRenderers() {
+        TileEntityRenderer.instance.addSpecialRendererForClass(FishTrapTileEntity.class,
+                new FishTrapRenderer());
+        TileEntityRenderer.instance.addSpecialRendererForClass(RopeHangingItemsTileEntity.class,
+                new RopeHangingItemsRenderer());
+    }
+
+    private static void initRope() {
+        rope = new FenceRopeBlock(SCBlockIDs.ROPE_ID);
+        ropeHangingItems = new RopeHangingItemsBlock(SCBlockIDs.ROPE_HANGING_ITEMS_ID);
     }
 
     private static void initPlantBlocks() {
@@ -207,6 +241,37 @@ public class SCBlocks {
                 "blueberry");
     }
 
+    private static void initBambooBlocks() {
+        bambooShoot = new BambooShootBlock(SCBlockIDs.BAMBOO_SHOOT_ID, "bamboo_shoot");
+        Item.itemsList[bambooShoot.blockID] = new PlaceAsBlockItem(SCBlockIDs.BAMBOO_SHOOT_ID - 256, bambooShoot.blockID)
+                .setUnlocalizedName("bamboo_shoot").setCreativeTab(CreativeTabs.tabDecorations);
+
+        bambooRoot = new BambooRootBlock(SCBlockIDs.BAMBOO_ROOT_ID, "bamboo_root", true,
+                SCItemIDs.BAMBOO_ID,
+                "bamboo_stalk", "bamboo_top");
+        Item.itemsList[bambooRoot.blockID] = new ItemBlock(SCBlockIDs.BAMBOO_ROOT_ID - 256);
+
+        bambooStalk = new BambooStalkBlock(SCBlockIDs.BAMBOO_STALK_ID, "bamboo_stalk", true,
+                SCItemIDs.BAMBOO_ID,
+                "bamboo_stalk", "bamboo_top");
+        Item.itemsList[bambooStalk.blockID] = new ItemBlock(SCBlockIDs.BAMBOO_STALK_ID - 256);
+
+        strippedBambooRoot = new BambooRootBlock(SCBlockIDs.STRIPPED_BAMBOO_ROOT_ID, "stripped_bamboo_root", false,
+                SCItemIDs.STRIPPED_BAMBOO_ID,
+                "stripped_bamboo_stalk", "stripped_bamboo_top");
+        Item.itemsList[strippedBambooRoot.blockID] = new ItemBlock(SCBlockIDs.STRIPPED_BAMBOO_ROOT_ID - 256);
+
+        strippedBambooStalk = new BambooStalkBlock(SCBlockIDs.STRIPPED_BAMBOO_STALK_ID, "stripped_bamboo_stalk", false,
+                SCItemIDs.STRIPPED_BAMBOO_ID,
+                "stripped_bamboo_stalk", "stripped_bamboo_top");
+        Item.itemsList[strippedBambooStalk.blockID] = new ItemBlock(SCBlockIDs.STRIPPED_BAMBOO_STALK_ID - 256);
+
+//        bambooGrate = new BambooGratelock(SCBlockIDs.BAMBOO_GRATE_ID, "bamboo_grate");
+//        Item.itemsList[bambooGrate.blockID] = new ItemBlock(SCBlockIDs.BAMBOO_STALK_ID - 256);
+    }
+
+
+
     private static void initHayBlocks() {
         dryingHay = new HayDryingBlock(SCBlockIDs.DRYING_HAY_ID, "hay_drying");
         Item.itemsList[dryingHay.blockID] = new ItemBlock(SCBlockIDs.DRYING_HAY_ID - 256);
@@ -224,9 +289,17 @@ public class SCBlocks {
     }
 
     private static void initGrownPanes() {
-//        grownGrate = new GrownPaneBlock(SCBlockIDs.GRATE_GROWN_ID, "grown_grate",
-//                "fcBlockGrate", "fcBlockGrate",
-//                BTWBlocks.gratePane.blockID, 0);
+        grownGrate = new PaneWithPlantBlock(SCBlockIDs.GRATE_GROWN_ID, Material.wood, "grown_grate",
+                BTWBlocks.gratePane, 0,
+                "fcBlockGrate", "fcBlockGrate");
+
+//        grownSlats = new PaneWithPlantBlock(SCBlockIDs.GRATE_GROWN_ID, Material.wood, "grown_grate",
+//                BTWBlocks.gratePane, 0,
+//                "fcBlockGrate", "fcBlockGrate");
+//
+//        grownWicker = new PaneWithPlantBlock(SCBlockIDs.GRATE_GROWN_ID, Material.wood, "grown_grate",
+//                BTWBlocks.gratePane, 0,
+//                "fcBlockGrate", "fcBlockGrate");
     }
 
     private static void initMossBlocks() {
@@ -275,16 +348,10 @@ public class SCBlocks {
     }
 
     private static void initPackedBlocks() {
-        smallPackedBlock = new PackedBlock(SCBlockIDs.SMALL_PACKED_BLOCK_ID, Material.leaves,"packed");
+        smallPackedBlock = new PackedBlock(SCBlockIDs.SMALL_PACKED_BLOCK_ID, Material.wood,"packed");
 
         Item.itemsList[smallPackedBlock.blockID] = new ItemMultiTextureTile(SCBlockIDs.SMALL_PACKED_BLOCK_ID - 256, smallPackedBlock,
                 PackedBlock.types);
-    }
-
-    private static void initFlowerPots() {
-        largeFlowerpot = new LargeFlowerpotBlock(SCBlockIDs.LARGE_FLOWERPOT_ID, "large_flowerpot");
-
-        flowerPot = new FlowerpotBlock(SCBlockIDs.FLOWERPOT_ID);
     }
 
     private static void initDirtRelatedBlocks() {
