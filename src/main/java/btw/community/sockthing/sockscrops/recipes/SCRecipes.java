@@ -2,6 +2,7 @@ package btw.community.sockthing.sockscrops.recipes;
 
 import btw.block.BTWBlocks;
 import btw.block.blocks.PlanterBlock;
+import btw.block.blocks.UnfiredPotteryBlock;
 import btw.community.sockthing.sockscrops.SocksCropsAddon;
 import btw.community.sockthing.sockscrops.block.SCBlockIDs;
 import btw.community.sockthing.sockscrops.block.SCBlocks;
@@ -21,6 +22,7 @@ public class SCRecipes extends SCRecipeHelper {
         if (SocksCropsAddon.isDecoInstalled()) initOverrideDecoRecipes();
 
         initKnifeRecipes();
+        initKnifeCuttingRecipes();
         initPlanterRecipes();
         initHayRecipes();
         initMossRecipes();
@@ -38,7 +40,6 @@ public class SCRecipes extends SCRecipeHelper {
         initLogChoppingRecipes();
         initHopperFilteringRecipes();
     }
-
 
     private static void removeRecipes() {
         //Remove old Farmland Planter Recipe
@@ -116,6 +117,31 @@ public class SCRecipes extends SCRecipeHelper {
                         new ItemStack(SCItems.sweetberry),
                         new ItemStack(SCItems.blueberry),
                 });
+
+        //Crust
+        RecipeManager.addShapelessRecipe( new ItemStack( SCItems.pieCrust, 1 ),
+                new Object[] {
+                        new ItemStack( BTWItems.rawEgg ),
+                        new ItemStack( BTWItems.flour ),
+                        new ItemStack( BTWItems.flour ),
+                        new ItemStack( BTWItems.flour )
+                } );
+
+        //Pie
+        RecipeManager.addShapelessRecipe( new ItemStack( BTWItems.unbakedPumpkinPie, 1 ),
+                new Object[] {
+                        new ItemStack( Item.sugar ),
+                        new ItemStack( BTWBlocks.freshPumpkin ),
+                        new ItemStack( SCItems.pieCrust )
+                } );
+
+        RecipeManager.addPistonPackingRecipe(BTWBlocks.unfiredPottery, UnfiredPotteryBlock.SUBTYPE_UNCOOKED_PUMPKIN_PIE,
+                new ItemStack[] {
+                        new ItemStack( Item.sugar ),
+                        new ItemStack( BTWBlocks.freshPumpkin ),
+                        new ItemStack( SCItems.pieCrust )
+                } );
+
     }
 
     private static void initBambooRecipes() {
@@ -251,6 +277,28 @@ public class SCRecipes extends SCRecipeHelper {
         addKnifeCraftingRecipes(SCItems.goldKnife, Item.ingotGold, Item.stick, Item.goldNugget, 6);
         addKnifeCraftingRecipes(SCItems.diamondKnife, BTWItems.diamondIngot, Item.stick, BTWItems.diamondIngot, 1);
         addKnifeCraftingRecipes(SCItems.steelKnife, BTWItems.soulforgedSteelIngot, BTWItems.haft, BTWItems.soulforgedSteelIngot, 1);
+    }
+
+    private static void initKnifeCuttingRecipes() {
+        Item[] cakes = {
+                Item.cake,//, SCDefs.chocolateCakeItem, SCDefs.carrotCakeItem
+                Item.pumpkinPie
+
+        };
+
+        ItemStack[] slices = {
+                new ItemStack(SCItems.cakeSlice, 6),//, SCDefs.chocolateCakeItem, SCDefs.carrotCakeItem
+                new ItemStack(SCItems.pumpkinPieSlice, 4)
+        };
+
+        for (int type = 0; type < cakes.length; type++)
+        {
+            addKnifeCuttingRecipes(
+                    slices[type],
+                    null,
+                    new ItemStack(cakes[type])
+            );
+        }
     }
 
     private static void initPlanterRecipes() {

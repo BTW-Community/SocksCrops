@@ -96,6 +96,9 @@ public class SCBlockIDs {
     public static final int SMALL_PACKED_BLOCK_ID = 2802;
     public static final int ROPE_ID = 2804;
 
+    public static int RAW_PIE_ID = 2810;
+    public static int COOKED_PIE_ID = 2811;
+
     //----------- TileEntities  -----------//
     public static final int DRYING_HAY_ID = 2850;
     public static final int LARGE_FLOWERPOT_ID = 2851;

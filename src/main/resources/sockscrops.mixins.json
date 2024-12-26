@@ -12,6 +12,7 @@
     "BlockMixin",
     "BlockTallGrassMixin",
     "BonusBasketGeneratorMixin",
+    "CakeBlockMixin",
     "ComponentMineshaftCorridorMixin",
     "ComponentScatteredFeatureDesertPyramidMixin",
     "ComponentScatteredFeatureJunglePyramidMixin",

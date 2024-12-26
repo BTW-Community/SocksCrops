@@ -2,8 +2,11 @@ package btw.community.sockthing.sockscrops.recipes;
 
 import btw.block.BTWBlocks;
 import btw.community.sockthing.sockscrops.block.SCBlocks;
+import btw.community.sockthing.sockscrops.item.SCItems;
 import btw.crafting.recipe.RecipeManager;
+import btw.crafting.recipe.types.customcrafting.LogChoppingRecipe;
 import btw.inventory.util.InventoryUtils;
+import btw.item.BTWItems;
 import net.minecraft.src.*;
 
 public class SCRecipeHelper {
@@ -43,5 +46,14 @@ public class SCRecipeHelper {
                 new ItemStack[]{
                         new ItemStack(knife, 1, InventoryUtils.IGNORE_METADATA)
                 });
+    }
+
+    public static void addKnifeCuttingRecipes(ItemStack output, ItemStack[] secondaryOutputs, ItemStack input) {
+        CraftingManager.getInstance().getRecipeList().add(new KnifeCuttingRecipe(output, secondaryOutputs, input));
+    }
+
+    public static void addKnifeCuttingRecipes(ItemStack output, ItemStack[] secondaryOutputs, ItemStack outputLowQuality, ItemStack[] secondaryOutputsLowQuality,
+                                            ItemStack input) {
+        CraftingManager.getInstance().getRecipeList().add(new KnifeCuttingRecipe(output, secondaryOutputs, outputLowQuality, secondaryOutputsLowQuality, input));
     }
 }

@@ -177,5 +177,13 @@ item.bamboo_weave.name=Bamboo Weave
 item.bamboo_shoot.name=Bamboo Shoot
 item.bamboo_shoot_cooked.name=Boiled Bamboo Shoot
 
+# Cakes
+item.cake_slice.name=Cake Slice
+
+#Pie
+item.pumpkin_pie_slice.name=Pumpkin Pie Slice
+item.pie_crust.name=Pie Crust
+
+#Flowerpot
 item.flowerPot.name=Flowerpot
 item.large_flowerpot.name=Large Flowerpot

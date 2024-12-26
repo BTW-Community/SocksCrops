@@ -9,29 +9,37 @@ import net.minecraft.src.World;
 public class SCFoodItem extends FoodItem {
 
     //all SC Foods have High Res food values
-    static public final float CAKE_SATURATION_MODIFIER = 4.0F;
-    static public final float PIE_SATURATION_MODIFIER = 2.5F;
-    static public final float COOKIE_SATURATION_MODIFIER = 1F;
-    static public final float FATTY_SATURATION_MODIFIER = 0.5F;
-    static public final float PROTEIN_SATURATION_MODIFIER = 0.25F;
-    static public final float VEGS_SATURATION_MODIFIER = 0.0F;
-    static public final float BREAD_SATURATION_MODIFIER = 0.0F;
-    static public final float SWEET_SATURATION_MODIFIER = 0.125F;
+    public static final float CAKE_SATURATION_MODIFIER = 4.0F;
+    public static final float PIE_SATURATION_MODIFIER = 2.5F;
+    public static final float COOKIE_SATURATION_MODIFIER = 1F;
+    public static final float FATTY_SATURATION_MODIFIER = 0.5F;
+    public static final float PROTEIN_SATURATION_MODIFIER = 0.25F;
+    public static final float VEGS_SATURATION_MODIFIER = 0.0F;
+    public static final float BREAD_SATURATION_MODIFIER = 0.0F;
+    public static final float SWEET_SATURATION_MODIFIER = 0.125F;
 
     //3 == 1, 6 == 2, 9 == 3, etc..
     public static final int BERRY_HUNGER_HEALED = 4;
     public static final float BERRY_SATURATION_MODIFIER = SWEET_SATURATION_MODIFIER;
-    static public final int BERRY_BOWL_HUNGER_HEALED = 8;
-    static public final float BERRY_BOWL_SATURATION_MODIFIER = SWEET_SATURATION_MODIFIER * 2;
-    static public final int BAMBOO_SHOOT_HUNGER_HEALED = 4;
-    static public final float BAMBOO_SHOOT_SATURATION_MODIFIER = VEGS_SATURATION_MODIFIER;
+    public static final int BERRY_BOWL_HUNGER_HEALED = 8;
+    public static final float BERRY_BOWL_SATURATION_MODIFIER = SWEET_SATURATION_MODIFIER * 2;
+    public static final int BAMBOO_SHOOT_HUNGER_HEALED = 4;
+    public static final float BAMBOO_SHOOT_SATURATION_MODIFIER = VEGS_SATURATION_MODIFIER;
 
-    static public final int RAW_FISH_HUNGER_HEALED = 9;
-    static public final float RAW_FISH_SATURATION_MODIFIER = PROTEIN_SATURATION_MODIFIER;
+    public static final int RAW_FISH_HUNGER_HEALED = 9;
+    public static final float RAW_FISH_SATURATION_MODIFIER = PROTEIN_SATURATION_MODIFIER;
 
-    static public final int COOKED_FISH_HUNGER_HEALED = 12;
-    static public final float COOKED_FISH_SATURATION_MODIFIER = PROTEIN_SATURATION_MODIFIER;
+    public static final int COOKED_FISH_HUNGER_HEALED = 12;
+    public static final float COOKED_FISH_SATURATION_MODIFIER = PROTEIN_SATURATION_MODIFIER;
+    
+    public static final int PIE_HUNGER_HEALED = 8;
+//    public static final float PIE_SATURATION_MODIFIER = PIE_SATURATION_MODIFIER;
 
+    public static final int PIE_SLICE_HUNGER_HEALED = 2;
+    public static final float PIE_SLICE_SATURATION_MODIFIER = PIE_SATURATION_MODIFIER;
+
+    public static final int CAKE_SLICE_HUNGER_HEALED = 12;
+    public static final float CAKE_SLICE_SATURATION_MODIFIER = CAKE_SATURATION_MODIFIER;
 
     public SCFoodItem(int iItemID, int iHungerHealed, float fSaturationModifier, boolean bWolfMeat, String sItemName) {
         super(iItemID, iHungerHealed, fSaturationModifier, bWolfMeat, sItemName);

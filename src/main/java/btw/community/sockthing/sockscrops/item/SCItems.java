@@ -1,10 +1,14 @@
 package btw.community.sockthing.sockscrops.item;
 
+import btw.AddonHandler;
 import btw.community.sockthing.sockscrops.block.SCBlockIDs;
+import btw.community.sockthing.sockscrops.block.SCBlocks;
+import btw.community.sockthing.sockscrops.block.blocks.CookedPieBlock;
 import btw.community.sockthing.sockscrops.block.blocks.DoubleTallPlantBlock;
 import btw.community.sockthing.sockscrops.item.items.BambooProgressiveItem;
 import btw.community.sockthing.sockscrops.item.items.KnifeItem;
 import btw.community.sockthing.sockscrops.item.items.CuttingsItem;
+import btw.community.sockthing.sockscrops.item.items.PlacableFoodItem;
 import btw.crafting.util.FurnaceBurnTime;
 import btw.item.BTWItems;
 import btw.item.items.PlaceAsBlockItem;
@@ -45,11 +49,13 @@ public class SCItems {
     public static Item codCooked;
     public static Item salmon;
     public static Item salmonCooked;
-
     public static Item tropicalFish;
     public static Item tropicalFishCooked;
-
     public static Item pufferFish;
+
+    public static Item cakeSlice;
+    public static Item pumpkinPieSlice;
+    public static Item pieCrust;
 
     public static void initItems() {
         initKnives();
@@ -60,6 +66,28 @@ public class SCItems {
         initFlowerpot();
         initBamboo();
         initFish();
+        initCake();
+        initPie();
+    }
+
+    private static void initPie() {
+        Item.pumpkinPie = new PlacableFoodItem( 144, 2, 2.5F, false,
+                SCBlockIDs.COOKED_PIE_ID, CookedPieBlock.PUMPKIN, "pumpkinPie")
+                .setAlwaysEdible()
+                .setCreativeTab( CreativeTabs.tabFood );
+
+        pumpkinPieSlice = new SCFoodItem(SCItemIDs.PUMPKIN_PIE_SLICE_ID - 256, SCFoodItem.PIE_SLICE_HUNGER_HEALED,
+                SCFoodItem.PIE_SLICE_SATURATION_MODIFIER, false, "pumpkin_pie_slice")
+                .setAlwaysEdible();
+
+        pieCrust = new Item(SCItemIDs.PIE_CRUST_ID - 256).setUnlocalizedName("pie_crust")
+                .setCreativeTab(CreativeTabs.tabFood);
+    }
+
+    private static void initCake() {
+        cakeSlice = new SCFoodItem(SCItemIDs.CAKE_SLICE_ID - 256, SCFoodItem.CAKE_SLICE_HUNGER_HEALED,
+                SCFoodItem.CAKE_SLICE_SATURATION_MODIFIER, false, "cake_slice")
+                .setAlwaysEdible();
     }
 
     private static void initFish() {

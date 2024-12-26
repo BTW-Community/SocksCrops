@@ -1,7 +1,6 @@
 package btw.community.sockthing.sockscrops.block;
 
 import btw.block.BTWBlocks;
-import btw.block.blocks.PaneBlock;
 import btw.community.sockthing.sockscrops.SocksCropsAddon;
 import btw.community.sockthing.sockscrops.block.blocks.*;
 import btw.community.sockthing.sockscrops.block.renderer.FishTrapRenderer;
@@ -112,6 +111,7 @@ public class SCBlocks {
     public static Block fishTrap;
     public static Block rope;
     public static Block ropeHangingItems;
+    public static Block cookedPie;
 
     public static void initBlocks() {
         initVanillaOverrides();
@@ -131,6 +131,8 @@ public class SCBlocks {
         initGrownPanes();
         initBambooBlocks();
         initRope();
+
+        initPies();
     }
 
     private static void initNutritionBlocks() {
@@ -178,6 +180,10 @@ public class SCBlocks {
                 new FishTrapRenderer());
         TileEntityRenderer.instance.addSpecialRendererForClass(RopeHangingItemsTileEntity.class,
                 new RopeHangingItemsRenderer());
+    }
+
+    private static void initPies() {
+        cookedPie = new CookedPieBlock(SCBlockIDs.COOKED_PIE_ID, "pumpkin_pie_cooked");
     }
 
     private static void initRope() {
