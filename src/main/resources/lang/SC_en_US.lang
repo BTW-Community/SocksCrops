@@ -124,6 +124,8 @@ tile.lilyRose.white.name=White Lily Rose
 tile.sweetberry.name=Sweetberry Bush
 tile.blueberry.name=Blueberry Bush
 
+# Bamboo
+
 # Hay
 tile.hay_drying.name=Drying Hay
 tile.hay_dried.name=Hay
@@ -133,6 +135,11 @@ tile.bale_straw.name=Straw Bale
 # Packed Blocks
 tile.packed.sugarcane.name=Packed Sugarcane
 tile.packed.shafts.name=Packed Shafts
+tile.packed.bamboo.name=Packed Bamboo
+tile.packed.stripped_bamboo.name=Packed Stripped Bamboo
+
+#TileEntities
+tile.fish_trap.name=Fish Trap
 
 #Vanilla Override
 tile.flower.flower.name=Yellow Flower
@@ -162,5 +169,21 @@ item.cuttings_item.name=Cuttings
 item.sunflower.name=Sunflower
 item.sunflower_seeds.name=Sunflower Seeds
 
+# Berries
+item.bamboo.name=Bamboo
+item.stripped_bamboo.name=Stripped Bamboo
+item.bamboo_progressive.name=Bamboo Weaving
+item.bamboo_weave.name=Bamboo Weave
+item.bamboo_shoot.name=Bamboo Shoot
+item.bamboo_shoot_cooked.name=Boiled Bamboo Shoot
+
+# Cakes
+item.cake_slice.name=Cake Slice
+
+#Pie
+item.pumpkin_pie_slice.name=Pumpkin Pie Slice
+item.pie_crust.name=Pie Crust
+
+#Flowerpot
 item.flowerPot.name=Flowerpot
 item.large_flowerpot.name=Large Flowerpot

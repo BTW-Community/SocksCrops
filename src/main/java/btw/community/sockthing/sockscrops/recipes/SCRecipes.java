@@ -2,42 +2,114 @@ package btw.community.sockthing.sockscrops.recipes;
 
 import btw.block.BTWBlocks;
 import btw.block.blocks.PlanterBlock;
-import btw.block.blocks.TallGrassBlock;
+import btw.block.blocks.UnfiredPotteryBlock;
 import btw.community.sockthing.sockscrops.SocksCropsAddon;
 import btw.community.sockthing.sockscrops.block.SCBlockIDs;
 import btw.community.sockthing.sockscrops.block.SCBlocks;
-import btw.community.sockthing.sockscrops.block.blocks.PlanterBaseBlock;
-import btw.community.sockthing.sockscrops.block.blocks.PlanterGrassBlock;
-import btw.community.sockthing.sockscrops.block.tileentities.LargeFlowerPotTileEntity;
+import btw.community.sockthing.sockscrops.block.blocks.PackedBlock;
+import btw.community.sockthing.sockscrops.block.tileentities.DecoBlockIDs;
 import btw.community.sockthing.sockscrops.item.SCItems;
+import btw.community.sockthing.sockscrops.item.items.BambooProgressiveItem;
 import btw.community.sockthing.sockscrops.utils.NutritionUtils;
 import btw.crafting.recipe.RecipeManager;
 import btw.inventory.util.InventoryUtils;
 import btw.item.BTWItems;
-import btw.item.util.ItemUtils;
-import net.minecraft.src.Block;
-import net.minecraft.src.Item;
-import net.minecraft.src.ItemStack;
+import net.minecraft.src.*;
 
 public class SCRecipes extends SCRecipeHelper {
     public static void initRecipes() {
         removeRecipes();
+        if (SocksCropsAddon.isDecoInstalled()) initOverrideDecoRecipes();
+
         initKnifeRecipes();
+        initKnifeCuttingRecipes();
         initPlanterRecipes();
         initHayRecipes();
-        initHollowLogRecipes();
         initMossRecipes();
         initSunflowerRecipes();
         initFlowerpotRecipes();
+        initBambooRecipes();
+        initFishTrapRecipes();
 
         initFoodRecipes();
+        initCampfireRecipes();
+        initOvenRecipes();
+        initCauldronRecipes();
+
+        initPackingRecipes();
+        initLogChoppingRecipes();
+        initHopperFilteringRecipes();
+    }
+
+    private static void removeRecipes() {
+        //Remove old Farmland Planter Recipe
+        RecipeManager.removeVanillaShapelessRecipe(new ItemStack(BTWBlocks.planterWithSoil), new Object[]{
+                new ItemStack(BTWBlocks.planter),
+                new ItemStack(BTWBlocks.looseDirt)
+        });
+
+        RecipeManager.removeVanillaRecipe(new ItemStack(Item.flowerPot, 1), new Object[] {"# #", " # ", '#', Item.brick});
+    }
+
+    private static void initOverrideDecoRecipes() {
+
+        Item[] chisels = new Item[]{BTWItems.pointyStick, BTWItems.sharpStone, BTWItems.ironChisel, BTWItems.diamondChisel};
+
+        //Remove Carved Pumpkins
+        for (int i = 0; i < chisels.length; i++){
+//            RecipeManager.removeShapelessRecipeWithSecondaryOutputIndicator(new ItemStack(Block.pumpkin),
+//                    new ItemStack(Item.pumpkinSeeds, 4),
+//                    new ItemStack[] {
+//                            new ItemStack(BTWBlocks.freshPumpkin),
+//                            new ItemStack(chisels[i])
+//                    });
+
+            RecipeManager.removeVanillaShapelessRecipe(new ItemStack(DecoBlockIDs.CARVED_PUMPKIN_ID, 1, 0),
+                    new ItemStack[] {
+                            new ItemStack(Block.pumpkin),
+                            new ItemStack(chisels[i])
+                    });
+            RecipeManager.removeVanillaShapelessRecipe(new ItemStack(DecoBlockIDs.CARVED_PUMPKIN_ID, 1, 1),
+                    new ItemStack[] {
+                            new ItemStack(DecoBlockIDs.CARVED_PUMPKIN_ID, 1, 0),
+                            new ItemStack(chisels[i])
+                    });
+            RecipeManager.removeVanillaShapelessRecipe(new ItemStack(DecoBlockIDs.CARVED_PUMPKIN_ID, 1, 2),
+                    new ItemStack[] {
+                            new ItemStack(DecoBlockIDs.CARVED_PUMPKIN_ID, 1, 1),
+                            new ItemStack(chisels[i])
+                    });
+        }
+
+        //Add carved
+        for (int i = 0; i < chisels.length; i++){
+            RecipeManager.addShapelessRecipeWithSecondaryOutputIndicator(new ItemStack(Block.pumpkin),
+                    new ItemStack(Item.pumpkinSeeds, 4),
+                    new ItemStack[] {
+                            new ItemStack(BTWBlocks.freshPumpkin),
+                            new ItemStack(chisels[i], 1, InventoryUtils.IGNORE_METADATA)
+                    });
+
+            RecipeManager.removeVanillaShapelessRecipe(new ItemStack(DecoBlockIDs.CARVED_PUMPKIN_ID, 1, 0),
+                    new ItemStack[] {
+                            new ItemStack(Block.pumpkin),
+                            new ItemStack(chisels[i], 1, InventoryUtils.IGNORE_METADATA)
+                    });
+            RecipeManager.removeVanillaShapelessRecipe(new ItemStack(DecoBlockIDs.CARVED_PUMPKIN_ID, 1, 1),
+                    new ItemStack[] {
+                            new ItemStack(DecoBlockIDs.CARVED_PUMPKIN_ID, 1, 0),
+                            new ItemStack(chisels[i], 1, InventoryUtils.IGNORE_METADATA)
+                    });
+            RecipeManager.removeVanillaShapelessRecipe(new ItemStack(DecoBlockIDs.CARVED_PUMPKIN_ID, 1, 2),
+                    new ItemStack[] {
+                            new ItemStack(DecoBlockIDs.CARVED_PUMPKIN_ID, 1, 1),
+                            new ItemStack(chisels[i], 1, InventoryUtils.IGNORE_METADATA)
+                    });
+        }
     }
 
     private static void initFoodRecipes() {
-        initBerryRecipes();
-    }
-
-    private static void initBerryRecipes() {
+        // Berries
         RecipeManager.addShapelessRecipe(new ItemStack(SCItems.berryBowl),
                 new ItemStack[]{
                         new ItemStack(Item.bowlEmpty),
@@ -45,11 +117,116 @@ public class SCRecipes extends SCRecipeHelper {
                         new ItemStack(SCItems.sweetberry),
                         new ItemStack(SCItems.blueberry),
                 });
+
+        //Crust
+        RecipeManager.addShapelessRecipe( new ItemStack( SCItems.pieCrust, 1 ),
+                new Object[] {
+                        new ItemStack( BTWItems.rawEgg ),
+                        new ItemStack( BTWItems.flour ),
+                        new ItemStack( BTWItems.flour ),
+                        new ItemStack( BTWItems.flour )
+                } );
+
+        //Pie
+        RecipeManager.addShapelessRecipe( new ItemStack( BTWItems.unbakedPumpkinPie, 1 ),
+                new Object[] {
+                        new ItemStack( Item.sugar ),
+                        new ItemStack( BTWBlocks.freshPumpkin ),
+                        new ItemStack( SCItems.pieCrust )
+                } );
+
+        RecipeManager.addPistonPackingRecipe(BTWBlocks.unfiredPottery, UnfiredPotteryBlock.SUBTYPE_UNCOOKED_PUMPKIN_PIE,
+                new ItemStack[] {
+                        new ItemStack( Item.sugar ),
+                        new ItemStack( BTWBlocks.freshPumpkin ),
+                        new ItemStack( SCItems.pieCrust )
+                } );
+
+    }
+
+    private static void initBambooRecipes() {
+
+        //Bamboo Weaving
+        RecipeManager.addRecipe( new ItemStack( SCItems.bambooProgressiveItem, 1,
+                BambooProgressiveItem.BAMBOO_WEAVING_MAX_DAMAGE - 1 ), new Object[] {
+                "#S#",
+                "SSS",
+                "#S#",
+                '#', SCItems.bamboo,
+                'S', Item.stick
+        } );
+
+        //Packed
+        RecipeManager.addShapelessRecipe(new ItemStack(SCBlocks.smallPackedBlock, 1, PackedBlock.BAMBOO),
+                new ItemStack[]{
+                        new ItemStack(SCItems.bamboo),
+                        new ItemStack(SCItems.bamboo),
+                        new ItemStack(SCItems.bamboo),
+                        new ItemStack(SCItems.bamboo),
+                        new ItemStack(SCItems.bamboo),
+                        new ItemStack(SCItems.bamboo),
+                        new ItemStack(SCItems.bamboo),
+                        new ItemStack(SCItems.bamboo)
+                });
+
+        RecipeManager.addShapelessRecipe(new ItemStack(SCBlocks.smallPackedBlock, 1, PackedBlock.STRIPPED_BAMBOO),
+                new ItemStack[]{
+                        new ItemStack(SCItems.strippedBamboo),
+                        new ItemStack(SCItems.strippedBamboo),
+                        new ItemStack(SCItems.strippedBamboo),
+                        new ItemStack(SCItems.strippedBamboo),
+                        new ItemStack(SCItems.strippedBamboo),
+                        new ItemStack(SCItems.strippedBamboo),
+                        new ItemStack(SCItems.strippedBamboo),
+                        new ItemStack(SCItems.strippedBamboo)
+                });
+
+        //Bamboo Grate
+        /*
+        RecipeManager.addRecipe( new ItemStack( SCBlocks.bambooGrate),
+                new Object[] {
+                        "#B#",
+                        "BSB",
+                        "#B#",
+                        '#', Item.silk,
+                        'B', SCItems.bamboo,
+                        'S', Item.stick
+                } );
+
+
+        RecipeManager.addRecipe( new ItemStack( SCBlocks.bambooGrate),
+                new Object[] {
+                        "#B#",
+                        "BSB",
+                        "#B#",
+                        '#', BTWItems.hempFibers,
+                        'B', SCItems.bamboo,
+                        'S', Item.stick
+                } );
+        */
+    }
+
+    private static void initFishTrapRecipes() {
+        Item[] strings = { Item.silk, BTWItems.hempFibers, BTWItems.sinew };
+        Item[] hooks = { BTWItems.ironNugget, BTWItems.boneFishHook };
+
+        for (Item hook : hooks) {
+            for (Item string : strings) {
+
+                RecipeManager.addRecipe(new ItemStack(SCBlocks.fishTrap),
+                        new Object[] {
+                                "SBS",
+                                "BFB",
+                                "SBS",
+                                'B', new ItemStack(SCItems.bambooWeave),
+                                'S', new ItemStack(string),
+                                'F', new ItemStack(hook), });
+            }
+        }
     }
 
     private static void initFlowerpotRecipes() {
 
-        RecipeManager.removeVanillaRecipe(new ItemStack(Item.flowerPot, 1), new Object[] {"# #", " # ", '#', Item.brick});
         RecipeManager.addRecipe(new ItemStack(SCItems.flowerPot, 1), new Object[] {"# #", " # ", '#', Item.brick});
 
         RecipeManager.addRecipe(new ItemStack(SCItems.largeFlowerpot, 1), new Object[] {
@@ -71,9 +248,6 @@ public class SCRecipes extends SCRecipeHelper {
                         new ItemStack(SCBlocks.mossCarpet)
                 });
 
-        RecipeManager.addPistonPackingRecipe(SCBlocks.mossBlock,
-                new ItemStack(SCItems.mossBall, 8));
-
         RecipeManager.addShapelessRecipe(new ItemStack(SCBlocks.mossBlock),
                 new ItemStack[]{
                         new ItemStack(SCItems.mossBall),
@@ -92,29 +266,39 @@ public class SCRecipes extends SCRecipeHelper {
                 });
     }
 
-    private static void removeRecipes() {
-        //Remove old Farmland Planter Recipe
-        RecipeManager.removeVanillaShapelessRecipe(new ItemStack(BTWBlocks.planterWithSoil), new Object[]{
-                new ItemStack(BTWBlocks.planter),
-                new ItemStack(BTWBlocks.looseDirt)
-        });
-    }
-
     private static void initSunflowerRecipes() {
         RecipeManager.addShapelessRecipe( new ItemStack( SCItems.sunflowerSeeds, 2 ), new Object[] {
                 new ItemStack( SCItems.sunflower )
         } );
-
-        RecipeManager.addHopperFilteringRecipe(new ItemStack(SCItems.sunflowerSeeds, 2),
-                new ItemStack(SCItems.sunflower),
-                new ItemStack(BTWBlocks.wickerPane));
     }
 
     private static void initKnifeRecipes() {
-        addKnifeRecipe(SCItems.ironKnife, Item.ingotIron, Item.stick, BTWItems.ironNugget, 6);
-        addKnifeRecipe(SCItems.goldKnife, Item.ingotGold, Item.stick, Item.goldNugget, 6);
-        addKnifeRecipe(SCItems.diamondKnife, BTWItems.diamondIngot, Item.stick, BTWItems.diamondIngot, 1);
-        addKnifeRecipe(SCItems.steelKnife, BTWItems.soulforgedSteelIngot, BTWItems.haft, BTWItems.soulforgedSteelIngot, 1);
+        addKnifeCraftingRecipes(SCItems.ironKnife, Item.ingotIron, Item.stick, BTWItems.ironNugget, 6);
+        addKnifeCraftingRecipes(SCItems.goldKnife, Item.ingotGold, Item.stick, Item.goldNugget, 6);
+        addKnifeCraftingRecipes(SCItems.diamondKnife, BTWItems.diamondIngot, Item.stick, BTWItems.diamondIngot, 1);
+        addKnifeCraftingRecipes(SCItems.steelKnife, BTWItems.soulforgedSteelIngot, BTWItems.haft, BTWItems.soulforgedSteelIngot, 1);
+    }
+
+    private static void initKnifeCuttingRecipes() {
+        Item[] cakes = {
+                Item.cake,//, SCDefs.chocolateCakeItem, SCDefs.carrotCakeItem
+                Item.pumpkinPie
+
+        };
+
+        ItemStack[] slices = {
+                new ItemStack(SCItems.cakeSlice, 6),//, SCDefs.chocolateCakeItem, SCDefs.carrotCakeItem
+                new ItemStack(SCItems.pumpkinPieSlice, 4)
+        };
+
+        for (int type = 0; type < cakes.length; type++)
+        {
+            addKnifeCuttingRecipes(
+                    slices[type],
+                    null,
+                    new ItemStack(cakes[type])
+            );
+        }
     }
 
     private static void initPlanterRecipes() {
@@ -157,7 +341,7 @@ public class SCRecipes extends SCRecipeHelper {
             for (int i = 0; i < 4; i++) {
                 RecipeManager.addShapelessRecipeWithSecondaryOutputIndicator(
                         new ItemStack(BTWBlocks.planter ),
-                        getContents(SCBlockIDs.GRASS_PLANTER_ID + j, i),
+                        getPlanterContents(SCBlockIDs.GRASS_PLANTER_ID + j, i),
                         new Object[] {
                                 new ItemStack( SCBlockIDs.GRASS_PLANTER_ID + j, 1, i)
                         });
@@ -179,22 +363,7 @@ public class SCRecipes extends SCRecipeHelper {
                 });
     }
 
-    public static ItemStack getContents(int blockID, int metadata){
-        if (blockID == SCBlocks.planterGrass.blockID)
-        {
-            if (metadata == 0) return new ItemStack(Block.grass);
-            return new ItemStack(SCBlocks.grassNutrition, 1, metadata * 2);
-        }
-        else if (blockID >= SCBlocks.planterFarmland.blockID || blockID <= SCBlocks.planterFarmlandDung.blockID ){
-            return new ItemStack(BTWBlocks.looseDirt, 1, metadata);
-        }
-        else return null;
-    }
-
     private static void initHayRecipes() {
-
-        RecipeManager.addPistonPackingRecipe(SCBlocks.hayBale,
-                new ItemStack(SCItems.cuttings, 8));
 
         RecipeManager.addShapelessRecipe(new ItemStack(SCBlocks.hayBale),
                 new ItemStack[]{
@@ -209,8 +378,6 @@ public class SCRecipes extends SCRecipeHelper {
                 });
 
         if (!SocksCropsAddon.isDecoInstalled()){
-            RecipeManager.addPistonPackingRecipe(SCBlocks.strawBale,
-                    new ItemStack(BTWItems.straw, 8));
 
             RecipeManager.addShapelessRecipe(new ItemStack(SCBlocks.strawBale),
                     new ItemStack[]{
@@ -226,8 +393,13 @@ public class SCRecipes extends SCRecipeHelper {
         }
     }
 
+    private static void initLogChoppingRecipes() {
+        //Stripped Bamboo
+        RecipeManager.addLogChoppingRecipe(new ItemStack(SCItems.strippedBamboo),
+                null,
+                new ItemStack(SCItems.bamboo));
 
-    private static void initHollowLogRecipes() {
+        //Hollow Logs
         for (int i = 0; i < 4; i++) {
             RecipeManager.addLogChoppingRecipe(new ItemStack(BTWItems.sawDust, 2),
                     new ItemStack[]{
@@ -270,4 +442,88 @@ public class SCRecipes extends SCRecipeHelper {
         }
     }
 
+    private static void initHopperFilteringRecipes() {
+        //Sunflower
+        RecipeManager.addHopperFilteringRecipe(new ItemStack(SCItems.sunflowerSeeds, 2),
+                new ItemStack(SCItems.sunflower),
+                new ItemStack(BTWBlocks.wickerPane));
+    }
+
+    private static void initPackingRecipes() {
+        //Packed Blocks
+        RecipeManager.addPistonPackingRecipe(SCBlocks.smallPackedBlock, PackedBlock.SUGAR_CANE,
+                new ItemStack(Item.reed, 8));
+
+        RecipeManager.addPistonPackingRecipe(SCBlocks.smallPackedBlock, PackedBlock.SHAFTS,
+                new ItemStack(Item.stick, 8));
+
+        RecipeManager.addPistonPackingRecipe(SCBlocks.smallPackedBlock, PackedBlock.BAMBOO,
+                new ItemStack(SCItems.bamboo, 8));
+
+        RecipeManager.addPistonPackingRecipe(SCBlocks.smallPackedBlock, PackedBlock.STRIPPED_BAMBOO,
+                new ItemStack(SCItems.strippedBamboo, 8));
+
+        //Moss
+        RecipeManager.addPistonPackingRecipe(SCBlocks.mossBlock,
+                new ItemStack(SCItems.mossBall, 8));
+
+        //Hay & Straw
+        RecipeManager.addPistonPackingRecipe(SCBlocks.hayBale,
+                new ItemStack(SCItems.cuttings, 8));
+
+        if (!SocksCropsAddon.isDecoInstalled()) {
+            RecipeManager.addPistonPackingRecipe(SCBlocks.strawBale,
+                    new ItemStack(BTWItems.straw, 8));
+        }
+    }
+
+    static Item[] rawFish = new Item[]{SCItems.cod, SCItems.salmon, SCItems.tropicalFish};
+    static Item[] cookedFish = new Item[]{SCItems.codCooked, SCItems.salmonCooked, SCItems.tropicalFishCooked};
+
+    private static void initCampfireRecipes() {
+        //Fish
+        for (int i = 0; i < rawFish.length; i++) {
+            RecipeManager.addCampfireRecipe(rawFish[i].itemID, new ItemStack(cookedFish[i]));
+        }
+    }
+
+    private static void initOvenRecipes() {
+        //Bamboo
+        FurnaceRecipes.smelting().addSmelting(SCBlocks.bambooShoot.blockID, new ItemStack(SCItems.boiledBambooShoot), 0);
+
+        //Fish
+        for (int i = 0; i < rawFish.length; i++) {
+            FurnaceRecipes.smelting().addSmelting(rawFish[i].itemID, new ItemStack(cookedFish[i]), 0);
+        }
+    }
+
+    private static void initCauldronRecipes() {
+        //Bamboo
+        RecipeManager.addCauldronRecipe(
+                new ItemStack(SCItems.boiledBambooShoot, 1),
+                new ItemStack[] {
+                        new ItemStack(SCBlocks.bambooShoot)
+                });
+
+        //Fish
+        for (int i = 0; i < rawFish.length; i++) {
+            RecipeManager.addCauldronRecipe(
+                    new ItemStack(cookedFish[i], 1),
+                    new ItemStack[] {
+                            new ItemStack(rawFish[i])
+                    });
+
+            RecipeManager.addCauldronRecipe(
+                    new ItemStack[] {
+                            new ItemStack(BTWItems.chowder, 2),
+                            new ItemStack(Item.bucketEmpty)
+                    },
+
+                    new ItemStack[] {
+                            new ItemStack(Item.bucketMilk),
+                            new ItemStack(cookedFish[i]),
+                            new ItemStack(Item.bowlEmpty, 2)
+                    });
+        }
+    }
 }

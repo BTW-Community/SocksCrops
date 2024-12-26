@@ -9,9 +9,12 @@ import net.minecraft.src.Material;
 import java.util.List;
 
 public class PackedBlock extends PillarBlock {
+    public static final int SUGAR_CANE = 0;
+    public static final int SHAFTS = 1;
+    public static final int BAMBOO = 2;
+    public static final int STRIPPED_BAMBOO = 3;
 
-
-    public static String[] types = new String[] { "sugarcane", "shafts" };
+    public static String[] types = new String[] { "sugarcane", "shafts", "bamboo", "stripped_bamboo" };
 
     public PackedBlock(int id, Material material, String name) {
         super(id, material, getTopTextureNames(name), getSideTextureNames(name));

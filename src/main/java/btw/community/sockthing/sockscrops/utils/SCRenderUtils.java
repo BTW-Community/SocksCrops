@@ -194,22 +194,26 @@ public class SCRenderUtils {
     }
 
     public static void renderCrossedSquaresWithTexture(RenderBlocks renderBlocks, Block block, int i, int j, int k, Icon texture, boolean randomOffset){
-        renderCrossedSquaresWithTexture(renderBlocks, block, i,j,k, 0D, 0D, 0D, texture, randomOffset, false, 0.2D);
+        renderCrossedSquaresWithTexture(renderBlocks, block, i,j,k, 0D, 0D, 0D, texture, randomOffset, 16, false, 0.2D);
+    }
+
+    public static void renderCrossedSquaresWithTexture(RenderBlocks renderBlocks, Block block, int i, int j, int k, Icon texture, boolean randomOffset, int grid){
+        renderCrossedSquaresWithTexture(renderBlocks, block, i,j,k, 0D, 0D, 0D, texture, randomOffset, grid, false, 0.2D);
     }
 
     public static void renderCrossedSquaresWithTexture(RenderBlocks renderBlocks, Block block, int i, int j, int k, Icon texture, boolean randomOffset, boolean randomHeight){
-        renderCrossedSquaresWithTexture(renderBlocks, block, i,j,k, 0D, 0D, 0D, texture, randomOffset, randomHeight, 0.2D);
+        renderCrossedSquaresWithTexture(renderBlocks, block, i,j,k, 0D, 0D, 0D, texture, randomOffset, 16, randomHeight, 0.2D);
     }
 
     public static void renderCrossedSquaresWithTexture(RenderBlocks renderBlocks, Block block, int i, int j, int k, Icon texture, boolean randomOffset, boolean randomHeight, double heightVariation){
-        renderCrossedSquaresWithTexture(renderBlocks, block, i,j,k, 0D, 0D, 0D, texture, randomOffset, randomHeight, heightVariation);
+        renderCrossedSquaresWithTexture(renderBlocks, block, i,j,k, 0D, 0D, 0D, texture, randomOffset, 16,randomHeight, heightVariation);
     }
 
     public static void renderCrossedSquaresWithTexture(RenderBlocks renderBlocks, Block block, int i, int j, int k, double shiftX, double shiftY, double shiftZ, Icon texture, boolean randomOffset){
-        renderCrossedSquaresWithTexture(renderBlocks, block, i,j,k, shiftX, shiftY, shiftZ, texture, randomOffset, false, 0.2D);
+        renderCrossedSquaresWithTexture(renderBlocks, block, i,j,k, shiftX, shiftY, shiftZ, texture, randomOffset, 16, false, 0.2D);
     }
 
-    public static void renderCrossedSquaresWithTexture(RenderBlocks renderBlocks, Block block, int i, int j, int k, double shiftX, double shiftY, double shiftZ, Icon texture, boolean randomOffset, boolean randomHeight, double heightVariation) {
+    private static void renderCrossedSquaresWithTexture(RenderBlocks renderBlocks, Block block, int i, int j, int k, double shiftX, double shiftY, double shiftZ, Icon texture, boolean randomOffset, int grid, boolean randomHeight, double heightVariation) {
         boolean bHasOverride = renderBlocks.hasOverrideBlockTexture();
 
         if (!bHasOverride) {
@@ -245,8 +249,13 @@ public class SCRenderUtils {
             double centerX = 8 / 16D;
             double centerZ = 8 / 16D;
 
-            newCenterX = (Math.floor(newX * 16 + c) - c) / 16;
-            newCenterZ = (Math.floor(newZ * 16 + c) - c) / 16;
+            newCenterX = (Math.floor(newX * grid + c) - c) / grid;
+            newCenterZ = (Math.floor(newZ * grid + c) - c) / grid;
+
+            if (grid == 4){
+                newCenterX -= 2/16D;
+                newCenterZ -= 2/16D;
+            }
         }
 
         if (randomHeight)

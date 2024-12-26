@@ -1,5 +1,6 @@
 package btw.community.sockthing.sockscrops.mixins;
 
+import btw.community.sockthing.sockscrops.block.tileentities.DecoBlockIDs;
 import btw.community.sockthing.sockscrops.interfaces.BlockInterface;
 import btw.community.sockthing.sockscrops.interfaces.ItemInterface;
 import net.minecraft.src.*;
@@ -15,6 +16,14 @@ public abstract class SlotArmorMixin extends Slot {
 
     public SlotArmorMixin(IInventory par1IInventory, int par2, int par3, int par4) {
         super(par1IInventory, par2, par3, par4);
+    }
+
+    private boolean canBeWornOnHead(ItemStack itemStack) {
+
+        if (itemStack.itemID == DecoBlockIDs.CARVED_PUMPKIN_ID)
+            return true;
+
+        return false;
     }
 
     @Inject(method = "isItemValid", at = @At(value = "HEAD"), cancellable = true)
@@ -38,6 +47,10 @@ public abstract class SlotArmorMixin extends Slot {
                 int itemID = itemStack.getItem().itemID;
 
                 if (itemID == Block.pumpkin.blockID || itemID == Item.skull.itemID )
+                {
+                    return this.armorType == 0;
+                }
+                else if ( canBeWornOnHead(itemStack) )
                 {
                     return this.armorType == 0;
                 }
@@ -67,4 +80,5 @@ public abstract class SlotArmorMixin extends Slot {
             }
         }
     }
+
 }

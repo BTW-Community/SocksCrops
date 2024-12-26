@@ -3,6 +3,7 @@ package btw.community.sockthing.sockscrops.block.blocks;
 import btw.block.blocks.GrassBlock;
 import btw.community.sockthing.sockscrops.block.SCBlocks;
 import btw.community.sockthing.sockscrops.utils.NutritionUtils;
+import btw.item.BTWItems;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.src.*;
@@ -14,6 +15,11 @@ public abstract class PlanterFarmlandBaseBlock extends PlanterBaseBlock {
 
     public PlanterFarmlandBaseBlock(int blockID, String name) {
         super(blockID, name);
+    }
+
+    @Override
+    public int damageDropped(int par1) {
+        return par1 & 3;
     }
 
     @Override
@@ -31,6 +37,78 @@ public abstract class PlanterFarmlandBaseBlock extends PlanterBaseBlock {
         */
     }
 
+    @Override
+    public boolean onBlockActivated( World world, int x, int y, int z, EntityPlayer player, int targetFace, float xClick, float yClick, float zClick )
+    {
+        ItemStack heldStack = player.getHeldItem();
+
+        if ( heldStack.itemID == BTWItems.dung.itemID ) // bone meal
+        {
+            if ( !getIsDunged(world, x,y,z) && !getIsFertilized(world,x,y,z) )
+            {
+                setIsDunged(world, x, y, z, true);
+                heldStack.stackSize--;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    @Override
+    public void onEntityCollidedWithBlock(World world, int i, int j, int k, Entity entity )
+    {
+        if ( !world.isRemote && entity.isEntityAlive() && entity instanceof EntityItem )
+        {
+            EntityItem entityItem = (EntityItem)entity;
+            ItemStack stack = entityItem.getEntityItem();
+
+            if ( stack.getItem().itemID == Item.dyePowder.itemID &&
+                    stack.getItemDamage() == 15 ) // bone meal
+            {
+                if ( attemptToApplyFertilizerTo(world, i, j, k) )
+                {
+                    stack.stackSize--;
+
+                    if ( stack.stackSize <= 0 )
+                    {
+                        entityItem.setDead();
+                    }
+
+                    world.playSoundEffect( i + 0.5D, j + 0.5D, k + 0.5D, "random.pop", 0.25F,
+                            ( ( world.rand.nextFloat() - world.rand.nextFloat() ) *
+                                    0.7F + 1F ) * 2F );
+                }
+            }
+            else if ( stack.getItem().itemID == BTWItems.dung.itemID ) // dung
+            {
+                if ( attemptToApplyDungTo(world, i, j, k) )
+                {
+                    stack.stackSize--;
+
+                    if ( stack.stackSize <= 0 )
+                    {
+                        entityItem.setDead();
+                    }
+
+                    world.playSoundEffect( i + 0.5D, j + 0.5D, k + 0.5D, "random.pop", 0.25F,
+                            ( ( world.rand.nextFloat() - world.rand.nextFloat() ) *
+                                    0.7F + 1F ) * 2F );
+                }
+            }
+        }
+    }
+
+    public boolean attemptToApplyDungTo(World world, int x, int y, int z) {
+        if (!getIsDunged(world, x, y, z) && !getIsFertilized(world, x,y,z)) {
+            setIsDunged(world, x, y, z, true);
+
+            return true;
+        }
+
+        return false;
+    }
+
     //------------- Copy and Edit of PlanterBlockSoil ------------//
     @Override
     public void updateTick(World world, int x, int y, int z, Random rand) {
@@ -44,7 +122,7 @@ public abstract class PlanterFarmlandBaseBlock extends PlanterBaseBlock {
 
     @Override
     public boolean attemptToApplyFertilizerTo(World world, int x, int y, int z) {
-        if (!getIsFertilized(world, x, y, z)) {
+        if (!getIsFertilized(world, x, y, z) && !getIsDunged(world,x,y,z)) {
             setIsFertilized(world, x, y, z, true);
 
             return true;
@@ -95,8 +173,18 @@ public abstract class PlanterFarmlandBaseBlock extends PlanterBaseBlock {
 
     @Override
     public void notifyOfFullStagePlantGrowthOn(World world, int x, int y, int z, Block plantBlock) {
+        int oldMetadata = world.getBlockMetadata(x, y, z);
+        int nutrition = NutritionUtils.getPlanterNutritionLevel(oldMetadata);
+        int newMetadata = nutrition + 1;
+
         if (getIsFertilized(world, x, y, z)) {
+            if (getIsHydrated(oldMetadata)){
+                world.setBlockMetadata(x,y,z, setIsHydrated(newMetadata, true));
+            }
             setIsFertilized(world, x, y, z, false);
+        }
+        else if (getIsDunged(world, x,y,z)){
+            setIsDunged(world,x,y,z, false);
         }
     }
 
@@ -113,6 +201,12 @@ public abstract class PlanterFarmlandBaseBlock extends PlanterBaseBlock {
 
     //------------- Class Specific Methods ------------//
 
+
+    @Override
+    protected boolean isHydrated(int metadata) {
+        return getIsHydrated(metadata);
+    }
+
     protected boolean getIsHydrated(IBlockAccess blockAccess, int x, int y, int z) {
         return getIsHydrated(blockAccess.getBlockMetadata(x, y, z));
     }
@@ -128,7 +222,8 @@ public abstract class PlanterFarmlandBaseBlock extends PlanterBaseBlock {
     }
 
     protected int setIsHydrated(int metadata, boolean isHydrated) {
-        return metadata + 4;
+        if (isHydrated) return metadata + 4;
+        return metadata - 4;
     }
 
     protected boolean getIsFertilized(IBlockAccess blockAccess, int x, int y, int z) {
@@ -136,23 +231,33 @@ public abstract class PlanterFarmlandBaseBlock extends PlanterBaseBlock {
     }
 
     protected boolean getIsFertilized(int metadata) {
-        return (metadata & 2) != 0;
+        return false;
     }
 
     protected void setIsFertilized(World world, int x, int y, int z, boolean isFertilized) {
-        int metadata = setIsFertilized(world.getBlockMetadata(x, y, z), isFertilized);
+        int metadata = world.getBlockMetadata(x, y, z);
 
-        world.setBlockMetadataWithNotify(x, y, z, metadata);
+        if (isFertilized){
+            world.setBlockAndMetadataWithNotify(x, y, z, SCBlocks.planterFarmlandFertilized.blockID, metadata);
+        }
+        else  world.setBlockAndMetadataWithNotify(x, y, z, SCBlocks.planterFarmland.blockID, metadata);
     }
 
-    protected int setIsFertilized(int metadata, boolean isFertilized) {
-        if (isFertilized) {
-            metadata |= 2;
-        } else {
-            metadata &= (~2);
-        }
+    protected boolean getIsDunged(IBlockAccess blockAccess, int x, int y, int z) {
+        return getIsDunged(blockAccess.getBlockMetadata(x, y, z));
+    }
 
-        return metadata;
+    protected boolean getIsDunged(int metadata) {
+        return false;
+    }
+
+    protected void setIsDunged(World world, int x, int y, int z, boolean isFertilized) {
+        int metadata = world.getBlockMetadata(x, y, z);
+
+        if (isFertilized){
+            world.setBlockAndMetadataWithNotify(x, y, z, SCBlocks.planterFarmlandDung.blockID, metadata);
+        }
+        else  world.setBlockAndMetadataWithNotify(x, y, z, SCBlocks.planterFarmland.blockID, metadata);
     }
 
     //------------ Grass Spread ----------//
@@ -201,20 +306,6 @@ public abstract class PlanterFarmlandBaseBlock extends PlanterBaseBlock {
     }
 
     //------------- Abstract ------------//
-
-    @Override
-    protected boolean isHydrated(int metadata) {
-        return metadata > 3;
-    }
-
-    @Override
-    protected boolean isFertilized(int metadata) {
-        return false;
-    }
-
-    @Override
-    protected void setFertilized(World world, int x, int y, int z) {
-    }
 
     @Override
     @Environment(EnvType.CLIENT)

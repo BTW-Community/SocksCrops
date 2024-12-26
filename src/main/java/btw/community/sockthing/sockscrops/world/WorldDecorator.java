@@ -245,6 +245,12 @@ public class WorldDecorator {
             BiomeIDs.RIVER_JUNGLE_ID,
     };
 
+    public static final int[] BAMBOO_BIOMES = {
+            BiomeGenBase.jungleHills.biomeID,
+
+            BTABiomeIDs.JUNGLE_HILLS_ID,
+    };
+
     public static boolean isValidBiome(int biomeID, int[] biomeIDs){
         for (int i = 0; i < biomeIDs.length; i++) {
             if (biomeID == biomeIDs[i]) return true;
@@ -263,6 +269,7 @@ public class WorldDecorator {
         genSideShroom(world, rand, x, z, biome);
         genClover(world, rand, x, z, biome);
         genBerryBush(world, rand, x, z, biome);
+        genBamboo(world, rand, x, z, biome);
 
         genLilyRose(world, rand, x, z, biome);
         genWaterPlants(world, rand, x, z, biome);
@@ -386,7 +393,6 @@ public class WorldDecorator {
         int yPos;
         int zPos;
 
-        //Sunflowers
         if (random.nextInt(3 * 128) == 0) {
             for (i = 0; i < 16; ++i) {
                 xPos = x + random.nextInt(16) + 8;
@@ -397,7 +403,6 @@ public class WorldDecorator {
                 var6.generate(world, random, xPos, yPos, zPos);
             }
         }
-
     }
 
     protected static void genBerryBush(World world, Random random, int x, int z, BiomeGenBase biome) {
@@ -422,6 +427,23 @@ public class WorldDecorator {
                 yPos = 60 + random.nextInt(64);
                 zPos = z + random.nextInt(16) + 8;
                 new BerryBushWorldGen(SCBlocks.sweetberryBush).generate(world, random, xPos, yPos, zPos);
+            }
+        }
+    }
+
+    private static void genBamboo(World world, Random random, int x, int z, BiomeGenBase biome) {
+        int i;
+        int xPos;
+        int yPos;
+        int zPos;
+
+        if (random.nextInt(32) == 0) {
+            for (i = 0; i < 64; ++i) {
+                xPos = x + random.nextInt(16) + 4;
+                yPos = 60 + random.nextInt(64);
+                zPos = z + random.nextInt(16) + 4;
+                WorldGenerator var6 = new BambooWorldGen(BAMBOO_BIOMES);
+                var6.generate(world, random, xPos, yPos, zPos);
             }
         }
     }
