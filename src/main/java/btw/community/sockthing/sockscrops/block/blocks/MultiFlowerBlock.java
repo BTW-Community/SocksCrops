@@ -62,17 +62,19 @@ public class MultiFlowerBlock extends FlowerBlock {
     @Override
     public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer player, int iFacing, float fXClick, float fYClick, float fZClick) {
         ItemStack heldStack = player.getHeldItem();
-        if (heldStack != null && heldStack.itemID == this.blockID || Block.blocksList[heldStack.itemID] instanceof MultiFlowerBlock)
+        if (heldStack != null)
         {
-            int meta = world.getBlockMetadata(i,j,k);
-            int stage = getStage(meta);
+            if (heldStack.itemID == this.blockID || Block.blocksList[heldStack.itemID] instanceof MultiFlowerBlock)
+            {
+                int meta = world.getBlockMetadata(i,j,k);
+                int stage = getStage(meta);
 
-            if (stage < 3) {
-                world.setBlockMetadataWithNotify(i,j,k, setStage(meta, stage + 1));
+                if (stage < 3) {
+                    world.setBlockMetadataWithNotify(i,j,k, setStage(meta, stage + 1));
 //                heldStack.stackSize--;
-                return true;
+                    return true;
+                }
             }
-
         }
 
         return false;
