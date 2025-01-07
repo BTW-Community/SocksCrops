@@ -4,6 +4,7 @@ import btw.block.BTWBlocks;
 import btw.block.blocks.GrassBlock;
 import btw.block.blocks.GroundCoverBlock;
 import btw.client.render.util.RenderUtils;
+import btw.community.sockthing.sockscrops.block.SCBlockIDs;
 import btw.community.sockthing.sockscrops.block.SCBlocks;
 import btw.community.sockthing.sockscrops.utils.NutritionUtils;
 import btw.community.sockthing.sockscrops.utils.SCRenderUtils;
@@ -211,11 +212,11 @@ public class PlanterGrassBlock extends PlanterBaseBlock {
                 } else {
                     if (world.isAirBlock(x, y + 2, z)) {
                         if (rand.nextInt(2) == 0) {
-                            world.setBlockAndMetadataWithNotify(x, y + 1, z, SCBlocks.doubleTallPlant.blockID, DoubleTallPlantBlock.FERN);
-                            world.setBlockAndMetadataWithNotify(x, y + 2, z, SCBlocks.doubleTallPlant.blockID, DoubleTallPlantBlock.setTopBlock(DoubleTallPlantBlock.FERN));
+                            world.setBlockAndMetadataWithNotify(x, y + 1, z, SCBlockIDs.DOUBLE_TALL_PLANT_ID, DoubleTallPlantBlock.FERN);
+                            world.setBlockAndMetadataWithNotify(x, y + 2, z, SCBlockIDs.DOUBLE_TALL_PLANT_ID, DoubleTallPlantBlock.setTopBlock(DoubleTallPlantBlock.FERN));
                         } else {
-                            world.setBlockAndMetadataWithNotify(x, y + 1, z, SCBlocks.doubleTallPlant.blockID, DoubleTallPlantBlock.GRASS);
-                            world.setBlockAndMetadataWithNotify(x, y + 2, z, SCBlocks.doubleTallPlant.blockID, DoubleTallPlantBlock.setTopBlock(DoubleTallPlantBlock.GRASS));
+                            world.setBlockAndMetadataWithNotify(x, y + 1, z, SCBlockIDs.DOUBLE_TALL_PLANT_ID, DoubleTallPlantBlock.GRASS);
+                            world.setBlockAndMetadataWithNotify(x, y + 2, z, SCBlockIDs.DOUBLE_TALL_PLANT_ID, DoubleTallPlantBlock.setTopBlock(DoubleTallPlantBlock.GRASS));
                         }
                     }
                 }

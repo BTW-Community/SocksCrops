@@ -55,32 +55,32 @@ public class HayDryingTileEntity extends TileEntity implements TileEntityDataPac
             }
         }
 
-
-        int sizeXZ=8;
-        int sizeY=8;
-
-        for ( int iTempI = xCoord - sizeXZ; iTempI <= xCoord + sizeXZ; iTempI++ )
-        {
-            for ( int iTempJ = yCoord - sizeY; iTempJ <= yCoord + sizeY; iTempJ++ )
-            {
-                for ( int iTempK = zCoord - sizeXZ; iTempK <= zCoord + sizeXZ; iTempK++ )
-                {
-                    int blockID =worldObj.getBlockId(iTempI, iTempJ, iTempK);
-                    if (blockID==0)
-                    {
-                        if(worldObj.rand.nextInt(200)==0)
-                        {
-                            worldObj.spawnParticle("reddust", iTempI+0.5D, iTempJ+0.5D, iTempK+0.5D, 0, 0, 0);
-                        }
-                    }
-
-                    else if( !worldObj.isUpdateScheduledForBlock(iTempI, iTempJ, iTempK, blockID))
-                    {
-                        worldObj.scheduleBlockUpdate(iTempI, iTempJ, iTempK, blockID, 10);
-                    }
-                }
-            }
-        }
+        //DEBUG
+//        int sizeXZ=8;
+//        int sizeY=8;
+//
+//        for ( int iTempI = xCoord - sizeXZ; iTempI <= xCoord + sizeXZ; iTempI++ )
+//        {
+//            for ( int iTempJ = yCoord - sizeY; iTempJ <= yCoord + sizeY; iTempJ++ )
+//            {
+//                for ( int iTempK = zCoord - sizeXZ; iTempK <= zCoord + sizeXZ; iTempK++ )
+//                {
+//                    int blockID =worldObj.getBlockId(iTempI, iTempJ, iTempK);
+//                    if (blockID==0)
+//                    {
+//                        if(worldObj.rand.nextInt(200)==0)
+//                        {
+//                            worldObj.spawnParticle("reddust", iTempI+0.5D, iTempJ+0.5D, iTempK+0.5D, 0, 0, 0);
+//                        }
+//                    }
+//
+//                    else if( !worldObj.isUpdateScheduledForBlock(iTempI, iTempJ, iTempK, blockID))
+//                    {
+//                        worldObj.scheduleBlockUpdate(iTempI, iTempJ, iTempK, blockID, 10);
+//                    }
+//                }
+//            }
+//        }
     }
 
     @Override
