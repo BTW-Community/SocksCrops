@@ -74,7 +74,7 @@ public class FishTrapTileEntity extends TileEntity implements TileEntityDataPack
                 // System.out.println("I have water");
 
                 if (isBodyOfWaterLargeEnoughForFishing()) { // && worldObj.rand.nextInt(64) == 0)
-                    if (checkForBite()) {
+                    if (worldObj.rand.nextFloat() <= 0.25F && checkForBite()) {
                         //System.out.println("fish");
 
                         catchFish();
