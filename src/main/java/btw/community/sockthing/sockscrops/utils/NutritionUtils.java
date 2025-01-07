@@ -1,5 +1,6 @@
 package btw.community.sockthing.sockscrops.utils;
 
+import btw.community.sockthing.sockscrops.block.SCBlockIDs;
 import btw.community.sockthing.sockscrops.block.SCBlocks;
 import net.minecraft.src.Block;
 import net.minecraft.src.World;
@@ -81,6 +82,6 @@ public class NutritionUtils {
         return world.getBlockId(i, j, k) == Block.tallGrass.blockID
                 || world.getBlockId(i, j, k) == Block.plantRed.blockID
                 || world.getBlockId(i, j, k) == Block.plantYellow.blockID
-                || world.getBlockId(i, j, k) == SCBlocks.doubleTallPlant.blockID;
+                || world.getBlockId(i, j, k) == SCBlockIDs.DOUBLE_TALL_PLANT_ID;
     }
 }
