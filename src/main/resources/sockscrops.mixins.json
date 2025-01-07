@@ -28,7 +28,6 @@
     "GenLayerRiverMixMixin",
     "GenLayerShoreMixin",
     "GrassBlockMixin",
-    "GrateBlockMixin",
     "GuiIngameMixin",
     "ItemMixin",
     "LeavesBlockMixin",

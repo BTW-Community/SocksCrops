@@ -295,9 +295,9 @@ public class SCBlocks {
     }
 
     private static void initGrownPanes() {
-        grownGrate = new PaneWithPlantBlock(SCBlockIDs.GRATE_GROWN_ID, Material.wood, "grown_grate",
-                BTWBlocks.gratePane, 0,
-                "fcBlockGrate", "fcBlockGrate");
+//        grownGrate = new PaneWithPlantBlock(SCBlockIDs.GRATE_GROWN_ID, Material.wood, "grown_grate",
+//                BTWBlocks.gratePane, 0,
+//                "fcBlockGrate", "fcBlockGrate");
 
 //        grownSlats = new PaneWithPlantBlock(SCBlockIDs.GRATE_GROWN_ID, Material.wood, "grown_grate",
 //                BTWBlocks.gratePane, 0,
