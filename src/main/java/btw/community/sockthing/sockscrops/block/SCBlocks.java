@@ -3,14 +3,12 @@ package btw.community.sockthing.sockscrops.block;
 import btw.block.BTWBlocks;
 import btw.community.sockthing.sockscrops.SocksCropsAddon;
 import btw.community.sockthing.sockscrops.block.blocks.*;
+import btw.community.sockthing.sockscrops.block.renderer.CookingPotRenderer;
 import btw.community.sockthing.sockscrops.block.renderer.FishTrapRenderer;
 import btw.community.sockthing.sockscrops.block.renderer.RopeHangingItemsRenderer;
 import btw.community.sockthing.sockscrops.block.tileentities.*;
 import btw.community.sockthing.sockscrops.item.SCItemIDs;
-import btw.community.sockthing.sockscrops.item.items.DoubleTallWaterPlantItem;
-import btw.community.sockthing.sockscrops.item.items.FlowerLilyItem;
-import btw.community.sockthing.sockscrops.item.items.SideShroomItemBlock;
-import btw.community.sockthing.sockscrops.item.items.WaterPlantItem;
+import btw.community.sockthing.sockscrops.item.items.*;
 import btw.community.sockthing.sockscrops.utils.NutritionUtils;
 import btw.item.items.PlaceAsBlockItem;
 import net.minecraft.src.*;
@@ -177,6 +175,9 @@ public class SCBlocks {
 
         burnPit = new BurnPitBlock(SCBlockIDs.BURN_PIT_ID, "burn_pit");
 
+        cookingPot = new CookingPotBlock(SCBlockIDs.COOKING_POT_ID, "cooking_pot");
+        Item.itemsList[cookingPot.blockID] = new CookingPotItemBlock(SCBlockIDs.COOKING_POT_ID - 256);
+
 //        fryingPan = new FryingPanBlock(SCBlockIDs.FRYING_PAN_ID, "frying_pan");
 //        Item.itemsList[fryingPan.blockID] = new PlaceAsBlockItem(SCBlockIDs.FRYING_PAN_ID - 256,
 //                fryingPan.blockID, 0, "frying_pan");
@@ -189,6 +190,7 @@ public class SCBlocks {
         TileEntity.addMapping(FishTrapTileEntity.class, "SCFishTrap");
         TileEntity.addMapping(RopeHangingItemsTileEntity.class, "SCRopeHangingItems");
         TileEntity.addMapping(BurnPitTileEntity.class, "SCBurnPit");
+        TileEntity.addMapping(CookingPotTileEntity.class, "SCCookingPot");
     }
 
     private static void initTileEntityRenderers() {
@@ -196,6 +198,8 @@ public class SCBlocks {
                 new FishTrapRenderer());
         TileEntityRenderer.instance.addSpecialRendererForClass(RopeHangingItemsTileEntity.class,
                 new RopeHangingItemsRenderer());
+        TileEntityRenderer.instance.addSpecialRendererForClass(CookingPotTileEntity.class,
+                new CookingPotRenderer());
     }
 
     private static void initPrimitiveCooking() {
