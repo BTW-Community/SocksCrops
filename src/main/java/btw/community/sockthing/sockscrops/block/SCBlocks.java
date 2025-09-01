@@ -109,9 +109,15 @@ public class SCBlocks {
     public static Block strippedBambooStalk;
     public static Block bambooGrate;
     public static Block fishTrap;
+    public static Block fryingPan;
+    public static Block cookingPot;
     public static Block rope;
     public static Block ropeHangingItems;
     public static Block cookedPie;
+    public static Block rawClay;
+    public static Block unfiredPottery;
+    public static Block pot;
+    public static Block burnPit;
 
     public static void initBlocks() {
         initVanillaOverrides();
@@ -131,9 +137,12 @@ public class SCBlocks {
         initGrownPanes();
         initBambooBlocks();
         initRope();
+        initPrimitiveCooking();
 
         initPies();
     }
+
+
 
     private static void initNutritionBlocks() {
         initDirtRelatedBlocks();
@@ -165,6 +174,12 @@ public class SCBlocks {
 
         fishTrap = new FishTrapBlock(SCBlockIDs.FISH_TRAP_ID, "fish_trap");
         Item.itemsList[fishTrap.blockID] = new ItemBlock(SCBlockIDs.FISH_TRAP_ID - 256).setMaxStackSize(1);
+
+        burnPit = new BurnPitBlock(SCBlockIDs.BURN_PIT_ID, "burn_pit");
+
+//        fryingPan = new FryingPanBlock(SCBlockIDs.FRYING_PAN_ID, "frying_pan");
+//        Item.itemsList[fryingPan.blockID] = new PlaceAsBlockItem(SCBlockIDs.FRYING_PAN_ID - 256,
+//                fryingPan.blockID, 0, "frying_pan");
     }
 
     private static void initTileEnityMapping() {
@@ -173,6 +188,7 @@ public class SCBlocks {
         TileEntity.addMapping(FlowerPotTileEntity.class, "SCFlowerPot");
         TileEntity.addMapping(FishTrapTileEntity.class, "SCFishTrap");
         TileEntity.addMapping(RopeHangingItemsTileEntity.class, "SCRopeHangingItems");
+        TileEntity.addMapping(BurnPitTileEntity.class, "SCBurnPit");
     }
 
     private static void initTileEntityRenderers() {
@@ -180,6 +196,18 @@ public class SCBlocks {
                 new FishTrapRenderer());
         TileEntityRenderer.instance.addSpecialRendererForClass(RopeHangingItemsTileEntity.class,
                 new RopeHangingItemsRenderer());
+    }
+
+    private static void initPrimitiveCooking() {
+        rawClay = new RawClayBlock(SCBlockIDs.RAW_CLAY_ID, "raw_clay",
+                SCBlockIDs.UNFIRED_POTTERY_ID, UncookedPotteryBlock.SUBTYPE_POT);
+        Item.itemsList[rawClay.blockID] = new ItemBlock(SCBlockIDs.RAW_CLAY_ID - 256);
+
+        unfiredPottery = new UncookedPotteryBlock(SCBlockIDs.UNFIRED_POTTERY_ID, "unfired_pottery");
+        Item.itemsList[unfiredPottery.blockID] = new ItemMultiTextureTile(SCBlockIDs.UNFIRED_POTTERY_ID - 256,
+                unfiredPottery, new String[] {"pot"});
+
+
     }
 
     private static void initPies() {

@@ -71,6 +71,9 @@ public class SCBlockIDs {
     public static final int IRON_BARS_GROWN_ID = 2683;
     public static final int WROUGHT_BARS_GROWN_ID = 2684;
 
+    public static int RAW_CLAY_ID = 2685;
+    public static int UNFIRED_POTTERY_ID = 2686;
+
     //----------- Moss  -----------//
     public static final int MOSS_CARPET_ID = 2690;
     public static final int MOSS_BLOCK_ID = 2691;
@@ -105,6 +108,9 @@ public class SCBlockIDs {
     public static final int FLOWERPOT_ID = 2852;
     public static final int FISH_TRAP_ID = 2853;
     public static final int ROPE_HANGING_ITEMS_ID = 2854;
+    public static final int BURN_PIT_ID = 2855;
+    public static final int FRYING_PAN_ID = 2856;
+    public static final int COOKING_POT_ID = 2857;
 
     //----------- Deco Overlap  -----------//
     public static final int STRAW_BALE_ID = 3025;
