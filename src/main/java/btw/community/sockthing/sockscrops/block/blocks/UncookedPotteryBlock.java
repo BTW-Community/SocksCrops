@@ -49,7 +49,7 @@ public class UncookedPotteryBlock extends Block {
 
     @Override
     public void registerIcons(IconRegister register) {
-        blockIcon = register.registerIcon("clay");
+        blockIcon = register.registerIcon("pottery_clay");
     }
 
     @Override

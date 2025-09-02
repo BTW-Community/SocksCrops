@@ -14,6 +14,7 @@ import btw.community.sockthing.sockscrops.utils.NutritionUtils;
 import btw.crafting.recipe.RecipeManager;
 import btw.inventory.util.InventoryUtils;
 import btw.item.BTWItems;
+import btw.util.ColorUtils;
 import net.minecraft.src.*;
 
 public class SCRecipes extends SCRecipeHelper {
@@ -30,11 +31,13 @@ public class SCRecipes extends SCRecipeHelper {
         initFlowerpotRecipes();
         initBambooRecipes();
         initFishTrapRecipes();
+        initClayRecipes();
 
         initFoodRecipes();
         initCampfireRecipes();
         initOvenRecipes();
         initCauldronRecipes();
+        initMillstoneRecipes();
 
         initPackingRecipes();
         initLogChoppingRecipes();
@@ -204,6 +207,32 @@ public class SCRecipes extends SCRecipeHelper {
                         'S', Item.stick
                 } );
         */
+    }
+
+    private static void initClayRecipes() {
+        RecipeManager.addShapelessRecipe(new ItemStack(SCBlocks.rawClay),
+                new ItemStack[]{
+                        new ItemStack(SCItems.brickDust),
+                        new ItemStack(SCItems.brickDust),
+                        new ItemStack(Item.clay),
+                        new ItemStack(Item.clay),
+                        new ItemStack(Item.clay),
+                        new ItemStack(Item.clay),
+                        new ItemStack(Item.clay),
+                        new ItemStack(Item.clay)
+                });
+
+        RecipeManager.addShapelessRecipe(new ItemStack(SCBlocks.rawClay),
+                new ItemStack[]{
+                        new ItemStack(SCItems.potteryClay),
+                        new ItemStack(SCItems.potteryClay),
+                        new ItemStack(SCItems.potteryClay),
+                        new ItemStack(SCItems.potteryClay),
+                        new ItemStack(SCItems.potteryClay),
+                        new ItemStack(SCItems.potteryClay),
+                        new ItemStack(SCItems.potteryClay),
+                        new ItemStack(SCItems.potteryClay)
+                });
     }
 
     private static void initFishTrapRecipes() {
@@ -525,5 +554,50 @@ public class SCRecipes extends SCRecipeHelper {
                             new ItemStack(Item.bowlEmpty, 2)
                     });
         }
+    }
+
+    private static void initMillstoneRecipes() {
+        //Brick/Clay
+        RecipeManager.addMillStoneRecipe(new ItemStack(SCItems.brickDust),
+                new ItemStack(Item.brick));
+
+        RecipeManager.addMillStoneRecipe(
+                new ItemStack[] {
+                        new ItemStack(SCItems.brickDust),
+                        new ItemStack(SCItems.brickDust),
+                        new ItemStack(SCItems.brickDust),
+                        new ItemStack(SCItems.brickDust),
+                        new ItemStack(SCItems.brickDust),
+                        new ItemStack(SCItems.brickDust),
+                        new ItemStack(SCItems.brickDust),
+                        new ItemStack(SCItems.brickDust)
+                },
+                new ItemStack[] {
+                        new ItemStack(BTWBlocks.looseBrick)
+                });
+
+        RecipeManager.addMillStoneRecipe(
+                new ItemStack[] {
+                        new ItemStack(SCItems.brickDust),
+                        new ItemStack(SCItems.brickDust),
+                        new ItemStack(SCItems.brickDust),
+                        new ItemStack(SCItems.brickDust)
+                },
+                new ItemStack[] {
+                        new ItemStack(BTWBlocks.looseBrickSlab)
+                });
+
+        RecipeManager.addMillStoneRecipe(
+                new ItemStack[] {
+                        new ItemStack(SCItems.brickDust),
+                        new ItemStack(SCItems.brickDust),
+                        new ItemStack(SCItems.brickDust),
+                        new ItemStack(SCItems.brickDust),
+                        new ItemStack(SCItems.brickDust),
+                        new ItemStack(SCItems.brickDust)
+                },
+                new ItemStack[] {
+                        new ItemStack(BTWBlocks.looseBrickStairs)
+                });
     }
 }

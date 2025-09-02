@@ -57,6 +57,9 @@ public class SCItems {
     public static Item pumpkinPieSlice;
     public static Item pieCrust;
 
+    public static Item potteryClay;
+    public static Item brickDust;
+
     public static void initItems() {
         initKnives();
         intiBerries();
@@ -68,6 +71,15 @@ public class SCItems {
         initFish();
         initCake();
         initPie();
+        initCookingPot();
+    }
+
+    private static void initCookingPot() {
+        potteryClay = new Item(SCItemIDs.POTTERY_CLAY_ID - 256).setUnlocalizedName("pottery_clay")
+                .setCreativeTab(CreativeTabs.tabMaterials);
+
+        brickDust = new Item(SCItemIDs.BRICK_DUST_ID - 256).setUnlocalizedName("brick_dust")
+                .setCreativeTab(CreativeTabs.tabMaterials);
     }
 
     private static void initPie() {

@@ -126,8 +126,8 @@ public class BurnPitBlock extends BlockContainer {
 
     @Override
     public void registerIcons(IconRegister register) {
-        blockIcon = register.registerIcon("clay");
-        cookedClay = register.registerIcon("cooked_clay");
+        blockIcon = register.registerIcon("pottery_clay");
+        cookedClay = register.registerIcon("pottery_clay_dry");
 
         sticks = register.registerIcon("tree_side");
         straw = register.registerIcon("straw_bale_top");

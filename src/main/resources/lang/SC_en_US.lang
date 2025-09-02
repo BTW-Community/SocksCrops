@@ -140,6 +140,11 @@ tile.packed.stripped_bamboo.name=Packed Stripped Bamboo
 
 #TileEntities
 tile.fish_trap.name=Fish Trap
+tile.cooking_pot.name=Cooking Pot
+
+# Clay
+tile.raw_clay.name=Pottery Clay Block
+tile.unfired_pottery.pot.name=Unfired Cooking Pot
 
 #Vanilla Override
 tile.flower.flower.name=Yellow Flower
@@ -180,10 +185,14 @@ item.bamboo_shoot_cooked.name=Boiled Bamboo Shoot
 # Cakes
 item.cake_slice.name=Cake Slice
 
-#Pie
+# Pie
 item.pumpkin_pie_slice.name=Pumpkin Pie Slice
 item.pie_crust.name=Pie Crust
 
-#Flowerpot
+# Flowerpot
 item.flowerPot.name=Flowerpot
 item.large_flowerpot.name=Large Flowerpot
+
+# Clay
+item.pottery_clay.name=Pottery Clay
+item.brick_dust.name=Grog

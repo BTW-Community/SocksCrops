@@ -268,7 +268,7 @@ public class CookingPotBlock extends BlockContainer {
 
     @Override
     public void registerIcons(IconRegister par1IconRegister) {
-        blockIcon = par1IconRegister.registerIcon("cooked_clay");
+        blockIcon = par1IconRegister.registerIcon("pottery_clay_dry");
     }
 
     @Override

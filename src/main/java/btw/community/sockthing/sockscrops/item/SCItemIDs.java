@@ -11,6 +11,8 @@ public class SCItemIDs {
     public static final int CUTTINGS_ID = 31020;
     public static final int MOSS_BALL_ID = 31021;
     public static final int LARGE_FLOWERPOT_ID = 31022;
+    public static final int POTTERY_CLAY_ID = 31023;
+    public static final int BRICK_DUST_ID = 31024;
 
     //----------- Crops  -----------//
     public static final int SWEETBERRY_ID = 31050;
