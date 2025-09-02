@@ -3,7 +3,15 @@ package btw.community.sockthing.sockscrops.item.items;
 import btw.block.tileentity.CampfireTileEntity;
 import btw.community.sockthing.sockscrops.block.SCBlocks;
 import btw.community.sockthing.sockscrops.block.tileentities.CookingPotTileEntity;
+import btw.community.sockthing.sockscrops.utils.CookingPotUtils;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.src.*;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.List;
 
 public class CookingPotItemBlock extends ItemBlock {
     public CookingPotItemBlock(int itemID) {
@@ -12,6 +20,7 @@ public class CookingPotItemBlock extends ItemBlock {
         this.setMaxDamage(0);
         this.setMaxStackSize(1);
     }
+
 
     /**
      * Callback for item usage. If the item does something special on right clicking, he will have one of those. Return
@@ -49,6 +58,7 @@ public class CookingPotItemBlock extends ItemBlock {
                     world.setBlock(x, y + 1, z, SCBlocks.cookingPot.blockID, 2, 3);
 
                     te = world.getBlockTileEntity(x, y + 1, z);
+                    ((CookingPotTileEntity)te).setOnCampfire(true);
                 }
                 // FCMOD: Changed to notify neighbors
                 //par3World.setBlock(par4, par5, par6, Block.skull.blockID, par7, 2);
@@ -57,13 +67,39 @@ public class CookingPotItemBlock extends ItemBlock {
                     world.setBlock(x, y + 1, z, SCBlocks.cookingPot.blockID, 1, 3);
 
                     te = world.getBlockTileEntity(x, y + 1, z);
+                    ((CookingPotTileEntity)te).setOnCampfire(false);
                 }
 
                 if (te != null && te instanceof CookingPotTileEntity)
                 {
                     ((CookingPotTileEntity)te).setSkullRotation(rot);
 
-                    System.out.println( ((CookingPotTileEntity)te).getSkullRotation() );
+                    if ( itemStack.hasTagCompound() )
+                    {
+                        int id = 0;
+                        int count = 0;
+                        int damage = 0;
+
+                        if (itemStack.stackTagCompound.hasKey("id") )
+                        {
+                            id = itemStack.stackTagCompound.getInteger("id");
+                        }
+
+                        if (itemStack.stackTagCompound.hasKey("Count") )
+                        {
+                            count = itemStack.stackTagCompound.getInteger("Count");
+
+                        }
+
+                        if (itemStack.stackTagCompound.hasKey("Damage") )
+                        {
+                            damage = itemStack.stackTagCompound.getInteger("Damage");
+                        }
+
+                        if (id != 0) ((CookingPotTileEntity) te).setCookStack(new ItemStack(id, count, damage));
+                    }
+
+//                    System.out.println( ((CookingPotTileEntity)te).getSkullRotation() );
                 }
 
                 // END FCMOD
@@ -75,5 +111,59 @@ public class CookingPotItemBlock extends ItemBlock {
                 return true;
             }
         }
+    }
+
+    @Override
+    public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean par4) {
+
+        if (itemStack.stackTagCompound != null)
+        {
+            int count = getCount(itemStack);
+            String name = getName(itemStack);
+            if (count != 0) list.add("Contains " + count + " Servings of " + name);
+            else list.add("Contains nothing");
+        }
+    }
+
+    private int getCount(ItemStack stack)
+    {
+        if (stack.stackTagCompound != null  && stack.stackTagCompound.hasKey("Count"))
+        {
+            return stack.stackTagCompound.getInteger("Count");
+        }
+
+        else return 0;
+    }
+
+    private String getName(ItemStack stack)
+    {
+        if (stack.stackTagCompound != null)
+        {
+            int id = 0;
+            int count = 0;
+            int damage = 0;
+
+            if (stack.stackTagCompound.hasKey("id") )
+            {
+                id = stack.stackTagCompound.getInteger("id");
+            }
+
+            if (stack.stackTagCompound.hasKey("Count") )
+            {
+                count = stack.stackTagCompound.getInteger("Count");
+
+            }
+
+            if (stack.stackTagCompound.hasKey("Damage") )
+            {
+                damage = stack.stackTagCompound.getInteger("Damage");
+            }
+
+
+            if (id != 0) return new ItemStack(id, count, damage).getDisplayName();
+
+        }
+
+        return "N/A";
     }
 }

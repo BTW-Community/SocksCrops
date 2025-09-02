@@ -1,12 +1,23 @@
 package btw.community.sockthing.sockscrops.mixins;
 
 import btw.community.sockthing.sockscrops.interfaces.ItemInterface;
+import btw.community.sockthing.sockscrops.utils.CookingPotUtils;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
+import org.lwjgl.input.Keyboard;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.List;
 
 @Mixin(Item.class)
 public class ItemMixin implements ItemInterface {
+
     /**
      * Used to allow Blocks to be placed in a specific armorSlot
      * @param armorType 0: Helmet, 1: Chest, 2: Legs, 3: boots

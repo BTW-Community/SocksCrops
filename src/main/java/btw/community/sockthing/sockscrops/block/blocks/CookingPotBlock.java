@@ -3,10 +3,14 @@ package btw.community.sockthing.sockscrops.block.blocks;
 import btw.block.tileentity.CampfireTileEntity;
 import btw.client.fx.BTWEffectManager;
 import btw.client.render.util.RenderUtils;
+import btw.community.sockthing.sockscrops.block.SCBlocks;
 import btw.community.sockthing.sockscrops.block.tileentities.CookingPotTileEntity;
 import btw.community.sockthing.sockscrops.item.items.CookingPotItemBlock;
+import btw.community.sockthing.sockscrops.utils.CookingPotUtils;
 import btw.item.util.ItemUtils;
 import net.minecraft.src.*;
+
+import java.util.Random;
 
 public class CookingPotBlock extends BlockContainer {
     public CookingPotBlock(int blockID, String name) {
@@ -18,6 +22,11 @@ public class CookingPotBlock extends BlockContainer {
     @Override
     public TileEntity createNewTileEntity(World var1) {
         return new CookingPotTileEntity();
+    }
+
+    @Override
+    public int idDropped(int par1, Random par2Random, int par3) {
+        return 0;
     }
 
     @Override
@@ -98,6 +107,32 @@ public class CookingPotBlock extends BlockContainer {
 //        }
 
         return true;
+    }
+
+    @Override
+    public void onBlockHarvested(World world, int i, int j, int k, int par5, EntityPlayer player) {
+
+        CookingPotTileEntity seedJar = (CookingPotTileEntity)( world.getBlockTileEntity(i, j, k) );
+        ItemStack newStack = new ItemStack(SCBlocks.cookingPot.blockID, 1, this.getDamageValue(world, i, j, k));
+
+        if ( seedJar != null )
+        {
+            if ( seedJar.getCookStack() != null)
+            {
+                ItemStack oldStack = seedJar.getCookStack();
+
+                NBTTagCompound newTag = new NBTTagCompound();
+
+                newStack.setTagCompound(newTag);
+                newStack.getTagCompound().setInteger( "id", oldStack.itemID );
+                newStack.getTagCompound().setInteger( "Count", oldStack.stackSize );
+                newStack.getTagCompound().setInteger( "Damage",  this.getDamageValue(world, i, j, k) );
+
+            }
+        }
+
+        //if (!player.capabilities.isCreativeMode)
+        this.dropBlockAsItem_do(world, i, j, k, newStack);
     }
 
     @Override

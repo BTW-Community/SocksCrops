@@ -15,6 +15,7 @@ public class CookingPotTileEntity extends TileEntity implements TileEntityDataPa
     private ItemStack inputStack;
 
     private boolean hasLid;
+    private boolean onCampfire;
 
     public int cookCounter = 0;
 
@@ -315,6 +316,7 @@ public class CookingPotTileEntity extends TileEntity implements TileEntityDataPa
         tag.setInteger( "cookCounter", cookCounter );
         tag.setInteger( "cookBurning", cookBurningCounter );
         tag.setBoolean( "hasLid", hasLid );
+        tag.setBoolean( "onCampfire", onCampfire );
     }
 
     /**
@@ -353,6 +355,11 @@ public class CookingPotTileEntity extends TileEntity implements TileEntityDataPa
         if ( tag.hasKey( "hasLid" ) )
         {
             hasLid = tag.getBoolean( "hasLid" );
+        }
+
+        if ( tag.hasKey( "onCampfire" ) )
+        {
+            onCampfire = tag.getBoolean( "onCampfire" );
         }
     }
 
@@ -398,6 +405,14 @@ public class CookingPotTileEntity extends TileEntity implements TileEntityDataPa
         this.hasLid = boo;
     }
 
+    public boolean isOnCampfire() {
+        return this.onCampfire;
+    }
+
+
+    public void setOnCampfire(boolean boo) {
+        this.onCampfire = boo;
+    }
 
 
 

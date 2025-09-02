@@ -1,5 +1,8 @@
 package btw.community.sockthing.sockscrops.block.renderer;
 
+import btw.block.BTWBlocks;
+import btw.block.blocks.CampfireBlock;
+import btw.block.tileentity.CampfireTileEntity;
 import btw.community.sockthing.sockscrops.block.models.CookingPotModel;
 import btw.community.sockthing.sockscrops.block.tileentities.CookingPotTileEntity;
 import net.minecraft.src.*;
@@ -56,6 +59,8 @@ public class CookingPotRenderer extends TileEntitySpecialRenderer {
         }
         GL11.glPopMatrix();
 
+        renderCookStack( potTile, x, y, z );
+
     }
 
 
@@ -63,43 +68,40 @@ public class CookingPotRenderer extends TileEntitySpecialRenderer {
     {
         CookingPotTileEntity pot = (CookingPotTileEntity)tileEntity;
         this.renderTileEntitySkullAt(pot, xCoord, yCoord, zCoord, fPartialTickCount);
-
-        RenderCookStack( pot, xCoord, yCoord, zCoord, fPartialTickCount );
     }
 
-    private void RenderCookStack( CookingPotTileEntity pan, double xCoord, double yCoord, double zCoord, float fPartialTickCount )
+    private void renderCookStack(CookingPotTileEntity cookingPot, double xCoord, double yCoord, double zCoord)
     {
-        ItemStack cookStack = pan.getCookStack();
+        ItemStack stack = cookingPot.getCookStack();
 
-        if ( cookStack != null )
+        if ( stack != null )
         {
 
-            EntityItem entity = new EntityItem( pan.worldObj, 0.0D, 0.0D, 0.0D, cookStack );
-
-            Item item = entity.getEntityItem().getItem();
-            int rot = pan.getSkullRotation();
+            EntityItem entity = (EntityItem) EntityList.createEntityOfType(EntityItem.class, cookingPot.worldObj, 0.0D, 0.0D, 0.0D, stack );
 
             entity.getEntityItem().stackSize = 1;
             entity.hoverStart = 0.0F;
 
             GL11.glPushMatrix();
 
-            GL11.glTranslatef( (float)xCoord + ( 8F / 16F ), (float)yCoord + ( 3F / 16F ), (float)zCoord + 8F/16F );
+            float yShift = 0F;
 
-            GL11.glScalef(0.9F, 0.9F, 0.9F);
-
-            GL11.glRotatef( 90F, 1.0F, 0.0F, 0.0F);
-
-            GL11.glTranslatef(0 , -4/16F , 2/16F);
-
-            if (pan.getBlockMetadata() == 2)
-            {
-                GL11.glTranslatef( 0, 0, 8/16F);
+            if (cookingPot.isOnCampfire()){
+                yShift -= 8/16F;
             }
 
+            GL11.glTranslatef( (float)xCoord + 0.5F, (float)yCoord + ( 4F / 16F ) + yShift, (float)zCoord + 0.5F );
 
+            if ( RenderManager.instance.options.fancyGraphics )
+            {
+                // don't rotate items rendered as billboards (fancyGraphics test)
 
-            RenderManager.instance.renderEntityWithPosYaw(entity, 0D, 0D, 0D, 0F, 0F);
+                GL11.glRotatef( 90F, 0.0F, 1.0F, 0.0F);
+                float newScale = 0.8F;
+                GL11.glScalef( newScale, newScale, newScale);
+            }
+
+            RenderManager.instance.renderEntityWithPosYaw(entity, 0.0D, 0.0D, 0.0D, 0.0F, 0.0F);
 
             GL11.glPopMatrix();
         }
