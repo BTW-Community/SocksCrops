@@ -5,13 +5,20 @@ import btw.block.tileentity.TileEntityDataPacketHandler;
 import btw.inventory.util.InventoryUtils;
 import net.minecraft.src.*;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class CookingPotTileEntity extends TileEntity implements TileEntityDataPacketHandler, IInventory
 {
+
+    public float lidProgress = 0.0F;   // 0 = closed, 1 = fully open
+    public boolean lidOpen = false;
+
 
     /** The pan's rotation. */
     private int potRotation;
 
-    private ItemStack cookStack;
+    private ItemStack[] cookStack = new ItemStack[6];
     private ItemStack inputStack;
 
     private boolean hasLid;
@@ -31,6 +38,16 @@ public class CookingPotTileEntity extends TileEntity implements TileEntityDataPa
 
     public float tickCount;
 
+    public static final int EMPTY = 0;
+    public static final int SPOILED = 1;
+    public static final int BURNED = 2;
+    public static final int WATER = 3;
+    public static final int MILK = 4;
+    public static final int CHOCOLATE_MILK = 5;
+    public static final int MUSHROOM_SOUP = 6;
+    public static final int HEARTY_STEW = 7;
+    public static final int CHICKEN_SOUP = 8;
+    public static final int CHOWDER = 9;
 
     //------------- Cooking ------------//
 
@@ -38,6 +55,15 @@ public class CookingPotTileEntity extends TileEntity implements TileEntityDataPa
     public void updateEntity()
     {
         super.updateEntity();
+
+        if (lidOpen && lidProgress < 1.0F) {
+            lidProgress += 0.05F; // open speed
+            if (lidProgress > 1.0F) lidProgress = 1.0F;
+        }
+        else if (!lidOpen && lidProgress > 0.0F) {
+            lidProgress -= 0.05F; // close speed
+            if (lidProgress < 0.0F) lidProgress = 0.0F;
+        }
 
         if (isFoodCooked() && getFireLevel() >= 2)
         {
@@ -166,16 +192,7 @@ public class CookingPotTileEntity extends TileEntity implements TileEntityDataPa
 
 
     public int getCookType() {
-        if ( cookStack != null ) {
-
-            if (cookStack.itemID == Item.beefCooked.itemID )
-            {
-                return 7;
-            }
-            else return 3;
-
-        }
-        return 0;
+        return WATER;
     }
 
     public void markBlockForUpdate() {
@@ -183,12 +200,16 @@ public class CookingPotTileEntity extends TileEntity implements TileEntityDataPa
         this.worldObj.markBlockForUpdate( xCoord, yCoord, zCoord );
     }
 
-    public ItemStack getCookStack() {
-        return cookStack;
+    public ItemStack getCookStack(int slot) {
+        return cookStack[slot];
     }
 
-    public void setCookStack(ItemStack stack) {
-        this.cookStack = stack;
+    public void setCookStack(int slot, ItemStack stack) {
+        this.cookStack[slot] = stack;
+    }
+
+    public List<ItemStack> getCookStacks() {
+        return Arrays.asList(cookStack);
     }
 
     public ItemStack getInputStack() {
@@ -203,12 +224,12 @@ public class CookingPotTileEntity extends TileEntity implements TileEntityDataPa
 
     @Override
     public int getSizeInventory() {
-        return 1;
+        return cookStack.length;
     }
 
     @Override
     public ItemStack getStackInSlot(int slot) {
-        return cookStack;
+        return cookStack[slot];
     }
 
     @Override
@@ -225,7 +246,7 @@ public class CookingPotTileEntity extends TileEntity implements TileEntityDataPa
     @Override
     public void setInventorySlotContents(int slot, ItemStack stack)
     {
-        if (slot == 0 ) setCookStack(stack);
+        setCookStack(slot, stack);
     }
 
     @Override
@@ -295,28 +316,49 @@ public class CookingPotTileEntity extends TileEntity implements TileEntityDataPa
         super.writeToNBT(tag);
         tag.setByte("potRotation", (byte)(this.potRotation & 255));
 
-        if ( cookStack != null)
+//        if ( cookStack != null)
+//        {
+//            NBTTagCompound cookTag = new NBTTagCompound();
+//
+//            cookStack.writeToNBT( cookTag );
+//
+//            tag.setCompoundTag( "cookStack", cookTag );
+//        }
+
+//        if ( inputStack != null)
+//        {
+//            NBTTagCompound inputTag = new NBTTagCompound();
+//
+//            cookStack.writeToNBT( inputTag );
+//
+//            tag.setCompoundTag( "inputStack", inputTag );
+//        }
+
+        NBTTagList tagList = new NBTTagList();
+
+        for (int iTempIndex = 0; iTempIndex < cookStack.length; iTempIndex++ )
         {
-            NBTTagCompound cookTag = new NBTTagCompound();
+            if (cookStack[iTempIndex] != null )
+            {
+                NBTTagCompound tempTag = new NBTTagCompound();
 
-            cookStack.writeToNBT( cookTag );
+                tempTag.setByte( "Slot", (byte)iTempIndex );
 
-            tag.setCompoundTag( "cookStack", cookTag );
+                cookStack[iTempIndex].writeToNBT(tempTag);
+
+                tagList.appendTag( tempTag );
+            }
         }
 
-        if ( inputStack != null)
-        {
-            NBTTagCompound inputTag = new NBTTagCompound();
-
-            cookStack.writeToNBT( inputTag );
-
-            tag.setCompoundTag( "inputStack", inputTag );
-        }
+        tag.setTag( "Items", tagList );
 
         tag.setInteger( "cookCounter", cookCounter );
         tag.setInteger( "cookBurning", cookBurningCounter );
         tag.setBoolean( "hasLid", hasLid );
         tag.setBoolean( "onCampfire", onCampfire );
+
+
+        tag.setBoolean("lidOpen", lidOpen);
     }
 
     /**
@@ -328,11 +370,27 @@ public class CookingPotTileEntity extends TileEntity implements TileEntityDataPa
 
         this.potRotation = tag.getByte("potRotation");
 
-        NBTTagCompound cookTag = tag.getCompoundTag( "cookStack" );
+//        NBTTagCompound cookTag = tag.getCompoundTag( "cookStack" );
+//
+//        if ( cookTag != null )
+//        {
+//            cookStack = ItemStack.loadItemStackFromNBT( cookTag );
+//        }
 
-        if ( cookTag != null )
+        NBTTagList tagList = tag.getTagList( "Items" );
+
+        cookStack = new ItemStack[getSizeInventory()];
+
+        for ( int iTempIndex = 0; iTempIndex < tagList.tagCount(); iTempIndex++ )
         {
-            cookStack = ItemStack.loadItemStackFromNBT( cookTag );
+            NBTTagCompound tempTag = (NBTTagCompound)tagList.tagAt( iTempIndex );
+
+            int tempSlot = tempTag.getByte( "Slot" ) & 0xff;
+
+            if ( tempSlot >= 0 && tempSlot < cookStack.length )
+            {
+                cookStack[tempSlot] = ItemStack.loadItemStackFromNBT(tempTag);
+            }
         }
 
         NBTTagCompound inputTag = tag.getCompoundTag( "inputStack" );
@@ -360,6 +418,11 @@ public class CookingPotTileEntity extends TileEntity implements TileEntityDataPa
         if ( tag.hasKey( "onCampfire" ) )
         {
             onCampfire = tag.getBoolean( "onCampfire" );
+        }
+
+        if ( tag.hasKey( "lidOpen" ) )
+        {
+            lidOpen = tag.getBoolean( "lidOpen" );
         }
     }
 
@@ -396,13 +459,13 @@ public class CookingPotTileEntity extends TileEntity implements TileEntityDataPa
         return this.potRotation;
     }
 
-    public boolean hasLid() {
-        return this.hasLid;
+    public boolean isLidOpen() {
+        return this.lidOpen;
     }
 
 
-    public void setHasLid(boolean boo) {
-        this.hasLid = boo;
+    public void setLidOpen(boolean boo) {
+        this.lidOpen = boo;
     }
 
     public boolean isOnCampfire() {
@@ -413,7 +476,5 @@ public class CookingPotTileEntity extends TileEntity implements TileEntityDataPa
     public void setOnCampfire(boolean boo) {
         this.onCampfire = boo;
     }
-
-
 
 }

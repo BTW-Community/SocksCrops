@@ -11,6 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CookingPotItemBlock extends ItemBlock {
@@ -70,42 +71,26 @@ public class CookingPotItemBlock extends ItemBlock {
                     ((CookingPotTileEntity)te).setOnCampfire(false);
                 }
 
-                if (te != null && te instanceof CookingPotTileEntity)
-                {
-                    ((CookingPotTileEntity)te).setSkullRotation(rot);
+                if (te instanceof CookingPotTileEntity) {
+                    CookingPotTileEntity potTE = (CookingPotTileEntity) te;
+                    potTE.setSkullRotation(rot);
 
-                    if ( itemStack.hasTagCompound() )
-                    {
-                        int id = 0;
-                        int count = 0;
-                        int damage = 0;
+                    if (itemStack.hasTagCompound() && itemStack.stackTagCompound.hasKey("Items")) {
+                        NBTTagList tagList = itemStack.stackTagCompound.getTagList("Items");
 
-                        if (itemStack.stackTagCompound.hasKey("id") )
-                        {
-                            id = itemStack.stackTagCompound.getInteger("id");
+                        for (int i = 0; i < tagList.tagCount(); i++) {
+                            NBTTagCompound itemTag = (NBTTagCompound) tagList.tagAt(i);
+                            int slot = itemTag.getByte("Slot") & 0xFF;
+
+                            if (slot >= 0 && slot < 6) {
+                                ItemStack stack = ItemStack.loadItemStackFromNBT(itemTag);
+                                if (stack != null) {
+                                    potTE.setCookStack(slot, stack);
+                                }
+                            }
                         }
-
-                        if (itemStack.stackTagCompound.hasKey("Count") )
-                        {
-                            count = itemStack.stackTagCompound.getInteger("Count");
-
-                        }
-
-                        if (itemStack.stackTagCompound.hasKey("Damage") )
-                        {
-                            damage = itemStack.stackTagCompound.getInteger("Damage");
-                        }
-
-                        if (id != 0) ((CookingPotTileEntity) te).setCookStack(new ItemStack(id, count, damage));
                     }
-
-//                    System.out.println( ((CookingPotTileEntity)te).getSkullRotation() );
                 }
-
-                // END FCMOD
-
-
-
 
                 --itemStack.stackSize;
                 return true;
@@ -116,27 +101,41 @@ public class CookingPotItemBlock extends ItemBlock {
     @Override
     public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean par4) {
 
-        if (itemStack.stackTagCompound != null)
-        {
-            int count = getCount(itemStack);
+        if (itemStack.stackTagCompound != null) {
+            int count = getCount(itemStack);  // however you calculate servings
             String name = getName(itemStack);
-            if (count != 0) list.add("Contains " + count + " Servings of " + name);
-            else list.add("Contains nothing");
+
+            if (count > 0) {
+                list.add("Contains " + count + " Servings of " + name);
+            } else {
+                list.add("Contains nothing");
+            }
         }
     }
 
-    private int getCount(ItemStack stack)
-    {
-        if (stack.stackTagCompound != null  && stack.stackTagCompound.hasKey("Count"))
-        {
-            return stack.stackTagCompound.getInteger("Count");
+    private int getCount(ItemStack stack) {
+        if (stack == null || stack.stackTagCompound == null) return 0;
+
+        int total = 0;
+
+        if (stack.stackTagCompound.hasKey("Items")) {
+            NBTTagList tagList = stack.stackTagCompound.getTagList("Items");
+
+            for (int i = 0; i < tagList.tagCount(); i++) {
+                NBTTagCompound itemTag = (NBTTagCompound) tagList.tagAt(i);
+                ItemStack innerStack = ItemStack.loadItemStackFromNBT(itemTag);
+                if (innerStack != null) {
+                    total += innerStack.stackSize;
+                }
+            }
         }
 
-        else return 0;
+        return total;
     }
 
     private String getName(ItemStack stack)
     {
+
         if (stack.stackTagCompound != null)
         {
             int id = 0;
@@ -162,6 +161,34 @@ public class CookingPotItemBlock extends ItemBlock {
 
             if (id != 0) return new ItemStack(id, count, damage).getDisplayName();
 
+        }
+
+        return "N/A";
+    }
+
+    private String getNames(ItemStack stack) {
+        if (stack == null || stack.stackTagCompound == null) {
+            return "N/A";
+        }
+
+        if (stack.stackTagCompound.hasKey("Items")) {
+            NBTTagList tagList = stack.stackTagCompound.getTagList("Items");
+
+            List<String> names = new ArrayList<String>();
+
+            for (int i = 0; i < tagList.tagCount(); i++) {
+                NBTTagCompound itemTag = (NBTTagCompound) tagList.tagAt(i);
+                ItemStack innerStack = ItemStack.loadItemStackFromNBT(itemTag);
+
+                if (innerStack != null) {
+                    names.add(innerStack.getDisplayName());
+                }
+            }
+
+            if (!names.isEmpty()) {
+                // Join names with commas
+                return String.join(", ", names);
+            }
         }
 
         return "N/A";

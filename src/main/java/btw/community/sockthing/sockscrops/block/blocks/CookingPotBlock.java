@@ -7,6 +7,7 @@ import btw.community.sockthing.sockscrops.block.SCBlocks;
 import btw.community.sockthing.sockscrops.block.tileentities.CookingPotTileEntity;
 import btw.community.sockthing.sockscrops.item.items.CookingPotItemBlock;
 import btw.community.sockthing.sockscrops.utils.CookingPotUtils;
+import btw.inventory.util.InventoryUtils;
 import btw.item.util.ItemUtils;
 import net.minecraft.src.*;
 
@@ -32,67 +33,56 @@ public class CookingPotBlock extends BlockContainer {
     @Override
     public boolean onBlockActivated( World world, int i, int j, int k, EntityPlayer player, int iFacing, float fXClick, float fYClick, float fZClick )
     {
-        CookingPotTileEntity pan = (CookingPotTileEntity)world.getBlockTileEntity( i, j, k );
+        CookingPotTileEntity pot = (CookingPotTileEntity)world.getBlockTileEntity( i, j, k );
 
-        ItemStack cookStack = pan.getCookStack();
+        ItemStack[] cookStack = pot.getCookStacks().toArray(new ItemStack[0]);
 
         ItemStack heldStack = player.getCurrentEquippedItem();
 
-        if (pan != null)
-        {
-            if (heldStack != null)
-            {
-//                if (!pan.hasLid() && heldStack.itemID == SCDefs.potLid.itemID)
-//                {
-//                    pan.setHasLid(true);
-//
-//                    if (!world.isRemote)
-//                    {
-//                        world.playAuxSFX( FCBetterThanWolves.m_iStoneRippedOffAuxFXID, i, j, k, 0 );
-//                    }
-//                    return true;
-//                }
+        if (pot != null) {
+            if (!pot.isLidOpen()) {
+                pot.setLidOpen(true);
+                world.markBlockForUpdate(i, j, k);
+                return true;
+            } else {
+                //lid is open
+                if (heldStack == null) {
+                    //hand is empty
+                    if (player.isSneaking()){
+                        pot.setLidOpen(false);
+                        world.markBlockForUpdate(i, j, k);
+                        return true;
+                    }
 
-                if ( cookStack == null) {
-                    if (isValidCookItem(heldStack)) {
-                        pan.setCookStack(new ItemStack(heldStack.itemID, 1, heldStack.getItemDamage()));
-                        heldStack.stackSize--;
+                    int slot = InventoryUtils.getFirstOccupiedStack(pot);
+                    if (slot != -1) {
+                        ItemUtils.givePlayerStackOrEject(player, cookStack[slot], i, j, k);
+                        pot.setCookStack(slot,null);
 
                         if (!world.isRemote) {
                             world.playAuxSFX(BTWEffectManager.ITEM_COLLECTION_POP_EFFECT_ID, i, j, k, 0);
                         }
-
                         return true;
                     }
-                }
+                } else {
+                    //hand is full
+                    if (isValidCookItem(heldStack)) {
+                        int slot = InventoryUtils.getFirstEmptyStackInSlotRange(pot, 0, 5);
 
-            }
-            else
-            {
-                if (pan.hasLid())
-                {
-                    pan.setHasLid(false);
-                    return true;
-                }
-                else {
-                    if ( cookStack != null )
-                    {
-                        //hand is empty
-                        ItemUtils.givePlayerStackOrEject( player, cookStack, i, j, k );
+                        if (slot != -1){
+                            pot.setCookStack(slot, new ItemStack(heldStack.itemID, 1, heldStack.getItemDamage()));
+                            heldStack.stackSize--;
 
-                        pan.setCookStack(null);
-//                        pan.setInputStack( null );
+                            if (!world.isRemote) {
+                                world.playAuxSFX(BTWEffectManager.ITEM_COLLECTION_POP_EFFECT_ID, i, j, k, 0);
+                            }
 
-                        if (!world.isRemote)
-                        {
-                            world.playAuxSFX( BTWEffectManager.ITEM_COLLECTION_POP_EFFECT_ID, i, j, k, 0 );
+                            world.markBlockForUpdate(i, j, k);
+                            return true;
                         }
 
-                        return true;
-
                     }
                 }
-
             }
         }
 
@@ -112,27 +102,30 @@ public class CookingPotBlock extends BlockContainer {
     @Override
     public void onBlockHarvested(World world, int i, int j, int k, int par5, EntityPlayer player) {
 
-        CookingPotTileEntity seedJar = (CookingPotTileEntity)( world.getBlockTileEntity(i, j, k) );
+        CookingPotTileEntity pot = (CookingPotTileEntity) world.getBlockTileEntity(i, j, k);
         ItemStack newStack = new ItemStack(SCBlocks.cookingPot.blockID, 1, this.getDamageValue(world, i, j, k));
 
-        if ( seedJar != null )
-        {
-            if ( seedJar.getCookStack() != null)
-            {
-                ItemStack oldStack = seedJar.getCookStack();
+        if (pot != null && !pot.getCookStacks().isEmpty()) {
+            NBTTagList tagList = new NBTTagList();
 
-                NBTTagCompound newTag = new NBTTagCompound();
-
-                newStack.setTagCompound(newTag);
-                newStack.getTagCompound().setInteger( "id", oldStack.itemID );
-                newStack.getTagCompound().setInteger( "Count", oldStack.stackSize );
-                newStack.getTagCompound().setInteger( "Damage",  this.getDamageValue(world, i, j, k) );
-
+            // write each slot
+            for (int slot = 0; slot < pot.getCookStacks().size(); slot++) {
+                ItemStack stack = pot.getCookStacks().get(slot);
+                if (stack != null) {
+                    NBTTagCompound itemTag = new NBTTagCompound();
+                    itemTag.setByte("Slot", (byte) slot); // keep track of slot index
+                    stack.writeToNBT(itemTag);            // serialize stack properly
+                    tagList.appendTag(itemTag);
+                }
             }
+
+            NBTTagCompound root = new NBTTagCompound();
+            root.setTag("Items", tagList);
+            newStack.setTagCompound(root);
         }
 
-        //if (!player.capabilities.isCreativeMode)
-        this.dropBlockAsItem_do(world, i, j, k, newStack);
+        // Now drop the newStack like normal
+        dropBlockAsItem_do(world, i, j, k, newStack);
     }
 
     @Override

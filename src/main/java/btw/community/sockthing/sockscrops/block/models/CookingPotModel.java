@@ -1,5 +1,6 @@
 package btw.community.sockthing.sockscrops.block.models;
 
+import btw.community.sockthing.sockscrops.block.tileentities.CookingPotTileEntity;
 import net.minecraft.src.Entity;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.ModelBase;
@@ -91,39 +92,39 @@ public class CookingPotModel extends ModelBase {
     public void renderContents(Entity entity, float f, float f1, float f2, float f3, float f4, float f5, int type) {
         //this.setRotationAngles(f, f1, f2, f3, f4, f5, entity);
         switch (type) {
-            case 1:
+            case CookingPotTileEntity.SPOILED:
                 spoiled.render(f5);
                 break;
 
-            case 2:
+            case CookingPotTileEntity.BURNED:
                 burned.render(f5);
                 break;
 
-            case 3:
+            case CookingPotTileEntity.WATER:
                 water.render(f5);
                 break;
 
-            case 4:
+            case CookingPotTileEntity.MILK:
                 milk.render(f5);
                 break;
 
-            case 5:
+            case CookingPotTileEntity.CHOCOLATE_MILK:
                 chocolateMilk.render(f5);
                 break;
 
-            case 6:
+            case CookingPotTileEntity.MUSHROOM_SOUP:
                 mushroom.render(f5);
                 break;
 
-            case 7:
+            case CookingPotTileEntity.HEARTY_STEW:
                 beef.render(f5);
                 break;
 
-            case 8:
+            case CookingPotTileEntity.CHICKEN_SOUP:
                 chicken.render(f5);
                 break;
 
-            case 9:
+            case CookingPotTileEntity.CHOWDER:
                 chowder.render(f5);
                 break;
 
