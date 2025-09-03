@@ -90,6 +90,14 @@ public class CookingPotItemBlock extends ItemBlock {
                             }
                         }
                     }
+                    if (itemStack.hasTagCompound() && itemStack.stackTagCompound.hasKey("liquidStack")) {
+                        NBTTagCompound tag = itemStack.stackTagCompound.getCompoundTag("liquidStack");
+                        ItemStack stack = ItemStack.loadItemStackFromNBT(tag);
+                        if (stack != null) {
+                            if (!world.isRemote) potTE.setLiquidStack(stack);
+                            world.markBlockForUpdate(x,y,z);
+                        }
+                    }
                 }
 
                 --itemStack.stackSize;
@@ -102,14 +110,21 @@ public class CookingPotItemBlock extends ItemBlock {
     public void addInformation(ItemStack itemStack, EntityPlayer player, List list, boolean par4) {
 
         if (itemStack.stackTagCompound != null) {
-            int count = getCount(itemStack);  // however you calculate servings
-            String name = getName(itemStack);
-
-            if (count > 0) {
-                list.add("Contains " + count + " Servings of " + name);
-            } else {
-                list.add("Contains nothing");
+            if (itemStack.stackTagCompound.hasKey("liquidStack")){
+                NBTTagCompound itemTag = itemStack.stackTagCompound.getCompoundTag("liquidStack");
+                ItemStack innerLiquidStack = ItemStack.loadItemStackFromNBT(itemTag);
+                list.add("Contains: " + innerLiquidStack.getDisplayName());
             }
+            if (itemStack.stackTagCompound.hasKey("Items")){
+                int count = getCount(itemStack);
+                String name = getSoupName(itemStack);
+
+                if (count > 0){
+                    list.add("Contains " + count + " Servings of " + name);
+                }
+
+            }
+
         }
     }
 
@@ -133,37 +148,23 @@ public class CookingPotItemBlock extends ItemBlock {
         return total;
     }
 
-    private String getName(ItemStack stack)
-    {
+    private String getSoupName(ItemStack stack) {
 
-        if (stack.stackTagCompound != null)
-        {
-            int id = 0;
-            int count = 0;
-            int damage = 0;
+        String displayName = "N/A";
 
-            if (stack.stackTagCompound.hasKey("id") )
-            {
-                id = stack.stackTagCompound.getInteger("id");
+        if (stack.stackTagCompound.hasKey("Items")) {
+            NBTTagList tagList = stack.stackTagCompound.getTagList("Items");
+
+            for (int i = 0; i < tagList.tagCount(); i++) {
+                NBTTagCompound itemTag = (NBTTagCompound) tagList.tagAt(i);
+                ItemStack innerStack = ItemStack.loadItemStackFromNBT(itemTag);
+                if (innerStack != null) {
+                    displayName = innerStack.getDisplayName();
+                }
             }
-
-            if (stack.stackTagCompound.hasKey("Count") )
-            {
-                count = stack.stackTagCompound.getInteger("Count");
-
-            }
-
-            if (stack.stackTagCompound.hasKey("Damage") )
-            {
-                damage = stack.stackTagCompound.getInteger("Damage");
-            }
-
-
-            if (id != 0) return new ItemStack(id, count, damage).getDisplayName();
-
         }
 
-        return "N/A";
+        return displayName;
     }
 
     private String getNames(ItemStack stack) {

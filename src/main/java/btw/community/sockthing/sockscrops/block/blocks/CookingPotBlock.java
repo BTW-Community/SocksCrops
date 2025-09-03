@@ -5,9 +5,9 @@ import btw.client.fx.BTWEffectManager;
 import btw.client.render.util.RenderUtils;
 import btw.community.sockthing.sockscrops.block.SCBlocks;
 import btw.community.sockthing.sockscrops.block.tileentities.CookingPotTileEntity;
-import btw.community.sockthing.sockscrops.item.items.CookingPotItemBlock;
-import btw.community.sockthing.sockscrops.utils.CookingPotUtils;
+import btw.community.sockthing.sockscrops.recipes.CookingPotRecipeManager;
 import btw.inventory.util.InventoryUtils;
+import btw.item.items.FoodItem;
 import btw.item.util.ItemUtils;
 import net.minecraft.src.*;
 
@@ -54,34 +54,84 @@ public class CookingPotBlock extends BlockContainer {
                         return true;
                     }
 
-                    int slot = InventoryUtils.getFirstOccupiedStack(pot);
-                    if (slot != -1) {
-                        ItemUtils.givePlayerStackOrEject(player, cookStack[slot], i, j, k);
-                        pot.setCookStack(slot,null);
+                    if (!pot.isFoodCooked()){
+                        int slot = InventoryUtils.getFirstOccupiedStack(pot);
+                        if (slot != -1) {
+                            ItemUtils.givePlayerStackOrEject(player, cookStack[slot], i, j, k);
+                            pot.setCookStack(slot,null);
 
-                        if (!world.isRemote) {
-                            world.playAuxSFX(BTWEffectManager.ITEM_COLLECTION_POP_EFFECT_ID, i, j, k, 0);
+                            if (world.isRemote) {
+                                world.playAuxSFX(BTWEffectManager.ITEM_COLLECTION_POP_EFFECT_ID, i, j, k, 0);
+                            }
+                            return true;
                         }
-                        return true;
                     }
-                } else {
-                    //hand is full
-                    if (isValidCookItem(heldStack)) {
-                        int slot = InventoryUtils.getFirstEmptyStackInSlotRange(pot, 0, 5);
 
-                        if (slot != -1){
-                            pot.setCookStack(slot, new ItemStack(heldStack.itemID, 1, heldStack.getItemDamage()));
+                } else {
+//                    if (world.isRemote) return false;
+                        //hand is full
+                    if (isValidLiquidContainer(heldStack)){
+
+                        if (pot.getLiquidStack() == null) {
+                            pot.setLiquidStackAndConvert(new ItemStack(heldStack.itemID, heldStack.stackSize, heldStack.getItemDamage()));
                             heldStack.stackSize--;
 
-                            if (!world.isRemote) {
+                            if (world.isRemote) {
                                 world.playAuxSFX(BTWEffectManager.ITEM_COLLECTION_POP_EFFECT_ID, i, j, k, 0);
                             }
 
-                            world.markBlockForUpdate(i, j, k);
+                            ItemUtils.givePlayerStackOrEject(player, new ItemStack(Item.bucketEmpty));
+
+//                        world.markBlockForUpdate(i, j, k);
                             return true;
+                        }
+                        else {
+                            if (heldStack.itemID == Item.bucketEmpty.itemID){
+                                ItemUtils.givePlayerStackOrEject(player, CookingPotTileEntity.convertLiquidToItemStack(pot.getLiquidStack()));
+                                pot.setLiquidStack(null);
+                                heldStack.stackSize--;
+                                world.markBlockForUpdate(i, j, k);
+                            }
                         }
 
                     }
+                    else {
+                        if (pot.isFoodCooked()){
+                            if (heldStack.itemID == Item.bowlEmpty.itemID) {
+                                int slot = InventoryUtils.getFirstOccupiedStack(pot);
+                                if (slot != -1) {
+                                    ItemUtils.givePlayerStackOrEject(player, cookStack[slot], i, j, k);
+                                    pot.setCookStack(slot,null);
+
+                                    if (world.isRemote) {
+                                        world.playAuxSFX(BTWEffectManager.ITEM_COLLECTION_POP_EFFECT_ID, i, j, k, 0);
+                                    }
+                                    heldStack.stackSize--;
+                                    return true;
+                                }
+                            }
+                        }
+                        else {
+                            if (heldStack.getItem() instanceof Item) {
+                                int slot = InventoryUtils.getFirstEmptyStackInSlotRange(pot, 0, 5);
+
+                                if (slot != -1){
+                                    pot.setCookStack(slot, new ItemStack(heldStack.itemID, 1, heldStack.getItemDamage()));
+                                    heldStack.stackSize--;
+
+                                    if (!world.isRemote) {
+                                        world.playAuxSFX(BTWEffectManager.ITEM_COLLECTION_POP_EFFECT_ID, i, j, k, 0);
+                                    }
+
+//                            world.markBlockForUpdate(i, j, k);
+                                    return true;
+                                }
+                            }
+                        }
+
+                    }
+
+
                 }
             }
         }
@@ -91,12 +141,12 @@ public class CookingPotBlock extends BlockContainer {
 
     public boolean isValidCookItem( ItemStack stack )
     {
-//        if ( SCCraftingManagerPanCooking.instance.getRecipe( stack ) != null )
-//        {
-//            return true;
-//        }
+        return CookingPotRecipeManager.isValidIngredients(stack);
+    }
 
-        return true;
+    public boolean isValidLiquidContainer( ItemStack stack )
+    {
+        return CookingPotTileEntity.convertItemStackToLiquid(stack) > 0;
     }
 
     @Override
@@ -105,22 +155,44 @@ public class CookingPotBlock extends BlockContainer {
         CookingPotTileEntity pot = (CookingPotTileEntity) world.getBlockTileEntity(i, j, k);
         ItemStack newStack = new ItemStack(SCBlocks.cookingPot.blockID, 1, this.getDamageValue(world, i, j, k));
 
-        if (pot != null && !pot.getCookStacks().isEmpty()) {
-            NBTTagList tagList = new NBTTagList();
+        if (pot != null ){
+            NBTTagCompound root = newStack.hasTagCompound()
+                    ? newStack.getTagCompound()
+                    : new NBTTagCompound();
 
-            // write each slot
-            for (int slot = 0; slot < pot.getCookStacks().size(); slot++) {
-                ItemStack stack = pot.getCookStacks().get(slot);
-                if (stack != null) {
-                    NBTTagCompound itemTag = new NBTTagCompound();
-                    itemTag.setByte("Slot", (byte) slot); // keep track of slot index
-                    stack.writeToNBT(itemTag);            // serialize stack properly
-                    tagList.appendTag(itemTag);
+            if (pot.isFoodCooked()) {
+                if (pot.isFoodCooked() && !pot.getCookStacks().isEmpty()) {
+                    NBTTagList tagList = new NBTTagList();
+
+                    for (int slot = 0; slot < pot.getCookStacks().size(); slot++) {
+                        ItemStack stack = pot.getCookStacks().get(slot);
+                        if (stack != null) {
+                            NBTTagCompound itemTag = new NBTTagCompound();
+                            itemTag.setByte("Slot", (byte) slot);
+                            stack.writeToNBT(itemTag);
+                            tagList.appendTag(itemTag);
+                        }
+                    }
+
+                    root.setTag("Items", tagList);
+                }
+            }
+            else {
+                for (int tempSlot = 0; tempSlot < pot.getCookStacks().size(); tempSlot++) {
+                    if (!world.isRemote && pot.getCookStack(tempSlot) != null) {
+                        ItemUtils.ejectStackAroundBlock(world, i,j, k, pot.getCookStack(tempSlot).copy());
+                    }
                 }
             }
 
-            NBTTagCompound root = new NBTTagCompound();
-            root.setTag("Items", tagList);
+
+            if (pot.getLiquidStack() != null) {
+                ItemStack stack = pot.getLiquidStack();
+                NBTTagCompound liquidTag = new NBTTagCompound();
+                stack.writeToNBT(liquidTag);
+                root.setTag("liquidStack", liquidTag);
+            }
+
             newStack.setTagCompound(root);
         }
 
@@ -310,5 +382,75 @@ public class CookingPotBlock extends BlockContainer {
                 12/16D, 7/16D, 13/16D
         );
         RenderUtils.renderInvBlockWithTexture(renderer, this, -0.5F, -0.5F, -0.5F, blockIcon);
+    }
+
+    @Override
+    public void randomDisplayTick(World world, int i, int j, int k, Random rand)
+    {
+        CookingPotTileEntity pan = (CookingPotTileEntity)world.getBlockTileEntity( i, j, k );
+
+        if ( pan.isFoodBurning() )
+        {
+            for ( int iTempCount = 0; iTempCount < 1; ++iTempCount )
+            {
+                double xPos = i + 0.375F + rand.nextFloat() * 0.25F;
+                double yPos = j - 0.5F + rand.nextFloat() * 0.5F;
+                double zPos = k + 0.375F + rand.nextFloat() * 0.25F;
+
+                world.spawnParticle( "largesmoke", xPos, yPos, zPos, 0D, 0D, 0D );
+
+//    	        if ( rand.nextInt(2) == 0 )
+//    	        {
+//    	        	float volume = 0.75F + rand.nextFloat();
+//
+//    	        	float pitch = rand.nextFloat() * 0.5F + 0.5F;
+//
+//    	            playSound(world, i, j, k, rand, volume, pitch, "fire.fire");
+//    	        }
+            }
+        }
+        else if ( pan.isFoodCooking() )
+        {
+            for ( int iTempCount = 0; iTempCount < 2; ++iTempCount )
+            {
+                double xPos = i + 0.375F + rand.nextFloat() * 0.25F;
+                double yPos = j - 0.5F + rand.nextFloat() * 0.5F;
+                double zPos = k + 0.375F + rand.nextFloat() * 0.25F;
+
+                if (rand.nextInt(2) == 0) {
+                    world.spawnParticle( "fcwhitesmoke", xPos, yPos, zPos, 0D, 0D, 0D );
+                }
+
+            }
+        }
+//        else if (pan.isFoodCooked() && pan.hasLid())
+//        {
+//            if ( rand.nextInt(1) == 0 )
+//            {
+//                float volume = 0.05F;
+//                float pitch = rand.nextFloat() * 0.05F - 2F;
+//
+//                playSound(world, i, j, k, rand, volume, pitch, "random.anvil_use");
+//            }
+//
+//        }
+        else if (pan.isFoodCooking() || pan.isFoodCooked())
+        {
+            if ( rand.nextInt(2) == 0 )
+            {
+                float volume = 0.25F * rand.nextFloat();
+
+                float pitch = rand.nextFloat() * 0.25F - 1F;
+
+                playSound(world, i, j, k, rand, volume, pitch, "liquid.lavapop");
+            }
+        }
+    }
+
+    private void playSound(World world, int i, int j, int k, Random rand, float volume, float pitch, String sound)
+    {
+        world.playSound( i + 0.5D, j - 6/16D, k + 0.5D, sound,
+                volume, pitch, false );
+
     }
 }

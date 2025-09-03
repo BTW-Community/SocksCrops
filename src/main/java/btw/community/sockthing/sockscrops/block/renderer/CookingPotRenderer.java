@@ -1,8 +1,5 @@
 package btw.community.sockthing.sockscrops.block.renderer;
 
-import btw.block.BTWBlocks;
-import btw.block.blocks.CampfireBlock;
-import btw.block.tileentity.CampfireTileEntity;
 import btw.community.sockthing.sockscrops.block.models.CookingPotModel;
 import btw.community.sockthing.sockscrops.block.tileentities.CookingPotTileEntity;
 import net.minecraft.src.*;
@@ -26,60 +23,77 @@ public class CookingPotRenderer extends TileEntitySpecialRenderer {
 
     }
 
-    public void renderPot(float x, float y, float z, int meta, float rot, CookingPotTileEntity potTile, float time)
-    {
+    public void renderPot(float x, float y, float z, int meta, float rot, CookingPotTileEntity potTile, float time) {
         CookingPotModel pot = this.pot;
 
-        rot = (float)(potTile.getSkullRotation() * 360) / 8.0F;
+        // Calculate rotation from tile entity
+        rot = (float) (potTile.getSkullRotation() * 360) / 8.0F;
 
         this.bindTextureByName("/scmodtex/cookingPot/cooking_pot.png");
 
         GL11.glPushMatrix();
         GL11.glDisable(GL11.GL_CULL_FACE);
 
-        if (meta != 1)
-        {
+        // Base translation
+        if (potTile.isOnCampfire()) {
             GL11.glTranslatef(x + 0.5F, y - 0.5F, z + 0.5F);
-        }
-        else
-        {
+        } else {
             GL11.glTranslatef(x + 0.5F, y, z + 0.5F);
         }
 
-        float var10 = 0.0625F;
+        float scale = 0.0625F;
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         GL11.glScalef(-1.0F, -1.0F, 1.0F);
         GL11.glEnable(GL11.GL_ALPHA_TEST);
 
-        pot.render((Entity)null, 0.0F, 0.0F, 0.0F, rot, time, var10);
-        boolean renderCookStack = false;
-        for (int tempSlot = 0; tempSlot < 6; tempSlot++) {
-            if ( potTile.getCookStack(tempSlot) != null) renderCookStack = true;
-        }
+        // Render the main pot
+        pot.render(null, 0.0F, 0.0F, 0.0F, rot, time, scale);
 
-        if (renderCookStack)
-        {
-            pot.renderContents((Entity)null, 0.0F, 0.0F, 0.0F, rot, time, var10, potTile.getCookType());
-        }
-
-        // calculate animation
+        // --- Lid Animation ---
         float progress = potTile.lidProgress; // 0 → 1
-        float slide = progress * 0.4F;    // adjust for how far it slides
-        float rotation = progress * 30.0F; // max 30°
+        float slide = progress * 0.4F;        // lid sliding distance
+        float rotation = progress * 30.0F;    // max 30° rotation
 
-        // animate lid
         GL11.glPushMatrix();
+        GL11.glTranslatef(slide, 0F, 0F);     // slide lid
+        GL11.glRotatef(rotation, 0F, 1F, 0F); // rotate lid
 
-        // slide it outward (say, along X axis)
-        GL11.glTranslatef(slide, 0F, 0F);
+        // Optional wobble
+//        if (false) {
+//            float angle = potTile.tickCount * 0.3F;
+//            float wobbleAmount = 5F;
+//            float wobbleX = (float)Math.sin(angle) * wobbleAmount;
+//            float wobbleY = (float)Math.cos(angle) * wobbleAmount;
+//            GL11.glRotatef(wobbleX, 1F, 0F, 0F);
+//            GL11.glRotatef(wobbleY, 0F, 1F, 0F);
+//        }
 
-        // rotate it
-        GL11.glRotatef(rotation, 0F, 1F, 0F);
-
-        pot.renderLid((Entity)null, 0.0F, 0.0F, 0.0F, rot, time, var10);
-
+        pot.renderLid(null, 0.0F, 0.0F, 0.0F, rot, time, scale);
         GL11.glPopMatrix();
 
+        // --- Render liquid contents ---
+        if (potTile.getLiquidStack() != null) {
+            float liquidHeight = potTile.getLiquidStack().stackSize * 2.0F / 16.0F; // float division
+            GL11.glPushMatrix();
+            GL11.glTranslatef(0F, -6.0F / 16.0F + liquidHeight, 0F);
+            pot.renderContents(null, 0.0F, 0.0F, 0.0F, rot, time, scale, potTile.getCookType());
+            GL11.glPopMatrix();
+        }
+
+        // --- Render cooked food on top ---
+        if (potTile.isFoodCooked()) {
+            int count = 0;
+            for (int i = 0; i < 6; i++) {
+                if (potTile.getCookStack(i) != null) count++;
+            }
+            float liquidHeight = count * 1.0F / 16.0F; // float division
+            GL11.glPushMatrix();
+            GL11.glTranslatef(0F, 4.0F / 16.0F - liquidHeight, 0F);
+            pot.renderContents(null, 0.0F, 0.0F, 0.0F, rot, time, scale, potTile.getCookType());
+            GL11.glPopMatrix();
+        }
+
+        GL11.glEnable(GL11.GL_CULL_FACE); // restore state
         GL11.glPopMatrix();
     }
 
@@ -134,6 +148,9 @@ public class CookingPotRenderer extends TileEntitySpecialRenderer {
 //    }
 
     private void renderCookStacks(CookingPotTileEntity cookingPot, float xCoord, float yCoord, float zCoord) {
+
+        if (cookingPot.isFoodCooked()) return;
+
         // Assuming you add a method getCookStacks() that returns List<ItemStack> or ItemStack[]
         List<ItemStack> stacks = cookingPot.getCookStacks();
 

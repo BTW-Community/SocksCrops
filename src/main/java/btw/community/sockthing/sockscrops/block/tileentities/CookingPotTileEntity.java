@@ -2,7 +2,10 @@ package btw.community.sockthing.sockscrops.block.tileentities;
 
 import btw.block.BTWBlocks;
 import btw.block.tileentity.TileEntityDataPacketHandler;
+import btw.community.sockthing.sockscrops.recipes.CookingPotRecipe;
+import btw.community.sockthing.sockscrops.recipes.CookingPotRecipeManager;
 import btw.inventory.util.InventoryUtils;
+import btw.item.BTWItems;
 import net.minecraft.src.*;
 
 import java.util.Arrays;
@@ -12,14 +15,14 @@ public class CookingPotTileEntity extends TileEntity implements TileEntityDataPa
 {
 
     public float lidProgress = 0.0F;   // 0 = closed, 1 = fully open
-    public boolean lidOpen = false;
+    public boolean lidOpen;
 
 
     /** The pan's rotation. */
     private int potRotation;
 
-    private ItemStack[] cookStack = new ItemStack[6];
-    private ItemStack inputStack;
+    private ItemStack[] cookStacks = new ItemStack[6];
+    private ItemStack liquidStack;
 
     private boolean hasLid;
     private boolean onCampfire;
@@ -49,13 +52,13 @@ public class CookingPotTileEntity extends TileEntity implements TileEntityDataPa
     public static final int CHICKEN_SOUP = 8;
     public static final int CHOWDER = 9;
 
+
+
     //------------- Cooking ------------//
 
     @Override
     public void updateEntity()
     {
-        super.updateEntity();
-
         if (lidOpen && lidProgress < 1.0F) {
             lidProgress += 0.05F; // open speed
             if (lidProgress > 1.0F) lidProgress = 1.0F;
@@ -65,22 +68,17 @@ public class CookingPotTileEntity extends TileEntity implements TileEntityDataPa
             if (lidProgress < 0.0F) lidProgress = 0.0F;
         }
 
+
         if (isFoodCooked() && getFireLevel() >= 2)
         {
             ++this.tickCount;
         }
         else this.tickCount = 0;
 
-
-        if ( !worldObj.isRemote )
+        int fireLevel = getFireLevel();
+        if ( fireLevel > 0 )
         {
-            int fireLevel = getFireLevel();
-
-
-            if ( fireLevel > 0 )
-            {
-                updateCookState();
-            }
+            updateCookState();
         }
 
     }
@@ -88,6 +86,18 @@ public class CookingPotTileEntity extends TileEntity implements TileEntityDataPa
 
     private void updateCookState()
     {
+        if (canCook()) {
+            cookCounter++;
+            System.out.println("cook: " + cookCounter);
+            if (cookCounter >= 200) { //timeToCook) {
+                cookCounter = 0;
+                attemptToCookRecipe();
+            }
+        } else {
+            cookCounter = 0;
+        }
+
+
 //        if ( cookStack != null )
 //        {
 //
@@ -127,8 +137,96 @@ public class CookingPotTileEntity extends TileEntity implements TileEntityDataPa
 //        }
     }
 
+    private boolean canCook() {
+//        System.out.println("recipe ingredients: ");
+//        for (int i = 0; i < CookingPotRecipeManager.getRecipes().get(0).getIngredients().length; i++) {
+//            System.out.println("- " + CookingPotRecipeManager.getRecipes().get(0).getIngredients()[i].getDisplayName() + CookingPotRecipeManager.getRecipes().get(0).getIngredients()[i].stackSize);
+//        }
+//        System.out.println("- " + CookingPotRecipeManager.getRecipes().get(0).getRequiredLiquid().getItemName());
+//        System.out.println("recipe result: " + CookingPotRecipeManager.getRecipes().get(0).getResult().getDisplayName() + CookingPotRecipeManager.getRecipes().get(0).getResult().stackSize);
 
-    private int getFireLevel() {
+        if (CookingPotRecipeManager.instance.getCraftingResult(this) != null ) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean attemptToCookRecipe(){
+        if (CookingPotRecipeManager.instance.getCraftingResult(this) != null ) {
+            ItemStack output = CookingPotRecipeManager.instance.consumeIngredientsAndReturnResult(this);
+
+            assert (output != null);
+
+            int remaining = output.stackSize;
+            for (int i = 0; i < cookStacks.length && remaining > 0; i++) {
+                cookStacks[i] = new ItemStack(output.itemID, 1, output.getItemDamage());
+                remaining--;
+            }
+            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+            return true;
+        }
+
+        return false;
+    }
+
+    private void cookRecipe() {
+        System.out.println("trying to cook");
+        CookingPotRecipe recipe = CookingPotRecipeManager.findMatchingRecipe(cookStacks, liquidStack);
+        if (recipe == null) return;
+
+        // Consume liquid
+        liquidStack.stackSize -= recipe.getRequiredLiquid().stackSize;
+        if (liquidStack.stackSize <= 0) {
+            liquidStack = null;
+        }
+
+        // Clear ingredient slots (they must all belong to the recipe)
+        for (int i = 0; i < cookStacks.length; i++) {
+            cookStacks[i] = null;
+        }
+
+        // Place result into slots
+        ItemStack result = recipe.getResult().copy();
+        int remaining = result.stackSize;
+
+        for (int i = 0; i < cookStacks.length && remaining > 0; i++) {
+            cookStacks[i] = new ItemStack(result.itemID, 1, result.getItemDamage());
+            remaining--;
+        }
+        System.out.println("cooked!");
+
+        // Drop overflow
+//        while (remaining > 0) {
+//            ItemStack drop = new ItemStack(result.itemID, 1, result.getItemDamage());
+//            worldObj.spawnEntityInWorld(new EntityItem(worldObj,
+//                    xCoord + 0.5, yCoord + 1.0, zCoord + 0.5, drop));
+//            remaining--;
+//        }
+    }
+
+    private boolean canFitResult(ItemStack result) {
+        if (result == null) return false;
+
+        int servingsNeeded = result.stackSize; // how many bowls/servings to fit
+
+        // Count how many slots are free
+        int freeSlots = 0;
+        for (int i = 0; i < cookStacks.length; i++) {
+            if (cookStacks[i] == null) {
+                freeSlots++;
+            } else if (cookStacks[i].isItemEqual(result) && cookStacks[i].stackSize < cookStacks[i].getMaxStackSize()) {
+                // Optional: allow stacking if result is same item (but you said stack size = 1 per slot)
+                // So this branch usually won’t matter
+                freeSlots++;
+            }
+        }
+
+        return servingsNeeded <= freeSlots;
+    }
+
+
+    public int getFireLevel() {
 
         int blockBelow = worldObj.getBlockId(xCoord, yCoord - 1 , zCoord);
 
@@ -143,16 +241,23 @@ public class CookingPotTileEntity extends TileEntity implements TileEntityDataPa
 
     public boolean isFoodCooking()
     {
-//        if ( cookStack != null && getFireLevel() >= 2 )
-//        {
-//            if ( SCCraftingManagerPanCooking.instance.getRecipe( cookStack ) != null )
-//            {
-//                System.out.println("cooking");
-//                return true;
-//            }
-//        }
-
-        return false;
+        return getFireLevel() > 0 && cookCounter > 0 && !isLidOpen();
+//        // Check fire source below
+//        int belowId = worldObj.getBlockId(xCoord, yCoord - 1, zCoord);
+//        boolean hasFire = getFireLevel() > 1;
+//
+//        // Lid closed
+//        if (lidProgress == 1F) return false;
+//
+//        // Valid recipe
+//        CookingPotRecipe recipe = CookingPotRecipeManager.findMatchingRecipe(cookStacks, liquidStack);
+//        if (recipe == null) return false;
+//
+//        // Space for result
+//        if (!canFitResult(recipe.getResult())) return false;
+//
+//        // All conditions met
+//        return hasFire;
     }
 
     public boolean isFoodBurning()
@@ -175,61 +280,94 @@ public class CookingPotTileEntity extends TileEntity implements TileEntityDataPa
 
     public boolean isFoodCooked()
     {
-
-//        if ( cookStack != null && inputStack != null ) {
-//            System.out.println(cookStack.getDisplayName() + inputStack.getDisplayName());
-//
-//            SCCraftingManagerPanCookingRecipe recipe = SCCraftingManagerPanCooking.instance.getRecipe( inputStack ) ;
-//
-//            if (recipe != null && cookStack.itemID == recipe.getOutput().itemID  )
-//            {
-//
-//                return true;
-//            }
-//        }
+        // Check if any slot contains an item that is a valid recipe output
+        for (int i = 0; i < cookStacks.length; i++) {
+            ItemStack stack = cookStacks[i];
+            if (stack != null) {
+                // You could either check against all recipe outputs or use a "cookedFood" tag/item property
+                if (CookingPotRecipeManager.isResult(stack)) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
 
     public int getCookType() {
-        return WATER;
-    }
 
-    public void markBlockForUpdate() {
+        if (isFoodCooked()){
+            if (CookingPotRecipeManager.isResult(getCookStack(InventoryUtils.getFirstOccupiedStack(this)))){
+                int soupID = getCookStack(InventoryUtils.getFirstOccupiedStack(this)).itemID;
 
-        this.worldObj.markBlockForUpdate( xCoord, yCoord, zCoord );
+                if (soupID == Item.bowlSoup.itemID) return MUSHROOM_SOUP;
+                if (soupID == BTWItems.chowder.itemID) return CHOWDER;
+                if (soupID == BTWItems.chickenSoup.itemID) return CHICKEN_SOUP;
+            }
+        }
+        else {
+            int liquidID = getLiquidStack().itemID;
+
+            if (liquidID == Block.waterStill.blockID) return WATER;
+            if (liquidID == BTWBlocks.milkFluid.blockID) return MILK;
+            if (liquidID == BTWBlocks.chocolateMilkFluid.blockID) return CHOCOLATE_MILK;
+        }
+
+        return EMPTY;
     }
 
     public ItemStack getCookStack(int slot) {
-        return cookStack[slot];
+        return cookStacks[slot];
     }
 
     public void setCookStack(int slot, ItemStack stack) {
-        this.cookStack[slot] = stack;
+        this.cookStacks[slot] = stack;
     }
 
     public List<ItemStack> getCookStacks() {
-        return Arrays.asList(cookStack);
+        return Arrays.asList(cookStacks);
     }
 
-    public ItemStack getInputStack() {
-        return inputStack;
+    public ItemStack getLiquidStack() {
+        return liquidStack;
     }
 
-    public void setInputStack(ItemStack stack) {
-        this.inputStack = stack;
+    public void setLiquidStack(ItemStack stack) {
+        this.liquidStack = stack;
+    }
+
+    public void setLiquidStackAndConvert(ItemStack stack) {
+        //currently only buckets
+        int convertedLiquid = convertItemStackToLiquid(stack);
+        if (convertedLiquid > 0){
+            this.liquidStack = new ItemStack(convertedLiquid, 3, 0);
+        }
+    }
+
+    public static ItemStack convertLiquidToItemStack(ItemStack liquidStack) {
+        if (liquidStack.itemID == Block.waterStill.blockID) return new ItemStack(Item.bucketWater);
+        if (liquidStack.itemID == BTWBlocks.milkFluid.blockID) return new ItemStack(Item.bucketMilk);
+        if (liquidStack.itemID == BTWBlocks.chocolateMilkFluid.blockID) return new ItemStack(BTWItems.milkChocolateBucket);
+        else return null;
+    }
+
+    public static int convertItemStackToLiquid(ItemStack stack) {
+        if (stack.itemID == Item.bucketWater.itemID) return Block.waterStill.blockID;
+        if (stack.itemID == Item.bucketMilk.itemID) return BTWBlocks.milkFluid.blockID;
+        if (stack.itemID == BTWItems.milkChocolateBucket.itemID) return BTWBlocks.chocolateMilkFluid.blockID;
+        else return -1;
     }
 
     //------------- IInventory ------------//
 
     @Override
     public int getSizeInventory() {
-        return cookStack.length;
+        return cookStacks.length;
     }
 
     @Override
     public ItemStack getStackInSlot(int slot) {
-        return cookStack[slot];
+        return cookStacks[slot];
     }
 
     @Override
@@ -316,35 +454,26 @@ public class CookingPotTileEntity extends TileEntity implements TileEntityDataPa
         super.writeToNBT(tag);
         tag.setByte("potRotation", (byte)(this.potRotation & 255));
 
-//        if ( cookStack != null)
-//        {
-//            NBTTagCompound cookTag = new NBTTagCompound();
-//
-//            cookStack.writeToNBT( cookTag );
-//
-//            tag.setCompoundTag( "cookStack", cookTag );
-//        }
+        if ( liquidStack != null)
+        {
+            NBTTagCompound liquidTag = new NBTTagCompound();
 
-//        if ( inputStack != null)
-//        {
-//            NBTTagCompound inputTag = new NBTTagCompound();
-//
-//            cookStack.writeToNBT( inputTag );
-//
-//            tag.setCompoundTag( "inputStack", inputTag );
-//        }
+            liquidStack.writeToNBT( liquidTag );
+
+            tag.setCompoundTag( "liquidStack", liquidTag );
+        }
 
         NBTTagList tagList = new NBTTagList();
 
-        for (int iTempIndex = 0; iTempIndex < cookStack.length; iTempIndex++ )
+        for (int iTempIndex = 0; iTempIndex < cookStacks.length; iTempIndex++ )
         {
-            if (cookStack[iTempIndex] != null )
+            if (cookStacks[iTempIndex] != null )
             {
                 NBTTagCompound tempTag = new NBTTagCompound();
 
                 tempTag.setByte( "Slot", (byte)iTempIndex );
 
-                cookStack[iTempIndex].writeToNBT(tempTag);
+                cookStacks[iTempIndex].writeToNBT(tempTag);
 
                 tagList.appendTag( tempTag );
             }
@@ -370,16 +499,15 @@ public class CookingPotTileEntity extends TileEntity implements TileEntityDataPa
 
         this.potRotation = tag.getByte("potRotation");
 
-//        NBTTagCompound cookTag = tag.getCompoundTag( "cookStack" );
-//
-//        if ( cookTag != null )
-//        {
-//            cookStack = ItemStack.loadItemStackFromNBT( cookTag );
-//        }
+
+        if (tag.hasKey("liquidStack")) {
+            NBTTagCompound liquidTag = tag.getCompoundTag("liquidStack");
+            liquidStack = ItemStack.loadItemStackFromNBT(liquidTag);
+        }
 
         NBTTagList tagList = tag.getTagList( "Items" );
 
-        cookStack = new ItemStack[getSizeInventory()];
+        cookStacks = new ItemStack[getSizeInventory()];
 
         for ( int iTempIndex = 0; iTempIndex < tagList.tagCount(); iTempIndex++ )
         {
@@ -387,17 +515,10 @@ public class CookingPotTileEntity extends TileEntity implements TileEntityDataPa
 
             int tempSlot = tempTag.getByte( "Slot" ) & 0xff;
 
-            if ( tempSlot >= 0 && tempSlot < cookStack.length )
+            if ( tempSlot >= 0 && tempSlot < cookStacks.length )
             {
-                cookStack[tempSlot] = ItemStack.loadItemStackFromNBT(tempTag);
+                cookStacks[tempSlot] = ItemStack.loadItemStackFromNBT(tempTag);
             }
-        }
-
-        NBTTagCompound inputTag = tag.getCompoundTag( "inputStack" );
-
-        if ( inputTag != null )
-        {
-            inputStack = ItemStack.loadItemStackFromNBT( inputTag );
         }
 
         if ( tag.hasKey( "cookCounter" ) )

@@ -23,7 +23,6 @@ public class SCRecipes extends SCRecipeHelper {
         if (SocksCropsAddon.isDecoInstalled()) initOverrideDecoRecipes();
 
         initKnifeRecipes();
-        initKnifeCuttingRecipes();
         initPlanterRecipes();
         initHayRecipes();
         initMossRecipes();
@@ -32,6 +31,9 @@ public class SCRecipes extends SCRecipeHelper {
         initBambooRecipes();
         initFishTrapRecipes();
         initClayRecipes();
+
+        initKnifeCuttingRecipes();
+        initCookingPotRecipes();
 
         initFoodRecipes();
         initCampfireRecipes();
@@ -43,6 +45,8 @@ public class SCRecipes extends SCRecipeHelper {
         initLogChoppingRecipes();
         initHopperFilteringRecipes();
     }
+
+
 
     private static void removeRecipes() {
         //Remove old Farmland Planter Recipe
@@ -109,6 +113,51 @@ public class SCRecipes extends SCRecipeHelper {
                             new ItemStack(chisels[i], 1, InventoryUtils.IGNORE_METADATA)
                     });
         }
+    }
+
+    private static void initCookingPotRecipes() {
+        addCookingPotRecipe( new ItemStack(Item.bowlSoup, 4),
+                new ItemStack[] {
+                        new ItemStack(BTWItems.brownMushroom),
+                        new ItemStack(BTWItems.brownMushroom),
+                        new ItemStack(BTWItems.brownMushroom),
+                        new ItemStack(BTWItems.brownMushroom),
+                        new ItemStack(BTWItems.brownMushroom),
+                        new ItemStack(BTWItems.brownMushroom)
+                },
+                new ItemStack(BTWBlocks.milkFluid, 3)
+        );
+
+        addCookingPotRecipe( new ItemStack(BTWItems.chowder, 4),
+                new ItemStack[] {
+                        new ItemStack(Item.fishCooked),
+                        new ItemStack(Item.fishCooked),
+                },
+                new ItemStack(BTWBlocks.milkFluid, 3)
+        );
+
+        addCookingPotRecipe( new ItemStack(BTWItems.chickenSoup, 4),
+                new ItemStack[] {
+                        new ItemStack(BTWItems.boiledPotato),
+                        new ItemStack(BTWItems.boiledPotato),
+                        new ItemStack(BTWItems.cookedCarrot),
+                        new ItemStack(BTWItems.cookedCarrot),
+                        new ItemStack(Item.chickenCooked),
+                },
+                new ItemStack(Block.waterStill, 3)
+        );
+
+//        RecipeManager.addCauldronRecipe(
+//                new ItemStack(BTWItems.heartyStew, 5),
+//                new ItemStack[] {
+//                        new ItemStack(BTWItems.boiledPotato),
+//                        new ItemStack(BTWItems.cookedCarrot),
+//                        new ItemStack(BTWItems.brownMushroom, 3),
+//                        new ItemStack(BTWItems.flour),
+//                        new ItemStack(BTWItems.cookedMysteryMeat),
+//                        new ItemStack(Item.bowlEmpty, 5)
+//                });
+
     }
 
     private static void initFoodRecipes() {

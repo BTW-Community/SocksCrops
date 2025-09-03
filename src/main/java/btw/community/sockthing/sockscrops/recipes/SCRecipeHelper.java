@@ -56,4 +56,8 @@ public class SCRecipeHelper {
                                             ItemStack input) {
         CraftingManager.getInstance().getRecipeList().add(new KnifeCuttingRecipe(output, secondaryOutputs, outputLowQuality, secondaryOutputsLowQuality, input));
     }
+
+    public static void addCookingPotRecipe(ItemStack result, ItemStack[] ingredients, ItemStack requiredLiquid) {
+        CookingPotRecipeManager.instance.addRecipe(ingredients, requiredLiquid, result);
+    }
 }

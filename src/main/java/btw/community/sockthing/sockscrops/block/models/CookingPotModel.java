@@ -38,13 +38,14 @@ public class CookingPotModel extends ModelBase {
         this.pot.setTextureOffset(44, 0).addBox(-4.0F, -7.0F, 3.0F, 8, 6, 2, 0.0F);
         this.pot.setTextureOffset(0, 0).addBox(-4.0F, -1.0F, -4.0F, 8, 1, 8, 0.0F);
 
-        burned = new ModelRenderer(this);
-        burned.setRotationPoint(0.0F, 0.0F, 0.0F);
-        this.burned.setTextureOffset(-6, 16).addBox(-3.0F, -6.0F, -3.0F, 6, 1, 6, 0.0F);
 
         spoiled = new ModelRenderer(this);
         spoiled.setRotationPoint(0.0F, 0.0F, 0.0F);
-        this.spoiled.setTextureOffset(0, 16).addBox(-3.0F, -6.0F, -3.0F, 6, 1, 6, 0.0F);
+        this.spoiled.setTextureOffset(-6, 16).addBox(-3.0F, -6.0F, -3.0F, 6, 1, 6, 0.0F);
+
+        burned = new ModelRenderer(this);
+        burned.setRotationPoint(0.0F, 0.0F, 0.0F);
+        this.burned.setTextureOffset(0, 16).addBox(-3.0F, -6.0F, -3.0F, 6, 1, 6, 0.0F);
 
         water = new ModelRenderer(this);
         water.setRotationPoint(0.0F, 0.0F, 0.0F);
@@ -68,11 +69,11 @@ public class CookingPotModel extends ModelBase {
 
         chicken = new ModelRenderer(this);
         chicken.setRotationPoint(0.0F, 0.0F, 0.0F);
-        this.chicken.setTextureOffset(30, 16).addBox(-3.0F, -6.0F, -3.0F, 6, 1, 6, 0.0F);
+        this.chicken.setTextureOffset(36, 16).addBox(-3.0F, -6.0F, -3.0F, 6, 1, 6, 0.0F);
 
         chowder = new ModelRenderer(this);
         chowder.setRotationPoint(0.0F, 0.0F, 0.0F);
-        this.chowder.setTextureOffset(36, 16).addBox(-3.0F, -6.0F, -3.0F, 6, 1, 6, 0.0F);
+        this.chowder.setTextureOffset(42, 16).addBox(-3.0F, -6.0F, -3.0F, 6, 1, 6, 0.0F);
     }
 
     /**
