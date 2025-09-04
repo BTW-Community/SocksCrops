@@ -22,6 +22,7 @@
     "ComponentStrongholdLibraryMixin",
     "ComponentStrongholdRoomCrossingMixin",
     "ComponentVillageHouse2Mixin",
+    "CowEntityMixin",
     "DirtBlockMixin",
     "FarmlandBlockMixin",
     "FenceBlockMixin",

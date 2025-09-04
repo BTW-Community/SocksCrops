@@ -4,6 +4,7 @@ import btw.block.tileentity.CampfireTileEntity;
 import btw.community.sockthing.sockscrops.block.SCBlocks;
 import btw.community.sockthing.sockscrops.block.tileentities.CookingPotTileEntity;
 import btw.community.sockthing.sockscrops.utils.CookingPotUtils;
+import btw.util.MiscUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.src.*;
@@ -21,6 +22,41 @@ public class CookingPotItemBlock extends ItemBlock {
         this.setMaxDamage(0);
         this.setMaxStackSize(1);
     }
+
+
+    @Override
+    public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
+
+        MovingObjectPosition posClicked =
+                MiscUtils.getMovingObjectPositionFromPlayerHitWaterAndLava(world, player, true);
+
+        if ( posClicked != null && posClicked.typeOfHit == EnumMovingObjectType.TILE ) {
+            int i = posClicked.blockX;
+            int j = posClicked.blockY;
+            int k = posClicked.blockZ;
+
+            int iBlockID = world.getBlockId(i, j, k);
+
+            if (world.getBlockMaterial(i, j, k) == Material.water) {
+                if (MiscUtils.doesWaterHaveValidSource(world, i, j, k, 128)) {
+                    if (--itemStack.stackSize <= 0) {
+
+                        CookingPotUtils.setLiquidStack(itemStack, new ItemStack(Block.waterStill, 3));
+
+                        return new ItemStack(Item.bucketWater);
+                    } else if (!player.inventory.addItemStackToInventory(
+                            new ItemStack(Item.bucketWater))) {
+                        player.dropPlayerItem(new ItemStack(Item.bucketWater.itemID, 1, 0));
+                    }
+                }
+
+                return itemStack;
+            }
+        }
+
+        return itemStack;
+    }
+
 
 
     /**

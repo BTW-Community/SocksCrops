@@ -5,27 +5,21 @@ import net.minecraft.src.NBTTagCompound;
 
 public class CookingPotUtils {
 
-    public static void setSoupStack(ItemStack stack, ItemStack cookStack) {
-        if ( cookStack != null)
-        {
-            NBTTagCompound fishTag = new NBTTagCompound();
+    public static void setLiquidStack(ItemStack itemStack, ItemStack liquidStack) {
+        if (itemStack != null) {
+            if ( !itemStack.stackTagCompound.hasKey("liquidStack")){
+                //is empty
+                NBTTagCompound root = itemStack.hasTagCompound()
+                        ? itemStack.getTagCompound()
+                        : new NBTTagCompound();
 
-            cookStack.writeToNBT( fishTag );
+                NBTTagCompound liquidTag = new NBTTagCompound();
+                liquidStack.writeToNBT(liquidTag);
+                root.setTag("liquidStack", liquidTag);
 
-            stack.stackTagCompound.setCompoundTag( "fishStack", fishTag );
-        }
-    }
 
-    public static ItemStack getSoupStack(ItemStack stack){
-        if (stack != null && stack.hasTagCompound()) {
-            NBTTagCompound fishTag = stack.stackTagCompound.getCompoundTag( "fishStack" );
-
-            if ( fishTag != null )
-            {
-                return ItemStack.loadItemStackFromNBT( fishTag );
+                itemStack.setTagCompound(root);
             }
         }
-
-        return null;
     }
 }
