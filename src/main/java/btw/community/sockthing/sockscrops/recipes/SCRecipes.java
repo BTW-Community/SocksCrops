@@ -116,6 +116,37 @@ public class SCRecipes extends SCRecipeHelper {
     }
 
     private static void initCookingPotRecipes() {
+        //Hearty Stew
+        Item[] meats = new Item[] {
+                Item.beefRaw,
+                Item.beefCooked,
+                Item.chickenRaw,
+                Item.chickenCooked,
+                Item.porkRaw,
+                Item.porkCooked,
+                BTWItems.rawMutton,
+                BTWItems.cookedMutton,
+                BTWItems.rawWolfChop,
+                BTWItems.cookedWolfChop,
+                BTWItems.rawMysteryMeat,
+                BTWItems.cookedMysteryMeat
+        };
+
+        for (int i = 0; i < meats.length; i++) {
+            addCookingPotRecipe( new ItemStack(BTWItems.heartyStew, 4),
+                    new ItemStack[] {
+                            new ItemStack(Item.potato),
+                            new ItemStack(BTWItems.carrot),
+                            new ItemStack(BTWItems.brownMushroom),
+                            new ItemStack(BTWItems.brownMushroom),
+                            new ItemStack(BTWItems.flour),
+                            new ItemStack(meats[i])
+                    },
+                    new ItemStack(Block.waterStill, 3)
+            );
+        }
+
+
         addCookingPotRecipe( new ItemStack(Item.bowlSoup, 4),
                 new ItemStack[] {
                         new ItemStack(BTWItems.brownMushroom),
@@ -128,35 +159,31 @@ public class SCRecipes extends SCRecipeHelper {
                 new ItemStack(BTWBlocks.milkFluid, 3)
         );
 
-        addCookingPotRecipe( new ItemStack(BTWItems.chowder, 4),
-                new ItemStack[] {
-                        new ItemStack(Item.fishCooked),
-                        new ItemStack(Item.fishCooked),
-                },
-                new ItemStack(BTWBlocks.milkFluid, 3)
-        );
+        Item[] fish = new Item[] {
+                Item.fishCooked,
+                Item.fishRaw
+        };
+
+        for (int i = 0; i < fish.length; i++) {
+            addCookingPotRecipe( new ItemStack(BTWItems.chowder, 4),
+                    new ItemStack[] {
+                            new ItemStack(fish[i]),
+                            new ItemStack(fish[i]),
+                    },
+                    new ItemStack(BTWBlocks.milkFluid, 3)
+            );
+        }
 
         addCookingPotRecipe( new ItemStack(BTWItems.chickenSoup, 4),
                 new ItemStack[] {
-                        new ItemStack(BTWItems.boiledPotato),
-                        new ItemStack(BTWItems.boiledPotato),
-                        new ItemStack(BTWItems.cookedCarrot),
-                        new ItemStack(BTWItems.cookedCarrot),
+                        new ItemStack(Item.potato),
+                        new ItemStack(Item.potato),
+                        new ItemStack(BTWItems.carrot),
+                        new ItemStack(BTWItems.carrot),
                         new ItemStack(Item.chickenCooked),
                 },
                 new ItemStack(Block.waterStill, 3)
         );
-
-//        RecipeManager.addCauldronRecipe(
-//                new ItemStack(BTWItems.heartyStew, 5),
-//                new ItemStack[] {
-//                        new ItemStack(BTWItems.boiledPotato),
-//                        new ItemStack(BTWItems.cookedCarrot),
-//                        new ItemStack(BTWItems.brownMushroom, 3),
-//                        new ItemStack(BTWItems.flour),
-//                        new ItemStack(BTWItems.cookedMysteryMeat),
-//                        new ItemStack(Item.bowlEmpty, 5)
-//                });
 
     }
 

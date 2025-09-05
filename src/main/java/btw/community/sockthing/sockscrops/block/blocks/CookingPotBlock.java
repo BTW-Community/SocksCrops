@@ -348,6 +348,8 @@ public class CookingPotBlock extends BlockContainer {
 
     //----------- Client Side Functionality -----------//
 
+    private Icon charredClayIcon;
+    private Icon charredClaySideIcon;
     private Icon waterIcon;
     private Icon milkIcon;
     private Icon chocolateMilkIcon;
@@ -355,10 +357,24 @@ public class CookingPotBlock extends BlockContainer {
     @Override
     public void registerIcons(IconRegister par1IconRegister) {
         blockIcon = par1IconRegister.registerIcon("pottery_clay_dry");
+        charredClayIcon = par1IconRegister.registerIcon("pottery_clay_dry_charred");
+        charredClaySideIcon = par1IconRegister.registerIcon("pottery_clay_dry_charred_side");
 
         waterIcon = par1IconRegister.registerIcon("water");
         milkIcon = par1IconRegister.registerIcon("fcBlockMilk");
         chocolateMilkIcon = par1IconRegister.registerIcon("fcBlockMilkChocolate");
+    }
+
+    @Override
+    public Icon getBlockTexture(IBlockAccess blockAccess, int i, int j, int k, int side) {
+        CookingPotTileEntity pan = (CookingPotTileEntity)blockAccess.getBlockTileEntity( i, j, k );
+
+        if (pan != null && pan.isFoodCooked()){
+            if (side == 0) return charredClayIcon;
+            if (side > 1) return charredClaySideIcon;
+        }
+
+        return blockIcon;
     }
 
     @Override
@@ -379,17 +395,30 @@ public class CookingPotBlock extends BlockContainer {
         RenderUtils.renderInvBlockWithTexture(renderer, this, -0.5F, -0.5F, -0.5F, blockIcon);
 
         //contents
-        if (iItemDamage > 0){
-            double height = CookingPotUtils.unpackFillHeight(iItemDamage)/16D;
-            int fillType = CookingPotUtils.unpackFillType(iItemDamage);
-            Icon contentsIcon = getContentsIconFromFillType(fillType);
+//        if (iItemDamage > 0){
+//            double height = CookingPotUtils.unpackFillHeight(iItemDamage)/16D;
+//            int fillType = CookingPotUtils.unpackFillType(iItemDamage);
+//            Icon contentsIcon = getContentsIconFromFillType(fillType);
+//
+//            renderer.setRenderBounds(
+//                    4/16D, height,4/16D,
+//                    1D - 4/16D, height, 1D - 4/16D
+//            );
+//            RenderUtils.renderInvBlockWithTexture(renderer, this, -0.5F, -0.5F, -0.5F, contentsIcon);
+//        }
 
-            renderer.setRenderBounds(
-                    4/16D, height,4/16D,
-                    1D - 4/16D, height, 1D - 4/16D
-            );
-            RenderUtils.renderInvBlockWithTexture(renderer, this, -0.5F, -0.5F, -0.5F, contentsIcon);
-        }
+        //Lid
+        renderer.setRenderBounds(
+                4/16D,7/16D,4/16D,
+                1D - 4/16D, 8/16D, 1D - 4/16D
+        );
+        RenderUtils.renderInvBlockWithTexture(renderer, this, -0.5F, -0.5F, -0.5F, blockIcon);
+
+        renderer.setRenderBounds(
+                7/16D,8/16D,7/16D,
+                1D - 7/16D, 9/16D, 1D - 7/16D
+        );
+        RenderUtils.renderInvBlockWithTexture(renderer, this, -0.5F, -0.5F, -0.5F, blockIcon);
 
 
         //walls

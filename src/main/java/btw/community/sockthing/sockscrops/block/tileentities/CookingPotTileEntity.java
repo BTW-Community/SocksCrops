@@ -6,10 +6,13 @@ import btw.community.sockthing.sockscrops.recipes.CookingPotRecipe;
 import btw.community.sockthing.sockscrops.recipes.CookingPotRecipeManager;
 import btw.inventory.util.InventoryUtils;
 import btw.item.BTWItems;
+import btw.item.util.ItemUtils;
 import net.minecraft.src.*;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CookingPotTileEntity extends TileEntity implements TileEntityDataPacketHandler, IInventory
 {
@@ -91,7 +94,7 @@ public class CookingPotTileEntity extends TileEntity implements TileEntityDataPa
             System.out.println("cook: " + cookCounter);
             if (cookCounter >= 200) { //timeToCook) {
                 cookCounter = 0;
-                attemptToCookRecipe();
+                makeSoup();
             }
         } else {
             cookCounter = 0;
@@ -145,9 +148,12 @@ public class CookingPotTileEntity extends TileEntity implements TileEntityDataPa
 //        System.out.println("- " + CookingPotRecipeManager.getRecipes().get(0).getRequiredLiquid().getItemName());
 //        System.out.println("recipe result: " + CookingPotRecipeManager.getRecipes().get(0).getResult().getDisplayName() + CookingPotRecipeManager.getRecipes().get(0).getResult().stackSize);
 
-        if (CookingPotRecipeManager.instance.getCraftingResult(this) != null ) {
-            return true;
-        }
+//        if (CookingPotRecipeManager.instance.getCraftingResult(this) != null ) {
+//            return true;
+//        }
+
+        CookingPotRecipe recipe = CookingPotRecipeManager.findMatchingRecipe(cookStacks, liquidStack);
+        if (recipe != null) return true;
 
         return false;
     }
@@ -168,6 +174,79 @@ public class CookingPotTileEntity extends TileEntity implements TileEntityDataPa
         }
 
         return false;
+    }
+
+    private boolean makeSoup(){
+        // Check if any recipe matches this inventory
+        CookingPotRecipe matchingRecipe = null;
+        for (CookingPotRecipe recipe : CookingPotRecipeManager.getRecipes()) {
+            if (recipe.doesInventoryContainIngredients(this)
+                    && recipe.doesInventoryContainLiquidIngredients(this)) {
+                matchingRecipe = recipe;
+                break;
+            }
+        }
+
+        if (matchingRecipe == null) return false; // no recipe matched
+
+        // Consume ingredients
+        consumeIngredients(matchingRecipe);
+
+        // Consume liquid
+        consumeLiquid(matchingRecipe);
+
+        // Get the resulting ItemStack(s)
+        ItemStack resultStack = matchingRecipe.getResult();
+        if (resultStack == null) return false;
+
+        // Try to add result to inventory; eject if full
+        if (!InventoryUtils.addItemStackToInventory(this, resultStack.copy())) {
+            ItemUtils.ejectStackWithRandomOffset(worldObj, xCoord, yCoord + 1, zCoord, resultStack.copy());
+        }
+
+        return true;
+    }
+
+    // --- Consume the required items from the inventory ---
+    private void consumeIngredients(CookingPotRecipe recipe) {
+        // Count how many of each item is required
+        Map<Integer, Integer> requiredCounts = new HashMap<>();
+        for (ItemStack item : recipe.getIngredients()) {
+            if (item != null)
+                requiredCounts.put(item.itemID, requiredCounts.getOrDefault(item.itemID, 0) + 1);
+        }
+
+        // Remove items from inventory
+        for (int slot = 0; slot < 6; slot++) {
+            ItemStack stack = getStackInSlot(slot);
+            if (stack == null) continue;
+
+            int id = stack.itemID;
+            if (requiredCounts.containsKey(id)) {
+                requiredCounts.put(id, requiredCounts.get(id) - 1);
+                setInventorySlotContents(slot, null); // remove the item from the slot
+
+                if (requiredCounts.get(id) <= 0) {
+                    requiredCounts.remove(id);
+                }
+            }
+        }
+    }
+
+    // --- Consume the required liquid from the liquid slot ---
+    private void consumeLiquid(CookingPotRecipe recipe) {
+        ItemStack requiredLiquid = recipe.getRequiredLiquid();
+        if (requiredLiquid == null) return; // no liquid required
+
+        if (!(this instanceof CookingPotTileEntity)) return;
+
+        ItemStack liquidStack = ((CookingPotTileEntity) this).getLiquidStack();
+        if (liquidStack != null && liquidStack.isItemEqual(requiredLiquid)) {
+            liquidStack.stackSize -= requiredLiquid.stackSize;
+            if (liquidStack.stackSize <= 0) {
+                ((CookingPotTileEntity) this).setLiquidStack(null);
+            }
+        }
     }
 
     private void cookRecipe() {
@@ -195,6 +274,8 @@ public class CookingPotTileEntity extends TileEntity implements TileEntityDataPa
             remaining--;
         }
         System.out.println("cooked!");
+
+        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 
         // Drop overflow
 //        while (remaining > 0) {
@@ -303,6 +384,7 @@ public class CookingPotTileEntity extends TileEntity implements TileEntityDataPa
                 if (soupID == Item.bowlSoup.itemID) return MUSHROOM_SOUP;
                 if (soupID == BTWItems.chowder.itemID) return CHOWDER;
                 if (soupID == BTWItems.chickenSoup.itemID) return CHICKEN_SOUP;
+                if (soupID == BTWItems.heartyStew.itemID) return HEARTY_STEW;
             }
         }
         else {

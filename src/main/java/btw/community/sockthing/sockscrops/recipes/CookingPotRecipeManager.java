@@ -7,6 +7,7 @@ import net.minecraft.src.Item;
 import net.minecraft.src.ItemStack;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class CookingPotRecipeManager {
@@ -84,33 +85,32 @@ public class CookingPotRecipeManager {
     }
     private static boolean matches(CookingPotRecipe recipe, ItemStack[] inputs, ItemStack liquid) {
 
-        for (int i = 0; i < inputs.length; i++) {
-            if (!doStacksMatch(recipe.getIngredients()[i], inputs[i])) return false;
+        // --- Check item ingredients ---
+        List<ItemStack> requiredList = new ArrayList<>();
+        for (ItemStack ing : recipe.getIngredients()) {
+            if (ing != null) requiredList.add(ing.copy());
         }
 
+        for (ItemStack input : inputs) {
+            if (input == null) continue;
 
-        return liquid != null && recipe.getRequiredLiquid().isItemEqual(liquid);
+            Iterator<ItemStack> iterator = requiredList.iterator();
+            while (iterator.hasNext()) {
+                ItemStack required = iterator.next();
+                if (doStacksMatch(required, input)) {
+                    iterator.remove(); // matched
+                    break;
+                }
+            }
+        }
 
+        if (!requiredList.isEmpty()) return false;
 
-//        // 1. Check liquid type + minimum amount
-//        ItemStack required = recipe.getRequiredLiquid();
-//        if (liquid == null) return false;
-//        if (liquid.itemID != required.itemID) return false;
-//        if (liquid.stackSize < required.stackSize) return false;
-//
-//        // 2. Check ingredients (unordered, one of each)
-//        List<Item> needed = new ArrayList<Item>();
-//        for (ItemStack stack : recipe.getIngredients()) {
-//            needed.add(stack.getItem());
-//        }
-//
-//        for (ItemStack in : inputs) {
-//            if (in != null) {
-//                needed.remove(in.getItem());
-//            }
-//        }
-//
-//        return needed.isEmpty();
+        // --- Check liquid ---
+        ItemStack requiredLiquid = recipe.getRequiredLiquid();
+        if (requiredLiquid == null) return true; // no liquid required
+
+        return liquid != null && liquid.isItemEqual(requiredLiquid);
     }
 
     public static List<CookingPotRecipe> getRecipes() {
@@ -123,12 +123,9 @@ public class CookingPotRecipeManager {
         {
             CookingPotRecipe tempRecipe = recipes.get(i);
 
-            if( tempRecipe.doesInventoryContainIngredients(inventory))
+            if( tempRecipe.doesInventoryContainIngredients(inventory) && tempRecipe.doesInventoryContainLiquidIngredients(inventory))
             {
-                if (tempRecipe.doesInventoryContainLiquidIngredients(inventory)){
-
-                    return tempRecipe.getResult();
-                }
+                return tempRecipe.getResult();
             }
         }
 

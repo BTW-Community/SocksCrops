@@ -5,9 +5,7 @@ import btw.inventory.util.InventoryUtils;
 import net.minecraft.src.IInventory;
 import net.minecraft.src.ItemStack;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class CookingPotRecipe {
     private final ItemStack[] ingredients;
@@ -33,48 +31,44 @@ public class CookingPotRecipe {
     }
 
     public boolean doesInventoryContainIngredients(IInventory inventory) {
-        if (ingredients != null && ingredients.length > 0) {
-            // Combine duplicates into a map: itemID -> total required
-            Map<Integer, Integer> requiredMap = new HashMap<>();
-            for (ItemStack ingredient : ingredients) {
-                if (ingredient != null) {
-                    requiredMap.put(
-                            ingredient.itemID,
-                            requiredMap.getOrDefault(ingredient.itemID, 0) + ingredient.stackSize
-                    );
-                }
-            }
+        if (ingredients == null || ingredients.length == 0) return true;
 
-            // Check inventory against totals
-            for (Map.Entry<Integer, Integer> entry : requiredMap.entrySet()) {
-                int itemId = entry.getKey();
-                int requiredAmount = entry.getValue();
+        // Copy required items into a mutable list
+        List<ItemStack> requiredList = new ArrayList<>();
+        for (ItemStack item : ingredients) {
+            if (item != null) requiredList.add(item.copy());
+        }
 
-                int totalCount = 0;
-                ArrayList<Integer> slots = InventoryUtils.getAllOccupiedStacksOfItem(inventory, itemId);
+        // Check each item slot
+        for (int slot = 0; slot < 6; slot++) {
+            ItemStack stack = inventory.getStackInSlot(slot);
+            if (stack == null) continue;
 
-                for (Integer slot : slots) {
-                    ItemStack stack = inventory.getStackInSlot(slot);
-                    if (stack != null && stack.itemID == itemId) {
-                        totalCount += stack.stackSize;
-                    }
-                }
-
-                if (totalCount < requiredAmount) {
-                    return false; // Not enough of this ingredient
+            // Try to match this stack against a required item
+            Iterator<ItemStack> iterator = requiredList.iterator();
+            while (iterator.hasNext()) {
+                ItemStack required = iterator.next();
+                if (stack.itemID == required.itemID) {
+                    iterator.remove(); // matched
+                    break;
                 }
             }
         }
-        return true;
+
+        // If any required items remain unmatched, return false
+        return requiredList.isEmpty();
     }
 
     public boolean doesInventoryContainLiquidIngredients(IInventory inventory) {
-        if (requiredLiquid != null) {
-            ItemStack tempStack = (ItemStack) ((CookingPotTileEntity)inventory).getLiquidStack();
-            if (tempStack == null) return false;
-            if (tempStack.isItemEqual(requiredLiquid) && tempStack.stackSize == requiredLiquid.stackSize) return true;
-        }
-        return false;
+        // If no liquid is required, always true
+        if (requiredLiquid == null) return true;
+
+        ItemStack liquidStack = ((CookingPotTileEntity) inventory).getLiquidStack();
+        if (liquidStack == null) return false;
+
+        // Check that item matches and we have enough
+        return liquidStack.isItemEqual(requiredLiquid)
+                && liquidStack.stackSize == requiredLiquid.stackSize;
     }
 
     public boolean consumeInventoryIngredients(IInventory inventory) {
