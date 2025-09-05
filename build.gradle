@@ -20,6 +20,8 @@ archivesBaseName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
 
+
+
 repositories {
     maven {
         name = 'legacy-fabric'
@@ -74,6 +76,7 @@ dependencies {
 
 loom {
     accessWidener = file("src/main/resources/sockscrops.accesswidener")
+    downloadAssets.enabled = false
 }
 
 configurations {

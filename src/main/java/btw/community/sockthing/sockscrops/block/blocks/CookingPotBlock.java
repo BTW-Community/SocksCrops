@@ -6,8 +6,8 @@ import btw.client.render.util.RenderUtils;
 import btw.community.sockthing.sockscrops.block.SCBlocks;
 import btw.community.sockthing.sockscrops.block.tileentities.CookingPotTileEntity;
 import btw.community.sockthing.sockscrops.recipes.CookingPotRecipeManager;
+import btw.community.sockthing.sockscrops.utils.CookingPotUtils;
 import btw.inventory.util.InventoryUtils;
-import btw.item.items.FoodItem;
 import btw.item.util.ItemUtils;
 import net.minecraft.src.*;
 
@@ -15,7 +15,7 @@ import java.util.Random;
 
 public class CookingPotBlock extends BlockContainer {
     public CookingPotBlock(int blockID, String name) {
-        super(blockID, Material.clay);
+        super(blockID, Material.circuits);
         setUnlocalizedName(name);
         setCreativeTab(CreativeTabs.tabDecorations);
     }
@@ -153,7 +153,18 @@ public class CookingPotBlock extends BlockContainer {
     public void onBlockHarvested(World world, int i, int j, int k, int par5, EntityPlayer player) {
 
         CookingPotTileEntity pot = (CookingPotTileEntity) world.getBlockTileEntity(i, j, k);
-        ItemStack newStack = new ItemStack(SCBlocks.cookingPot.blockID, 1, this.getDamageValue(world, i, j, k));
+        int fillHeight = 0;
+        if (pot.getLiquidStack() != null){
+            fillHeight = pot.getLiquidStack().stackSize * 2;
+        }
+        else {
+            if (pot.isFoodCooked()){
+                fillHeight = pot.getCookStacks().size();
+            }
+        }
+
+        int packedItemDamage = CookingPotUtils.packItemData(false, fillHeight, pot.getCookType());
+        ItemStack newStack = new ItemStack(SCBlocks.cookingPot.blockID, 1, packedItemDamage);
 
         if (pot != null ){
             NBTTagCompound root = newStack.hasTagCompound()
@@ -337,10 +348,17 @@ public class CookingPotBlock extends BlockContainer {
 
     //----------- Client Side Functionality -----------//
 
+    private Icon waterIcon;
+    private Icon milkIcon;
+    private Icon chocolateMilkIcon;
 
     @Override
     public void registerIcons(IconRegister par1IconRegister) {
         blockIcon = par1IconRegister.registerIcon("pottery_clay_dry");
+
+        waterIcon = par1IconRegister.registerIcon("water");
+        milkIcon = par1IconRegister.registerIcon("fcBlockMilk");
+        chocolateMilkIcon = par1IconRegister.registerIcon("fcBlockMilkChocolate");
     }
 
     @Override
@@ -351,12 +369,28 @@ public class CookingPotBlock extends BlockContainer {
 
     @Override
     public void renderBlockAsItem(RenderBlocks renderer, int iItemDamage, float fBrightness) {
+
+
         //Base
         renderer.setRenderBounds(
                 4/16D,0,4/16D,
                 1D - 4/16D, 2/16D, 1D - 4/16D
         );
         RenderUtils.renderInvBlockWithTexture(renderer, this, -0.5F, -0.5F, -0.5F, blockIcon);
+
+        //contents
+        if (iItemDamage > 0){
+            double height = CookingPotUtils.unpackFillHeight(iItemDamage)/16D;
+            int fillType = CookingPotUtils.unpackFillType(iItemDamage);
+            Icon contentsIcon = getContentsIconFromFillType(fillType);
+
+            renderer.setRenderBounds(
+                    4/16D, height,4/16D,
+                    1D - 4/16D, height, 1D - 4/16D
+            );
+            RenderUtils.renderInvBlockWithTexture(renderer, this, -0.5F, -0.5F, -0.5F, contentsIcon);
+        }
+
 
         //walls
         renderer.setRenderBounds(
@@ -382,6 +416,16 @@ public class CookingPotBlock extends BlockContainer {
                 12/16D, 7/16D, 13/16D
         );
         RenderUtils.renderInvBlockWithTexture(renderer, this, -0.5F, -0.5F, -0.5F, blockIcon);
+    }
+
+    private Icon getContentsIconFromFillType(int fillType) {
+        if (fillType > 0) {
+            if (fillType == CookingPotTileEntity.WATER) return waterIcon;
+            if (fillType == CookingPotTileEntity.MILK) return milkIcon;
+            if (fillType == CookingPotTileEntity.CHOCOLATE_MILK) return chocolateMilkIcon;
+        }
+
+        return Block.gravel.blockIcon;
     }
 
     @Override

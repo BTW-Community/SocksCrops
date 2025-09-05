@@ -14,7 +14,7 @@ import java.util.List;
 public class CookingPotTileEntity extends TileEntity implements TileEntityDataPacketHandler, IInventory
 {
 
-    public float lidProgress = 0.0F;   // 0 = closed, 1 = fully open
+    public float lidProgress;   // 0 = closed, 1 = fully open
     public boolean lidOpen;
 
 

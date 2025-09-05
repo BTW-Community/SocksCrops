@@ -3,6 +3,7 @@ package btw.community.sockthing.sockscrops.mixins;
 import btw.block.BTWBlocks;
 import btw.client.fx.BTWEffectManager;
 import btw.community.sockthing.sockscrops.block.SCBlocks;
+import btw.community.sockthing.sockscrops.block.tileentities.CookingPotTileEntity;
 import btw.community.sockthing.sockscrops.utils.CookingPotUtils;
 import btw.entity.mob.CowEntity;
 import net.minecraft.src.*;
@@ -29,9 +30,9 @@ public abstract class CowEntityMixin {
         {
             if ( gotMilk() )
             {
-                stack.stackSize--;
 
                 CookingPotUtils.setLiquidStack(stack, new ItemStack(BTWBlocks.milkFluid, 3));
+                stack.setItemDamage(CookingPotTileEntity.MILK);
 
                 thisCow.attackEntityFrom( DamageSource.generic, 0 );
 

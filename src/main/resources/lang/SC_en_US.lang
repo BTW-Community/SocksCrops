@@ -150,6 +150,9 @@ tile.unfired_pottery.pot.name=Unfired Cooking Pot
 tile.flower.flower.name=Yellow Flower
 tile.flower.dandilion.name=Yellow Flower
 
+##Missing BTW
+tile.fcBlockMilk.name=Milk
+tile.fcBlockMilkChocolate.name=Chocolate Milk
 
 ### Item ###
 # Tools

@@ -23,122 +23,100 @@ public class CookingPotItemBlock extends ItemBlock {
         this.setMaxStackSize(1);
     }
 
-
-    @Override
-    public ItemStack onItemRightClick(ItemStack itemStack, World world, EntityPlayer player) {
-
-        MovingObjectPosition posClicked =
-                MiscUtils.getMovingObjectPositionFromPlayerHitWaterAndLava(world, player, true);
-
-        if ( posClicked != null && posClicked.typeOfHit == EnumMovingObjectType.TILE ) {
-            int i = posClicked.blockX;
-            int j = posClicked.blockY;
-            int k = posClicked.blockZ;
-
-            int iBlockID = world.getBlockId(i, j, k);
-
-            if (world.getBlockMaterial(i, j, k) == Material.water) {
-                if (MiscUtils.doesWaterHaveValidSource(world, i, j, k, 128)) {
-                    if (--itemStack.stackSize <= 0) {
-
-                        CookingPotUtils.setLiquidStack(itemStack, new ItemStack(Block.waterStill, 3));
-
-                        return new ItemStack(Item.bucketWater);
-                    } else if (!player.inventory.addItemStackToInventory(
-                            new ItemStack(Item.bucketWater))) {
-                        player.dropPlayerItem(new ItemStack(Item.bucketWater.itemID, 1, 0));
-                    }
-                }
-
-                return itemStack;
-            }
-        }
-
-        return itemStack;
-    }
-
-
-
     /**
      * Callback for item usage. If the item does something special on right clicking, he will have one of those. Return
      * True if something happen and false if it don't. This is for ITEMS, not BLOCKS
      */
     public boolean onItemUse(ItemStack itemStack, EntityPlayer player, World world, int x, int y, int z, int meta, float par8, float par9, float par10)
     {
-        if (meta == 0)
+        TileEntity campfire = world.getBlockTileEntity(x, y, z);
+
+        // Code added to prevent the player from placing blocks while in mid air
+        if (!player.canPlayerEdit(x, y, z, meta, itemStack))
+        {
+            return false;
+        }
+        else if (!SCBlocks.cookingPot.canPlaceBlockAt(world, x, y, z) )
         {
             return false;
         }
         else
         {
-            TileEntity campfire = world.getBlockTileEntity(x, y, z);
+            //Fill with water
+            MovingObjectPosition posClicked =
+                    MiscUtils.getMovingObjectPositionFromPlayerHitWaterAndLava(world, player, true);
 
-            // Code added to prevent the player from placing blocks while in mid air
-            if (!player.canPlayerEdit(x, y, z, meta, itemStack))
-            {
-                return false;
+            if ( posClicked != null && posClicked.typeOfHit == EnumMovingObjectType.TILE ) {
+                int i = posClicked.blockX;
+                int j = posClicked.blockY;
+                int k = posClicked.blockZ;
+
+                if (world.getBlockMaterial(i, j, k) == Material.water) {
+                    if (MiscUtils.doesWaterHaveValidSource(world, i, j, k, 128)) {
+                        if (CookingPotUtils.setLiquidStack(itemStack, new ItemStack(Block.waterStill, 3))){
+                            itemStack.setItemDamage(CookingPotTileEntity.WATER);
+                            return true;
+                        }
+                    }
+                }
             }
-            else if (!SCBlocks.cookingPot.canPlaceBlockAt(world, x, y, z) )
+
+
+            int rot = MathHelper.floor_double((double)(player.rotationYaw * 8.0F / 360.0F) + 0.5D) & 7;
+            TileEntity te;
+
+            System.out.println(rot);
+
+            if (campfire != null && campfire instanceof CampfireTileEntity)
             {
-                return false;
+                world.setBlock(x, y + 1, z, SCBlocks.cookingPot.blockID, 2, 3);
+
+                te = world.getBlockTileEntity(x, y + 1, z);
+                ((CookingPotTileEntity)te).setOnCampfire(true);
             }
+            // FCMOD: Changed to notify neighbors
+            //par3World.setBlock(par4, par5, par6, Block.skull.blockID, par7, 2);
             else
             {
+                world.setBlock(x, y + 1, z, SCBlocks.cookingPot.blockID, 1, 3);
 
-                int rot = MathHelper.floor_double((double)(player.rotationYaw * 8.0F / 360.0F) + 0.5D) & 7;
-                TileEntity te;
+                te = world.getBlockTileEntity(x, y + 1, z);
+                ((CookingPotTileEntity)te).setOnCampfire(false);
+            }
 
-                System.out.println(rot);
+            if (te instanceof CookingPotTileEntity) {
+                CookingPotTileEntity potTE = (CookingPotTileEntity) te;
+                potTE.setSkullRotation(rot);
 
-                if (campfire != null && campfire instanceof CampfireTileEntity)
-                {
-                    world.setBlock(x, y + 1, z, SCBlocks.cookingPot.blockID, 2, 3);
+                if (itemStack.hasTagCompound() && itemStack.stackTagCompound.hasKey("Items")) {
+                    NBTTagList tagList = itemStack.stackTagCompound.getTagList("Items");
 
-                    te = world.getBlockTileEntity(x, y + 1, z);
-                    ((CookingPotTileEntity)te).setOnCampfire(true);
-                }
-                // FCMOD: Changed to notify neighbors
-                //par3World.setBlock(par4, par5, par6, Block.skull.blockID, par7, 2);
-                else
-                {
-                    world.setBlock(x, y + 1, z, SCBlocks.cookingPot.blockID, 1, 3);
+                    for (int i = 0; i < tagList.tagCount(); i++) {
+                        NBTTagCompound itemTag = (NBTTagCompound) tagList.tagAt(i);
+                        int slot = itemTag.getByte("Slot") & 0xFF;
 
-                    te = world.getBlockTileEntity(x, y + 1, z);
-                    ((CookingPotTileEntity)te).setOnCampfire(false);
-                }
-
-                if (te instanceof CookingPotTileEntity) {
-                    CookingPotTileEntity potTE = (CookingPotTileEntity) te;
-                    potTE.setSkullRotation(rot);
-
-                    if (itemStack.hasTagCompound() && itemStack.stackTagCompound.hasKey("Items")) {
-                        NBTTagList tagList = itemStack.stackTagCompound.getTagList("Items");
-
-                        for (int i = 0; i < tagList.tagCount(); i++) {
-                            NBTTagCompound itemTag = (NBTTagCompound) tagList.tagAt(i);
-                            int slot = itemTag.getByte("Slot") & 0xFF;
-
-                            if (slot >= 0 && slot < 6) {
-                                ItemStack stack = ItemStack.loadItemStackFromNBT(itemTag);
-                                if (stack != null) {
-                                    potTE.setCookStack(slot, stack);
-                                }
+                        if (slot >= 0 && slot < 6) {
+                            ItemStack stack = ItemStack.loadItemStackFromNBT(itemTag);
+                            if (stack != null) {
+                                potTE.setCookStack(slot, stack);
                             }
                         }
                     }
-                    if (itemStack.hasTagCompound() && itemStack.stackTagCompound.hasKey("liquidStack")) {
-                        NBTTagCompound tag = itemStack.stackTagCompound.getCompoundTag("liquidStack");
-                        ItemStack stack = ItemStack.loadItemStackFromNBT(tag);
-                        if (stack != null) {
-                            if (!world.isRemote) potTE.setLiquidStack(stack);
-                            world.markBlockForUpdate(x,y,z);
-                        }
+                }
+
+                if (itemStack.hasTagCompound() && itemStack.stackTagCompound.hasKey("liquidStack")) {
+                    NBTTagCompound tag = itemStack.stackTagCompound.getCompoundTag("liquidStack");
+                    ItemStack stack = ItemStack.loadItemStackFromNBT(tag);
+                    if (stack != null) {
+                        if (!world.isRemote) potTE.setLiquidStack(stack);
+                        world.markBlockForUpdate(x,y,z);
                     }
                 }
 
-                --itemStack.stackSize;
-                return true;
             }
+
+            --itemStack.stackSize;
+            return true;
         }
     }
 
