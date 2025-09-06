@@ -36,44 +36,44 @@ public class CookingPotModel extends ModelBase {
         this.pot.setTextureOffset(24, 0).addBox(-6.0F, -6.0F, -2.0F, 1, 1, 4, 0.0F);
         this.pot.setTextureOffset(24, 0).addBox(5.0F, -6.0F, -2.0F, 1, 1, 4, 0.0F);
         this.pot.setTextureOffset(44, 0).addBox(-4.0F, -7.0F, 3.0F, 8, 6, 2, 0.0F);
-        this.pot.setTextureOffset(0, 0).addBox(-4.0F, -1.0F, -4.0F, 8, 1, 8, 0.0F);
+        this.pot.setTextureOffset(0, 9).addBox(-4.0F, -1.0F, -4.0F, 8, 1, 8, 0.0F);
 
 
         spoiled = new ModelRenderer(this);
         spoiled.setRotationPoint(0.0F, 0.0F, 0.0F);
-        this.spoiled.setTextureOffset(-6, 16).addBox(-3.0F, -6.0F, -3.0F, 6, 1, 6, 0.0F);
+        this.spoiled.setTextureOffset(-6, 32).addBox(-3.0F, -6.0F, -3.0F, 6, 1, 6, 0.0F);
 
         burned = new ModelRenderer(this);
         burned.setRotationPoint(0.0F, 0.0F, 0.0F);
-        this.burned.setTextureOffset(0, 16).addBox(-3.0F, -6.0F, -3.0F, 6, 1, 6, 0.0F);
+        this.burned.setTextureOffset(0, 32).addBox(-3.0F, -6.0F, -3.0F, 6, 1, 6, 0.0F);
 
         water = new ModelRenderer(this);
         water.setRotationPoint(0.0F, 0.0F, 0.0F);
-        this.water.setTextureOffset(6, 16).addBox(-3.0F, -6.0F, -3.0F, 6, 1, 6, 0.0F);
+        this.water.setTextureOffset(6, 32).addBox(-3.0F, -6.0F, -3.0F, 6, 1, 6, 0.0F);
 
         milk = new ModelRenderer(this);
         milk.setRotationPoint(0.0F, 0.0F, 0.0F);
-        this.milk.setTextureOffset(12, 16).addBox(-3.0F, -6.0F, -3.0F, 6, 1, 6, 0.0F);
+        this.milk.setTextureOffset(12, 32).addBox(-3.0F, -6.0F, -3.0F, 6, 1, 6, 0.0F);
 
         chocolateMilk = new ModelRenderer(this);
         chocolateMilk.setRotationPoint(0.0F, 0.0F, 0.0F);
-        this.chocolateMilk.setTextureOffset(18, 16).addBox(-3.0F, -6.0F, -3.0F, 6, 1, 6, 0.0F);
+        this.chocolateMilk.setTextureOffset(18, 32).addBox(-3.0F, -6.0F, -3.0F, 6, 1, 6, 0.0F);
 
         mushroom = new ModelRenderer(this);
         mushroom.setRotationPoint(0.0F, 0.0F, 0.0F);
-        this.mushroom.setTextureOffset(24, 16).addBox(-3.0F, -6.0F, -3.0F, 6, 1, 6, 0.0F);
+        this.mushroom.setTextureOffset(24, 32).addBox(-3.0F, -6.0F, -3.0F, 6, 1, 6, 0.0F);
 
         beef = new ModelRenderer(this);
         beef.setRotationPoint(0.0F, 0.0F, 0.0F);
-        this.beef.setTextureOffset(30, 15).addBox(-3.0F, -6.0F, -3.0F, 6, 1, 6, 0.0F);
+        this.beef.setTextureOffset(30, 32).addBox(-3.0F, -6.0F, -3.0F, 6, 1, 6, 0.0F);
 
         chicken = new ModelRenderer(this);
         chicken.setRotationPoint(0.0F, 0.0F, 0.0F);
-        this.chicken.setTextureOffset(36, 16).addBox(-3.0F, -6.0F, -3.0F, 6, 1, 6, 0.0F);
+        this.chicken.setTextureOffset(36, 32).addBox(-3.0F, -6.0F, -3.0F, 6, 1, 6, 0.0F);
 
         chowder = new ModelRenderer(this);
         chowder.setRotationPoint(0.0F, 0.0F, 0.0F);
-        this.chowder.setTextureOffset(42, 16).addBox(-3.0F, -6.0F, -3.0F, 6, 1, 6, 0.0F);
+        this.chowder.setTextureOffset(42, 32).addBox(-3.0F, -6.0F, -3.0F, 6, 1, 6, 0.0F);
     }
 
     /**
@@ -154,19 +154,19 @@ public class CookingPotModel extends ModelBase {
         chicken.rotateAngleY = f3 / (180F / (float)Math.PI);
         chowder.rotateAngleY = f3 / (180F / (float)Math.PI);
 
-        float var8 = (MathHelper.sin(f * 0.02F) * 0.1F + 1.25F) * f4;
-
-        if (f4 != 0)
-        {
-            this.lid.rotateAngleZ = MathHelper.sin(var8) * 0.15F;
-            this.lid.rotateAngleX = -MathHelper.cos(var8) * 0.15F;
-            lid.setRotationPoint(0.0F, -8.0F, 0.0F);
-        }
-        else
-        {
-            this.lid.rotateAngleZ = 0;
-            this.lid.rotateAngleX = 0;
-            lid.setRotationPoint(0.0F, -7.0F, 0.0F);
-        }
+//        float var8 = (MathHelper.sin(f * 0.02F) * 0.1F + 1.25F) * f4;
+//
+//        if (f4 != 0)
+//        {
+//            this.lid.rotateAngleZ = MathHelper.sin(var8) * 0.15F;
+//            this.lid.rotateAngleX = -MathHelper.cos(var8) * 0.15F;
+//            lid.setRotationPoint(0.0F, -8.0F, 0.0F);
+//        }
+//        else
+//        {
+//            this.lid.rotateAngleZ = 0;
+//            this.lid.rotateAngleX = 0;
+//            lid.setRotationPoint(0.0F, -7.0F, 0.0F);
+//        }
     }
 }

@@ -71,7 +71,7 @@ public class CookingPotTileEntity extends TileEntity implements TileEntityDataPa
             if (lidProgress < 0.0F) lidProgress = 0.0F;
         }
 
-
+        //used for wobble animation
         if (isFoodCooked() && getFireLevel() >= 2)
         {
             ++this.tickCount;
@@ -79,7 +79,7 @@ public class CookingPotTileEntity extends TileEntity implements TileEntityDataPa
         else this.tickCount = 0;
 
         int fireLevel = getFireLevel();
-        if ( fireLevel > 0 )
+        if ( fireLevel > 1 )
         {
             updateCookState();
         }
@@ -388,11 +388,13 @@ public class CookingPotTileEntity extends TileEntity implements TileEntityDataPa
             }
         }
         else {
-            int liquidID = getLiquidStack().itemID;
+            if (getLiquidStack() != null) {
+                int liquidID = getLiquidStack().itemID;
 
-            if (liquidID == Block.waterStill.blockID) return WATER;
-            if (liquidID == BTWBlocks.milkFluid.blockID) return MILK;
-            if (liquidID == BTWBlocks.chocolateMilkFluid.blockID) return CHOCOLATE_MILK;
+                if (liquidID == Block.waterStill.blockID) return WATER;
+                if (liquidID == BTWBlocks.milkFluid.blockID) return MILK;
+                if (liquidID == BTWBlocks.chocolateMilkFluid.blockID) return CHOCOLATE_MILK;
+            }
         }
 
         return EMPTY;

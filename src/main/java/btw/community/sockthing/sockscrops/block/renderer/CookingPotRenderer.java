@@ -29,7 +29,10 @@ public class CookingPotRenderer extends TileEntitySpecialRenderer {
         // Calculate rotation from tile entity
         rot = (float) (potTile.getSkullRotation() * 360) / 8.0F;
 
-        this.bindTextureByName("/scmodtex/cookingPot/cooking_pot.png");
+        if (potTile.isFoodCooked()){
+            this.bindTextureByName("/scmodtex/cookingPot/cooking_pot_charred.png");
+        }
+        else this.bindTextureByName("/scmodtex/cookingPot/cooking_pot.png");
 
         GL11.glPushMatrix();
         GL11.glDisable(GL11.GL_CULL_FACE);
@@ -59,14 +62,15 @@ public class CookingPotRenderer extends TileEntitySpecialRenderer {
         GL11.glRotatef(rotation, 0F, 1F, 0F); // rotate lid
 
         // Optional wobble
-//        if (false) {
-//            float angle = potTile.tickCount * 0.3F;
-//            float wobbleAmount = 5F;
-//            float wobbleX = (float)Math.sin(angle) * wobbleAmount;
-//            float wobbleY = (float)Math.cos(angle) * wobbleAmount;
-//            GL11.glRotatef(wobbleX, 1F, 0F, 0F);
-//            GL11.glRotatef(wobbleY, 0F, 1F, 0F);
-//        }
+        if (potTile.isFoodCooked() && potTile.lidProgress == 0F && potTile.getFireLevel() > 1) {
+            float angle = potTile.tickCount * 0.9F;
+            float wobbleAmount = 5F;
+            float wobbleX = (float)Math.sin(angle) * wobbleAmount;
+            float wobbleY = (float)Math.cos(angle) * wobbleAmount;
+            GL11.glRotatef(wobbleX, 1F, 0F, 0F);
+            GL11.glRotatef(wobbleY, 0F, 1F, 0F);
+        }
+        else GL11.glTranslatef(0F, 1/16F, 0F);     // y fix
 
         pot.renderLid(null, 0.0F, 0.0F, 0.0F, rot, time, scale);
         GL11.glPopMatrix();

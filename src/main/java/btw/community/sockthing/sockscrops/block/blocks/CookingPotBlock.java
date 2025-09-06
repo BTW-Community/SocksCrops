@@ -385,14 +385,19 @@ public class CookingPotBlock extends BlockContainer {
 
     @Override
     public void renderBlockAsItem(RenderBlocks renderer, int iItemDamage, float fBrightness) {
-
-
+        Icon sideIcon = blockIcon;
+        Icon bottomIcon = blockIcon;
+        int fillType = CookingPotUtils.unpackFillType(iItemDamage);
+        if (fillType > 5) {
+            sideIcon = charredClaySideIcon;
+            bottomIcon = charredClayIcon;
+        }
         //Base
         renderer.setRenderBounds(
                 4/16D,0,4/16D,
                 1D - 4/16D, 2/16D, 1D - 4/16D
         );
-        RenderUtils.renderInvBlockWithTexture(renderer, this, -0.5F, -0.5F, -0.5F, blockIcon);
+        RenderUtils.renderInvBlockWithTexture(renderer, this, -0.5F, -0.5F, -0.5F, bottomIcon);
 
         //contents
 //        if (iItemDamage > 0){
@@ -426,23 +431,36 @@ public class CookingPotBlock extends BlockContainer {
                 3/16D,1/16D,4/16D,
                 5/16D, 7/16D, 12/16D
         );
-        RenderUtils.renderInvBlockWithTexture(renderer, this, -0.5F, -0.5F, -0.5F, blockIcon);
+        RenderUtils.renderInvBlockWithTexture(renderer, this, -0.5F, -0.5F, -0.5F, sideIcon);
 
         renderer.setRenderBounds(
                 11/16D,1/16D,4/16D,
                 13/16D, 7/16D, 12/16D
         );
-        RenderUtils.renderInvBlockWithTexture(renderer, this, -0.5F, -0.5F, -0.5F, blockIcon);
+        RenderUtils.renderInvBlockWithTexture(renderer, this, -0.5F, -0.5F, -0.5F, sideIcon);
 
         renderer.setRenderBounds(
                 4/16D,1/16D,3/16D,
                 12/16D, 7/16D, 5/16D
         );
-        RenderUtils.renderInvBlockWithTexture(renderer, this, -0.5F, -0.5F, -0.5F, blockIcon);
+        RenderUtils.renderInvBlockWithTexture(renderer, this, -0.5F, -0.5F, -0.5F, sideIcon);
 
         renderer.setRenderBounds(
                 4/16D,1/16D,11/16D,
                 12/16D, 7/16D, 13/16D
+        );
+        RenderUtils.renderInvBlockWithTexture(renderer, this, -0.5F, -0.5F, -0.5F, sideIcon);
+
+        //handles
+        renderer.setRenderBounds(
+                2/16D,5/16D,6/16D,
+                3/16D, 6/16D, 10/16D
+        );
+        RenderUtils.renderInvBlockWithTexture(renderer, this, -0.5F, -0.5F, -0.5F, blockIcon);
+
+        renderer.setRenderBounds(
+                13/16D,5/16D,6/16D,
+                14/16D, 6/16D, 10/16D
         );
         RenderUtils.renderInvBlockWithTexture(renderer, this, -0.5F, -0.5F, -0.5F, blockIcon);
     }
