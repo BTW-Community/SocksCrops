@@ -1,5 +1,7 @@
 package btw.community.sockthing.sockscrops.block.blocks;
 
+import btw.BTWMod;
+import btw.block.BTWBlocks;
 import btw.block.tileentity.CampfireTileEntity;
 import btw.client.fx.BTWEffectManager;
 import btw.client.render.util.RenderUtils;
@@ -15,7 +17,7 @@ import java.util.Random;
 
 public class CookingPotBlock extends BlockContainer {
     public CookingPotBlock(int blockID, String name) {
-        super(blockID, Material.circuits);
+        super(blockID, BTWBlocks.miscMaterial);
         setUnlocalizedName(name);
         setCreativeTab(CreativeTabs.tabDecorations);
     }
@@ -31,112 +33,146 @@ public class CookingPotBlock extends BlockContainer {
     }
 
     @Override
-    public boolean onBlockActivated( World world, int i, int j, int k, EntityPlayer player, int iFacing, float fXClick, float fYClick, float fZClick )
+    public boolean onBlockActivated( World world, int x, int y, int z, EntityPlayer player, int facing, float xClick, float yClick, float zClick )
     {
-        CookingPotTileEntity pot = (CookingPotTileEntity)world.getBlockTileEntity( i, j, k );
+        CookingPotTileEntity pot = (CookingPotTileEntity)world.getBlockTileEntity( x, y, z );
 
         ItemStack[] cookStack = pot.getCookStacks().toArray(new ItemStack[0]);
 
         ItemStack heldStack = player.getCurrentEquippedItem();
 
-        if (pot != null) {
-            if (!pot.isLidOpen()) {
-                pot.setLidOpen(true);
-                world.markBlockForUpdate(i, j, k);
-                return true;
-            } else {
-                //lid is open
-                if (heldStack == null) {
-                    //hand is empty
-                    if (player.isSneaking()){
-                        pot.setLidOpen(false);
-                        world.markBlockForUpdate(i, j, k);
-                        return true;
+        boolean emptyHand = heldStack == null;
+
+        if (!pot.isLidOpen()) {
+            return openOrCloseLid(pot, true, world, x, y, z);
+        } else { //open lid
+            if (emptyHand) {
+                if (player.isSneaking()){
+                    return openOrCloseLid(pot, false, world, x, y, z);
+                }
+
+                if (!pot.isFoodCooked()){
+                    if (removeItem(world, x, y, z, player, pot, cookStack)) return true;
+                }
+            } else { //holding something
+                if (isValidLiquidContainer(heldStack)){
+                    if (!pot.isFoodCooked() && pot.getLiquidStack() == null) {
+                        return addLiquidAndReturnContainer(world, x, y, z, player, pot, heldStack);
+                    }
+                }
+                else {
+                    if (pot.isFoodCooked()){
+                        if (heldStack.itemID == Item.bowlEmpty.itemID) {
+                            if (takeServing(world, x, y, z, player, pot, cookStack, heldStack)) return true;
+                        }
                     }
 
-                    if (!pot.isFoodCooked()){
-                        int slot = InventoryUtils.getFirstOccupiedStack(pot);
-                        if (slot != -1) {
-                            ItemUtils.givePlayerStackOrEject(player, cookStack[slot], i, j, k);
-                            pot.setCookStack(slot,null);
-
-                            if (world.isRemote) {
-                                world.playAuxSFX(BTWEffectManager.ITEM_COLLECTION_POP_EFFECT_ID, i, j, k, 0);
-                            }
-                            return true;
+                    if (!pot.isFoodCooked() && pot.getLiquidStack() != null) {
+                        if (heldStack.itemID == Item.bucketEmpty.itemID){
+                            return removeLiquidAndReturnItem(world, x, y, z, player, pot, heldStack);
                         }
                     }
 
-                } else {
-//                    if (world.isRemote) return false;
-                        //hand is full
-                    if (isValidLiquidContainer(heldStack)){
-
-                        if (pot.getLiquidStack() == null) {
-                            pot.setLiquidStackAndConvert(new ItemStack(heldStack.itemID, heldStack.stackSize, heldStack.getItemDamage()));
-                            heldStack.stackSize--;
-
-                            if (world.isRemote) {
-                                world.playAuxSFX(BTWEffectManager.ITEM_COLLECTION_POP_EFFECT_ID, i, j, k, 0);
-                            }
-
-                            ItemUtils.givePlayerStackOrEject(player, new ItemStack(Item.bucketEmpty));
-
-//                        world.markBlockForUpdate(i, j, k);
-                            return true;
-                        }
-                        else {
-                            if (heldStack.itemID == Item.bucketEmpty.itemID){
-                                ItemUtils.givePlayerStackOrEject(player, CookingPotTileEntity.convertLiquidToItemStack(pot.getLiquidStack()));
-                                pot.setLiquidStack(null);
-                                heldStack.stackSize--;
-                                world.markBlockForUpdate(i, j, k);
-                            }
-                        }
-
+                    if (heldStack.getItem() instanceof Item) {
+                        if (addItem(world, x, y, z, player, pot, heldStack)) return true;
                     }
-                    else {
-                        if (pot.isFoodCooked()){
-                            if (heldStack.itemID == Item.bowlEmpty.itemID) {
-                                int slot = InventoryUtils.getFirstOccupiedStack(pot);
-                                if (slot != -1) {
-                                    ItemUtils.givePlayerStackOrEject(player, cookStack[slot], i, j, k);
-                                    pot.setCookStack(slot,null);
-
-                                    if (world.isRemote) {
-                                        world.playAuxSFX(BTWEffectManager.ITEM_COLLECTION_POP_EFFECT_ID, i, j, k, 0);
-                                    }
-                                    heldStack.stackSize--;
-                                    return true;
-                                }
-                            }
-                        }
-                        else {
-                            if (heldStack.getItem() instanceof Item) {
-                                int slot = InventoryUtils.getFirstEmptyStackInSlotRange(pot, 0, 5);
-
-                                if (slot != -1){
-                                    pot.setCookStack(slot, new ItemStack(heldStack.itemID, 1, heldStack.getItemDamage()));
-                                    heldStack.stackSize--;
-
-                                    if (!world.isRemote) {
-                                        world.playAuxSFX(BTWEffectManager.ITEM_COLLECTION_POP_EFFECT_ID, i, j, k, 0);
-                                    }
-
-//                            world.markBlockForUpdate(i, j, k);
-                                    return true;
-                                }
-                            }
-                        }
-
-                    }
-
-
                 }
             }
         }
 
         return false;
+    }
+
+    private static boolean addItem(World world, int i, int j, int k, EntityPlayer player, CookingPotTileEntity pot, ItemStack heldStack) {
+        // Find first occupied stack in the pot (null if empty)
+        ItemStack firstStack = pot.getCookStack(0);
+
+        int slot = InventoryUtils.getFirstEmptyStackInSlotRange(pot, 0, 5);
+
+        // No empty slot available
+        if (slot == -1) return false;
+
+        // If the pot has cooked food, only allow the same item to be added and not more than 4
+        if (pot.isFoodCooked() && !firstStack.isItemEqual(heldStack) && slot > 4) return false;
+
+        // If the pot doesn't have cookedFood, don't allow cooked food to be added
+        if (firstStack != null && !pot.isFoodCooked() && CookingPotRecipeManager.isResult(heldStack) ) return false;
+
+        // Add item to the pot
+        pot.setCookStack(slot, new ItemStack(heldStack.itemID, 1, heldStack.getItemDamage()));
+        heldStack.stackSize--;
+
+        // Play effect on server side
+        if (!world.isRemote) {
+            world.playAuxSFX(BTWEffectManager.ITEM_COLLECTION_POP_EFFECT_ID, i, j, k, 0);
+        }
+
+        // Give empty bowl if the item can be cooked
+        if (CookingPotRecipeManager.isResult(heldStack)) {
+            ItemUtils.givePlayerStackOrEject(player, new ItemStack(Item.bowlEmpty));
+        }
+
+        return true;
+    }
+    private static boolean takeServing(World world, int i, int j, int k, EntityPlayer player, CookingPotTileEntity pot, ItemStack[] cookStack, ItemStack heldStack) {
+        int slot = InventoryUtils.getFirstOccupiedStack(pot);
+        if (slot != -1) {
+            ItemUtils.givePlayerStackOrEject(player, cookStack[slot], i, j, k);
+            pot.setCookStack(slot,null);
+
+            if (world.isRemote) {
+                world.playAuxSFX(BTWEffectManager.ITEM_COLLECTION_POP_EFFECT_ID, i, j, k, 0);
+            }
+            heldStack.stackSize--;
+            return true;
+        }
+        return false;
+    }
+
+    private static boolean removeLiquidAndReturnItem(World world, int i, int j, int k, EntityPlayer player, CookingPotTileEntity pot, ItemStack heldStack) {
+        if (CookingPotTileEntity.convertLiquidToItemStack(pot.getLiquidStack()) == null) return false;
+
+        ItemUtils.givePlayerStackOrEject(player, CookingPotTileEntity.convertLiquidToItemStack(pot.getLiquidStack()));
+        pot.setLiquidStack(null);
+        heldStack.stackSize--;
+        world.markBlockForUpdate(i, j, k);
+        return true;
+    }
+
+    private static boolean addLiquidAndReturnContainer(World world, int i, int j, int k, EntityPlayer player, CookingPotTileEntity pot, ItemStack heldStack) {
+        if (pot.getLiquidStack() != null) return false;
+
+        pot.setLiquidStackAndConvert(new ItemStack(heldStack.itemID, heldStack.stackSize, heldStack.getItemDamage()));
+        heldStack.stackSize--;
+
+        if (world.isRemote) {
+            world.playAuxSFX(BTWEffectManager.ITEM_COLLECTION_POP_EFFECT_ID, i, j, k, 0);
+        }
+
+        ItemUtils.givePlayerStackOrEject(player, new ItemStack(Item.bucketEmpty));
+
+//                        world.markBlockForUpdate(i, j, k);
+        return true;
+    }
+
+    private static boolean removeItem(World world, int i, int j, int k, EntityPlayer player, CookingPotTileEntity pot, ItemStack[] cookStack) {
+        int slot = CookingPotUtils.getLastOccupiedStack(pot);
+        if (slot != -1) {
+            ItemUtils.givePlayerStackOrEject(player, cookStack[slot], i, j, k);
+            pot.setCookStack(slot,null);
+
+            if (world.isRemote) {
+                world.playAuxSFX(BTWEffectManager.ITEM_COLLECTION_POP_EFFECT_ID, i, j, k, 0);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    private static boolean openOrCloseLid(CookingPotTileEntity pot, boolean setOpen, World world, int i, int j, int k) {
+        pot.setLidOpen(setOpen);
+        world.markBlockForUpdate(i, j, k);
+        return true;
     }
 
     public boolean isValidCookItem( ItemStack stack )

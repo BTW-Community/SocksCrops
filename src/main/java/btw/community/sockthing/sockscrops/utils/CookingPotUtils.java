@@ -2,6 +2,7 @@ package btw.community.sockthing.sockscrops.utils;
 
 import btw.community.sockthing.sockscrops.block.blocks.CookingPotBlock;
 import btw.community.sockthing.sockscrops.block.tileentities.CookingPotTileEntity;
+import net.minecraft.src.IInventory;
 import net.minecraft.src.ItemStack;
 import net.minecraft.src.NBTTagCompound;
 
@@ -52,6 +53,15 @@ public class CookingPotUtils {
     // Unpack fillType (0-31)
     public static int unpackFillType(int damage) {
         return (damage >> 4) & 0b11111;
+    }
+
+    public static int getLastOccupiedStack(IInventory inventory) {
+        for (int iTempSlot = inventory.getSizeInventory() - 1; iTempSlot >= 0; iTempSlot--) {
+            if (inventory.getStackInSlot(iTempSlot) != null) {
+                return iTempSlot;
+            }
+        }
+        return -1;
     }
 
 }

@@ -1,5 +1,6 @@
 package btw.community.sockthing.sockscrops.recipes;
 
+import btw.AddonHandler;
 import btw.community.sockthing.sockscrops.block.tileentities.CookingPotTileEntity;
 import btw.crafting.recipe.types.BulkRecipe;
 import net.minecraft.src.IInventory;
@@ -16,6 +17,29 @@ public class CookingPotRecipeManager {
     private static final List<CookingPotRecipe> recipes = new ArrayList<CookingPotRecipe>();
 
     public static void addRecipe(ItemStack[] ingredients, ItemStack liquid, ItemStack result) {
+        // Check number of ingredients
+        if (ingredients.length > 6) {
+            AddonHandler.logWarning("Cooking Pot Recipe cannot have more than 6 ingredients. Provided: " + ingredients.length);
+        }
+
+        // Check each ingredient stack size
+        for (ItemStack ingredient : ingredients) {
+            if (ingredient != null && ingredient.stackSize > 1) {
+                AddonHandler.logWarning("Cooking Pot Recipe ingredient stack size cannot be greater than 1: " + ingredient.stackSize);
+            }
+        }
+
+        // Check the liquid stack size
+        if (liquid != null && liquid.stackSize > 3) {
+            AddonHandler.logWarning("Cooking Pot Recipe liquid stack size cannot be greater than 3: " + liquid.stackSize);
+        }
+
+        // Check the result stack size
+        if (result != null && result.stackSize > 4) {
+            AddonHandler.logWarning("Cooking Pot Recipe result stack size cannot be greater than 4: " + result.stackSize);
+        }
+
+        // If all checks pass, add the recipe
         recipes.add(new CookingPotRecipe(ingredients, liquid, result));
     }
 
