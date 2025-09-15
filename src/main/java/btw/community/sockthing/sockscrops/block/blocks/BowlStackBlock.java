@@ -1,8 +1,13 @@
 package btw.community.sockthing.sockscrops.block.blocks;
 
+import btw.block.util.RayTraceUtils;
 import btw.community.sockthing.sockscrops.block.tileentities.BowlStackTileEntity;
 import btw.item.util.ItemUtils;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.src.*;
+
+import java.util.Random;
 
 public class BowlStackBlock extends BlockContainer {
     public BowlStackBlock(int blockID, String name) {
@@ -11,6 +16,33 @@ public class BowlStackBlock extends BlockContainer {
 
         initBlockBounds(0,0,0,
                 1, 1/128D, 1);
+    }
+
+    @Override
+    public int idDropped(int par1, Random par2Random, int par3) {
+        return 0;
+    }
+
+    @Override
+    public int quantityDropped(Random par1Random) {
+        return 0;
+    }
+
+    @Override
+    public void breakBlock(World world, int i, int j, int k, int par5, int par6) {
+        BowlStackTileEntity bowl = (BowlStackTileEntity) world.getBlockTileEntity(i, j, k);
+        int bowlCount = 0;
+
+        if (bowl.centerPositions[0] > 0) bowlCount += bowl.centerPositions[0];
+
+        for (int slot = 0; slot < 4; slot++) {
+            if (bowl.squarePositions[slot] > 0) bowlCount += bowl.squarePositions[slot];
+            if (bowl.diamondPositions[slot] > 0) bowlCount += bowl.diamondPositions[slot];
+        }
+
+        if (bowlCount > 0) this.dropBlockAsItem_do(world, i, j, k, new ItemStack(Item.bowlEmpty, bowlCount, 0));
+
+        super.breakBlock(world, i, j, k, par5, par6);
     }
 
     @Override
@@ -89,6 +121,253 @@ public class BowlStackBlock extends BlockContainer {
         return false;
     }
 
+    private final AxisAlignedBB[][] squareBounds = new AxisAlignedBB[][]{
+            new AxisAlignedBB[]{
+                    // NW
+                    AxisAlignedBB.getBoundingBox(
+                            (9F / 16F), 0, (1F / 16F),
+                            (15F / 16F), (3F / 16F), (7F / 16F)
+                    ),
+                    AxisAlignedBB.getBoundingBox(
+                            (9F / 16F), 0, (1F / 16F),
+                            (15F / 16F), (6F / 16F), (7F / 16F)
+                    ),
+                    AxisAlignedBB.getBoundingBox(
+                            (9F / 16F), 0, (1F / 16F),
+                            (15F / 16F), (9F / 16F), (7F / 16F)
+                    ),
+                    AxisAlignedBB.getBoundingBox(
+                            (9F / 16F), 0, (1F / 16F),
+                            (15F / 16F), (12F / 16F), (7F / 16F)
+                    )
+            },
+            new AxisAlignedBB[]{
+                    // NE
+                    AxisAlignedBB.getBoundingBox(
+                            (1F / 16F), 0, (1F / 16F),
+                            (7F / 16F), (3F / 16F), (7F / 16F)
+                    ),
+                    AxisAlignedBB.getBoundingBox(
+                            (1F / 16F), 0, (1F / 16F),
+                            (7F / 16F), (6F / 16F), (7F / 16F)
+                    ),
+                    AxisAlignedBB.getBoundingBox(
+                            (1F / 16F), 0, (1F / 16F),
+                            (7F / 16F), (9F / 16F), (7F / 16F)
+                    ),
+                    AxisAlignedBB.getBoundingBox(
+                            (1F / 16F), 0, (1F / 16F),
+                            (7F / 16F), (12F / 16F), (7F / 16F)
+                    )
+            },
+            new AxisAlignedBB[]{
+                    // SW
+                    AxisAlignedBB.getBoundingBox(
+                            (9F / 16F), 0, (9F / 16F),
+                            (15F / 16F), (3F / 16F), (15F / 16F)
+                    ),
+                    AxisAlignedBB.getBoundingBox(
+                            (9F / 16F), 0, (9F / 16F),
+                            (15F / 16F), (6F / 16F), (15F / 16F)
+                    ),
+                    AxisAlignedBB.getBoundingBox(
+                            (9F / 16F), 0, (9F / 16F),
+                            (15F / 16F), (9F / 16F), (15F / 16F)
+                    ),
+                    AxisAlignedBB.getBoundingBox(
+                            (9F / 16F), 0, (9F / 16F),
+                            (15F / 16F), (12F / 16F), (15F / 16F)
+                    )
+            },
+            new AxisAlignedBB[]{
+                    // SE
+                    AxisAlignedBB.getBoundingBox(
+                            (1F / 16F), 0, (9F / 16F),
+                            (7F / 16F), (3F / 16F), (15F / 16F)
+                    ),
+                    AxisAlignedBB.getBoundingBox(
+                            (1F / 16F), 0, (9F / 16F),
+                            (7F / 16F), (6F / 16F), (15F / 16F)
+                    ),
+                    AxisAlignedBB.getBoundingBox(
+                            (1F / 16F), 0, (9F / 16F),
+                            (7F / 16F), (9F / 16F), (15F / 16F)
+                    ),
+                    AxisAlignedBB.getBoundingBox(
+                            (1F / 16F), 0, (9F / 16F),
+                            (7F / 16F), (12F / 16F), (15F / 16F)
+                    )
+            },
+
+    };
+
+    private final AxisAlignedBB[][] diamondBounds = new AxisAlignedBB[][]{
+            new AxisAlignedBB[]{
+                    // N
+                    AxisAlignedBB.getBoundingBox(
+                            (5F / 16F), 0, (0F / 16F),
+                            (11F / 16F), (3F / 16F), (6F / 16F)
+                    ),
+                    AxisAlignedBB.getBoundingBox(
+                            (5F / 16F), 0, (0F / 16F),
+                            (11F / 16F), (6F / 16F), (6F / 16F)
+                    ),
+                    AxisAlignedBB.getBoundingBox(
+                            (5F / 16F), 0, (0F / 16F),
+                            (11F / 16F), (9F / 16F), (6F / 16F)
+                    ),
+                    AxisAlignedBB.getBoundingBox(
+                            (5F / 16F), 0, (0F / 16F),
+                            (11F / 16F), (12F / 16F), (6F / 16F)
+                    ),
+            },
+            new AxisAlignedBB[]{
+                    // W
+                    AxisAlignedBB.getBoundingBox(
+                            (10F / 16F), 0, (5F / 16F),
+                            (16F / 16F), (3F / 16F), (11F / 16F)
+                    ),
+                    AxisAlignedBB.getBoundingBox(
+                            (10F / 16F), 0, (5F / 16F),
+                            (16F / 16F), (6F / 16F), (11F / 16F)
+                    ),
+                    AxisAlignedBB.getBoundingBox(
+                            (10F / 16F), 0, (5F / 16F),
+                            (16F / 16F), (9F / 16F), (11F / 16F)
+                    ),
+                    AxisAlignedBB.getBoundingBox(
+                            (10F / 16F), 0, (5F / 16F),
+                            (16F / 16F), (12F / 16F), (11F / 16F)
+                    ),
+            },
+            new AxisAlignedBB[]{
+                    // E
+                    AxisAlignedBB.getBoundingBox(
+                            (0F / 16F), 0, (5F / 16F),
+                            (6F / 16F), (3F / 16F), (11F / 16F)
+                    ),
+                    AxisAlignedBB.getBoundingBox(
+                            (0F / 16F), 0, (5F / 16F),
+                            (6F / 16F), (6F / 16F), (11F / 16F)
+                    ),
+                    AxisAlignedBB.getBoundingBox(
+                            (0F / 16F), 0, (5F / 16F),
+                            (6F / 16F), (9F / 16F), (11F / 16F)
+                    ),
+                    AxisAlignedBB.getBoundingBox(
+                            (0F / 16F), 0, (5F / 16F),
+                            (6F / 16F), (12F / 16F), (11F / 16F)
+                    ),
+            },
+            new AxisAlignedBB[]{
+                    // S
+                    AxisAlignedBB.getBoundingBox(
+                            (5F / 16F), 0, (9F / 16F),
+                            (11F / 16F), (3F / 16F), (15F / 16F)
+                    ),
+                    AxisAlignedBB.getBoundingBox(
+                            (5F / 16F), 0, (9F / 16F),
+                            (11F / 16F), (6F / 16F), (15F / 16F)
+                    ),
+                    AxisAlignedBB.getBoundingBox(
+                            (5F / 16F), 0, (9F / 16F),
+                            (11F / 16F), (9F / 16F), (15F / 16F)
+                    ),
+                    AxisAlignedBB.getBoundingBox(
+                            (5F / 16F), 0, (9F / 16F),
+                            (11F / 16F), (12F / 16F), (15F / 16F)
+                    ),
+            },
+    };
+
+    @Override
+    @Environment(EnvType.CLIENT)
+    public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, MovingObjectPosition hit) {
+        int i = hit.blockX;
+        int j = hit.blockY;
+        int k = hit.blockZ;
+
+        Vec3 hitVec = Vec3
+                .createVectorHelper(hit.hitVec.xCoord - i, hit.hitVec.yCoord - j, hit.hitVec.zCoord - k);
+
+        BowlStackTileEntity bowl = (BowlStackTileEntity) world.getBlockTileEntity(i, j, k);
+
+        if (bowl.centerPositions[0] > 0){
+            AxisAlignedBB[] center = new AxisAlignedBB[]{
+                    AxisAlignedBB.getBoundingBox(
+                            (5F / 16F), 0, (5F / 16F),
+                            (11F / 16F), (3F / 16F), (11F / 16F)
+                    ),
+                    AxisAlignedBB.getBoundingBox(
+                            (5F / 16F), 0, (5F / 16F),
+                            (11F / 16F), (6F / 16F), (11F / 16F)
+                    ),
+                    AxisAlignedBB.getBoundingBox(
+                            (5F / 16F), 0, (5F / 16F),
+                            (11F / 16F), (9F / 16F), (11F / 16F)
+                    ),
+                    AxisAlignedBB.getBoundingBox(
+                            (5F / 16F), 0, (5F / 16F),
+                            (11F / 16F), (12F / 16F), (11F / 16F)
+                    )
+            };
+
+
+            return center[Math.max(bowl.centerPositions[0] - 1, 0)].offset(i,j,k);
+        }
+        else {
+            // Show boxes for already occupied slots and possible placeable slots
+
+            //square hit
+            if (hitVec.zCoord < 5/16F) {
+                if (hitVec.xCoord < 5/16F) {
+                    if (bowl.setSquarePositions( 1, 0)) return squareBounds[1][Math.max(bowl.squarePositions[1] - 1, 0)].makeTemporaryCopy().offset(i,j,k);
+                }
+                else if (hitVec.xCoord > 11/16F) {
+                    if (bowl.setSquarePositions(0, 0)) return squareBounds[0][Math.max(bowl.squarePositions[0] - 1, 0)].makeTemporaryCopy().offset(i,j,k);
+                }
+            }
+            else if (hitVec.zCoord > 11/16F) {
+                if (hitVec.xCoord < 5/16F) {
+                    if (bowl.setSquarePositions(3, 0)) return squareBounds[3][Math.max(bowl.squarePositions[3] - 1, 0)].makeTemporaryCopy().offset(i,j,k);
+                }
+                else if (hitVec.xCoord > 11/16F) {
+                    if (bowl.setSquarePositions(2, 0)) return squareBounds[2][Math.max(bowl.squarePositions[2] - 1, 0)].makeTemporaryCopy().offset(i,j,k);
+                }
+            }
+
+            //diamond
+            if (hitVec.zCoord < 5/16F) {
+                if (hitVec.xCoord > 5/16F && hitVec.xCoord < 11/16F) {
+                    if ( bowl.setDiamondPositions(0, 0) ) return diamondBounds[0][Math.max(bowl.diamondPositions[0] - 1, 0)].makeTemporaryCopy().offset(i,j,k);
+                }
+            }
+            else if (hitVec.zCoord < 11/16F) {
+                if (hitVec.xCoord < 5/16F ){
+                    if (bowl.setDiamondPositions(2, 0)) return diamondBounds[2][Math.max(bowl.diamondPositions[2] - 1, 0)].makeTemporaryCopy().offset(i,j,k);
+                }
+                if (hitVec.xCoord > 11/16F) {
+                    if (bowl.setDiamondPositions(1, 0)) return diamondBounds[1][Math.max(bowl.diamondPositions[1] - 1, 0)].makeTemporaryCopy().offset(i,j,k);
+                }
+            }
+            else {
+                if (hitVec.xCoord > 5/16F && hitVec.xCoord < 11/16F) {
+                    if (bowl.setDiamondPositions(3, 0)) return diamondBounds[3][Math.max(bowl.diamondPositions[3] - 1, 0)].makeTemporaryCopy().offset(i,j,k);
+                }
+            }
+
+
+        }
+
+        return getFixedBlockBoundsFromPool();
+
+    }
+
+    @Override
+    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int i, int j, int k) {
+        return null;
+    }
+
     @Override
     public TileEntity createNewTileEntity(World var1) {
         return new BowlStackTileEntity();
@@ -107,6 +386,11 @@ public class BowlStackBlock extends BlockContainer {
     @Override
     public boolean isOpaqueCube() {
         return false;
+    }
+
+    @Override
+    public void registerIcons(IconRegister register) {
+        blockIcon = register.registerIcon("tree_side");
     }
 
     @Override

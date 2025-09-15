@@ -15,20 +15,21 @@ public class BowlStackTileEntity extends TileEntity implements TileEntityDataPac
         diamondPositions = new int[4];
     }
 
-    private void incrementCount(int[] positions, int slot) {
+    private boolean incrementCount(int[] positions, int slot) {
         if (positions[slot] < 4) {
             positions[slot]++;
-        } else {
-            positions[slot] = 0; // reset if max reached
+            return true;
         }
+
+        return false;
     }
 
-    private void decrementCount(int[] positions, int slot) {
+    private boolean decrementCount(int[] positions, int slot) {
         if (positions[slot] > 0) {
             positions[slot]--;
-        } else {
-            positions[slot] = 0; // reset if max reached
+            return true;
         }
+        return false;
     }
 
     public boolean setCenterPositions(int slot, int count) {
@@ -38,8 +39,8 @@ public class BowlStackTileEntity extends TileEntity implements TileEntityDataPac
             }
         }
 
-        if (count > 0) incrementCount(centerPositions, slot);
-        else if (count < 0) decrementCount(centerPositions, slot);
+        if (count > 0) return incrementCount(centerPositions, slot);
+        else if (count < 0) return decrementCount(centerPositions, slot);
         //count 0 ignored
         return true;
     }
@@ -62,8 +63,8 @@ public class BowlStackTileEntity extends TileEntity implements TileEntityDataPac
             if (diamondPositions[2] > 0 || diamondPositions[3] > 0) return false;
         }
 
-        if (count > 0) incrementCount(squarePositions, slot);
-        else if (count < 0) decrementCount(squarePositions, slot);
+        if (count > 0) return incrementCount(squarePositions, slot);
+        else if (count < 0) return decrementCount(squarePositions, slot);
         return true;
     }
 
@@ -86,8 +87,8 @@ public class BowlStackTileEntity extends TileEntity implements TileEntityDataPac
                 break;
         }
 
-        if (count > 0) incrementCount(diamondPositions, slot);
-        else if (count < 0) decrementCount(diamondPositions, slot);
+        if (count > 0) return incrementCount(diamondPositions, slot);
+        else if (count < 0) return decrementCount(diamondPositions, slot);
         return true;
     }
 
