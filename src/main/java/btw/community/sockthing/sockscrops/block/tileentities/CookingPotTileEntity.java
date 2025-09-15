@@ -32,13 +32,10 @@ public class CookingPotTileEntity extends TileEntity implements TileEntityDataPa
 
     public int cookCounter = 0;
 
-    private final int panBurnTimeMultiplier = 4; //campfireBurnTimeMultiplier = 8
+    private int firelevelMultiplier = 2;
+    private final int timeToCook = 8 * 60 * 20 * firelevelMultiplier; //8min
 
-    private final int timeToCook = ( TileEntityFurnace.DEFAULT_COOK_TIME *
-            panBurnTimeMultiplier *
-            3 / 2 ); // this line represents efficiency relative to furnace cooking
-
-    private final int timeToBurnFood = ( timeToCook / 2 );
+    private final int timeToBurnFood = timeToCook / 2;
 
     private int cookBurningCounter = 0;
 
@@ -83,6 +80,10 @@ public class CookingPotTileEntity extends TileEntity implements TileEntityDataPa
         {
             updateCookState();
         }
+        else {
+            cookCounter = 0;
+            cookBurningCounter = 0;
+        }
 
     }
 
@@ -113,8 +114,6 @@ public class CookingPotTileEntity extends TileEntity implements TileEntityDataPa
                     cookBurningCounter = 0;
                 }
             }
-        } else {
-            cookCounter = 0;
         }
 
 
