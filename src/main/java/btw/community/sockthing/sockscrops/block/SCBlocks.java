@@ -3,6 +3,7 @@ package btw.community.sockthing.sockscrops.block;
 import btw.block.BTWBlocks;
 import btw.community.sockthing.sockscrops.SocksCropsAddon;
 import btw.community.sockthing.sockscrops.block.blocks.*;
+import btw.community.sockthing.sockscrops.block.renderer.BowlStackRenderer;
 import btw.community.sockthing.sockscrops.block.renderer.CookingPotRenderer;
 import btw.community.sockthing.sockscrops.block.renderer.FishTrapRenderer;
 import btw.community.sockthing.sockscrops.block.renderer.RopeHangingItemsRenderer;
@@ -114,6 +115,7 @@ public class SCBlocks {
     public static Block cookedPie;
     public static Block rawClay;
     public static Block unfiredPottery;
+    public static Block bowlStack;
     public static Block pot;
     public static Block burnPit;
 
@@ -181,6 +183,9 @@ public class SCBlocks {
 //        fryingPan = new FryingPanBlock(SCBlockIDs.FRYING_PAN_ID, "frying_pan");
 //        Item.itemsList[fryingPan.blockID] = new PlaceAsBlockItem(SCBlockIDs.FRYING_PAN_ID - 256,
 //                fryingPan.blockID, 0, "frying_pan");
+
+        bowlStack = new BowlStackBlock(SCBlockIDs.BOWL_STACK_ID, "bowl_stack");
+        Item.itemsList[bowlStack.blockID] = new ItemBlock(SCBlockIDs.BOWL_STACK_ID - 256);
     }
 
     private static void initTileEnityMapping() {
@@ -191,6 +196,7 @@ public class SCBlocks {
         TileEntity.addMapping(RopeHangingItemsTileEntity.class, "SCRopeHangingItems");
         TileEntity.addMapping(BurnPitTileEntity.class, "SCBurnPit");
         TileEntity.addMapping(CookingPotTileEntity.class, "SCCookingPot");
+        TileEntity.addMapping(BowlStackTileEntity.class, "SCBowlStack");
     }
 
     private static void initTileEntityRenderers() {
@@ -200,6 +206,8 @@ public class SCBlocks {
                 new RopeHangingItemsRenderer());
         TileEntityRenderer.instance.addSpecialRendererForClass(CookingPotTileEntity.class,
                 new CookingPotRenderer());
+        TileEntityRenderer.instance.addSpecialRendererForClass(BowlStackTileEntity.class,
+                new BowlStackRenderer());
     }
 
     private static void initPrimitiveCooking() {
@@ -210,8 +218,6 @@ public class SCBlocks {
         unfiredPottery = new UncookedPotteryBlock(SCBlockIDs.UNFIRED_POTTERY_ID, "unfired_pottery");
         Item.itemsList[unfiredPottery.blockID] = new ItemMultiTextureTile(SCBlockIDs.UNFIRED_POTTERY_ID - 256,
                 unfiredPottery, new String[] {"pot"});
-
-
     }
 
     private static void initPies() {

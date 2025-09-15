@@ -111,6 +111,7 @@ public class SCBlockIDs {
     public static final int BURN_PIT_ID = 2855;
     public static final int FRYING_PAN_ID = 2856;
     public static final int COOKING_POT_ID = 2857;
+    public static int BOWL_STACK_ID = 2858;
 
     //----------- Deco Overlap  -----------//
     public static final int STRAW_BALE_ID = 3025;

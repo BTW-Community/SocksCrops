@@ -16,9 +16,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(CowEntity.class)
 public abstract class CowEntityMixin {
 
-    @Shadow public abstract boolean gotMilk();
+    @Shadow(remap = false) public abstract boolean gotMilk();
 
-    @Shadow protected abstract void setGotMilk(boolean bGotMilk);
+    @Shadow(remap = false) protected abstract void setGotMilk(boolean bGotMilk);
 
     @Inject(method = "interact", at = @At(value = "HEAD"), cancellable = true)
     public void fillCookingPotWithMilk(EntityPlayer player, CallbackInfoReturnable<Boolean> cir){

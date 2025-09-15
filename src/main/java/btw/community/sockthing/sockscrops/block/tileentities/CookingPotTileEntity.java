@@ -530,9 +530,7 @@ public class CookingPotTileEntity extends TileEntity implements TileEntityDataPa
 
     //------------- NBT ------------//
 
-    /**
-     * Writes a tile entity to NBT.
-     */
+    @Override
     public void writeToNBT(NBTTagCompound tag)
     {
         super.writeToNBT(tag);
@@ -574,9 +572,7 @@ public class CookingPotTileEntity extends TileEntity implements TileEntityDataPa
         tag.setBoolean("lidOpen", lidOpen);
     }
 
-    /**
-     * Reads a tile entity from NBT.
-     */
+    @Override
     public void readFromNBT(NBTTagCompound tag)
     {
         super.readFromNBT(tag);
@@ -631,9 +627,7 @@ public class CookingPotTileEntity extends TileEntity implements TileEntityDataPa
         }
     }
 
-    /**
-     * Overriden in a sign to provide the text.
-     */
+    @Override
     public Packet getDescriptionPacket()
     {
         NBTTagCompound var1 = new NBTTagCompound();
