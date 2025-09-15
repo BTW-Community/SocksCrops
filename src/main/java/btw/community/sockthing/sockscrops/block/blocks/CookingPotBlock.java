@@ -20,6 +20,7 @@ public class CookingPotBlock extends BlockContainer {
         super(blockID, BTWBlocks.miscMaterial);
         setUnlocalizedName(name);
         setCreativeTab(CreativeTabs.tabDecorations);
+        setHardness(0.05F);
     }
 
     @Override
