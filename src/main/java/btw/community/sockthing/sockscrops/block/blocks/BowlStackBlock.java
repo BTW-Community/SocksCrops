@@ -16,6 +16,7 @@ public class BowlStackBlock extends BlockContainer {
 
         initBlockBounds(0,0,0,
                 1, 1/128D, 1);
+        setHardness(0.05F);
     }
 
     @Override

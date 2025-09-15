@@ -98,7 +98,54 @@ public class BowlStackTileEntity extends TileEntity implements TileEntityDataPac
     public void writeToNBT(NBTTagCompound tag)
     {
         super.writeToNBT(tag);
-//        tag.setInteger( "cookCounter", cookCounter );
+
+        NBTTagList tagList0 = new NBTTagList();
+
+        if (centerPositions[0] >= 0)
+        {
+            NBTTagCompound tempTag = new NBTTagCompound();
+
+            tempTag.setByte( "Slot", (byte)0 );
+            tempTag.setInteger( "Count", centerPositions[0] );
+
+            tagList0.appendTag( tempTag );
+        }
+
+        tag.setTag( "CenterPos", tagList0 );
+
+        NBTTagList tagList = new NBTTagList();
+
+        for (int iTempIndex = 0; iTempIndex < squarePositions.length; iTempIndex++ )
+        {
+            if (squarePositions[iTempIndex] >= 0)
+            {
+                NBTTagCompound tempTag = new NBTTagCompound();
+
+                tempTag.setByte( "Slot", (byte)iTempIndex );
+                tempTag.setInteger( "Count", squarePositions[iTempIndex] );
+
+                tagList.appendTag( tempTag );
+            }
+        }
+
+        tag.setTag( "SquarePos", tagList );
+
+        NBTTagList tagList2 = new NBTTagList();
+
+        for (int iTempIndex = 0; iTempIndex < diamondPositions.length; iTempIndex++ )
+        {
+            if (diamondPositions[iTempIndex] >= 0)
+            {
+                NBTTagCompound tempTag = new NBTTagCompound();
+
+                tempTag.setByte( "Slot", (byte)iTempIndex );
+                tempTag.setInteger( "Count", diamondPositions[iTempIndex] );
+
+                tagList2.appendTag( tempTag );
+            }
+        }
+
+        tag.setTag( "DiamondPos", tagList2 );
     }
 
     @Override
@@ -106,7 +153,44 @@ public class BowlStackTileEntity extends TileEntity implements TileEntityDataPac
     {
         super.readFromNBT(tag);
 
-//        if ( tag.hasKey( "cookCounter" ) ) cookCounter = tag.getInteger( "cookCounter" );
+        NBTTagList tagList = tag.getTagList( "CenterPos" );
+
+        NBTTagCompound tempTag = (NBTTagCompound)tagList.tagAt( 0 );
+
+        int tempSlot = tempTag.getByte( "Slot" ) & 0xff;
+
+        if ( tempSlot >= 0 && tempSlot < centerPositions.length )
+        {
+            centerPositions[tempSlot] = tempTag.getInteger("Count");
+        }
+
+        NBTTagList tagList1 = tag.getTagList( "SquarePos" );
+
+        for ( int iTempIndex = 0; iTempIndex < tagList1.tagCount(); iTempIndex++ )
+        {
+            tempTag = (NBTTagCompound)tagList1.tagAt( iTempIndex );
+
+            tempSlot = tempTag.getByte( "Slot" ) & 0xff;
+
+            if ( tempSlot >= 0 && tempSlot < squarePositions.length )
+            {
+                squarePositions[tempSlot] = tempTag.getInteger("Count");
+            }
+        }
+
+        NBTTagList tagList2 = tag.getTagList( "DiamondPos" );
+
+        for ( int iTempIndex = 0; iTempIndex < tagList2.tagCount(); iTempIndex++ )
+        {
+            tempTag = (NBTTagCompound)tagList2.tagAt( iTempIndex );
+
+            tempSlot = tempTag.getByte( "Slot" ) & 0xff;
+
+            if ( tempSlot >= 0 && tempSlot < diamondPositions.length )
+            {
+                diamondPositions[tempSlot] = tempTag.getInteger("Count");
+            }
+        }
     }
 
     @Override
