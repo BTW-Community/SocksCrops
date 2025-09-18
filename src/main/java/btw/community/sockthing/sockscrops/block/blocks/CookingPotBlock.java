@@ -1,6 +1,5 @@
 package btw.community.sockthing.sockscrops.block.blocks;
 
-import btw.BTWMod;
 import btw.block.BTWBlocks;
 import btw.block.tileentity.CampfireTileEntity;
 import btw.client.fx.BTWEffectManager;
@@ -44,7 +43,7 @@ public class CookingPotBlock extends BlockContainer {
 
         boolean emptyHand = heldStack == null;
 
-        if (!pot.isLidOpen()) {
+        if (!pot.getLidOpen()) {
             return openOrCloseLid(pot, true, world, x, y, z);
         } else { //open lid
             if (emptyHand) {

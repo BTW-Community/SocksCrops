@@ -35,7 +35,7 @@ public class CookingPotTileEntity extends TileEntity implements TileEntityDataPa
     private int firelevelMultiplier = 2;
     private final int timeToCook = 8 * 60 * 20 * firelevelMultiplier; //8min
 
-    private final int timeToBurnFood = timeToCook / 2;
+    private final int timeToBurnFood = timeToCook / 16;
 
     private int cookBurningCounter = 0;
 
@@ -82,7 +82,7 @@ public class CookingPotTileEntity extends TileEntity implements TileEntityDataPa
         }
         else {
             cookCounter = 0;
-            cookBurningCounter = 0;
+//            cookBurningCounter = 0;
         }
 
     }
@@ -91,29 +91,37 @@ public class CookingPotTileEntity extends TileEntity implements TileEntityDataPa
     private void updateCookState()
     {
         if (canCook()) {
-            cookCounter++;
+            cookCounter += Math.min(getFireLevel(), 2);
+//            System.out.println("Cook: " + cookCounter + " / " + timeToCook);
             if (cookCounter >= timeToCook) {
                 cookCounter = 0;
                 makeSoup();
             }
 
-            if ( getFireLevel() >= 3 && getCookType() != BURNED )
-            {
-                cookBurningCounter++;
-
-                if ( cookBurningCounter >= timeToBurnFood )
-                {
-                    for (int i = 0; i < cookStacks.length; i++) {
-                        if (getCookStack(i) != null){
-                            setCookStack( i, new ItemStack(BTWItems.foulFood, 1));
-                            setLiquidStack(null);
-                        }
-                    }
-
-                    cookCounter = 0;
-                    cookBurningCounter = 0;
-                }
-            }
+//            if ( getFireLevel() >= 3 && getCookType() != BURNED )
+//            {
+//                cookBurningCounter++;
+//                System.out.println("Burn: " + cookBurningCounter + " / " + timeToBurnFood);
+//
+//                if ( cookBurningCounter >= timeToBurnFood )
+//                {
+//                    for (int i = 0; i < cookStacks.length; i++) {
+//                        if (getCookStack(i) != null){
+//                            setCookStack( i, new ItemStack(BTWItems.foulFood, 1));
+//                            setLiquidStack(null);
+//                        }
+//                    }
+//
+//                    cookCounter = 0;
+//                    cookBurningCounter = 0;
+//                }
+//            }
+//            else {
+//                cookBurningCounter = 0;
+//            }
+        }
+        else {
+            cookCounter = 0;
         }
 
 
@@ -170,7 +178,7 @@ public class CookingPotTileEntity extends TileEntity implements TileEntityDataPa
 //        }
 
         CookingPotRecipe recipe = CookingPotRecipeManager.findMatchingRecipe(cookStacks, liquidStack);
-        if (recipe != null) return true;
+        if (recipe != null) return !getLidOpen();
 
         return false;
     }
@@ -267,7 +275,7 @@ public class CookingPotTileEntity extends TileEntity implements TileEntityDataPa
     }
 
     private void cookRecipe() {
-        System.out.println("trying to cook");
+//        System.out.println("trying to cook");
         CookingPotRecipe recipe = CookingPotRecipeManager.findMatchingRecipe(cookStacks, liquidStack);
         if (recipe == null) return;
 
@@ -290,7 +298,7 @@ public class CookingPotTileEntity extends TileEntity implements TileEntityDataPa
             cookStacks[i] = new ItemStack(result.itemID, 1, result.getItemDamage());
             remaining--;
         }
-        System.out.println("cooked!");
+//        System.out.println("cooked!");
 
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 
@@ -415,8 +423,8 @@ public class CookingPotTileEntity extends TileEntity implements TileEntityDataPa
 
             int id = getCookStack(InventoryUtils.getFirstOccupiedStack(this)).itemID;
 
-            if (id == BTWItems.foulFood.itemID) return BURNED;
-//            if (id == BTWItems.foulFood.itemID) return SPOILED;
+//            if (id == SCItems.burnedFood.itemID) return BURNED;
+            if (id == BTWItems.foulFood.itemID) return SPOILED;
 
         }
 
@@ -551,6 +559,11 @@ public class CookingPotTileEntity extends TileEntity implements TileEntityDataPa
         return false;
     }
 
+    public boolean isLidOpen() {
+        return this.lidProgress > 0F;
+    }
+
+
     //------------- NBT ------------//
 
     @Override
@@ -664,7 +677,6 @@ public class CookingPotTileEntity extends TileEntity implements TileEntityDataPa
         this.readFromNBT(nbttagcompound);
     }
 
-
     public int getSkullRotation()
     {
         return this.potRotation;
@@ -681,7 +693,7 @@ public class CookingPotTileEntity extends TileEntity implements TileEntityDataPa
         return this.potRotation;
     }
 
-    public boolean isLidOpen() {
+    public boolean getLidOpen() {
         return this.lidOpen;
     }
 
