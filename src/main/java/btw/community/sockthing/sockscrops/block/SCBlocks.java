@@ -3,10 +3,7 @@ package btw.community.sockthing.sockscrops.block;
 import btw.block.BTWBlocks;
 import btw.community.sockthing.sockscrops.SocksCropsAddon;
 import btw.community.sockthing.sockscrops.block.blocks.*;
-import btw.community.sockthing.sockscrops.block.renderer.BowlStackRenderer;
-import btw.community.sockthing.sockscrops.block.renderer.CookingPotRenderer;
-import btw.community.sockthing.sockscrops.block.renderer.FishTrapRenderer;
-import btw.community.sockthing.sockscrops.block.renderer.RopeHangingItemsRenderer;
+import btw.community.sockthing.sockscrops.block.renderer.*;
 import btw.community.sockthing.sockscrops.block.tileentities.*;
 import btw.community.sockthing.sockscrops.item.SCItemIDs;
 import btw.community.sockthing.sockscrops.item.items.*;
@@ -180,9 +177,8 @@ public class SCBlocks {
         cookingPot = new CookingPotBlock(SCBlockIDs.COOKING_POT_ID, "cooking_pot");
         Item.itemsList[cookingPot.blockID] = new CookingPotItemBlock(SCBlockIDs.COOKING_POT_ID - 256);
 
-//        fryingPan = new FryingPanBlock(SCBlockIDs.FRYING_PAN_ID, "frying_pan");
-//        Item.itemsList[fryingPan.blockID] = new PlaceAsBlockItem(SCBlockIDs.FRYING_PAN_ID - 256,
-//                fryingPan.blockID, 0, "frying_pan");
+        fryingPan = new FryingPanBlock(SCBlockIDs.FRYING_PAN_ID, "frying_pan");
+        Item.itemsList[fryingPan.blockID] = new ItemBlock(SCBlockIDs.FRYING_PAN_ID - 256);
 
         bowlStack = new BowlStackBlock(SCBlockIDs.BOWL_STACK_ID, "bowl_stack");
         Item.itemsList[bowlStack.blockID] = new ItemBlock(SCBlockIDs.BOWL_STACK_ID - 256);
@@ -196,6 +192,7 @@ public class SCBlocks {
         TileEntity.addMapping(RopeHangingItemsTileEntity.class, "SCRopeHangingItems");
         TileEntity.addMapping(BurnPitTileEntity.class, "SCBurnPit");
         TileEntity.addMapping(CookingPotTileEntity.class, "SCCookingPot");
+        TileEntity.addMapping(FryingPanTileEntity.class, "SCFryingPan");
         TileEntity.addMapping(BowlStackTileEntity.class, "SCBowlStack");
     }
 
@@ -206,6 +203,8 @@ public class SCBlocks {
                 new RopeHangingItemsRenderer());
         TileEntityRenderer.instance.addSpecialRendererForClass(CookingPotTileEntity.class,
                 new CookingPotRenderer());
+        TileEntityRenderer.instance.addSpecialRendererForClass(FryingPanTileEntity.class,
+                new FryingPanRenderer());
         TileEntityRenderer.instance.addSpecialRendererForClass(BowlStackTileEntity.class,
                 new BowlStackRenderer());
     }
