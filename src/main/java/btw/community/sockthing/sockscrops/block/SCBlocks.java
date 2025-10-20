@@ -178,7 +178,7 @@ public class SCBlocks {
         Item.itemsList[cookingPot.blockID] = new CookingPotItemBlock(SCBlockIDs.COOKING_POT_ID - 256);
 
         fryingPan = new FryingPanBlock(SCBlockIDs.FRYING_PAN_ID, "frying_pan");
-        Item.itemsList[fryingPan.blockID] = new ItemBlock(SCBlockIDs.FRYING_PAN_ID - 256);
+        Item.itemsList[fryingPan.blockID] = new ItemBlock(SCBlockIDs.FRYING_PAN_ID - 256); //, fryingPan.blockID, 0, "frying_pan");
 
         bowlStack = new BowlStackBlock(SCBlockIDs.BOWL_STACK_ID, "bowl_stack");
         Item.itemsList[bowlStack.blockID] = new ItemBlock(SCBlockIDs.BOWL_STACK_ID - 256);

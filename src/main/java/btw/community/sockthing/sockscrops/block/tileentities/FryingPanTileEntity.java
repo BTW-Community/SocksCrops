@@ -323,7 +323,11 @@ public class FryingPanTileEntity extends TileEntity implements TileEntityDataPac
     {
         return this.panRotation;
     }
+
     // END FCMOD
 
+    public boolean isOnCampfire() {
+        return false;
+    }
 
 }

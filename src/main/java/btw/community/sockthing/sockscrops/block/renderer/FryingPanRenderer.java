@@ -15,10 +15,10 @@ public class FryingPanRenderer extends TileEntitySpecialRenderer
      */
     public void renderTileEntitySkullAt(FryingPanTileEntity par1TileEntitySkull, double par2, double par4, double par6, float par8)
     {
-        this.renderPan((float)par2, (float)par4, (float)par6, par1TileEntitySkull.getBlockMetadata(), (float)(par1TileEntitySkull.getSkullRotation() * 360) / 8.0F);
+        this.renderPan((float)par2, (float)par4, (float)par6, par1TileEntitySkull, (float)(par1TileEntitySkull.getSkullRotation() * 360) / 8.0F);
     }
 
-    public void renderPan(float x, float y, float z, int meta, float rot)
+    public void renderPan(float x, float y, float z, FryingPanTileEntity panTile, float rot)
     {
         FryingPanModel pan = this.pan;
 
@@ -27,12 +27,10 @@ public class FryingPanRenderer extends TileEntitySpecialRenderer
         GL11.glPushMatrix();
         GL11.glDisable(GL11.GL_CULL_FACE);
 
-        if (meta != 1)
-        {
+        // Base translation
+        if (panTile.isOnCampfire()) {
             GL11.glTranslatef(x + 0.5F, y - 0.5F, z + 0.5F);
-        }
-        else
-        {
+        } else {
             GL11.glTranslatef(x + 0.5F, y, z + 0.5F);
         }
 
